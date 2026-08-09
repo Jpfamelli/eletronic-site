@@ -740,6 +740,47 @@
       }
       .rv { opacity:1 !important; transform:none !important; }
     }
+    /* ============================================
+       CATÁLOGO DINÂMICO (vem do painel da loja)
+       ============================================ */
+    .cat-carregando { text-align:center; color:var(--gray); padding:60px 20px; letter-spacing:.05em; }
+    .cat-desc { color:var(--gray); font-size:.9rem; margin:26px 0 6px; letter-spacing:.03em; }
+    .pgrid { display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:18px; margin-top:20px; }
+    .pcard { display:flex; flex-direction:column; background:rgba(255,255,255,.03); border:1px solid rgba(201,162,39,.16);
+      overflow:hidden; transition:border-color .25s, transform .25s; position:relative; }
+    .pcard:hover { border-color:rgba(201,162,39,.55); transform:translateY(-4px); }
+    .pcard.pdestaque { border-color:var(--gold); box-shadow:0 0 0 1px var(--gold), 0 12px 32px rgba(201,162,39,.12); }
+    .pcard-foto { aspect-ratio:3/4; background:rgba(255,255,255,.04); display:flex; align-items:center; justify-content:center;
+      font-size:3rem; overflow:hidden; }
+    .pcard-foto img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .35s; }
+    .pcard:hover .pcard-foto img { transform:scale(1.04); }
+    .pcard-selo { position:absolute; top:12px; left:12px; background:var(--gold); color:var(--navy); font-size:.58rem;
+      font-weight:700; letter-spacing:.16em; text-transform:uppercase; padding:5px 10px; z-index:2; }
+    .pcard-corpo { display:flex; flex-direction:column; gap:6px; padding:16px 16px 18px; flex:1; }
+    .pcard-nome { font-family:'Cormorant Garamond',serif; font-size:1.3rem; font-weight:700; line-height:1.15; color:var(--cream); }
+    .pcard-meta { font-size:.74rem; color:var(--gray); letter-spacing:.05em; }
+    .pcard-desc { font-size:.78rem; color:#aab6cf; line-height:1.55; display:-webkit-box; -webkit-line-clamp:2;
+      -webkit-box-orient:vertical; overflow:hidden; }
+    .pcard-preco { margin-top:auto; padding-top:10px; }
+    .pcard-preco s { color:var(--gray); font-size:.78rem; display:block; }
+    .pcard-preco strong { color:var(--gold-pale); font-size:1.25rem; font-weight:700; letter-spacing:.02em; }
+    .pcard-preco .consulte { color:var(--gold-pale); font-size:.95rem; font-weight:600; }
+    .pcard-parcelas { font-size:.72rem; color:var(--gray); }
+    .pcard-wa { margin-top:12px; display:flex; align-items:center; justify-content:center; gap:8px; background:#25D366;
+      color:#052e1b; font-size:.72rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; text-decoration:none;
+      padding:12px 10px; transition:background .2s; }
+    .pcard-wa:hover { background:#20c45b; }
+    .pcard-wa svg { width:15px; height:15px; fill:currentColor; flex-shrink:0; }
+    .cat-vazia { text-align:center; padding:48px 20px; color:var(--gray); line-height:1.8; }
+    .cat-vazia a { color:var(--gold); }
+    @media (max-width:700px) {
+      .pgrid { grid-template-columns:1fr 1fr !important; gap:10px !important; }
+      .pcard-corpo { padding:12px 12px 14px; }
+      .pcard-nome { font-size:1.1rem; }
+      .pcard-desc { display:none; }
+    }
+    @media (max-width:380px) { .pgrid { grid-template-columns:1fr !important; } }
+
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js">
   // THREE.JS BLACK CLUB WIREFRAME
@@ -889,146 +930,28 @@
   <h2 class="heading rv">Nossos <em>Modelos</em></h2>
 
   <!-- TABS -->
-  <div class="cat-tabs rv">
-    <button class="cat-tab active" onclick="switchTab('seminovo',this)">Seminovo</button>
-    <button class="cat-tab" onclick="switchTab('lacrado',this)">Lacrado</button>
-    <button class="cat-tab black-club-tab" onclick="switchTab('blackclub',this)">⚡ Black Club</button>
+  <!-- benefícios de toda compra -->
+  <div class="beneficios rv">
+    <p class="beneficios-title">⚡ Toda compra na Eletronic acompanha</p>
+    <ul>
+      <li>🛡️ <strong>1 ano de garantia da loja</strong> — no seminovo e no lacrado</li>
+      <li>📄 <strong>Nota fiscal</strong> em todos os aparelhos</li>
+      <li>🎁 Brindes: <strong>Capa Space + Película 3D + Kit Carregador</strong> (homologado pela Anatel)</li>
+      <li>🔄 <strong>Transferência de dados</strong> feita na hora, no ato da compra</li>
+      <li>📲 Seu iPhone atual <strong>vale como parte do pagamento</strong></li>
+      <li>💳 <strong>Até 18x no cartão</strong> e entrega para todo o Brasil</li>
+    </ul>
   </div>
 
-  <div class="cat-panel active" id="tab-seminovo">
+  <div class="cat-tabs rv" id="catTabs">
+    <button class="cat-tab black-club-tab" data-slug="blackclub" onclick="switchTab('blackclub',this)">⚡ Black Club</button>
+  </div>
 
-    <!-- beneficios seminovo -->
-    <div class="beneficios rv">
-      <p class="beneficios-title">📱 iPhone Seminovo — O que está incluso</p>
-      <ul>
-        <li>⚡️ iPhone seminovo em estado impecável com <strong>1 ano de garantia</strong> da loja</li>
-        <li>📄 Todos acompanham <strong>nota fiscal</strong></li>
-        <li>🎁 Brindes especiais: <strong>Capa Space + Película 3D + Kit Carregador</strong> (homologado pela Anatel)</li>
-        <li>🔄 <strong>Transferência de dados</strong> no ato da compra</li>
-        <li>📲 Aceitamos seu <strong>iPhone como forma de pagamento</strong></li>
-      </ul>
-    </div>
-    <!-- fotos seminovo -->
-    <div class="tab-foto-grid">
-<a href="https://wa.me/5512997463135?text=Ol%C3%A1!%20Tenho%20interesse%20no%20iPhone%2015%20128GB%20Seminovo" target="_blank" class="cat-foto-card"><img src="images/background-2.jpg" alt="iPhone 15 128GB"/><div class="cat-foto-info"><strong>iPhone 15 128GB</strong></div></a>
-<a href="https://wa.me/5512997463135?text=Ol%C3%A1!%20Tenho%20interesse%20no%20iPhone%2015%20Pro%20256GB%20Seminovo" target="_blank" class="cat-foto-card"><img src="images/iphone-15-128gb.jpg" alt="iPhone 15 Pro 256GB"/><div class="cat-foto-info"><strong>iPhone 15 Pro 256GB</strong></div></a>
-<a href="https://wa.me/5512997463135?text=Ol%C3%A1!%20Tenho%20interesse%20no%20iPhone%2016%20Pro%20256GB%20Seminovo" target="_blank" class="cat-foto-card"><img src="images/iphone-15-pro-256gb.jpg" alt="iPhone 16 Pro 256GB"/><div class="cat-foto-info"><strong>iPhone 16 Pro 256GB</strong></div></a>
-<a href="https://wa.me/5512997463135?text=Ol%C3%A1!%20Tenho%20interesse%20no%20iPhone%2016%20Pro%20Max%20256GB%20Seminovo" target="_blank" class="cat-foto-card"><img src="images/iphone-16-pro-256gb.jpg" alt="iPhone 16 Pro Max 256GB"/><div class="cat-foto-info"><strong>iPhone 16 Pro Max 256GB</strong></div></a>
-<a href="https://wa.me/5512997463135?text=Ol%C3%A1!%20Tenho%20interesse%20no%20iPhone%2013%20128GB%20Seminovo" target="_blank" class="cat-foto-card"><img src="images/iphone-16-pro-max-256gb.jpg" alt="iPhone 13 128GB"/><div class="cat-foto-info"><strong>iPhone 13 128GB</strong></div></a>
-<a href="https://wa.me/5512997463135?text=Ol%C3%A1!%20Tenho%20interesse%20no%20iPhone%2014%20Pro%20Max%20256GB%20Seminovo" target="_blank" class="cat-foto-card"><img src="images/iphone-13-128gb.jpg" alt="iPhone 14 Pro Max 256GB"/><div class="cat-foto-info"><strong>iPhone 14 Pro Max 256GB</strong></div></a>
-<a href="https://wa.me/5512997463135?text=Ol%C3%A1!%20Tenho%20interesse%20no%20iPhone%2013%20128GB%20Seminovo" target="_blank" class="cat-foto-card"><img src="images/iphone-14-pro-max-256gb.jpg" alt="iPhone 13 128GB"/><div class="cat-foto-info"><strong>iPhone 13 128GB</strong></div></a>
-<a href="https://wa.me/5512997463135?text=Ol%C3%A1!%20Tenho%20interesse%20no%20iPhone%2012%20128GB%20Seminovo" target="_blank" class="cat-foto-card"><img src="images/iphone-13-128gb-2.jpg" alt="iPhone 12 128GB"/><div class="cat-foto-info"><strong>iPhone 12 128GB</strong></div></a>
-    </div>
+  <div id="catPaineis"><div class="cat-panel active" id="tab-carregando"><p class="cat-carregando">Carregando catálogo…</p></div></div>
 
-    <!-- lista seminovo -->
-    <div class="cat-linha rv">
-      <h3 class="cat-linha-title">Linha 16</h3>
-      <ul class="cat-list">
-        <li>iPhone 16 Pro Max 1TB</li><li>iPhone 16 Pro Max 512GB</li><li>iPhone 16 Pro Max 256GB</li>
-        <li>iPhone 16 Pro 512GB</li><li>iPhone 16 Pro 256GB</li><li>iPhone 16 Pro 128GB</li>
-        <li>iPhone 16 Plus 256GB</li><li>iPhone 16 Plus 128GB</li>
-        <li>iPhone 16 256GB</li><li>iPhone 16 128GB</li>
-        <li>iPhone 16e 256GB</li><li>iPhone 16e 128GB</li>
-      </ul>
-    </div>
-    <div class="cat-linha rv">
-      <h3 class="cat-linha-title">Linha 15</h3>
-      <ul class="cat-list">
-        <li>iPhone 15 Pro Max 1TB</li><li>iPhone 15 Pro Max 512GB</li><li>iPhone 15 Pro Max 256GB</li>
-        <li>iPhone 15 Pro 1TB</li><li>iPhone 15 Pro 512GB</li><li>iPhone 15 Pro 256GB</li><li>iPhone 15 Pro 128GB</li>
-        <li>iPhone 15 Plus 128GB</li><li>iPhone 15 512GB</li><li>iPhone 15 256GB</li><li>iPhone 15 128GB</li>
-      </ul>
-    </div>
-    <div class="cat-linha rv">
-      <h3 class="cat-linha-title">Linha 14</h3>
-      <ul class="cat-list">
-        <li>iPhone 14 Pro Max 1TB</li><li>iPhone 14 Pro Max 512GB</li><li>iPhone 14 Pro Max 256GB</li><li>iPhone 14 Pro Max 128GB</li>
-        <li>iPhone 14 Pro 1TB</li><li>iPhone 14 Pro 512GB</li><li>iPhone 14 Pro 256GB</li><li>iPhone 14 Pro 128GB</li>
-        <li>iPhone 14 Plus 128GB</li><li>iPhone 14 512GB</li><li>iPhone 14 256GB</li><li>iPhone 14 128GB</li>
-      </ul>
-    </div>
-    <div class="cat-linha rv">
-      <h3 class="cat-linha-title">Linha 13</h3>
-      <ul class="cat-list">
-        <li>iPhone 13 Pro Max 1TB</li><li>iPhone 13 Pro Max 512GB</li><li>iPhone 13 Pro Max 256GB</li><li>iPhone 13 Pro Max 128GB</li>
-        <li>iPhone 13 Pro 1TB</li><li>iPhone 13 Pro 512GB</li><li>iPhone 13 Pro 256GB</li><li>iPhone 13 Pro 128GB</li>
-        <li>iPhone 13 512GB</li><li>iPhone 13 256GB</li><li>iPhone 13 128GB</li>
-      </ul>
-    </div>
-    <div class="cat-linha rv">
-      <h3 class="cat-linha-title">Linha 12</h3>
-      <ul class="cat-list">
-        <li>iPhone 12 Pro Max 512GB</li><li>iPhone 12 Pro Max 256GB</li><li>iPhone 12 Pro Max 128GB</li>
-        <li>iPhone 12 Pro 512GB</li><li>iPhone 12 Pro 256GB</li><li>iPhone 12 Pro 128GB</li>
-        <li>iPhone 12 256GB</li><li>iPhone 12 128GB</li><li>iPhone 12 64GB</li>
-      </ul>
-    </div>
-    <div class="cat-linha rv">
-      <h3 class="cat-linha-title">Linha 11</h3>
-      <ul class="cat-list">
-        <li>iPhone 11 Pro Max 512GB</li><li>iPhone 11 Pro Max 256GB</li><li>iPhone 11 Pro Max 64GB</li>
-        <li>iPhone 11 Pro 512GB</li><li>iPhone 11 Pro 256GB</li><li>iPhone 11 Pro 64GB</li>
-        <li>iPhone 11 256GB</li><li>iPhone 11 128GB</li><li>iPhone 11 64GB</li>
-      </ul>
-    </div>
+  
 
-  </div><!-- /seminovo -->
-
-  <div class="cat-panel" id="tab-lacrado">
-
-    <!-- beneficios lacrado -->
-    <div class="beneficios rv">
-      <p class="beneficios-title">📱 iPhone Lacrado — O que está incluso</p>
-      <ul>
-        <li>⚡️ iPhone lacrado com <strong>1 ano de garantia</strong> da loja</li>
-        <li>📄 Todos acompanham <strong>nota fiscal</strong></li>
-        <li>🎁 Brindes especiais: <strong>Capa Space + Película 3D + Kit Carregador</strong> (homologado pela Anatel)</li>
-        <li>🔄 <strong>Transferência de dados</strong> no ato da compra</li>
-        <li>📲 Aceitamos seu <strong>iPhone como forma de pagamento</strong></li>
-      </ul>
-    </div>
-    <!-- fotos lacrado -->
-    <div class="tab-foto-grid">
-<a href="https://wa.me/5512997463135?text=Ol%C3%A1!%20Tenho%20interesse%20no%20iPhone%2015%20128GB%20Lacrado" target="_blank" class="cat-foto-card"><img src="images/background-3.jpg" alt="iPhone 15 128GB"/><div class="cat-foto-info"><strong>iPhone 15 128GB</strong></div></a>
-<a href="https://wa.me/5512997463135?text=Ol%C3%A1!%20Tenho%20interesse%20no%20iPhone%2017%20Pro%20256GB%20Lacrado" target="_blank" class="cat-foto-card"><img src="images/iphone-15-128gb-2.jpg" alt="iPhone 17 Pro 256GB"/><div class="cat-foto-info"><strong>iPhone 17 Pro 256GB</strong></div></a>
-<a href="https://wa.me/5512997463135?text=Ol%C3%A1!%20Tenho%20interesse%20no%20iPhone%2016e%20128GB%20Lacrado" target="_blank" class="cat-foto-card"><img src="images/iphone-17-pro-256gb.jpg" alt="iPhone 16e 128GB"/><div class="cat-foto-info"><strong>iPhone 16e 128GB</strong></div></a>
-<a href="https://wa.me/5512997463135?text=Ol%C3%A1!%20Tenho%20interesse%20no%20iPhone%2017%20Pro%20Max%20256GB%20Lacrado" target="_blank" class="cat-foto-card"><img src="images/iphone-16e-128gb.jpg" alt="iPhone 17 Pro Max 256GB"/><div class="cat-foto-info"><strong>iPhone 17 Pro Max 256GB</strong></div></a>
-<a href="https://wa.me/5512997463135?text=Ol%C3%A1!%20Tenho%20interesse%20no%20iPhone%2016%20128GB%20Lacrado" target="_blank" class="cat-foto-card"><img src="images/iphone-17-pro-max-256gb.jpg" alt="iPhone 16 128GB"/><div class="cat-foto-info"><strong>iPhone 16 128GB</strong></div></a>
-<a href="https://wa.me/5512997463135?text=Ol%C3%A1!%20Tenho%20interesse%20no%20iPhone%2017%20256GB%20Lacrado" target="_blank" class="cat-foto-card"><img src="images/iphone-16-128gb.jpg" alt="iPhone 17 256GB"/><div class="cat-foto-info"><strong>iPhone 17 256GB</strong></div></a>
-<a href="https://wa.me/5512997463135?text=Ol%C3%A1!%20Tenho%20interesse%20no%20iPhone%2015%20128GB%20Lacrado" target="_blank" class="cat-foto-card"><img src="images/iphone-17-256gb.jpg" alt="iPhone 15 128GB"/><div class="cat-foto-info"><strong>iPhone 15 128GB</strong></div></a>
-<a href="https://wa.me/5512997463135?text=Ol%C3%A1!%20Tenho%20interesse%20no%20iPhone%2016%20128GB%20Lacrado" target="_blank" class="cat-foto-card"><img src="images/iphone-15-128gb-3.jpg" alt="iPhone 16 128GB"/><div class="cat-foto-info"><strong>iPhone 16 128GB</strong></div></a>
-<a href="https://wa.me/5512997463135?text=Ol%C3%A1!%20Tenho%20interesse%20no%20iPhone%2017%20Pro%20256GB%20Lacrado" target="_blank" class="cat-foto-card"><img src="images/iphone-16-128gb-2.jpg" alt="iPhone 17 Pro 256GB"/><div class="cat-foto-info"><strong>iPhone 17 Pro 256GB</strong></div></a>
-<a href="https://wa.me/5512997463135?text=Ol%C3%A1!%20Tenho%20interesse%20no%20iPhone%2015%20Pro%20256GB%20Lacrado" target="_blank" class="cat-foto-card"><img src="images/iphone-17-pro-256gb-2.jpg" alt="iPhone 15 Pro 256GB"/><div class="cat-foto-info"><strong>iPhone 15 Pro 256GB</strong></div></a>
-    </div>
-
-    <!-- lista lacrado -->
-    <div class="cat-linha rv">
-      <h3 class="cat-linha-title">Linha 17</h3>
-      <ul class="cat-list">
-        <li>iPhone 17 Pro Max 2TB</li><li>iPhone 17 Pro Max 1TB</li><li>iPhone 17 Pro Max 512GB</li><li>iPhone 17 Pro Max 256GB</li>
-        <li>iPhone 17 Pro 1TB</li><li>iPhone 17 Pro 512GB</li><li>iPhone 17 Pro 256GB</li>
-        <li>iPhone 17 Air 512GB</li><li>iPhone 17 Air 256GB</li>
-        <li>iPhone 17e 256GB</li><li>iPhone 17e 128GB</li>
-        <li>iPhone 17 512GB</li><li>iPhone 17 256GB</li><li>iPhone 17 128GB</li>
-      </ul>
-    </div>
-    <div class="cat-linha rv">
-      <h3 class="cat-linha-title">Linha 16</h3>
-      <ul class="cat-list">
-        <li>iPhone 16 Plus 256GB</li><li>iPhone 16 Plus 128GB</li>
-        <li>iPhone 16 256GB</li><li>iPhone 16 128GB</li>
-        <li>iPhone 16e 256GB</li><li>iPhone 16e 128GB</li>
-      </ul>
-    </div>
-    <div class="cat-linha rv">
-      <h3 class="cat-linha-title">Linha 15</h3>
-      <ul class="cat-list">
-        <li>iPhone 15 Plus 256GB</li><li>iPhone 15 Plus 128GB</li>
-        <li>iPhone 15 256GB</li><li>iPhone 15 128GB</li>
-      </ul>
-    </div>
-
-  </div><!-- /lacrado -->
+  
 
   <div class="cat-panel" id="tab-blackclub">
 
@@ -1156,7 +1079,12 @@
         <span class="g-lbl">Avaliação Google — Eletronic</span>
       </div>
     </div>
-    <p>Cada cliente que compra na Eletronic recebe muito mais do que um iPhone. Recebe atenção, segurança e a certeza de estar fazendo um ótimo negócio.</p>
+    <p>Aqui não tem robô nem balcão frio: você fala direto com quem entende de iPhone,
+      vê o aparelho funcionando na sua frente e sai da loja com tudo configurado — dados
+      transferidos, película aplicada e um contato salvo para o que precisar depois.</p>
+    <p>É assim, cliente por cliente, que a Eletronic chegou às 4,8 estrelas no Google.
+      O próximo iPhone da vitrine pode ser o seu.</p>
+    <img class="about-team-img rv" src="images/background-2.jpg" alt="Cliente recebendo um iPhone na loja Eletronic" loading="lazy"/>
     <a href="https://wa.me/5512997463135" target="_blank" class="btn-dn">Falar com Especialista</a>
   </div>
 </div>
@@ -1284,13 +1212,12 @@
       <a href="https://www.instagram.com/eletronic.oficial" target="_blank" class="il">Instagram — @eletronic.oficial</a>
     </div>
     <div class="fc">
-      <h4>Produtos</h4>
+      <h4>Catálogo</h4>
       <ul>
-        <li><a href="#">iPhone 16 Pro Max</a></li>
-        <li><a href="#">iPhone 16 Pro</a></li>
-        <li><a href="#">iPhone 16</a></li>
-        <li><a href="#">iPhone 15</a></li>
-        <li><a href="#">Acessórios Apple</a></li>
+        <li><a href="#produtos">Seminovos</a></li>
+        <li><a href="#produtos">Lacrados</a></li>
+        <li><a href="#produtos">Novos</a></li>
+        <li><a href="#produtos">⚡ Black Club</a></li>
       </ul>
     </div>
     <div class="fc">
@@ -1371,6 +1298,156 @@
 </script>
 
 
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+'use strict';
+/* ============ CATÁLOGO AO VIVO — controlado pelo painel da loja ============ */
+(function () {
+  var CFG = {
+    URL: 'https://nppfqhavqahapmugnyng.supabase.co',
+    KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5wcGZxaGF2cWFoYXBtdWdueW5nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU4NTAxMTIsImV4cCI6MjEwMTQyNjExMn0.Fb6mAvAuODy2mprKBc_w8tRaY5SYG9Nf9o2VKfuOXRA',
+    WA_PADRAO: '5512997463135',
+    IG_PADRAO: 'eletronic.oficial',
+  };
+  if (!window.supabase) return;
+  var sbe = window.supabase.createClient(CFG.URL, CFG.KEY, { auth: { persistSession: false } });
+  var abaAtual = null;
+
+  function esc(t) {
+    return String(t == null ? '' : t).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  function fmt(v) { return Number(v).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); }
+  var WA_SVG = '<svg viewBox="0 0 24 24"><path d="M17.5 14.4c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.46-2.4-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.91-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.87 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.7.63.71.22 1.36.19 1.87.11.57-.08 1.76-.72 2-1.41.25-.7.25-1.29.18-1.41-.08-.13-.28-.2-.58-.35zM12 2C6.5 2 2 6.48 2 12c0 1.77.46 3.44 1.27 4.89L2 22l5.23-1.26A9.95 9.95 0 0 0 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm0 18.19a8.17 8.17 0 0 1-4.16-1.14l-.3-.18-3.1.75.77-3-.19-.3A8.15 8.15 0 0 1 3.84 12c0-4.5 3.67-8.17 8.16-8.17S20.16 7.5 20.16 12 16.5 20.19 12 20.19z"/></svg>';
+
+  function linkWA(numero, msg) {
+    return 'https://wa.me/' + numero + '?text=' + encodeURIComponent(msg);
+  }
+
+  function cardProduto(p, cat, wa) {
+    var meta = [p.armazenamento, p.cor].filter(Boolean).join(' · ');
+    var msg = 'Olá! Vi no site e tenho interesse no ' + p.nome +
+      (p.armazenamento ? ' ' + p.armazenamento : '') +
+      (p.cor ? ' ' + p.cor : '') + ' (' + cat.nome + ').';
+    var preco;
+    if (p.preco == null) {
+      preco = '<span class="consulte">Consultar preço</span>';
+    } else {
+      preco = (p.preco_de ? '<s>' + fmt(p.preco_de) + '</s>' : '') + '<strong>' + fmt(p.preco) + '</strong>';
+    }
+    var capa = (p.fotos || [])[0];
+    return '<article class="pcard' + (p.destaque ? ' pdestaque' : '') + '">' +
+      (p.destaque ? '<span class="pcard-selo">Destaque</span>' : '') +
+      '<div class="pcard-foto">' + (capa ? '<img src="' + esc(capa) + '" alt="' + esc(p.nome) + '" loading="lazy">' : '📱') + '</div>' +
+      '<div class="pcard-corpo">' +
+        '<h3 class="pcard-nome">' + esc(p.nome) + '</h3>' +
+        (meta ? '<p class="pcard-meta">' + esc(meta) + '</p>' : '') +
+        (p.descricao ? '<p class="pcard-desc">' + esc(p.descricao) + '</p>' : '') +
+        '<div class="pcard-preco">' + preco + '</div>' +
+        (p.parcelas && p.preco != null ? '<p class="pcard-parcelas">' + esc(p.parcelas) + '</p>' : '') +
+        '<a class="pcard-wa" target="_blank" rel="noopener" href="' + linkWA(wa, msg) + '">' + WA_SVG + ' Tenho interesse</a>' +
+      '</div></article>';
+  }
+
+  function render(cats, prods, cfg) {
+    var wa = (cfg.whatsapp || CFG.WA_PADRAO).replace(/\D/g, '') || CFG.WA_PADRAO;
+    var tabs = document.getElementById('catTabs');
+    var paineis = document.getElementById('catPaineis');
+    if (!tabs || !paineis) return;
+
+    var btns = cats.map(function (c) {
+      return '<button class="cat-tab" data-slug="' + esc(c.slug) + '" onclick="switchTab(' + "'" + esc(c.slug) + "'" + ',this)">' + esc(c.nome) + '</button>';
+    }).join('');
+    tabs.innerHTML = btns +
+      '<button class="cat-tab black-club-tab" data-slug="blackclub" onclick="switchTab(' + "'blackclub'" + ',this)">⚡ Black Club</button>';
+
+    paineis.innerHTML = cats.map(function (c) {
+      var doCat = prods.filter(function (p) { return p.categoria_id === c.id; });
+      var corpo;
+      if (doCat.length) {
+        corpo = (c.descricao ? '<p class="cat-desc">' + esc(c.descricao) + '</p>' : '') +
+          '<div class="pgrid">' + doCat.map(function (p) { return cardProduto(p, c, wa); }).join('') + '</div>';
+      } else {
+        corpo = '<div class="cat-vazia">Estamos renovando o estoque de <strong>' + esc(c.nome) + '</strong>.<br>' +
+          'Chega novidade toda semana — <a target="_blank" rel="noopener" href="' +
+          linkWA(wa, 'Olá! Queria saber as novidades de ' + c.nome + ' da Eletronic.') +
+          '">chame no WhatsApp</a> e reserve o seu antes de todo mundo.</div>';
+      }
+      return '<div class="cat-panel" id="tab-' + esc(c.slug) + '">' + corpo + '</div>';
+    }).join('');
+
+    // reativa a aba que estava aberta (ou a primeira)
+    var alvo = abaAtual && (document.getElementById('tab-' + abaAtual) || abaAtual === 'blackclub') ? abaAtual : (cats[0] ? cats[0].slug : 'blackclub');
+    var btn = tabs.querySelector('[data-slug="' + alvo + '"]') || tabs.querySelector('.cat-tab');
+    if (btn) window.switchTab(alvo, btn);
+
+    aplicarConfig(wa, cfg.instagram || CFG.IG_PADRAO);
+  }
+
+  function aplicarConfig(wa, ig) {
+    var telaBonito = wa;
+    if (/^55\d{10,11}$/.test(wa)) {
+      var ddd = wa.slice(2, 4), resto = wa.slice(4);
+      telaBonito = '(' + ddd + ') ' + resto.slice(0, resto.length - 4) + '-' + resto.slice(-4);
+    }
+    document.querySelectorAll('a[href*="wa.me/"]').forEach(function (a) {
+      if (a.classList.contains('pcard-wa')) return;
+      var m = a.href.split('?text=');
+      a.href = 'https://wa.me/' + wa + (m[1] ? '?text=' + m[1] : '');
+      if (/\(\d{2}\)\s?\d{4,5}-\d{4}/.test(a.textContent)) a.textContent = telaBonito;
+    });
+    document.querySelectorAll('a[href*="instagram.com"]').forEach(function (a) {
+      a.href = 'https://www.instagram.com/' + ig;
+      if (/@/.test(a.textContent)) a.textContent = a.textContent.replace(/@[\w.]+/, '@' + ig);
+    });
+  }
+
+  var guarda = window.switchTab;
+  window.switchTab = function (nome, btn) { abaAtual = nome; guarda(nome, btn); };
+
+  function carregar() {
+    Promise.all([
+      sbe.from('el_categorias').select('*').eq('ativo', true).order('ordem'),
+      sbe.from('el_produtos').select('*').eq('ativo', true)
+        .order('destaque', { ascending: false }).order('ordem').order('criado_em', { ascending: false }),
+      sbe.from('el_config').select('*'),
+    ]).then(function (r) {
+      var cats = r[0].data, prods = r[1].data, cfgRows = r[2].data;
+      if (r[0].error || r[1].error) throw r[0].error || r[1].error;
+      var cfg = {};
+      (cfgRows || []).forEach(function (l) { cfg[l.chave] = l.valor; });
+      render(cats || [], prods || [], cfg);
+    }).catch(function (e) {
+      console.error('catálogo:', e);
+      var paineis = document.getElementById('catPaineis');
+      if (paineis) paineis.innerHTML = '<div class="cat-panel active"><div class="cat-vazia">' +
+        'Nosso catálogo ao vivo está fora do ar neste momento.<br>' +
+        '<a target="_blank" rel="noopener" href="https://wa.me/' + CFG.WA_PADRAO +
+        '?text=' + encodeURIComponent('Olá! Queria ver os iPhones disponíveis.') +
+        '">Chame no WhatsApp</a> que a gente manda a vitrine completa em segundos.</div></div>';
+    });
+  }
+
+  // tempo real: qualquer mudança feita no painel dispara o recarregamento
+  var espera;
+  try {
+    sbe.channel('eletronic-vivo')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'el_config' }, function () {
+        clearTimeout(espera);
+        espera = setTimeout(carregar, 350);
+      })
+      .subscribe();
+  } catch (e) { /* sem tempo real, o site ainda recarrega ao voltar à aba */ }
+  document.addEventListener('visibilitychange', function () {
+    if (!document.hidden) carregar();
+  });
+
+  carregar();
+})();
+</script>
 
 </body>
 </html>
