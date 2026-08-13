@@ -4,6 +4,15 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Eletronic — Produtos Apple Originais</title>
+  <meta name="description" content="iPhones originais com nota fiscal e 1 ano de garantia em Taubaté-SP. Seminovos e lacrados, até 18x no cartão e entrega para todo o Brasil."/>
+  <meta property="og:title" content="Eletronic — Produtos Apple Originais"/>
+  <meta property="og:description" content="iPhones originais com nota fiscal e 1 ano de garantia em Taubaté-SP. Até 18x no cartão e entrega para todo o Brasil."/>
+  <meta property="og:image" content="https://jpfamelli.github.io/eletronic-site/images/background-2.jpg"/>
+  <meta property="og:url" content="https://jpfamelli.github.io/eletronic-site/"/>
+  <meta property="og:type" content="website"/>
+  <link rel="icon" type="image/svg+xml" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" fill="%23081640"/><path d="M35 8L14 34h17l-3 22 22-28H33l2-20z" fill="%23c9a227"/></svg>'>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
   <style>
     :root {
@@ -17,6 +26,7 @@
       --gray:       #8899bb;
     }
     *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+    [hidden] { display:none !important; }
     html { scroll-behavior:smooth; }
     body {
       background-color: #f0ead6;
@@ -29,10 +39,14 @@
       font-family: 'DM Sans', sans-serif;
       font-weight: 300;
       overflow-x: hidden;
-      cursor: none;
     }
-    #cur  { width:10px;height:10px;background:var(--gold);border-radius:50%;position:fixed;pointer-events:none;z-index:9999; }
-    #cur2 { width:32px;height:32px;border:1px solid rgba(201,162,39,.5);border-radius:50%;position:fixed;pointer-events:none;z-index:9998; }
+    @media (pointer:fine) { body { cursor:none; } }
+    #cur  { width:10px;height:10px;background:var(--gold);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9999;opacity:0;transition:width .25s,height .25s,opacity .3s; }
+    #cur2 { width:32px;height:32px;border:1px solid rgba(201,162,39,.5);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9998;opacity:0;transition:width .25s,height .25s,border-color .25s,background .25s,opacity .3s; }
+    body.curon #cur, body.curon #cur2 { opacity:1; }
+    body.hov #cur { width:6px;height:6px; }
+    body.hov #cur2 { width:48px;height:48px;border-color:var(--gold);background:rgba(201,162,39,.08); }
+    body.curoff #cur, body.curoff #cur2 { opacity:0; }
 
     /* NAV */
     nav { position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:24px 64px;transition:background .4s; }
@@ -50,12 +64,21 @@
     /* HERO */
     .hero { min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:160px 64px 100px;position:relative;overflow:hidden; }
     .hero-glow { position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 65% 80% at 78% 48%,rgba(201,162,39,.06) 0%,transparent 65%),radial-gradient(ellipse 35% 50% at 15% 85%,rgba(201,162,39,.04) 0%,transparent 60%); }
-    .hero-grid { position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(201,162,39,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(201,162,39,.04) 1px,transparent 1px);background-size:80px 80px;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 30%,transparent 100%); }
+    .hero-grid { position:absolute;inset:0;width:100%;height:100%;pointer-events:none;background-image:linear-gradient(rgba(201,162,39,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(201,162,39,.04) 1px,transparent 1px);background-size:80px 80px;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 30%,transparent 100%); }
     .ey { display:inline-flex;align-items:center;gap:14px;font-size:.7rem;font-weight:600;letter-spacing:.36em;text-transform:uppercase;color:var(--gold);margin-bottom:32px;opacity:0;animation:up .8s .15s forwards; }
     .ey span { display:block;width:36px;height:1px;background:var(--gold); }
     .hero h1 { font-family:'Cormorant Garamond',serif;font-size:clamp(4.5rem,9vw,9.5rem);font-weight:700;line-height:.9;letter-spacing:-.02em;max-width:780px;opacity:0;animation:up .9s .3s forwards; }
+    .hero h1.split { animation:none;opacity:1; }
+    .hero h1 .w { display:inline-block;opacity:0;transform:translateY(.6em) rotate(2deg);transition:opacity .7s cubic-bezier(.22,.9,.3,1),transform .7s cubic-bezier(.22,.9,.3,1); }
+    body.ready .hero h1 .w { opacity:1;transform:none; }
     .hero h1 em { font-style:italic;color:var(--gold); }
-    .hero h1 .ol { -webkit-text-stroke:1.5px var(--gold);color:transparent; }
+    @supports ((-webkit-background-clip:text) or (background-clip:text)) {
+      .hero h1 em { background:linear-gradient(120deg,#c9a227 40%,#f5d76e 50%,#c9a227 60%);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;animation:sheen 1.4s 1.1s ease 1 both, sheenLoop 7s 4.2s linear infinite; }
+    }
+    @keyframes sheen { from{background-position:180% 0} to{background-position:-80% 0} }
+    /* ShinyText — a varredura volta em loop lento depois da entrada */
+    @keyframes sheenLoop { 0%{background-position:180% 0} 20%{background-position:-80% 0} 100%{background-position:-80% 0} }
+    .hero h1 .ol { -webkit-text-stroke:1.5px var(--gold);color:transparent;background:none;-webkit-text-fill-color:transparent;animation:none; }
     .hero-sub { margin-top:36px;font-size:1rem;color:var(--gray);max-width:420px;line-height:1.75;opacity:0;animation:up .9s .5s forwards; }
     .badges { display:flex;flex-wrap:wrap;gap:10px;margin-top:36px;opacity:0;animation:up .9s .6s forwards; }
     .badge { border:1px solid rgba(201,162,39,.28);padding:8px 18px;font-size:.72rem;font-weight:500;letter-spacing:.1em;color:var(--gold-pale);background:rgba(201,162,39,.06); }
@@ -65,7 +88,10 @@
     .rt { font-size:.78rem;font-weight:600;color:var(--gold-pale);letter-spacing:.04em; }
     .rs { font-size:.7rem;color:var(--gray); }
     .actions { margin-top:48px;display:flex;gap:20px;align-items:center;opacity:0;animation:up .9s .75s forwards; }
-    .btn-g { background:var(--gold);color:var(--navy);padding:15px 42px;font-size:.78rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;text-decoration:none;transition:background .2s,transform .2s; }
+    .btn-g { background:var(--gold);color:var(--navy);padding:15px 42px;font-size:.78rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;text-decoration:none;transition:background .2s,transform .2s;position:relative;overflow:hidden; }
+    .btn-g::after { content:'';position:absolute;top:-30%;bottom:-30%;left:-45%;width:30%;background:linear-gradient(105deg,transparent,rgba(255,255,255,.5),transparent);transform:skewX(-18deg);opacity:0;pointer-events:none; }
+    .btn-g:hover::after { animation:glare .55s ease; }
+    @keyframes glare { 0%{left:-45%;opacity:1} 100%{left:120%;opacity:1} }
     .btn-g:hover { background:var(--gold-light);transform:translateY(-2px); }
     .btn-t { color:var(--gray);font-size:.78rem;font-weight:500;letter-spacing:.1em;text-decoration:none;display:flex;align-items:center;gap:8px;transition:color .2s; }
     .btn-t::after { content:'→';transition:transform .2s; }
@@ -75,8 +101,9 @@
     /* MARQUEE */
     .mq { overflow:hidden;background:var(--navy-mid);border-top:1px solid rgba(201,162,39,.14);border-bottom:1px solid rgba(201,162,39,.14);padding:14px 0; }
     .mq-t { display:flex;gap:64px;white-space:nowrap;animation:scroll 20s linear infinite; }
-    .mq-t s { font-size:.68rem;letter-spacing:.3em;text-transform:uppercase;font-weight:600;color:var(--gold);flex-shrink:0;text-decoration:none; }
-    .mq-t i { color:rgba(201,162,39,.3);font-style:normal; }
+    .mq-t .mq-i { font-size:.68rem;letter-spacing:.3em;text-transform:uppercase;font-weight:600;color:var(--gold);flex-shrink:0; }
+    .mq-t .mq-d { color:rgba(201,162,39,.3);flex-shrink:0; }
+    .mq-r { display:contents; }
 
     /* SECTIONS */
     .sec { padding:120px 64px; }
@@ -131,7 +158,9 @@
     /* GUARANTEES */
     .gua { padding:100px 64px;background:var(--navy-mid); }
     .g-grid { display:grid;grid-template-columns:repeat(4,1fr);gap:2px;margin-top:60px; }
-    .gc { background:var(--navy);padding:44px 32px;border:1px solid rgba(201,162,39,.08);transition:border-color .3s; }
+    .gc { background:var(--navy);padding:44px 32px;border:1px solid rgba(201,162,39,.08);transition:border-color .3s;position:relative; }
+    .gc::after { content:'';position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .3s;background:radial-gradient(240px circle at var(--mx,50%) var(--my,50%),rgba(201,162,39,.1),transparent 65%); }
+    .gc:hover::after { opacity:1; }
     .gc:hover { border-color:rgba(201,162,39,.35); }
     .gc-icon { width:44px;height:44px;border:1px solid rgba(201,162,39,.3);display:flex;align-items:center;justify-content:center;margin-bottom:22px; }
     .gc-icon svg { width:22px;height:22px;stroke:var(--gold);fill:none;stroke-width:1.5; }
@@ -190,7 +219,7 @@
     .fc li a { color:var(--gray);font-size:.82rem;text-decoration:none;transition:color .2s; }
     .fc li a:hover { color:var(--gold); }
     .fdiv { height:1px;background:rgba(201,162,39,.1);margin-bottom:26px; }
-    .fbot { display:flex;justify-content:space-between;font-size:.72rem;color:rgba(255,255,255,.18); }
+    .fbot { display:flex;justify-content:space-between;font-size:.72rem;color:#8899bb; }
 
     /* STAR SVG shorthand */
     .s5 { display:flex;gap:3px; }
@@ -201,58 +230,8 @@
     .rv { opacity:0;transform:translateY(36px);transition:opacity .8s,transform .8s; }
     .rv.on { opacity:1;transform:none; }
   
-    /* CAROUSEL */
-    .carousel-section { padding:80px 64px; background:var(--navy-mid); }
-    .carousel-wrap { position:relative; overflow:hidden; margin-top:48px; }
-    .carousel-track { display:flex; gap:20px; transition:transform .45s cubic-bezier(.4,0,.2,1); cursor:grab; user-select:none; }
-    .carousel-track.dragging { transition:none; cursor:grabbing; }
-    .carousel-slide { flex-shrink:0; width:calc(50% - 10px); border:1px solid rgba(201,162,39,.15); overflow:hidden; }
-    .carousel-slide img { width:100%; height:480px; object-fit:cover; display:block; pointer-events:none; }
-    .carousel-nav { display:flex; justify-content:center; align-items:center; gap:16px; margin-top:28px; }
-    .carousel-dot { width:8px; height:8px; border-radius:50%; background:rgba(201,162,39,.3); border:none; cursor:pointer; transition:background .2s,transform .2s; padding:0; }
-    .carousel-dot.active { background:var(--gold); transform:scale(1.3); }
-    .carousel-btn { width:40px; height:40px; border:1px solid rgba(201,162,39,.3); background:transparent; color:var(--gold); font-size:1rem; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:background .2s; }
-    .carousel-btn:hover { background:rgba(201,162,39,.12); }
-    @media(max-width:600px){ .carousel-slide { width:85%; } .carousel-slide img { height:320px; } }
-
     /* ABOUT TEAM */
     .about-team-img { width:100%; border:1px solid rgba(201,162,39,.2); display:block; margin-top:24px; }
-
-  
-    /* CATALOG LIST */
-    .cat-line-group { margin-bottom:40px; }
-    .cat-line-title { font-size:.65rem; font-weight:700; letter-spacing:.3em; text-transform:uppercase; color:var(--gold); border-bottom:1px solid rgba(201,162,39,.18); padding-bottom:10px; margin-bottom:16px; }
-    .cat-model-list { display:flex; flex-wrap:wrap; gap:10px; }
-    .cat-model-item { background:rgba(255,255,255,.03); border:1px solid rgba(201,162,39,.15); padding:10px 16px; font-size:.82rem; color:var(--silver); letter-spacing:.04em; transition:border-color .2s, color .2s; cursor:default; }
-    .cat-model-item:hover { border-color:var(--gold); color:#fff; }
-    .cat-aviso { text-align:center; color:var(--gray); font-size:.78rem; letter-spacing:.05em; margin-top:40px; padding-top:20px; border-top:1px solid rgba(201,162,39,.12); }
-    .cat-wa-btn { display:inline-flex; align-items:center; gap:10px; background:#25D366; color:#fff; font-size:.85rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; padding:16px 36px; text-decoration:none; margin-top:32px; transition:opacity .2s; }
-    .cat-wa-btn:hover { opacity:.88; }
-    .cat-wa-btn svg { width:20px; height:20px; fill:#fff; flex-shrink:0; }
-    .cat-cta-wrap { text-align:center; margin-top:48px; padding-top:32px; border-top:1px solid rgba(201,162,39,.1); }
-
-  
-    /* FOTOS DESTAQUE */
-    .cat-fotos { margin-top:52px; }
-    .cat-fotos-title { font-size:.72rem; font-weight:700; letter-spacing:.28em; text-transform:uppercase; color:var(--gold); margin-bottom:20px; padding-bottom:8px; border-bottom:1px solid rgba(201,162,39,.2); }
-    .cat-foto-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:20px; }
-    .cat-foto-card { background:rgba(255,255,255,.03); border:1px solid rgba(201,162,39,.15); overflow:hidden; transition:border-color .2s, transform .2s; cursor:pointer; }
-    .cat-foto-card:hover { border-color:rgba(201,162,39,.5); transform:translateY(-3px); }
-    .cat-foto-card img { width:100%; height:200px; object-fit:cover; display:block; }
-    .cat-foto-info { padding:10px 12px; }
-    .cat-foto-info strong { display:block; font-size:.8rem; color:#fff; font-weight:600; }
-    .cat-foto-info span { font-size:.72rem; color:var(--gold); }
-    @media(max-width:500px){ .cat-foto-grid { grid-template-columns:repeat(2,1fr); } .cat-foto-card img { height:150px; } }
-
-  
-    /* FOTO GRID NAS ABAS */
-    .tab-foto-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr)); gap:16px; margin-bottom:40px; }
-    .cat-foto-card { background:rgba(255,255,255,.03); border:1px solid rgba(201,162,39,.15); overflow:hidden; transition:border-color .2s,transform .2s; text-decoration:none; display:block; }
-    .cat-foto-card:hover { border-color:rgba(201,162,39,.5); transform:translateY(-3px); }
-    .cat-foto-card img { width:100%; height:180px; object-fit:cover; display:block; }
-    .cat-foto-info { padding:8px 10px; }
-    .cat-foto-info strong { display:block; font-size:.78rem; color:#fff; font-weight:600; }
-    @media(max-width:500px){ .tab-foto-grid { grid-template-columns:repeat(2,1fr); } .cat-foto-card img { height:140px; } }
 
   
     /* BENEFICIOS */
@@ -260,6 +239,15 @@
     .beneficios-title { font-size:.72rem; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:var(--gold); margin-bottom:14px; }
     .beneficios ul { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:8px; }
     .beneficios ul li { font-size:.83rem; color:#ccc; line-height:1.5; }
+    .b-ic { width:16px; height:16px; stroke:var(--gold); fill:none; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round; vertical-align:-3px; margin-right:8px; }
+
+    /* ÍCONES DE LINHA (vocabulário da marca) */
+    .black-club-tab svg { width:12px; height:12px; fill:currentColor; vertical-align:-1px; margin-right:8px; }
+    .f-raio { width:11px; height:11px; fill:currentColor; vertical-align:-1px; margin-right:4px; }
+    .bc-lightning svg { width:44px; height:44px; fill:var(--gold); display:block; margin:0 auto; }
+    .bc-step-icon svg { width:26px; height:26px; stroke:var(--gold); fill:none; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round; }
+    .bc-prize-emoji svg { width:34px; height:34px; stroke:var(--gold); fill:none; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round; display:block; }
+    .bc-card-natal-left svg, .bc-card-regular-icon svg { width:30px; height:30px; stroke:var(--gold); fill:none; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round; display:block; }
 
   
     .black-club-tab { background:linear-gradient(135deg,#1a1a1a,#2a2a2a)!important; border-color:var(--gold)!important; color:var(--gold)!important; font-weight:700!important; }
@@ -375,7 +363,6 @@
       .nav-links { display: none; }
       .hero { padding: 120px 24px 60px !important; min-height: auto !important; }
       .sec { padding: 60px 24px !important; }
-      .carousel-section { padding: 60px 24px !important; }
       .footer { padding: 60px 24px 40px !important; }
     }
 
@@ -410,7 +397,6 @@
 
       /* Sections padding */
       .sec, section { padding: 48px 16px !important; }
-      .carousel-section { padding: 48px 16px !important; }
 
       /* Marquee/strips */
       .marquee { font-size: .8rem !important; }
@@ -430,19 +416,8 @@
       .beneficios-title { font-size: .65rem !important; letter-spacing: .12em !important; }
       .beneficios ul li { font-size: .78rem !important; }
 
-      /* Fotos nas abas */
-      .tab-foto-grid { grid-template-columns: 1fr 1fr !important; gap: 10px !important; }
-      .cat-foto-card img { height: 160px !important; }
-      .cat-foto-info { padding: 6px 8px !important; }
-      .cat-foto-info strong { font-size: .72rem !important; }
-
       /* Botão WhatsApp do catálogo */
       .cat-wa-link { font-size: .72rem !important; padding: 12px 18px !important; text-align: center !important; line-height: 1.4 !important; }
-
-      /* CAROUSEL qualidades */
-      .carousel-slide { width: 90% !important; }
-      .carousel-slide img { height: 280px !important; }
-      .carousel-btn { width: 36px !important; height: 36px !important; }
 
       /* Quality / Quem somos */
       .qg { grid-template-columns: 1fr 1fr !important; gap: 10px !important; }
@@ -506,8 +481,6 @@
       .hero h1 { font-size: 2.3rem !important; }
       .heading { font-size: 1.7rem !important; }
       .cat-list { grid-template-columns: 1fr !important; }
-      .tab-foto-grid { grid-template-columns: 1fr 1fr !important; }
-      .cat-foto-card img { height: 140px !important; }
       .stats { grid-template-columns: 1fr 1fr !important; }
       .qg { grid-template-columns: 1fr !important; }
       .bc-title { font-size: 1.7rem !important; }
@@ -526,7 +499,7 @@
 
     /* PREVENIR OVERFLOW HORIZONTAL */
     html, body { max-width: 100vw; overflow-x: hidden; }
-    * { max-width: 100%; box-sizing: border-box; }
+    img, video, iframe { max-width: 100%; }
 
   
 
@@ -546,7 +519,6 @@
         rgba(8, 16, 36, 0.94) 88%,
         transparent 100%
       ) !important;
-      backdrop-filter: blur(3px);
     }
 
     /* Hero deixa background visível com fade inferior */
@@ -573,17 +545,6 @@
       background: rgba(6, 12, 28, 0.96) !important;
       border-top: 1px solid rgba(201,162,39,0.15);
       border-bottom: 1px solid rgba(201,162,39,0.15);
-    }
-
-    /* Carousel das qualidades */
-    .carousel-section {
-      background: linear-gradient(
-        180deg,
-        transparent 0%,
-        rgba(10, 20, 44, 0.93) 10%,
-        rgba(10, 20, 44, 0.93) 90%,
-        transparent 100%
-      ) !important;
     }
 
     /* Strip do WhatsApp */
@@ -625,7 +586,7 @@
       }
 
       /* Seções com menos blur (performance) */
-      .sec, section.sec, .carousel-section {
+      .sec, section.sec {
         backdrop-filter: none !important;
         background: linear-gradient(
           180deg,
@@ -706,26 +667,12 @@
        O gradiente ia de transparent 0% -> escuro 12%, então a faixa
        onde ficam o eyebrow e o título caía sobre o fundo claro.
        ============================================ */
-    .sec, section.sec, .carousel-section {
+    .sec, section.sec {
       background: linear-gradient(180deg,
         rgba(8,16,36,.74) 0%,
         rgba(8,16,36,.94) 6%,
         rgba(8,16,36,.94) 94%,
         rgba(8,16,36,.74) 100%) !important;
-    }
-
-    /* ============================================
-       FIX: enquadramento das fotos do catálogo
-       As fotos são verticais (3:4). Cortadas em 180px de altura
-       sobrava só a mão e o meio do aparelho.
-       ============================================ */
-    .tab-foto-grid { grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:18px; }
-    .cat-foto-card img { height:auto !important; aspect-ratio:3/4; object-fit:cover; object-position:center 42%; }
-    .cat-foto-info { padding:12px 14px; }
-
-    @media (max-width:700px) {
-      .tab-foto-grid { grid-template-columns:repeat(2,1fr) !important; gap:12px !important; }
-      .cat-foto-card img { height:auto !important; aspect-ratio:3/4; }
     }
 
     /* foco visível no teclado */
@@ -749,10 +696,14 @@
     .pcard { display:flex; flex-direction:column; background:rgba(255,255,255,.03); border:1px solid rgba(201,162,39,.16);
       overflow:hidden; transition:border-color .25s, transform .25s; position:relative; }
     .pcard:hover { border-color:rgba(201,162,39,.55); transform:translateY(-4px); }
+    .pcard::after { content:''; position:absolute; inset:0; pointer-events:none; opacity:0; transition:opacity .3s;
+      background:radial-gradient(280px circle at var(--mx,50%) var(--my,50%), rgba(201,162,39,.13), transparent 65%); }
+    .pcard:hover::after { opacity:1; }
     .pcard.pdestaque { border-color:var(--gold); box-shadow:0 0 0 1px var(--gold), 0 12px 32px rgba(201,162,39,.12); }
     .pcard-foto { aspect-ratio:3/4; background:rgba(255,255,255,.04); display:flex; align-items:center; justify-content:center;
       font-size:3rem; overflow:hidden; }
     .pcard-foto img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .35s; }
+    .pcard-foto svg { width:44px; height:44px; stroke:rgba(201,162,39,.45); fill:none; stroke-width:1.2; stroke-linecap:round; stroke-linejoin:round; }
     .pcard:hover .pcard-foto img { transform:scale(1.04); }
     .pcard-selo { position:absolute; top:12px; left:12px; background:var(--gold); color:var(--navy); font-size:.58rem;
       font-weight:700; letter-spacing:.16em; text-transform:uppercase; padding:5px 10px; z-index:2; }
@@ -781,95 +732,115 @@
     }
     @media (max-width:380px) { .pgrid { grid-template-columns:1fr !important; } }
 
+    /* ============================================
+       SEGUNDO PASSE — profundidade e resposta ao toque
+       ============================================ */
+    .cat-panel.active { animation:tabIn .5s cubic-bezier(.22,.9,.3,1); }
+    @keyframes tabIn { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:none; } }
+
+    .mq { position:relative; }
+    .mq-ghost { position:absolute; inset:0; display:flex; align-items:center; overflow:hidden; pointer-events:none; opacity:.08; }
+    .mq-ghost .mq-t { animation-duration:52s; }
+    .mq-ghost .mq-i { font-size:1.55rem; color:var(--gold); }
+    .mq-ghost .mq-d { font-size:1.1rem; }
+
+    .gua { position:relative; overflow:hidden; }
+    .gua-fx { position:absolute; inset:0; width:100%; height:100%; pointer-events:none; }
+    .gua > :not(.gua-fx) { position:relative; z-index:1; }
+
+    .btn-dn { transition:background .2s, transform .25s; }
+
+    /* ============================================
+       TERCEIRO PASSE — luz dourada, selo e varreduras
+       ============================================ */
+
+    /* LightRays — feixes dourados descendo do topo do hero (atrás do texto) */
+    .hero-rays { position:absolute; top:0; left:0; right:0; height:72%; pointer-events:none; overflow:hidden; z-index:0; }
+    .hero-rays span { position:absolute; top:-22%; width:180px; height:130%;
+      background:linear-gradient(180deg, rgba(201,162,39,.13), rgba(201,162,39,.03) 55%, transparent);
+      transform:skewX(-14deg); filter:blur(7px); animation:rayBreath 9s ease-in-out infinite; }
+    .hero-rays span:nth-child(1) { left:10%; }
+    .hero-rays span:nth-child(2) { left:32%; width:110px; animation-delay:-3s; animation-duration:11s; }
+    .hero-rays span:nth-child(3) { left:57%; width:230px; animation-delay:-6s; }
+    .hero-rays span:nth-child(4) { left:83%; width:90px;  animation-delay:-4.5s; animation-duration:12s; }
+    @keyframes rayBreath { 0%,100%{opacity:.28; transform:skewX(-14deg) translateX(0)} 50%{opacity:.85; transform:skewX(-14deg) translateX(16px)} }
+    @media (max-width:700px) { .hero-rays { display:none; } }
+
+    /* StarBorder — fagulha dourada orbitando os chips do hero */
+    .badge { position:relative; overflow:hidden; }
+    .badge::before, .badge::after { content:''; position:absolute; width:220%; height:46%; pointer-events:none; opacity:.55;
+      background:radial-gradient(circle, rgba(240,216,150,.6) 0%, transparent 12%); }
+    .badge::after  { top:-10px;    left:-100%;  animation:starTop 6.5s linear infinite alternate; }
+    .badge::before { bottom:-10px; right:-100%; animation:starBtm 6.5s linear infinite alternate; }
+    .badges .badge:nth-child(2)::before, .badges .badge:nth-child(2)::after { animation-delay:-1.4s; }
+    .badges .badge:nth-child(3)::before, .badges .badge:nth-child(3)::after { animation-delay:-2.8s; }
+    .badges .badge:nth-child(4)::before, .badges .badge:nth-child(4)::after { animation-delay:-4.2s; }
+    .badges .badge:nth-child(5)::before, .badges .badge:nth-child(5)::after { animation-delay:-5.6s; }
+    /* movimento por transform (composited) — equivale a left:-100% -> 100% */
+    @keyframes starTop { from{transform:translateX(0)} to{transform:translateX(90.9%)} }
+    @keyframes starBtm { from{transform:translateX(0)} to{transform:translateX(-90.9%)} }
+
+    /* GradientText — dourado vivo varrendo o itálico de "Nossos Modelos" */
+    @supports ((-webkit-background-clip:text) or (background-clip:text)) {
+      #produtos > .heading em { background:linear-gradient(90deg,#8a6a10,#c9a227,#f5d76e,#c9a227,#8a6a10);
+        background-size:220% 100%; -webkit-background-clip:text; background-clip:text;
+        -webkit-text-fill-color:transparent; animation:goldFlow 8s linear infinite; }
+    }
+    @keyframes goldFlow { from{background-position:0% 0} to{background-position:220% 0} }
+
+    /* CircularText — selo giratório de garantia na seção de diferenciais */
+    .gua .selo-giro { position:absolute; top:52px; right:60px; width:132px; height:132px; pointer-events:none; z-index:1; }
+    .selo-giro svg { width:100%; height:100%; display:block; animation:seloSpin 28s linear infinite; }
+    .selo-giro .selo-txt { font-family:'DM Sans',sans-serif; font-size:7.4px; font-weight:600; letter-spacing:.1em; fill:var(--gold); }
+    .selo-giro .selo-anel { fill:none; stroke:rgba(201,162,39,.28); stroke-width:.8; }
+    .selo-giro .selo-raio { fill:var(--gold); opacity:.85; }
+    @keyframes seloSpin { to { transform:rotate(360deg); } }
+    @media (max-width:900px) { .gua .selo-giro { display:none; } }
+
+    /* SpotlightCard — radial dourado seguindo o mouse nos passos do Black Club */
+    .bc-step { position:relative; overflow:hidden; }
+    .bc-step::after { content:''; position:absolute; inset:0; pointer-events:none; opacity:0; transition:opacity .3s;
+      background:radial-gradient(220px circle at var(--mx,50%) var(--my,50%), rgba(201,162,39,.14), transparent 65%); }
+    .bc-step:hover::after { opacity:1; }
+    .bc-step > * { position:relative; z-index:1; }
+
+    /* AnimatedContent — entrada escalonada dos cards ao abrir o Black Club */
+    .bc-pop { opacity:0; transform:translateY(22px) scale(.985); }
+    .bc-pop.bc-in { opacity:1; transform:none; transition:opacity .6s cubic-bezier(.22,.9,.3,1), transform .6s cubic-bezier(.22,.9,.3,1); }
+
+    /* Varredura de brilho no CTA verde do WhatsApp (1x a cada ~8s) */
+    .btn-wa, .cat-wa-link, .pcard-wa { position:relative; overflow:hidden; }
+    .btn-wa::after, .cat-wa-link::after { content:''; position:absolute; top:-30%; bottom:-30%; left:-45%; width:26%;
+      background:linear-gradient(105deg, transparent, rgba(255,255,255,.45), transparent);
+      transform:translateX(0) skewX(-18deg); opacity:0; pointer-events:none; animation:waSweep 8s linear infinite; }
+    .cat-wa-link::after { animation-delay:-4s; }
+    /* deslocamento por transform (composited): 175% do botão / 26% de largura própria = 673% */
+    @keyframes waSweep { 0%{transform:translateX(0) skewX(-18deg);opacity:0} 2%{opacity:.9} 9%{transform:translateX(673%) skewX(-18deg);opacity:.9} 9.1%{transform:translateX(673%) skewX(-18deg);opacity:0} 100%{transform:translateX(673%) skewX(-18deg);opacity:0} }
+
+    /* Linha de progresso de leitura — fio dourado no topo */
+    #scrollProg { position:fixed; top:0; left:0; right:0; height:2px; z-index:300;
+      background:linear-gradient(90deg,#8a6a10,var(--gold) 55%,#f5d76e);
+      transform-origin:0 50%; transform:scaleX(0); pointer-events:none; }
+
+    /* Marquee pausa quando sai do viewport (economia de frames) */
+    .mq.fora .mq-t { animation-play-state:paused; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .bc-pop { opacity:1 !important; transform:none !important; }
+      .hero-rays, .badge::before, .badge::after, .btn-wa::after, .cat-wa-link::after { display:none !important; }
+    }
+
   </style>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js">
-  // THREE.JS BLACK CLUB WIREFRAME
-  (function(){
-    const canvas = document.getElementById('bc-canvas');
-    if(!canvas) return;
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(60, canvas.clientWidth/canvas.clientHeight, 0.1, 1000);
-    camera.position.set(0, 12, 28);
-    camera.lookAt(0, 0, 0);
-    const renderer = new THREE.WebGLRenderer({ canvas, alpha:true, antialias:true });
-    renderer.setSize(canvas.clientWidth, canvas.clientHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
-
-    // Wireframe terrain
-    const W = 80, H = 80;
-    const geo = new THREE.PlaneGeometry(60, 60, W, H);
-    geo.rotateX(-Math.PI/2);
-    const pos = geo.attributes.position;
-    const orig = new Float32Array(pos.count * 3);
-    for(let i=0;i<pos.count;i++){
-      const x = pos.getX(i), z = pos.getZ(i);
-      const y = Math.sin(x*.18)*2.5 + Math.sin(z*.22)*2 + Math.sin((x+z)*.12)*3 + Math.cos(x*.08)*1.5 + Math.sin(z*.3)*1;
-      pos.setY(i, y);
-      orig[i*3]=x; orig[i*3+1]=y; orig[i*3+2]=z;
-    }
-    pos.needsUpdate = true;
-    geo.computeVertexNormals();
-
-    const mat = new THREE.MeshBasicMaterial({ color:0xC9A227, wireframe:true, opacity:.55, transparent:true });
-    const mesh = new THREE.Mesh(geo, mat);
-    scene.add(mesh);
-
-    // Second layer darker
-    const geo2 = geo.clone();
-    const mat2 = new THREE.MeshBasicMaterial({ color:0x8a6010, wireframe:true, opacity:.25, transparent:true });
-    const mesh2 = new THREE.Mesh(geo2, mat2);
-    mesh2.position.y = -0.5;
-    scene.add(mesh2);
-
-    // Particles
-    const partGeo = new THREE.BufferGeometry();
-    const partCount = 120;
-    const partPos = new Float32Array(partCount*3);
-    for(let i=0;i<partCount;i++){
-      partPos[i*3]=(Math.random()-0.5)*60;
-      partPos[i*3+1]=Math.random()*15;
-      partPos[i*3+2]=(Math.random()-0.5)*60;
-    }
-    partGeo.setAttribute('position', new THREE.BufferAttribute(partPos,3));
-    const partMat = new THREE.PointsMaterial({ color:0xC9A227, size:.25, transparent:true, opacity:.6 });
-    const particles = new THREE.Points(partGeo, partMat);
-    scene.add(particles);
-
-    let t = 0;
-    function animate(){
-      requestAnimationFrame(animate);
-      t += 0.008;
-      for(let i=0;i<pos.count;i++){
-        const x=orig[i*3], z=orig[i*3+2];
-        const y = orig[i*3+1] + Math.sin(x*.2+t)*0.6 + Math.sin(z*.15+t*.7)*0.5;
-        pos.setY(i,y);
-      }
-      pos.needsUpdate=true;
-      mesh.rotation.y = Math.sin(t*.15)*.08;
-      mesh2.rotation.y = Math.sin(t*.15)*.08;
-      particles.rotation.y = t*.03;
-      mat.opacity = .45 + Math.sin(t*.5)*.1;
-      renderer.render(scene, camera);
-    }
-    animate();
-
-    window.addEventListener('resize',()=>{
-      const w=canvas.clientWidth, h=canvas.clientHeight;
-      camera.aspect=w/h; camera.updateProjectionMatrix();
-      renderer.setSize(w,h);
-    });
-  })();
-
-</script>
 </head>
 <body>
 <div id="cur"></div>
 <div id="cur2"></div>
+<div id="scrollProg" aria-hidden="true"></div>
 
 <!-- NAV -->
 <nav id="nav">
   <a href="#" class="logo">
-    <div class="logo-mark"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+    <div class="logo-mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
     <span class="logo-name">Eletronic</span>
   </a>
   <ul class="nav-links">
@@ -884,7 +855,8 @@
 <!-- HERO -->
 <section class="hero">
   <div class="hero-glow"></div>
-  <div class="hero-grid"></div>
+  <div class="hero-rays" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+  <canvas class="hero-grid" id="heroGrid" aria-hidden="true"></canvas>
   <p class="ey"><span></span>Produtos Apple — Originais &amp; Garantidos</p>
   <h1>Sua Próxima<br/><em>Conquista</em><br/>Começa <span class="ol">Aqui</span></h1>
   <p class="hero-sub">iPhones originais com nota fiscal, 1 ano de garantia e entrega para todo o Brasil. Qualidade Apple com a segurança que você merece.</p>
@@ -897,11 +869,11 @@
   </div>
   <div class="hero-rating">
     <div class="stars">
-      <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-      <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-      <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-      <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-      <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
     </div>
     <span class="rt">4,8 no Google</span>
     <span class="rs">— Avaliações verificadas</span>
@@ -915,12 +887,14 @@
 <!-- MARQUEE -->
 <div class="mq">
   <div class="mq-t">
-    <s>iPhone 16 Pro Max</s><i>&#9670;</i><s>iPhone 16 Pro</s><i>&#9670;</i><s>iPhone 16</s><i>&#9670;</i>
-    <s>1 Ano de Garantia</s><i>&#9670;</i><s>Nota Fiscal</s><i>&#9670;</i><s>Entrega Brasil</s><i>&#9670;</i>
-    <s>18x no Cartão</s><i>&#9670;</i><s>Taubaté — SP</s><i>&#9670;</i><s>4,8 no Google</s><i>&#9670;</i>
-    <s>iPhone 16 Pro Max</s><i>&#9670;</i><s>iPhone 16 Pro</s><i>&#9670;</i><s>iPhone 16</s><i>&#9670;</i>
-    <s>1 Ano de Garantia</s><i>&#9670;</i><s>Nota Fiscal</s><i>&#9670;</i><s>Entrega Brasil</s><i>&#9670;</i>
-    <s>18x no Cartão</s><i>&#9670;</i><s>Taubaté — SP</s><i>&#9670;</i><s>4,8 no Google</s><i>&#9670;</i>
+    <span class="mq-i">iPhone 16 Pro Max</span><span class="mq-d" aria-hidden="true">&#9670;</span><span class="mq-i">iPhone 16 Pro</span><span class="mq-d" aria-hidden="true">&#9670;</span><span class="mq-i">iPhone 16</span><span class="mq-d" aria-hidden="true">&#9670;</span>
+    <span class="mq-i">1 Ano de Garantia</span><span class="mq-d" aria-hidden="true">&#9670;</span><span class="mq-i">Nota Fiscal</span><span class="mq-d" aria-hidden="true">&#9670;</span><span class="mq-i">Entrega Brasil</span><span class="mq-d" aria-hidden="true">&#9670;</span>
+    <span class="mq-i">18x no Cartão</span><span class="mq-d" aria-hidden="true">&#9670;</span><span class="mq-i">Taubaté — SP</span><span class="mq-d" aria-hidden="true">&#9670;</span><span class="mq-i">4,8 no Google</span><span class="mq-d" aria-hidden="true">&#9670;</span>
+    <span class="mq-r" aria-hidden="true">
+      <span class="mq-i">iPhone 16 Pro Max</span><span class="mq-d">&#9670;</span><span class="mq-i">iPhone 16 Pro</span><span class="mq-d">&#9670;</span><span class="mq-i">iPhone 16</span><span class="mq-d">&#9670;</span>
+      <span class="mq-i">1 Ano de Garantia</span><span class="mq-d">&#9670;</span><span class="mq-i">Nota Fiscal</span><span class="mq-d">&#9670;</span><span class="mq-i">Entrega Brasil</span><span class="mq-d">&#9670;</span>
+      <span class="mq-i">18x no Cartão</span><span class="mq-d">&#9670;</span><span class="mq-i">Taubaté — SP</span><span class="mq-d">&#9670;</span><span class="mq-i">4,8 no Google</span><span class="mq-d">&#9670;</span>
+    </span>
   </div>
 </div>
 
@@ -932,19 +906,19 @@
   <!-- TABS -->
   <!-- benefícios de toda compra -->
   <div class="beneficios rv">
-    <p class="beneficios-title">⚡ Toda compra na Eletronic acompanha</p>
+    <p class="beneficios-title">Toda compra na Eletronic acompanha</p>
     <ul>
-      <li>🛡️ <strong>1 ano de garantia da loja</strong> — no seminovo e no lacrado</li>
-      <li>📄 <strong>Nota fiscal</strong> em todos os aparelhos</li>
-      <li>🎁 Brindes: <strong>Capa Space + Película 3D + Kit Carregador</strong> (homologado pela Anatel)</li>
-      <li>🔄 <strong>Transferência de dados</strong> feita na hora, no ato da compra</li>
-      <li>📲 Seu iPhone atual <strong>vale como parte do pagamento</strong></li>
-      <li>💳 <strong>Até 18x no cartão</strong> e entrega para todo o Brasil</li>
+      <li><svg class="b-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><strong>1 ano de garantia da loja</strong> — no seminovo e no lacrado</li>
+      <li><svg class="b-ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><strong>Nota fiscal</strong> em todos os aparelhos</li>
+      <li><svg class="b-ic" viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>Brindes: <strong>Capa Space + Película 3D + Kit Carregador</strong> (homologado pela Anatel)</li>
+      <li><svg class="b-ic" viewBox="0 0 24 24" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg><strong>Transferência de dados</strong> feita na hora, no ato da compra</li>
+      <li><svg class="b-ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>Seu iPhone atual <strong>vale como parte do pagamento</strong></li>
+      <li><svg class="b-ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg><strong>Até 18x no cartão</strong> e entrega para todo o Brasil</li>
     </ul>
   </div>
 
-  <div class="cat-tabs rv" id="catTabs">
-    <button class="cat-tab black-club-tab" data-slug="blackclub" onclick="switchTab('blackclub',this)">⚡ Black Club</button>
+  <div class="cat-tabs rv" id="catTabs" role="tablist">
+    <button class="cat-tab black-club-tab" role="tab" aria-selected="false" data-slug="blackclub" onclick="switchTab('blackclub',this)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>Black Club</button>
   </div>
 
   <div id="catPaineis"><div class="cat-panel active" id="tab-carregando"><p class="cat-carregando">Carregando catálogo…</p></div></div>
@@ -958,7 +932,7 @@
     <!-- BLACK CLUB HERO COM CANVAS 3D -->
     <div class="bc-wrapper">
 
-      <!-- Canvas Three.js wireframe animado -->
+      <!-- Canvas wireframe animado -->
       <canvas id="bc-canvas"></canvas>
 
       <!-- Overlay com background image misturado -->
@@ -968,13 +942,13 @@
       <div class="bc-content">
 
         <div class="bc-badge-top rv">EXCLUSIVO PARA MEMBROS</div>
-        <div class="bc-lightning">⚡</div>
+        <div class="bc-lightning"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
         <h2 class="bc-title rv">BLACK<br/><span>CLUB</span></h2>
         <p class="bc-subtitle rv">Compre, indique e concorra a prêmios incríveis.<br/>O grande sorteio é no Natal.</p>
 
         <div class="bc-prize-box rv">
           <div class="bc-prize-left">
-            <span class="bc-prize-emoji">🏆</span>
+            <span class="bc-prize-emoji"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 21h8M12 17v4"/><path d="M17 4H7v5a5 5 0 0 0 10 0V4z"/><path d="M7 6H4v1a4 4 0 0 0 4 4M17 6h3v1a4 4 0 0 1-4 4"/></svg></span>
           </div>
           <div class="bc-prize-right">
             <span class="bc-prize-label">GRANDE PRÊMIO DE NATAL</span>
@@ -990,23 +964,23 @@
     <div class="bc-body">
 
       <div class="bc-section rv">
-        <h3 class="bc-section-title">⚡ Como participar</h3>
+        <h3 class="bc-section-title">Como participar</h3>
         <div class="bc-steps">
           <div class="bc-step">
             <div class="bc-step-num">01</div>
-            <div class="bc-step-icon">📲</div>
+            <div class="bc-step-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div>
             <strong>Entre no grupo</strong>
             <p>Acesse o grupo exclusivo Black Club pelo WhatsApp</p>
           </div>
           <div class="bc-step">
             <div class="bc-step-num">02</div>
-            <div class="bc-step-icon">📱</div>
+            <div class="bc-step-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></div>
             <strong>Compre ou indique</strong>
             <p>Cada compra ou indicação que fechar gera um número da sorte</p>
           </div>
           <div class="bc-step">
             <div class="bc-step-num">03</div>
-            <div class="bc-step-icon">🎉</div>
+            <div class="bc-step-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 21h8M12 17v4"/><path d="M17 4H7v5a5 5 0 0 0 10 0V4z"/><path d="M7 6H4v1a4 4 0 0 0 4 4M17 6h3v1a4 4 0 0 1-4 4"/></svg></div>
             <strong>Ganhe prêmios</strong>
             <p>Sorteios ao longo do ano + iPhone 17 Pro Max no Natal</p>
           </div>
@@ -1014,19 +988,19 @@
       </div>
 
       <div class="bc-section rv">
-        <h3 class="bc-section-title">🎁 Sorteios do ano</h3>
+        <h3 class="bc-section-title">Sorteios do ano</h3>
         <div class="bc-card-natal">
           <div class="bc-card-natal-left">
-            <span>🏆</span>
+            <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 21h8M12 17v4"/><path d="M17 4H7v5a5 5 0 0 0 10 0V4z"/><path d="M7 6H4v1a4 4 0 0 0 4 4M17 6h3v1a4 4 0 0 1-4 4"/></svg></span>
           </div>
           <div class="bc-card-natal-body">
             <strong>iPhone 17 Pro Max</strong>
             <p>Grande sorteio de Natal — o prêmio mais esperado do ano</p>
           </div>
-          <div class="bc-card-natal-tag">NATAL 🎄</div>
+          <div class="bc-card-natal-tag">NATAL</div>
         </div>
         <div class="bc-card-regular">
-          <span class="bc-card-regular-icon">🎁</span>
+          <span class="bc-card-regular-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg></span>
           <div>
             <strong>Sorteios especiais ao longo do ano</strong>
             <p>Surpresas exclusivas para membros em datas especiais</p>
@@ -1038,8 +1012,8 @@
       <div class="bc-cta-wrap rv">
         <p>Faça parte agora e garanta seus números da sorte!</p>
         <a href="https://wa.me/5512997463135?text=Ol%C3%A1!%20Quero%20entrar%20no%20Black%20Club%20da%20Eletronic!" target="_blank" class="bc-cta-btn">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/><path d="M12 2C6.477 2 2 6.477 2 12c0 1.771.461 3.437 1.268 4.886L2 22l5.234-1.258A9.953 9.953 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18.186a8.168 8.168 0 01-4.162-1.136l-.299-.177-3.105.747.776-2.994-.196-.309A8.152 8.152 0 013.837 12c0-4.507 3.666-8.173 8.163-8.173S20.163 7.493 20.163 12c0 4.508-3.659 8.186-8.163 8.186z"/></svg>
-          ⚡ Quero entrar no Black Club
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/><path d="M12 2C6.477 2 2 6.477 2 12c0 1.771.461 3.437 1.268 4.886L2 22l5.234-1.258A9.953 9.953 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18.186a8.168 8.168 0 01-4.162-1.136l-.299-.177-3.105.747.776-2.994-.196-.309A8.152 8.152 0 013.837 12c0-4.507 3.666-8.173 8.163-8.173S20.163 7.493 20.163 12c0 4.508-3.659 8.186-8.163 8.186z"/></svg>
+          Quero entrar no Black Club
         </a>
       </div>
 
@@ -1050,7 +1024,7 @@
   <!-- BOTÃO WHATSAPP -->
   <div class="cat-wabtn rv">
     <a href="https://wa.me/5512997463135?text=Ol%C3%A1!%20Quero%20consultar%20disponibilidade%20de%20modelos%20e%20cores" target="_blank" class="cat-wa-link">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12.004 2C6.477 2 2 6.477 2 12.004c0 1.771.461 3.437 1.268 4.886L2 22l5.234-1.258A9.953 9.953 0 0012.004 22C17.531 22 22 17.527 22 12c0-5.523-4.477-10-9.996-10zm0 18.186a8.168 8.168 0 01-4.162-1.136l-.299-.177-3.105.747.776-2.994-.196-.309A8.152 8.152 0 013.837 12c0-4.507 3.666-8.173 8.167-8.173S20.17 7.493 20.17 12c0 4.508-3.659 8.186-8.166 8.186z"/></svg>
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12.004 2C6.477 2 2 6.477 2 12.004c0 1.771.461 3.437 1.268 4.886L2 22l5.234-1.258A9.953 9.953 0 0012.004 22C17.531 22 22 17.527 22 12c0-5.523-4.477-10-9.996-10zm0 18.186a8.168 8.168 0 01-4.162-1.136l-.299-.177-3.105.747.776-2.994-.196-.309A8.152 8.152 0 013.837 12c0-4.507 3.666-8.173 8.167-8.173S20.17 7.493 20.17 12c0 4.508-3.659 8.186-8.166 8.186z"/></svg>
       Consulte disponibilidade de modelos e cores
     </a>
   </div>
@@ -1070,11 +1044,11 @@
       <span class="g-num">4,8</span>
       <div class="g-info">
         <div class="g-stars">
-          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-          <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
         </div>
         <span class="g-lbl">Avaliação Google — Eletronic</span>
       </div>
@@ -1091,26 +1065,36 @@
 
 <!-- GUARANTEES -->
 <section class="gua" id="garantias">
+  <canvas class="gua-fx" id="guaFx" aria-hidden="true"></canvas>
+  <div class="selo-giro" aria-hidden="true">
+    <svg viewBox="0 0 100 100">
+      <defs><path id="seloCirc" d="M50,50 m-38,0 a38,38 0 1,1 76,0 a38,38 0 1,1 -76,0"/></defs>
+      <circle class="selo-anel" cx="50" cy="50" r="46"/>
+      <circle class="selo-anel" cx="50" cy="50" r="30"/>
+      <text class="selo-txt"><textPath href="#seloCirc">ORIGINAIS • GARANTIA 1 ANO • NOTA FISCAL •&#160;</textPath></text>
+      <path class="selo-raio" d="M52.2 39L41 52.4h10l-1.1 8.9L61 47.9h-10l1.2-8.9z" transform="scale(.9) translate(5.5 5.5)"/>
+    </svg>
+  </div>
   <p class="eyebrow rv"><span></span>Diferenciais</p>
   <h2 class="heading rv">Compra <em>segura</em> do início ao fim</h2>
   <div class="g-grid">
     <div class="gc rv">
-      <div class="gc-icon"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+      <div class="gc-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
       <h3 class="gc-title">1 Ano de Garantia</h3>
       <p class="gc-desc">Todos os produtos com garantia completa de 12 meses. Compre com absoluta tranquilidade e respaldo total.</p>
     </div>
     <div class="gc rv" style="transition-delay:.1s">
-      <div class="gc-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+      <div class="gc-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
       <h3 class="gc-title">Nota Fiscal</h3>
       <p class="gc-desc">Operação 100% formal com nota fiscal em todos os pedidos. Transparência e segurança jurídica garantidas.</p>
     </div>
     <div class="gc rv" style="transition-delay:.2s">
-      <div class="gc-icon"><svg viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
+      <div class="gc-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
       <h3 class="gc-title">Até 18x no Cartão</h3>
       <p class="gc-desc">Parcelamento facilitado para você conquistar o iPhone ideal sem comprometer seu orçamento.</p>
     </div>
     <div class="gc rv" style="transition-delay:.3s">
-      <div class="gc-icon"><svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
+      <div class="gc-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
       <h3 class="gc-title">Entrega Todo Brasil</h3>
       <p class="gc-desc">Enviamos para qualquer cidade do Brasil com rastreamento completo e embalagem reforçada.</p>
     </div>
@@ -1119,8 +1103,8 @@
 
 <!-- STATS -->
 <div class="stats">
-  <div class="stat rv"><span class="stat-n">4,8</span><span class="stat-l">Estrelas Google</span></div>
-  <div class="stat rv" style="transition-delay:.1s"><span class="stat-n">18x</span><span class="stat-l">Parcelamento</span></div>
+  <div class="stat rv"><span class="stat-n" data-count="4,8">4,8</span><span class="stat-l">Estrelas Google</span></div>
+  <div class="stat rv" style="transition-delay:.1s"><span class="stat-n" data-count="18" data-suffix="x">18x</span><span class="stat-l">Parcelamento</span></div>
   <div class="stat rv" style="transition-delay:.2s"><span class="stat-n">1 ano</span><span class="stat-l">de Garantia</span></div>
   <div class="stat rv" style="transition-delay:.3s"><span class="stat-n">Brasil</span><span class="stat-l">Entrega Nacional</span></div>
 </div>
@@ -1131,17 +1115,17 @@
   <h2 class="heading rv">Clientes que já <em>conquistaram</em> o seu</h2>
   <div class="tg">
     <div class="tc rv">
-      <div class="tc-stars"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+      <div class="tc-stars"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
       <p class="tc-text">"Comprei meu iPhone 16 Pro e recebi em perfeito estado, com nota fiscal. Atendimento impecável e entrega rapidíssima."</p>
       <span class="tc-auth">Cliente Eletronic — Taubaté, SP</span>
     </div>
     <div class="tc rv" style="transition-delay:.12s">
-      <div class="tc-stars"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+      <div class="tc-stars"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
       <p class="tc-text">"Parcelei em 18x, chegou antes do prazo e o produto é original. A Eletronic é referência em Taubaté. Recomendo sem hesitar."</p>
       <span class="tc-auth">Cliente Eletronic — São Paulo, SP</span>
     </div>
     <div class="tc rv" style="transition-delay:.24s">
-      <div class="tc-stars"><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
+      <div class="tc-stars"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
       <p class="tc-text">"Melhor custo-benefício que encontrei. Atendimento direto, honesto e sem enrolação. A Eletronic conquistou mais um cliente fiel."</p>
       <span class="tc-auth">Cliente Eletronic — Rio de Janeiro, RJ</span>
     </div>
@@ -1160,7 +1144,7 @@
   <h2 class="heading rv">Visite nossa <em>loja</em> em Taubaté</h2>
   <div class="cg">
     <div class="cmap rv">
-      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3664.5!2d-45.5562!3d-23.0265!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94cc4a4b5a5a5a5b%3A0x1!2sR.+Dr.+Souza+Alves%2C+384+-+Centro%2C+Taubat%C3%A9!5e0!3m2!1spt-BR!2sbr!4v1620000000000" allowfullscreen loading="lazy"></iframe>
+      <iframe title="Mapa — Eletronic, R. Dr. Souza Alves 384, Taubaté" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3664.5!2d-45.5562!3d-23.0265!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94cc4a4b5a5a5a5b%3A0x1!2sR.+Dr.+Souza+Alves%2C+384+-+Centro%2C+Taubat%C3%A9!5e0!3m2!1spt-BR!2sbr!4v1620000000000" allowfullscreen loading="lazy"></iframe>
     </div>
     <div class="cinfo rv">
       <div class="ci">
@@ -1181,11 +1165,11 @@
           <span style="font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:700;color:var(--gold);line-height:1;">4,8</span>
           <span style="display:flex;flex-direction:column;gap:5px;">
             <span style="display:flex;gap:3px;">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="#c9a227"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="#c9a227"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="#c9a227"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="#c9a227"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="#c9a227"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="#c9a227" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="#c9a227" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="#c9a227" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="#c9a227" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="#c9a227" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
             </span>
             <span style="font-size:.68rem;color:var(--gray);letter-spacing:.08em;">Avaliações verificadas</span>
           </span>
@@ -1207,7 +1191,7 @@
 <footer>
   <div class="ft">
     <div class="fb">
-      <a href="#" class="logo"><div class="logo-mark"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div><span class="logo-name">Eletronic</span></a>
+      <a href="#" class="logo"><div class="logo-mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div><span class="logo-name">Eletronic</span></a>
       <p>Sua loja especializada em iPhones. Produtos Apple com garantia, nota fiscal e entrega nacional. 4,8 estrelas no Google.</p>
       <a href="https://www.instagram.com/eletronic.oficial" target="_blank" class="il">Instagram — @eletronic.oficial</a>
     </div>
@@ -1217,7 +1201,7 @@
         <li><a href="#produtos">Seminovos</a></li>
         <li><a href="#produtos">Lacrados</a></li>
         <li><a href="#produtos">Novos</a></li>
-        <li><a href="#produtos">⚡ Black Club</a></li>
+        <li><a href="#produtos"><svg class="f-raio" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>Black Club</a></li>
       </ul>
     </div>
     <div class="fc">
@@ -1249,10 +1233,13 @@
 <script>
   // Tab switching
   function switchTab(name, btn) {
+    const panel = document.getElementById('tab-' + name);
+    if (!panel || !btn) return;
     document.querySelectorAll('.cat-panel').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
-    document.getElementById('tab-' + name).classList.add('active');
+    document.querySelectorAll('.cat-tab').forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected','false'); });
+    panel.classList.add('active');
     btn.classList.add('active');
+    btn.setAttribute('aria-selected','true');
     // re-trigger reveal for newly visible cards
     document.querySelectorAll('#tab-' + name + ' .rv').forEach(el => {
       el.classList.remove('on');
@@ -1262,9 +1249,29 @@
 
   // Cursor
   const c=document.getElementById('cur'),c2=document.getElementById('cur2');
-  let mx=0,my=0,rx=0,ry=0;
-  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;});
-  if(c&&c2)(function a(){c.style.transform=`translate(${mx-5}px,${my-5}px)`;rx+=(mx-rx)*.12;ry+=(my-ry)*.12;c2.style.transform=`translate(${rx-16}px,${ry-16}px)`;requestAnimationFrame(a);})();
+  if(c&&c2&&matchMedia('(pointer:fine)').matches){
+    let mx=0,my=0,rx=0,ry=0,cvisto=false,craf=0;
+    function cq(){
+      craf=0;
+      c.style.transform=`translate(${mx}px,${my}px) translate(-50%,-50%)`;
+      rx+=(mx-rx)*.12;ry+=(my-ry)*.12;
+      c2.style.transform=`translate(${rx}px,${ry}px) translate(-50%,-50%)`;
+      if(!document.hidden&&(Math.abs(mx-rx)>.15||Math.abs(my-ry)>.15))craf=requestAnimationFrame(cq);
+    }
+    document.addEventListener('mousemove',e=>{
+      mx=e.clientX;my=e.clientY;
+      if(!cvisto){cvisto=true;rx=mx;ry=my;document.body.classList.add('curon');}
+      if(!craf)craf=requestAnimationFrame(cq);
+    });
+    document.addEventListener('visibilitychange',()=>{
+      if(!document.hidden&&cvisto&&!craf)craf=requestAnimationFrame(cq);
+    });
+    document.addEventListener('mouseover',e=>{
+      const t=e.target;
+      document.body.classList.toggle('hov',!!(t.closest&&t.closest('a,button,.pcard,.cat-tab')));
+      document.body.classList.toggle('curoff',!!(t.closest&&t.closest('.cmap')));
+    });
+  }
 
   // Nav scroll
   const nav=document.getElementById('nav');
@@ -1273,27 +1280,6 @@
   // Reveal on scroll
   const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on');}),{threshold:.1});
   document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
-
-  // Carousel
-  let cIdx = 0;
-  const cTrack = document.getElementById('ctrack');
-  const cDots = document.querySelectorAll('.carousel-dot');
-  function cUpdate() {
-    if(!cTrack||!cTrack.children[0]) return;
-    const slideW = cTrack.children[0].offsetWidth + 20;
-    cTrack.style.transform = `translateX(-${cIdx * slideW}px)`;
-    cDots.forEach((d,i) => d.classList.toggle('active', i===cIdx));
-  }
-  function cMove(dir) { cIdx = Math.max(0, Math.min(2, cIdx+dir)); cUpdate(); }
-  function cGo(i) { cIdx = i; cUpdate(); }
-  // Touch/drag
-  let startX=0, isDrag=false;
-  if(cTrack) {
-    cTrack.addEventListener('mousedown', e=>{ startX=e.clientX; isDrag=true; cTrack.classList.add('dragging'); });
-    cTrack.addEventListener('touchstart', e=>{ startX=e.touches[0].clientX; }, {passive:true});
-    cTrack.addEventListener('touchend', e=>{ const dx=e.changedTouches[0].clientX-startX; if(dx<-50) cMove(1); else if(dx>50) cMove(-1); }, {passive:true});
-  }
-  document.addEventListener('mouseup', e=>{ if(!isDrag||!cTrack) return; isDrag=false; cTrack.classList.remove('dragging'); if(e.clientX-startX < -50) cMove(1); else if(e.clientX-startX > 50) cMove(-1); });
 
 </script>
 
@@ -1311,7 +1297,15 @@
     WA_PADRAO: '5512997463135',
     IG_PADRAO: 'eletronic.oficial',
   };
-  if (!window.supabase) return;
+  if (!window.supabase) {
+    var semSb = document.getElementById('catPaineis');
+    if (semSb) semSb.innerHTML = '<div class="cat-panel active"><div class="cat-vazia">' +
+      'Nosso catálogo ao vivo está fora do ar neste momento.<br>' +
+      '<a target="_blank" rel="noopener" href="https://wa.me/' + CFG.WA_PADRAO +
+      '?text=' + encodeURIComponent('Olá! Queria ver os iPhones disponíveis.') +
+      '">Chame no WhatsApp</a> que a gente manda a vitrine completa em segundos.</div></div>';
+    return;
+  }
   var sbe = window.supabase.createClient(CFG.URL, CFG.KEY, { auth: { persistSession: false } });
   var abaAtual = null;
 
@@ -1321,7 +1315,7 @@
     });
   }
   function fmt(v) { return Number(v).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); }
-  var WA_SVG = '<svg viewBox="0 0 24 24"><path d="M17.5 14.4c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.46-2.4-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.91-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.87 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.7.63.71.22 1.36.19 1.87.11.57-.08 1.76-.72 2-1.41.25-.7.25-1.29.18-1.41-.08-.13-.28-.2-.58-.35zM12 2C6.5 2 2 6.48 2 12c0 1.77.46 3.44 1.27 4.89L2 22l5.23-1.26A9.95 9.95 0 0 0 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm0 18.19a8.17 8.17 0 0 1-4.16-1.14l-.3-.18-3.1.75.77-3-.19-.3A8.15 8.15 0 0 1 3.84 12c0-4.5 3.67-8.17 8.16-8.17S20.16 7.5 20.16 12 16.5 20.19 12 20.19z"/></svg>';
+  var WA_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.5 14.4c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.46-2.4-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.91-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.87 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.7.63.71.22 1.36.19 1.87.11.57-.08 1.76-.72 2-1.41.25-.7.25-1.29.18-1.41-.08-.13-.28-.2-.58-.35zM12 2C6.5 2 2 6.48 2 12c0 1.77.46 3.44 1.27 4.89L2 22l5.23-1.26A9.95 9.95 0 0 0 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm0 18.19a8.17 8.17 0 0 1-4.16-1.14l-.3-.18-3.1.75.77-3-.19-.3A8.15 8.15 0 0 1 3.84 12c0-4.5 3.67-8.17 8.16-8.17S20.16 7.5 20.16 12 16.5 20.19 12 20.19z"/></svg>';
 
   function linkWA(numero, msg) {
     return 'https://wa.me/' + numero + '?text=' + encodeURIComponent(msg);
@@ -1341,7 +1335,7 @@
     var capa = (p.fotos || [])[0];
     return '<article class="pcard' + (p.destaque ? ' pdestaque' : '') + '">' +
       (p.destaque ? '<span class="pcard-selo">Destaque</span>' : '') +
-      '<div class="pcard-foto">' + (capa ? '<img src="' + esc(capa) + '" alt="' + esc(p.nome) + '" loading="lazy">' : '📱') + '</div>' +
+      '<div class="pcard-foto">' + (capa ? '<img src="' + esc(capa) + '" alt="' + esc(p.nome) + '" loading="lazy">' : '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>') + '</div>' +
       '<div class="pcard-corpo">' +
         '<h3 class="pcard-nome">' + esc(p.nome) + '</h3>' +
         (meta ? '<p class="pcard-meta">' + esc(meta) + '</p>' : '') +
@@ -1359,10 +1353,10 @@
     if (!tabs || !paineis) return;
 
     var btns = cats.map(function (c) {
-      return '<button class="cat-tab" data-slug="' + esc(c.slug) + '" onclick="switchTab(' + "'" + esc(c.slug) + "'" + ',this)">' + esc(c.nome) + '</button>';
+      return '<button class="cat-tab" role="tab" aria-selected="false" data-slug="' + esc(c.slug) + '" onclick="switchTab(' + "'" + esc(c.slug) + "'" + ',this)">' + esc(c.nome) + '</button>';
     }).join('');
     tabs.innerHTML = btns +
-      '<button class="cat-tab black-club-tab" data-slug="blackclub" onclick="switchTab(' + "'blackclub'" + ',this)">⚡ Black Club</button>';
+      '<button class="cat-tab black-club-tab" role="tab" aria-selected="false" data-slug="blackclub" onclick="switchTab(' + "'blackclub'" + ',this)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>Black Club</button>';
 
     paineis.innerHTML = cats.map(function (c) {
       var doCat = prods.filter(function (p) { return p.categoria_id === c.id; });
@@ -1433,12 +1427,15 @@
 
   // tempo real: qualquer mudança feita no painel dispara o recarregamento
   var espera;
+  function aoVivo() {
+    clearTimeout(espera);
+    espera = setTimeout(carregar, 350);
+  }
   try {
     sbe.channel('eletronic-vivo')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'el_config' }, function () {
-        clearTimeout(espera);
-        espera = setTimeout(carregar, 350);
-      })
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'el_config' }, aoVivo)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'el_produtos' }, aoVivo)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'el_categorias' }, aoVivo)
       .subscribe();
   } catch (e) { /* sem tempo real, o site ainda recarrega ao voltar à aba */ }
   document.addEventListener('visibilitychange', function () {
@@ -1446,6 +1443,531 @@
   });
 
   carregar();
+})();
+</script>
+
+<script>
+'use strict';
+(function () {
+  var REDUZ = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var FINO = matchMedia('(pointer: fine)').matches;
+
+  /* ============ BLACK CLUB — terreno wireframe dourado (canvas 2D) ============ */
+  var bcOk = false;
+  function initBC() {
+    if (bcOk) return;
+    var canvas = document.getElementById('bc-canvas');
+    var wrap = canvas && canvas.closest('.bc-wrapper');
+    if (!canvas || !wrap || !canvas.getContext) return;
+    bcOk = true;
+    var ctx = canvas.getContext('2d');
+    var W = 0, H = 0, t = 0, raf = 0, visivel = true, rodando = false;
+    var COLS = 44, ROWS = 24, CAM = 13, ESC = .6;
+    var nivel = 0, emaDt = 16, ultimoT = 0;
+    var mwx = 0, mwz = 32, mAmp = 0, mAlvo = 0, sobe = [], ultimoSpawn = 0;
+    var parts = [];
+    for (var i = 0; i < 60; i++) {
+      parts.push({ x: (Math.random() - .5) * 60, y: Math.random() * 15, z: (Math.random() - .5) * 52, ph: Math.random() * Math.PI * 2 });
+    }
+    function medir() {
+      var r = wrap.getBoundingClientRect();
+      if (r.width < 2 || r.height < 2) return false;
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      W = r.width; H = r.height;
+      canvas.width = W * dpr; canvas.height = H * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      return true;
+    }
+    function alt(x, z, tt) {
+      var h = Math.sin(x * .18) * 2.5 + Math.sin(z * .22) * 2 + Math.sin((x + z) * .12) * 3 +
+        Math.cos(x * .08) * 1.5 + Math.sin(z * .3) * 1 +
+        Math.sin(x * .2 + tt) * .6 + Math.sin(z * .15 + tt * .7) * .5;
+      if (mAmp > .015) {
+        var bx = x - mwx, bz = z - mwz;
+        h += mAmp * 3.6 * Math.exp(-(bx * bx + bz * bz) / 85);
+      }
+      return h;
+    }
+    function proj(x, z, y) {
+      var f = H * .38, hor = H * .3;
+      return { x: W / 2 + x * f / z, y: hor + (CAM - y * ESC) * f / z };
+    }
+    function camada(tt, yOff, cor, alfa, saltaVert) {
+      var a = Math.sin(tt * .15) * .08, ca = Math.cos(a), sa = Math.sin(a);
+      ctx.strokeStyle = cor; ctx.globalAlpha = alfa; ctx.lineWidth = 1;
+      ctx.beginPath();
+      var i, j, x, z, p;
+      var dj = nivel > 1 ? 2 : 1;
+      var di = (saltaVert ? 4 : 2) * (nivel > 1 ? 2 : 1);
+      for (j = 0; j <= ROWS; j += dj) {
+        z = 6 + (1 - j / ROWS) * 52;
+        for (i = 0; i <= COLS; i++) {
+          x = (i / COLS - .5) * 68;
+          p = proj(x * ca + (z - 32) * sa, z, alt(x, z, tt) + yOff);
+          if (i === 0) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y);
+        }
+      }
+      for (i = 0; i <= COLS; i += di) {
+        x = (i / COLS - .5) * 68;
+        for (j = 0; j <= ROWS; j += dj) {
+          z = 6 + (1 - j / ROWS) * 52;
+          p = proj(x * ca + (z - 32) * sa, z, alt(x, z, tt) + yOff);
+          if (j === 0) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y);
+        }
+      }
+      ctx.stroke();
+    }
+    function quadro(tt) {
+      ctx.clearRect(0, 0, W, H);
+      mAmp += (mAlvo - mAmp) * .07;
+      if (nivel < 1) camada(tt, -.5, '#8a6010', .25, true);
+      camada(tt, 0, '#c9a227', .45 + Math.sin(tt * .5) * .1, false);
+      var b = tt * .03, cb = Math.cos(b), sb = Math.sin(b);
+      ctx.fillStyle = '#c9a227';
+      for (var i = 0; i < parts.length; i++) {
+        var pt = parts[i];
+        var px = pt.x * cb + pt.z * sb, pz = -pt.x * sb + pt.z * cb + 32;
+        if (pz < 5) continue;
+        var s = proj(px, pz, pt.y + Math.sin(tt + pt.ph) * .5);
+        if (s.y < -10 || s.y > H + 10 || s.x < -10 || s.x > W + 10) continue;
+        var r = Math.min(2.4, Math.max(.6, 26 / pz));
+        ctx.globalAlpha = .35 + Math.abs(Math.sin(tt * .8 + pt.ph)) * .3;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      var a2 = Math.sin(tt * .15) * .08, ca2 = Math.cos(a2), sa2 = Math.sin(a2);
+      for (i = sobe.length - 1; i >= 0; i--) {
+        var q = sobe[i];
+        q.y += q.vy; q.vida -= .016;
+        if (q.vida <= 0) { sobe.splice(i, 1); continue; }
+        var sq = proj(q.x * ca2 + (q.z - 32) * sa2, q.z, q.y);
+        if (sq.y < -10 || sq.y > H + 10 || sq.x < -10 || sq.x > W + 10) continue;
+        ctx.globalAlpha = Math.min(1, q.vida) * .75;
+        ctx.beginPath();
+        ctx.arc(sq.x, sq.y, q.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+    }
+    function passo(agora) {
+      raf = 0;
+      if (!rodando) return;
+      if (ultimoT) {
+        emaDt += (Math.min(agora - ultimoT, 80) - emaDt) * .08;
+        if (emaDt > 26 && nivel < 2) { nivel++; emaDt = 16; }
+      }
+      ultimoT = agora;
+      t += .008;
+      quadro(t);
+      raf = requestAnimationFrame(passo);
+    }
+    function liga() {
+      var quer = visivel && !document.hidden && W > 0;
+      if (quer === rodando) return;
+      rodando = quer;
+      if (rodando && !raf) { ultimoT = 0; raf = requestAnimationFrame(passo); }
+    }
+    if (REDUZ) {
+      if (medir()) quadro(0);
+      if ('ResizeObserver' in window) new ResizeObserver(function () { if (medir()) quadro(0); }).observe(wrap);
+      return;
+    }
+    medir();
+    new IntersectionObserver(function (es) {
+      visivel = es[0].isIntersecting;
+      liga();
+    }, { threshold: 0 }).observe(wrap);
+    document.addEventListener('visibilitychange', liga);
+    if ('ResizeObserver' in window) new ResizeObserver(function () { if (medir()) { quadro(t); liga(); } }).observe(wrap);
+    if (FINO) {
+      wrap.addEventListener('mousemove', function (e) {
+        if (!H) return;
+        var rr = canvas.getBoundingClientRect();
+        var f = H * .38, hor = H * .3;
+        var dy = (e.clientY - rr.top) - hor;
+        if (dy < 6) { mAlvo = 0; return; }
+        var z = CAM * f / dy;
+        if (z < 6 || z > 58) { mAlvo = 0; return; }
+        mwx = ((e.clientX - rr.left) - W / 2) * z / f;
+        mwz = z;
+        mAlvo = 1;
+        var agora = performance.now();
+        if (rodando && agora - ultimoSpawn > 70 && sobe.length < 42) {
+          ultimoSpawn = agora;
+          sobe.push({
+            x: mwx + (Math.random() - .5) * 3, z: mwz + (Math.random() - .5) * 3,
+            y: alt(mwx, mwz, t) + .5, vy: .06 + Math.random() * .06,
+            r: .8 + Math.random() * 1.4, vida: 1
+          });
+        }
+      });
+      wrap.addEventListener('mouseleave', function () { mAlvo = 0; });
+    }
+    liga();
+  }
+  /* ============ BLACK CLUB — título decifrado ao abrir a aba ============ */
+  function embaralhaBC() {
+    if (REDUZ) return;
+    var titulo = document.querySelector('.bc-title');
+    if (!titulo || titulo._rodando) return;
+    var nos = [];
+    (function coleta(n) {
+      for (var i = 0; i < n.childNodes.length; i++) {
+        var f = n.childNodes[i];
+        if (f.nodeType === 3 && f.nodeValue.trim()) nos.push({ no: f, fim: f.nodeValue });
+        else if (f.nodeType === 1) coleta(f);
+      }
+    })(titulo);
+    if (!nos.length) return;
+    titulo._rodando = true;
+    var GLIFOS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    var ini = performance.now(), dur = 820;
+    (function passo(agora) {
+      var p = Math.min(1, (agora - ini) / dur);
+      nos.forEach(function (item) {
+        var txt = '', n = item.fim.length, fixos = Math.floor(p * n + 1e-4);
+        for (var i = 0; i < n; i++) {
+          var ch = item.fim[i];
+          txt += (i < fixos || ch === ' ') ? ch : GLIFOS[(Math.random() * GLIFOS.length) | 0];
+        }
+        item.no.nodeValue = txt;
+      });
+      if (p < 1) requestAnimationFrame(passo);
+      else { nos.forEach(function (it) { it.no.nodeValue = it.fim; }); titulo._rodando = false; }
+    })(ini);
+  }
+
+  /* ============ BLACK CLUB — entrada escalonada dos cards (AnimatedContent) ============ */
+  function entradaBC() {
+    if (REDUZ) return;
+    var itens = document.querySelectorAll('#tab-blackclub .bc-step, #tab-blackclub .bc-card-natal, #tab-blackclub .bc-card-regular');
+    for (var i = 0; i < itens.length; i++) {
+      var el = itens[i];
+      el.classList.remove('bc-in');
+      el.classList.add('bc-pop');
+    }
+    if (!itens.length) return;
+    void itens[0].offsetWidth; /* força reflow para reiniciar a transição */
+    for (var j = 0; j < itens.length; j++) {
+      (function (el, atraso) {
+        setTimeout(function () { el.classList.add('bc-in'); }, atraso);
+      })(itens[j], 120 + j * 90);
+    }
+  }
+
+  var trocaBase = window.switchTab;
+  window.switchTab = function (n, b) { trocaBase(n, b); if (n === 'blackclub') { initBC(); embaralhaBC(); entradaBC(); } };
+
+  /* ============ HERO — grade de pontos dourada viva (porta do DotField) ============ */
+  (function () {
+    var canvas = document.getElementById('heroGrid');
+    var hero = canvas && canvas.closest('.hero');
+    if (!canvas || !hero || !canvas.getContext) return;
+    if (!FINO || REDUZ) return; /* a grade estática em CSS continua no lugar */
+    var ctx = canvas.getContext('2d');
+    canvas.style.backgroundImage = 'none';
+    var GAP = 80, RAIO = 140, W = 0, H = 0, pontos = [], pulsos = [], poeira = [];
+    var mx = -9999, my = -9999, raf = 0, visivel = true, rodando = false;
+    function novaPoeira(livre) {
+      return {
+        x: Math.random() * W, y: livre ? Math.random() * H : H + 6,
+        r: .6 + Math.random() * 1.3, vy: .08 + Math.random() * .12,
+        vx: (Math.random() - .5) * .06, ph: Math.random() * Math.PI * 2
+      };
+    }
+    function medir() {
+      var r = hero.getBoundingClientRect();
+      if (r.width < 2 || r.height < 2) return;
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      W = r.width; H = r.height;
+      canvas.width = W * dpr; canvas.height = H * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      pontos = [];
+      for (var y = 0; y <= H + GAP; y += GAP)
+        for (var x = 0; x <= W + GAP; x += GAP)
+          pontos.push({ x: x, y: y, g: 0 });
+      if (!poeira.length) for (var q = 0; q < 8; q++) poeira.push(novaPoeira(true));
+    }
+    function suave(t) { return t * t * (3 - 2 * t); }
+    function quadro(agora) {
+      ctx.clearRect(0, 0, W, H);
+      for (var k = pulsos.length - 1; k >= 0; k--) if (agora - pulsos[k].t0 > 700) pulsos.splice(k, 1);
+      for (var i = 0; i < pontos.length; i++) {
+        var p = pontos[i];
+        var dx = mx - p.x, dy = my - p.y;
+        var d = Math.sqrt(dx * dx + dy * dy);
+        var alvo = d < RAIO ? suave(1 - d / RAIO) : 0;
+        for (var j = 0; j < pulsos.length; j++) {
+          var pu = pulsos[j], idade = (agora - pu.t0) / 700;
+          var pdx = p.x - pu.x, pdy = p.y - pu.y;
+          var anel = Math.abs(Math.sqrt(pdx * pdx + pdy * pdy) - idade * 420);
+          if (anel < 70) alvo = Math.max(alvo, (1 - anel / 70) * (1 - idade));
+        }
+        p.g += (alvo - p.g) * .14;
+        var a = .05 + p.g * .3;
+        ctx.globalAlpha = 1;
+        ctx.fillStyle = 'rgba(201,162,39,' + a.toFixed(3) + ')';
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 1.5 + p.g * 1.6, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      /* poeira dourada rara subindo, no mesmo rAF da grade */
+      ctx.fillStyle = '#ddb84a';
+      for (var m = 0; m < poeira.length; m++) {
+        var g = poeira[m];
+        g.y -= g.vy;
+        g.x += g.vx + Math.sin(agora * .0004 + g.ph) * .07;
+        if (g.y < -6) poeira[m] = g = novaPoeira(false);
+        ctx.globalAlpha = .05 + Math.abs(Math.sin(agora * .0007 + g.ph)) * .14;
+        ctx.beginPath();
+        ctx.arc(g.x, g.y, g.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+    }
+    function passo(agora) {
+      raf = 0;
+      if (!rodando) return;
+      quadro(agora);
+      raf = requestAnimationFrame(passo);
+    }
+    function liga() {
+      var quer = visivel && !document.hidden;
+      if (quer === rodando) return;
+      rodando = quer;
+      if (rodando && !raf) raf = requestAnimationFrame(passo);
+    }
+    hero.addEventListener('mousemove', function (e) {
+      var r = canvas.getBoundingClientRect();
+      mx = e.clientX - r.left; my = e.clientY - r.top;
+    });
+    hero.addEventListener('mouseleave', function () { mx = -9999; my = -9999; });
+    hero.addEventListener('click', function (e) {
+      var r = canvas.getBoundingClientRect();
+      pulsos.push({ x: e.clientX - r.left, y: e.clientY - r.top, t0: performance.now() });
+    });
+    new IntersectionObserver(function (es) { visivel = es[0].isIntersecting; liga(); }, { threshold: 0 }).observe(hero);
+    document.addEventListener('visibilitychange', liga);
+    if ('ResizeObserver' in window) new ResizeObserver(medir).observe(hero);
+    medir();
+    liga();
+  })();
+
+  /* ============ HERO H1 — revelação palavra a palavra ============ */
+  (function () {
+    if (REDUZ) return;
+    var h = document.querySelector('.hero h1');
+    if (!h) return;
+    var frag = document.createDocumentFragment(), idx = 0;
+    function envolve(no) {
+      var s = document.createElement('span');
+      s.className = 'w';
+      s.style.transitionDelay = (idx * 60) + 'ms';
+      idx++;
+      s.appendChild(no);
+      return s;
+    }
+    Array.prototype.slice.call(h.childNodes).forEach(function (n) {
+      if (n.nodeType === 3) {
+        n.textContent.split(/(\s+)/).forEach(function (parte) {
+          if (!parte) return;
+          if (/^\s+$/.test(parte)) { frag.appendChild(document.createTextNode(' ')); return; }
+          frag.appendChild(envolve(document.createTextNode(parte)));
+        });
+      } else if (n.nodeName === 'BR') {
+        frag.appendChild(n.cloneNode(false));
+      } else {
+        frag.appendChild(envolve(n.cloneNode(true)));
+      }
+    });
+    h.innerHTML = '';
+    h.appendChild(frag);
+    h.classList.add('split');
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () { document.body.classList.add('ready'); });
+    });
+  })();
+
+  /* ============ SPOTLIGHT — segue o mouse nos cards (delegado) ============ */
+  if (FINO) {
+    var mira = function (raiz, sel) {
+      if (!raiz) return;
+      raiz.addEventListener('mousemove', function (e) {
+        var card = e.target.closest ? e.target.closest(sel) : null;
+        if (!card || !raiz.contains(card)) return;
+        var r = card.getBoundingClientRect();
+        card.style.setProperty('--mx', (e.clientX - r.left) + 'px');
+        card.style.setProperty('--my', (e.clientY - r.top) + 'px');
+      });
+    };
+    mira(document.querySelector('.g-grid'), '.gc');
+    mira(document.getElementById('tab-blackclub'), '.bc-step'); /* SpotlightCard nos passos */
+
+    /* spotlight + tilt 3D no catálogo (delegado — sobrevive ao re-render) */
+    (function () {
+      var raiz = document.getElementById('catPaineis');
+      if (!raiz) return;
+      raiz.addEventListener('mousemove', function (e) {
+        var card = e.target.closest ? e.target.closest('.pcard') : null;
+        if (!card || !raiz.contains(card)) return;
+        var r = card.getBoundingClientRect();
+        var x = e.clientX - r.left, y = e.clientY - r.top;
+        card.style.setProperty('--mx', x + 'px');
+        card.style.setProperty('--my', y + 'px');
+        if (REDUZ) return;
+        var rx = (y / r.height - .5) * -5;
+        var ry = (x / r.width - .5) * 5;
+        card.style.transition = 'border-color .25s, transform .1s ease-out';
+        card.style.transform = 'perspective(900px) rotateX(' + rx.toFixed(2) + 'deg) rotateY(' + ry.toFixed(2) + 'deg) translateY(-4px)';
+      });
+      raiz.addEventListener('mouseout', function (e) {
+        var card = e.target.closest ? e.target.closest('.pcard') : null;
+        if (!card || (e.relatedTarget && card.contains(e.relatedTarget))) return;
+        card.style.transition = '';
+        card.style.transform = '';
+      });
+    })();
+  }
+
+  /* ============ STATS — contagem ao entrar em cena ============ */
+  (function () {
+    var els = document.querySelectorAll('.stat-n[data-count]');
+    if (!els.length || !('IntersectionObserver' in window)) return;
+    function formata(v, dec) { return v.toFixed(dec).replace('.', ','); }
+    function conta(el) {
+      var bruto = el.getAttribute('data-count');
+      var sufixo = el.getAttribute('data-suffix') || '';
+      var dec = bruto.indexOf(',') > -1 ? 1 : 0;
+      var alvo = parseFloat(bruto.replace(',', '.'));
+      if (isNaN(alvo)) return;
+      if (REDUZ) { el.textContent = formata(alvo, dec) + sufixo; return; }
+      var ini = performance.now();
+      (function passo(agora) {
+        var p = Math.min(1, (agora - ini) / 900);
+        var e = 1 - Math.pow(1 - p, 3);
+        el.textContent = formata(alvo * e, dec) + sufixo;
+        if (p < 1) requestAnimationFrame(passo);
+      })(ini);
+    }
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (en) {
+        if (!en.isIntersecting) return;
+        io.unobserve(en.target);
+        conta(en.target);
+      });
+    }, { threshold: .4 });
+    els.forEach(function (el) { io.observe(el); });
+  })();
+
+  /* ============ GARANTIAS — poeira dourada rara em canvas único ============ */
+  (function () {
+    var canvas = document.getElementById('guaFx');
+    var sec = canvas && canvas.closest('.gua');
+    if (!canvas || !sec || !canvas.getContext || REDUZ) return;
+    var ctx = canvas.getContext('2d');
+    var W = 0, H = 0, raf = 0, visivel = false, rodando = false, ps = [];
+    function nova(qualquer) {
+      return {
+        x: Math.random() * W, y: qualquer ? Math.random() * H : H + 8,
+        r: .7 + Math.random() * 1.5, vy: .1 + Math.random() * .18,
+        vx: (Math.random() - .5) * .08, ph: Math.random() * Math.PI * 2
+      };
+    }
+    function medir() {
+      var r = sec.getBoundingClientRect();
+      if (r.width < 2 || r.height < 2) return;
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      W = r.width; H = r.height;
+      canvas.width = W * dpr; canvas.height = H * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      if (!ps.length) {
+        var n = Math.max(10, Math.min(18, Math.round(W / 90)));
+        for (var i = 0; i < n; i++) ps.push(nova(true));
+      }
+    }
+    function quadro(agora) {
+      ctx.clearRect(0, 0, W, H);
+      ctx.fillStyle = '#c9a227';
+      for (var i = 0; i < ps.length; i++) {
+        var p = ps[i];
+        p.y -= p.vy;
+        p.x += p.vx + Math.sin(agora * .0004 + p.ph) * .08;
+        if (p.y < -8) ps[i] = p = nova(false);
+        ctx.globalAlpha = .06 + Math.abs(Math.sin(agora * .0008 + p.ph)) * .16;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+    }
+    function passo(agora) {
+      raf = 0;
+      if (!rodando) return;
+      quadro(agora);
+      raf = requestAnimationFrame(passo);
+    }
+    function liga() {
+      var quer = visivel && !document.hidden;
+      if (quer === rodando) return;
+      rodando = quer;
+      if (rodando && !raf) raf = requestAnimationFrame(passo);
+    }
+    new IntersectionObserver(function (es) { visivel = es[0].isIntersecting; liga(); }, { threshold: 0 }).observe(sec);
+    document.addEventListener('visibilitychange', liga);
+    if ('ResizeObserver' in window) new ResizeObserver(medir).observe(sec);
+    medir();
+    liga();
+  })();
+
+  /* ============ MARQUEE — letreiro fantasma atrás, mais lento ============ */
+  (function () {
+    var mq = document.querySelector('.mq');
+    var faixa = mq && mq.querySelector('.mq-t');
+    if (!mq || !faixa || mq.querySelector('.mq-ghost')) return;
+    var ghost = document.createElement('div');
+    ghost.className = 'mq-ghost';
+    ghost.setAttribute('aria-hidden', 'true');
+    ghost.appendChild(faixa.cloneNode(true));
+    mq.insertBefore(ghost, faixa);
+  })();
+
+  /* ============ FIO DE PROGRESSO — dourado, rAF-throttled ============ */
+  (function () {
+    var bar = document.getElementById('scrollProg');
+    if (!bar) return;
+    var raf = 0;
+    function pinta() {
+      raf = 0;
+      var h = document.documentElement.scrollHeight - window.innerHeight;
+      bar.style.transform = 'scaleX(' + (h > 0 ? Math.min(1, window.scrollY / h) : 0).toFixed(4) + ')';
+    }
+    window.addEventListener('scroll', function () { if (!raf) raf = requestAnimationFrame(pinta); }, { passive: true });
+    window.addEventListener('resize', function () { if (!raf) raf = requestAnimationFrame(pinta); });
+    pinta();
+  })();
+
+  /* ============ MARQUEE — pausa fora do viewport ============ */
+  (function () {
+    var mq = document.querySelector('.mq');
+    if (!mq || !('IntersectionObserver' in window)) return;
+    new IntersectionObserver(function (es) {
+      mq.classList.toggle('fora', !es[0].isIntersecting);
+    }, { threshold: 0 }).observe(mq);
+  })();
+
+  /* ============ CTAs DOURADOS — atração magnética leve ============ */
+  if (FINO && !REDUZ) {
+    document.querySelectorAll('.btn-g, .btn-dn, .bc-cta-btn').forEach(function (btn) {
+      btn.addEventListener('mousemove', function (e) {
+        var r = btn.getBoundingClientRect();
+        var dx = (e.clientX - r.left) / r.width - .5;
+        var dy = (e.clientY - r.top) / r.height - .5;
+        btn.style.transform = 'translate(' + (dx * 10).toFixed(1) + 'px,' + (dy * 8 - 2).toFixed(1) + 'px)';
+      });
+      btn.addEventListener('mouseleave', function () { btn.style.transform = ''; });
+    });
+  }
 })();
 </script>
 
