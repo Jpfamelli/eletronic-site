@@ -10,7 +10,8 @@
   <meta property="og:image" content="https://jpfamelli.github.io/eletronic-site/images/background-2.jpg"/>
   <meta property="og:url" content="https://jpfamelli.github.io/eletronic-site/"/>
   <meta property="og:type" content="website"/>
-  <link rel="icon" type="image/svg+xml" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" fill="%23081640"/><path d="M35 8L14 34h17l-3 22 22-28H33l2-20z" fill="%23c9a227"/></svg>'>
+  <link rel="icon" type="image/svg+xml" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" fill="%2304091c"/><path d="M35 8L14 34h17l-3 22 22-28H33l2-20z" fill="%23c9a227"/></svg>'>
+  <meta name="theme-color" content="#04091c"/>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
@@ -28,18 +29,24 @@
     *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
     [hidden] { display:none !important; }
     html { scroll-behavior:smooth; }
+    html { background:#04091c; }
     body {
-      background-color: #f0ead6;
-      background-image: url('images/background.jpg');
-      background-size: cover;
-      background-position: center top;
-      background-attachment: fixed;
-      background-repeat: no-repeat;
+      background-color: #04091c;
       color: var(--cream);
       font-family: 'DM Sans', sans-serif;
       font-weight: 300;
       overflow-x: hidden;
     }
+    /* ===== FUNDO VIVO — gradiente navy profundo + vinheta (camada fixa, composited) ===== */
+    #bgBase {
+      position:fixed; inset:0; z-index:-2; pointer-events:none;
+      background:
+        radial-gradient(ellipse 130% 95% at 50% 36%, transparent 52%, rgba(0,0,6,.42) 100%),
+        linear-gradient(180deg, #04091c 0%, #081640 40%, #0f2060 64%, #060f2e 100%);
+    }
+    /* terreno wireframe dourado — atmosfera no terço inferior */
+    #bgTerrain { position:fixed; inset:0; z-index:-1; pointer-events:none; }
+    @media (max-width:700px) { #bgTerrain { display:none; } }
     @media (pointer:fine) { body { cursor:none; } }
     #cur  { width:10px;height:10px;background:var(--gold);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9999;opacity:0;transition:width .25s,height .25s,opacity .3s; }
     #cur2 { width:32px;height:32px;border:1px solid rgba(201,162,39,.5);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9998;opacity:0;transition:width .25s,height .25s,border-color .25s,background .25s,opacity .3s; }
@@ -510,34 +517,28 @@
        SEÇÕES ELEGANTES - background visível
        ============================================ */
 
-    /* Container geral - centro escuro com fade nas bordas */
+    /* Sobre o fundo vivo escuro, as seções ganham só um véu leve */
     .sec, section.sec {
       background: linear-gradient(
         180deg,
         transparent 0%,
-        rgba(8, 16, 36, 0.92) 12%,
-        rgba(8, 16, 36, 0.94) 88%,
+        rgba(6, 13, 40, 0.42) 10%,
+        rgba(6, 13, 40, 0.42) 90%,
         transparent 100%
       ) !important;
     }
 
-    /* Hero deixa background visível com fade inferior */
-    .hero {
-      background: linear-gradient(
-        180deg,
-        rgba(8, 16, 36, 0.70) 0%,
-        rgba(8, 16, 36, 0.65) 70%,
-        transparent 100%
-      ) !important;
-    }
+    /* Hero direto sobre o gradiente — sem véu */
+    .hero { background: transparent !important; }
 
-    /* Nav transparente com blur */
+    /* Nav transparente no topo; fundo sólido + blur só ao rolar */
     nav {
-      background: rgba(8, 16, 36, 0.55) !important;
-      backdrop-filter: blur(16px);
+      background: transparent !important;
+      backdrop-filter: none;
     }
     nav.sc {
-      background: rgba(6, 12, 28, 0.88) !important;
+      background: rgba(4, 9, 28, 0.92) !important;
+      backdrop-filter: blur(18px);
     }
 
     /* Marquee sólido */
@@ -578,38 +579,19 @@
        MOBILE - garantir fluidez sem quebrar bg
        ============================================ */
     @media (max-width: 700px) {
-      /* Background scroll no mobile (fixed quebra no iOS) */
-      body {
-        background-attachment: scroll !important;
-        background-size: 200% auto !important;
-        background-position: center top !important;
-      }
-
-      /* Seções com menos blur (performance) */
+      /* Mobile: só o gradiente do #bgBase (canvas desligado); seções sem blur */
       .sec, section.sec {
         backdrop-filter: none !important;
         background: linear-gradient(
           180deg,
           transparent 0%,
-          rgba(8, 16, 36, 0.94) 8%,
-          rgba(8, 16, 36, 0.94) 92%,
+          rgba(6, 13, 40, 0.42) 8%,
+          rgba(6, 13, 40, 0.42) 92%,
           transparent 100%
         ) !important;
       }
-
-      /* Hero mobile com background mais visível em cima */
-      .hero {
-        background: linear-gradient(
-          180deg,
-          rgba(8, 16, 36, 0.75) 0%,
-          rgba(8, 16, 36, 0.78) 60%,
-          transparent 100%
-        ) !important;
-        min-height: 88vh !important;
-      }
-
-      /* Nav menos blur */
-      nav { backdrop-filter: blur(8px); }
+      .hero { background: transparent !important; min-height: 88vh !important; }
+      nav.sc { backdrop-filter: blur(10px); }
     }
 
     /* ============================================
@@ -627,12 +609,12 @@
 
     /* aliases: o bloco "seções elegantes" mira nomes que o HTML não usa,
        e `section{background:transparent!important}` apagava esses fundos */
-    footer { background:rgba(4,8,20,.97) !important; }
-    .mq { background:rgba(6,12,28,.96) !important; }
+    footer { background:rgba(4,8,20,.9) !important; }
+    .mq { background:rgba(5,11,30,.92) !important; }
     .wa { background:linear-gradient(135deg,#0d7a63,#064e44) !important; }
-    .cta { background:linear-gradient(180deg,transparent 0%,rgba(6,12,28,.95) 22%,rgba(6,12,28,.95) 100%) !important; }
-    .gua, .contact { background:rgba(8,16,36,.93) !important; }
-    .stats { background:rgba(6,12,28,.9) !important; }
+    .cta { background:linear-gradient(180deg,transparent 0%,rgba(5,11,30,.5) 22%,rgba(5,11,30,.5) 100%) !important; }
+    .gua, .contact { background:rgba(7,14,44,.55) !important; }
+    .stats { background:rgba(5,11,34,.5) !important; }
 
     @media (max-width:700px) {
       .stat-n { font-size:2.2rem !important; }
@@ -646,34 +628,14 @@
     }
 
     /* ============================================
-       FIX: contraste no hero
-       O wireframe claro do background vazava por baixo do overlay
-       e apagava os textos em --gray (#8899bb).
+       Contraste do hero sobre o fundo navy profundo
+       (o fundo agora é escuro; só os tons de texto ficam)
        ============================================ */
-    .hero {
-      background: linear-gradient(180deg,
-        rgba(8,16,36,.88) 0%,
-        rgba(8,16,36,.82) 55%,
-        rgba(8,16,36,.60) 100%) !important;
-    }
     .hero-sub { color:#c6d1e6 !important; }
     .hero .rs { color:#9fadc9 !important; }
     .hero .btn-t { color:#e6dcc0 !important; }
     .hero .btn-t:hover { color:var(--gold) !important; }
     .hero .badge { background:rgba(8,16,36,.5); color:#f0dfa8; }
-
-    /* ============================================
-       FIX: contraste no topo das seções
-       O gradiente ia de transparent 0% -> escuro 12%, então a faixa
-       onde ficam o eyebrow e o título caía sobre o fundo claro.
-       ============================================ */
-    .sec, section.sec {
-      background: linear-gradient(180deg,
-        rgba(8,16,36,.74) 0%,
-        rgba(8,16,36,.94) 6%,
-        rgba(8,16,36,.94) 94%,
-        rgba(8,16,36,.74) 100%) !important;
-    }
 
     /* foco visível no teclado */
     a:focus-visible, button:focus-visible {
@@ -830,9 +792,113 @@
       .hero-rays, .badge::before, .badge::after, .btn-wa::after, .cat-wa-link::after { display:none !important; }
     }
 
+    /* ============================================
+       QUARTO PASSE — abertura da marca, hairlines e hover
+       ============================================ */
+
+    /* Hairline dourada marcando a transição entre blocos */
+    .stats { position:relative; }
+    .gua::before, .contact::before, .stats::before, footer::before {
+      content:''; position:absolute; top:0; left:50%; transform:translateX(-50%);
+      width:min(760px,82%); height:1px; pointer-events:none;
+      background:linear-gradient(90deg, transparent, rgba(201,162,39,.4), transparent);
+    }
+
+    /* Hover dos cards do catálogo com sombra dourada profunda */
+    .pcard:hover { box-shadow:0 22px 48px rgba(0,0,0,.5), 0 8px 24px rgba(201,162,39,.16); }
+    .pcard.pdestaque:hover { box-shadow:0 0 0 1px var(--gold), 0 22px 48px rgba(0,0,0,.5), 0 10px 30px rgba(201,162,39,.22); }
+
+    /* ===== ABERTURA DA MARCA =====
+       Anti-tela-preta: a cortina se auto-remove por CSS puro (animation forwards
+       -> opacity 0 + visibility hidden). JS só enriquece (sessionStorage, skip). */
+    #intro { position:fixed; inset:0; z-index:1000; overflow:hidden;
+      display:flex; align-items:center; justify-content:center;
+      animation:introFim .3s 1.5s ease forwards; }
+    @keyframes introFim { to { opacity:0; visibility:hidden; pointer-events:none; } }
+    .ip { position:absolute; top:0; bottom:0; width:50.5%; background:linear-gradient(180deg,#04091c,#081640); will-change:transform; }
+    .ip-l { left:0;  animation:ipAbreL .55s .95s cubic-bezier(.76,0,.24,1) forwards; }
+    .ip-r { right:0; animation:ipAbreR .55s .95s cubic-bezier(.76,0,.24,1) forwards; }
+    @keyframes ipAbreL { to { transform:translateX(-102%); } }
+    @keyframes ipAbreR { to { transform:translateX(102%); } }
+    .intro-center { position:relative; z-index:2; text-align:center;
+      animation:introCentro .35s .92s ease forwards; }
+    @keyframes introCentro { to { opacity:0; transform:scale(1.05); } }
+    .intro-bolt { width:56px; height:56px; display:block; margin:0 auto 18px;
+      animation:boltGlint .6s .55s ease both; }
+    .intro-bolt path { fill:rgba(201,162,39,0); stroke:var(--gold); stroke-width:1.1; stroke-linejoin:round;
+      stroke-dasharray:100; stroke-dashoffset:100;
+      animation:boltTraco .5s .08s ease-out forwards, boltAcende .4s .52s ease forwards; }
+    @keyframes boltTraco { to { stroke-dashoffset:0; } }
+    @keyframes boltAcende { to { fill:var(--gold); } }
+    @keyframes boltGlint {
+      0%   { filter:drop-shadow(0 0 0 rgba(240,216,150,0)); }
+      45%  { filter:drop-shadow(0 0 20px rgba(240,216,150,.95)); }
+      100% { filter:drop-shadow(0 0 6px rgba(201,162,39,.35)); }
+    }
+    .intro-word-wrap { overflow:hidden; }
+    .intro-word { font-family:'Cormorant Garamond',serif; font-size:clamp(1.6rem,4vw,2.6rem); font-weight:700;
+      letter-spacing:.42em; text-indent:.42em; color:var(--cream); text-transform:uppercase;
+      transform:translateY(115%); animation:wordSobe .6s .4s cubic-bezier(.22,.9,.3,1) forwards; }
+    @keyframes wordSobe { to { transform:translateY(0); } }
+    .intro-sub { margin-top:10px; font-size:.6rem; font-weight:600; letter-spacing:.4em; text-transform:uppercase;
+      color:rgba(221,184,74,.8); opacity:0; animation:subFade .45s .68s ease forwards; }
+    @keyframes subFade { to { opacity:1; } }
+    #intro.pulada { opacity:0 !important; visibility:hidden !important; pointer-events:none !important; transition:opacity .25s; }
+    @media (prefers-reduced-motion: reduce) { #intro { display:none !important; } }
+
+    /* hero em cascata depois da cortina (JS marca html.comintro) */
+    html.comintro .ey          { animation-delay:1.25s; }
+    html.comintro .hero h1     { animation-delay:1.35s; } /* fallback sem split */
+    html.comintro .hero-sub    { animation-delay:1.55s; }
+    html.comintro .badges      { animation-delay:1.65s; }
+    html.comintro .hero-rating { animation-delay:1.72s; }
+    html.comintro .actions     { animation-delay:1.82s; }
+
   </style>
 </head>
 <body>
+<div id="bgBase" aria-hidden="true"></div>
+<canvas id="bgTerrain" aria-hidden="true"></canvas>
+
+<!-- ABERTURA DA MARCA — se todo o JS falhar, o CSS sozinho encerra a cortina -->
+<div id="intro" aria-hidden="true">
+  <div class="ip ip-l"></div>
+  <div class="ip ip-r"></div>
+  <div class="intro-center">
+    <svg class="intro-bolt" viewBox="0 0 24 24" aria-hidden="true"><path pathLength="100" d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+    <div class="intro-word-wrap"><div class="intro-word">Eletronic</div></div>
+    <p class="intro-sub">Produtos Apple Originais</p>
+  </div>
+</div>
+<script>
+'use strict';
+(function () {
+  try {
+    var el = document.getElementById('intro');
+    if (!el) return;
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches || sessionStorage.getItem('el_intro_v1')) {
+      el.setAttribute('hidden', '');
+      return;
+    }
+    sessionStorage.setItem('el_intro_v1', '1');
+    document.documentElement.classList.add('comintro'); /* hero espera a cortina */
+    var fim = false;
+    function pula() {
+      if (fim) return;
+      fim = true;
+      el.classList.add('pulada');
+      document.documentElement.classList.remove('comintro'); /* hero entra já */
+      window.removeEventListener('pointerdown', pula, true);
+      window.removeEventListener('keydown', pula, true);
+      setTimeout(function () { el.setAttribute('hidden', ''); }, 300);
+    }
+    window.addEventListener('pointerdown', pula, true);
+    window.addEventListener('keydown', pula, true);
+    setTimeout(function () { el.setAttribute('hidden', ''); fim = true; }, 2000);
+  } catch (e) { /* nunca deixa a cortina prender a página */ }
+})();
+</script>
+
 <div id="cur"></div>
 <div id="cur2"></div>
 <div id="scrollProg" aria-hidden="true"></div>
@@ -1182,9 +1248,9 @@
 
 <!-- CTA -->
 <section class="cta">
-  <h2>Pronto para sua<br/>próxima <em>conquista?</em></h2>
-  <p>iPhone original, garantia real, nota fiscal e entrega para todo o Brasil. Chame agora.</p>
-  <a href="https://wa.me/5512997463135" target="_blank" class="btn-g">Chamar no WhatsApp</a>
+  <h2 class="rv">Pronto para sua<br/>próxima <em>conquista?</em></h2>
+  <p class="rv" style="transition-delay:.12s">iPhone original, garantia real, nota fiscal e entrega para todo o Brasil. Chame agora.</p>
+  <a href="https://wa.me/5512997463135" target="_blank" class="btn-g rv" style="transition-delay:.22s">Chamar no WhatsApp</a>
 </section>
 
 <!-- FOOTER -->
@@ -1784,9 +1850,13 @@
     h.innerHTML = '';
     h.appendChild(frag);
     h.classList.add('split');
-    requestAnimationFrame(function () {
-      requestAnimationFrame(function () { document.body.classList.add('ready'); });
-    });
+    /* com a cortina de abertura, as palavras esperam as lâminas abrirem */
+    var atrasoSplit = document.documentElement.classList.contains('comintro') ? 1150 : 0;
+    setTimeout(function () {
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () { document.body.classList.add('ready'); });
+      });
+    }, atrasoSplit);
   })();
 
   /* ============ SPOTLIGHT — segue o mouse nos cards (delegado) ============ */
@@ -1954,6 +2024,93 @@
     new IntersectionObserver(function (es) {
       mq.classList.toggle('fora', !es[0].isIntersecting);
     }, { threshold: 0 }).observe(mq);
+  })();
+
+  /* ============ FUNDO VIVO — terreno wireframe dourado no terço inferior ============
+     Mesma matemática do Black Club, sem partículas: linhas rgba(201,162,39,.05-.09),
+     câmera lenta, cap de ~30fps, pausa em aba oculta, frame estático em reduced-motion,
+     desligado <=700px (CSS esconde o canvas e o JS não liga). */
+  (function () {
+    var canvas = document.getElementById('bgTerrain');
+    if (!canvas || !canvas.getContext) return;
+    var MOB = matchMedia('(max-width: 700px)');
+    var ctx = canvas.getContext('2d');
+    var W = 0, H = 0, t = 0, raf = 0, rodando = false, ultimo = 0;
+    var COLS = 46, ROWS = 14;
+    function medir() {
+      var dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      W = window.innerWidth; H = window.innerHeight;
+      canvas.width = W * dpr; canvas.height = H * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    function alt(x, z, tt) {
+      return Math.sin(x * .18) * 2.2 + Math.sin(z * .22) * 1.8 + Math.sin((x + z) * .12) * 2.6 +
+        Math.cos(x * .08) * 1.3 + Math.sin(z * .3) * .9 +
+        Math.sin(x * .2 + tt) * .55 + Math.sin(z * .15 + tt * .7) * .45;
+    }
+    function proj(x, z, y) {
+      var f = H * .42, hor = H * .66; /* horizonte no terço inferior */
+      return { x: W / 2 + x * f / z, y: hor + (13 - y * .55) * f / z };
+    }
+    function camada(tt, yOff, alfa, di, cor) {
+      var a = Math.sin(tt * .12) * .06, ca = Math.cos(a), sa = Math.sin(a);
+      ctx.strokeStyle = cor || '#c9a227';
+      ctx.globalAlpha = alfa;
+      ctx.lineWidth = cor ? 1.2 : 1;
+      ctx.beginPath();
+      var i, j, x, z, p;
+      for (j = 0; j <= ROWS; j++) {
+        z = 6 + (1 - j / ROWS) * 50;
+        for (i = 0; i <= COLS; i++) {
+          x = (i / COLS - .5) * 76;
+          p = proj(x * ca + (z - 30) * sa, z, alt(x, z, tt) + yOff);
+          if (i === 0) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y);
+        }
+      }
+      for (i = 0; i <= COLS; i += di) {
+        x = (i / COLS - .5) * 76;
+        for (j = 0; j <= ROWS; j++) {
+          z = 6 + (1 - j / ROWS) * 50;
+          p = proj(x * ca + (z - 30) * sa, z, alt(x, z, tt) + yOff);
+          if (j === 0) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y);
+        }
+      }
+      ctx.stroke();
+      ctx.globalAlpha = 1;
+    }
+    function quadro(tt) {
+      ctx.clearRect(0, 0, W, H);
+      camada(tt, -.6, .05, 4);                                        /* camada de fundo, mais rala */
+      camada(tt, 0, .085 + Math.sin(tt * .4) * .018, 2, '#ddb84a');   /* respira entre ~.07 e ~.10, tom mais claro */
+    }
+    function passo(agora) {
+      raf = 0;
+      if (!rodando) return;
+      if (agora - ultimo >= 33) { /* cap ~30fps: pula quadros */
+        ultimo = agora;
+        t += .0045; /* câmera bem lenta */
+        quadro(t);
+      }
+      raf = requestAnimationFrame(passo);
+    }
+    function liga() {
+      var quer = !document.hidden && !MOB.matches;
+      if (quer === rodando) return;
+      rodando = quer;
+      if (rodando && !raf) { ultimo = 0; raf = requestAnimationFrame(passo); }
+    }
+    if (REDUZ) { /* frame estático */
+      if (!MOB.matches) { medir(); quadro(0); }
+      window.addEventListener('resize', function () { if (!MOB.matches) { medir(); quadro(0); } });
+      return;
+    }
+    medir();
+    window.addEventListener('resize', function () {
+      if (MOB.matches) { liga(); return; }
+      medir(); quadro(t); liga();
+    });
+    document.addEventListener('visibilitychange', liga);
+    liga();
   })();
 
   /* ============ CTAs DOURADOS — atração magnética leve ============ */
