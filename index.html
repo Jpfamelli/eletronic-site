@@ -47,9 +47,10 @@
         radial-gradient(ellipse 85% 70% at 50% 72%, rgba(7,18,51,.85) 0%, transparent 70%),
         linear-gradient(180deg, #020510 0%, #04091c 45%, #030714 100%);
     }
-    /* spotlight teatral full-page — facho dourado que segue o cursor e revela a textura da marca.
+    /* footage cinematografico full-page — bokeh dourado fora de foco, como um video real
+       rodando atras do site (camera handheld + rack focus + light leaks + grao de filme).
        width/height 100% OBRIGATORIOS: canvas e replaced element, inset:0 sozinho NAO estica —
-       ficaria no tamanho intrinseco (W*dpr) e em tela HiDPI a luz erraria o cursor em ate 50%. */
+       ficaria no tamanho intrinseco (W*dpr) e em tela HiDPI a cena erraria o cursor em ate 50%. */
     #bgLive { position:fixed; inset:0; width:100%; height:100%; z-index:-1; pointer-events:none; }
     @media (pointer:fine) { body { cursor:none; } }
     #cur  { width:10px;height:10px;background:var(--gold);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9999;opacity:0;transition:width .25s,height .25s,opacity .3s; }
@@ -848,6 +849,116 @@
     html.comintro .hero-rating { animation-delay:1.72s; }
     html.comintro .actions     { animation-delay:1.82s; }
 
+    /* ============================================
+       VITRINE — IPHONES LIGANDO (secao diferenciais)
+       ============================================ */
+    .ivit { display:flex; justify-content:center; align-items:flex-end; gap:clamp(18px,4vw,58px);
+      margin:64px auto 76px; perspective:1300px; position:relative; z-index:1; }
+    .iph { position:relative; width:clamp(168px,17vw,214px); cursor:pointer;
+      -webkit-tap-highlight-color:transparent; }
+    .iph.p0 { transform:translateY(18px) rotate(-3.5deg); }
+    .iph.p2 { transform:translateY(18px) rotate(3.5deg); }
+    .iph-body { position:relative; width:100%; aspect-ratio:9/19.5; border-radius:30px;
+      background:linear-gradient(155deg,#0d1738 0%,#060c22 55%,#0a1230 100%);
+      border:1px solid rgba(201,162,39,.6);
+      box-shadow:inset 0 0 0 3px #010309, inset 0 0 14px rgba(0,0,0,.8), 0 30px 60px -18px rgba(0,0,0,.7);
+      transition:transform .16s ease-out, box-shadow .8s;
+      transform-style:preserve-3d; }
+    .iph.on .iph-body { box-shadow:inset 0 0 0 3px #010309, inset 0 0 14px rgba(0,0,0,.8),
+      0 30px 60px -18px rgba(0,0,0,.7), 0 0 46px -6px rgba(201,162,39,.3); }
+    .iph-screen { position:absolute; inset:6px; border-radius:24px; background:#000; overflow:hidden; }
+    .iph-island { position:absolute; top:9px; left:50%; transform:translateX(-50%); width:36%; height:12px;
+      border-radius:8px; background:#050507; z-index:6; box-shadow:inset 0 0 3px rgba(255,255,255,.05); }
+    .iph-reflex { position:absolute; inset:0; z-index:5; pointer-events:none;
+      background:linear-gradient(118deg,transparent 34%,rgba(255,255,255,.05) 44%,rgba(255,255,255,.10) 48%,rgba(255,255,255,.03) 54%,transparent 62%); }
+    .iph-shade { position:absolute; inset:0; background:#000; z-index:4; opacity:1; transition:opacity .6s; }
+    .iph.on .iph-shade { opacity:0; transition:opacity .45s; }
+    .iph.on.shut .iph-shade { opacity:1; transition:opacity .55s; }
+    .iph-boot { position:absolute; inset:0; z-index:5; display:flex; align-items:center; justify-content:center;
+      opacity:0; pointer-events:none; }
+    .iph-boot svg { width:40px; height:40px; }
+    .iph-boot path { fill:var(--gold); }
+    .iph.boot .iph-boot { opacity:1; }
+    .iph.boot .iph-boot svg { animation:bootBolt 2s ease both; }
+    @keyframes bootBolt {
+      0%   { opacity:0; transform:scale(.55); filter:drop-shadow(0 0 0 rgba(240,216,150,0)); }
+      35%  { opacity:1; }
+      70%  { transform:scale(1); filter:drop-shadow(0 0 26px rgba(240,216,150,.95)); }
+      100% { opacity:.92; transform:scale(.98); filter:drop-shadow(0 0 10px rgba(201,162,39,.5)); }
+    }
+    /* anel de luz percorrendo a moldura durante o boot */
+    .iph-ring { position:absolute; inset:-2px; border-radius:32px; padding:2.5px; opacity:0; pointer-events:none;
+      -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite:xor;
+      mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      mask-composite:exclude; }
+    .iph-ring::before { content:''; position:absolute; inset:-42%;
+      background:conic-gradient(from 0deg, transparent 0 70%, rgba(201,162,39,.25) 82%, rgba(240,216,150,.95) 92%, transparent 100%); }
+    .iph.boot .iph-ring { opacity:1; transition:opacity .3s; }
+    .iph.boot .iph-ring::before { animation:ringGira 1s linear 2; }
+    @keyframes ringGira { to { transform:rotate(360deg); } }
+    /* lockscreen */
+    .iph-lock { position:absolute; inset:0; z-index:2; display:flex; flex-direction:column; align-items:center;
+      padding:36px 12px 14px; text-align:center;
+      background:
+        radial-gradient(120% 60% at 50% 0%, rgba(201,162,39,.14) 0%, transparent 60%),
+        radial-gradient(150% 70% at 50% 112%, rgba(15,32,96,.85) 0%, transparent 72%),
+        linear-gradient(180deg,#060b1e,#03060f); }
+    .iph-time { font-family:'Cormorant Garamond',serif; font-size:2.35rem; font-weight:600; color:var(--cream);
+      line-height:1; letter-spacing:.02em; }
+    .iph-date { font-size:.5rem; letter-spacing:.14em; text-transform:uppercase; color:#93a2c4; margin-top:6px; }
+    .iph-card { margin-top:auto; margin-bottom:14px; width:100%; border:1px solid rgba(201,162,39,.42);
+      background:linear-gradient(160deg,rgba(201,162,39,.17),rgba(201,162,39,.05)); border-radius:14px;
+      padding:14px 10px 12px; }
+    .iph-card-ic svg { width:26px; height:26px; stroke:var(--gold); fill:none; stroke-width:1.3;
+      stroke-linecap:round; stroke-linejoin:round; }
+    .iph-card-t { font-size:.6rem; font-weight:700; letter-spacing:.12em; color:var(--gold-pale);
+      margin-top:8px; line-height:1.4; }
+    .iph-card-s { font-size:.52rem; color:#a9b4d0; line-height:1.5; margin-top:5px; }
+    .iph-batt { display:flex; align-items:center; gap:6px; }
+    .iph-batt-sh { position:relative; width:22px; height:11px; border:1px solid rgba(247,243,232,.55);
+      border-radius:3px; padding:1.5px; display:block; }
+    .iph-batt-sh::after { content:''; position:absolute; right:-3.5px; top:3px; width:2px; height:5px;
+      background:rgba(247,243,232,.55); border-radius:1px; }
+    .iph-batt-sh i { display:block; height:100%; width:0%; background:linear-gradient(90deg,#5fc46a,#9fe66a);
+      border-radius:1.5px; transition:width .4s; }
+    .iph-batt-pc { font-size:.52rem; color:#cfd8ea; letter-spacing:.06em; }
+    /* entrada elegante do conteudo do lockscreen */
+    .iph .iph-lock > * { opacity:0; }
+    .iph.on .iph-lock > * { animation:lockIn .65s cubic-bezier(.22,.9,.3,1) both; }
+    .iph.on .iph-time { animation-delay:.05s; }
+    .iph.on .iph-date { animation-delay:.14s; }
+    .iph.on .iph-card { animation-delay:.24s; }
+    .iph.on .iph-batt { animation-delay:.36s; }
+    @keyframes lockIn { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:none; } }
+    /* sombra longa no "chao" da secao */
+    .iph-sombra { position:absolute; left:6%; right:6%; bottom:-28px; height:32px; z-index:-1;
+      background:radial-gradient(50% 50% at 50% 50%, rgba(0,0,0,.6) 0%, transparent 72%);
+      filter:blur(6px); transition:background .8s; }
+    .iph.on .iph-sombra { background:radial-gradient(50% 50% at 50% 50%, rgba(0,0,0,.6) 0%, transparent 72%),
+      radial-gradient(38% 42% at 50% 50%, rgba(201,162,39,.22) 0%, transparent 70%); }
+    @media (max-width:900px) { .iph { width:clamp(150px,20vw,190px); } }
+    @media (max-width:700px) {
+      .ivit { margin:44px auto 60px !important; }
+      .iph.p0, .iph.p2 { display:none; }
+      .iph { width:min(232px,62vw) !important; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .iph.on .iph-lock > * { opacity:1 !important; animation:none !important; }
+      .iph-ring, .iph-boot { display:none !important; }
+    }
+
+    /* ============================================
+       EXTRAS — press-down fisico + sublinhado vivo
+       ============================================ */
+    .btn-g:active, .btn-dn:active, .btn-wa:active, .nav-btn:active, .cat-wa-link:active,
+    .bc-cta-btn:active, .pcard-wa:active, .cat-tab:active { transform:scale(.97) !important; }
+    .heading.rv { position:relative; padding-bottom:18px; }
+    .heading.rv::after { content:''; position:absolute; left:2px; bottom:0; height:2px; width:0;
+      background:linear-gradient(90deg,var(--gold),rgba(201,162,39,0));
+      transition:width 1.1s cubic-bezier(.22,.9,.3,1) .35s; }
+    .heading.rv.on::after { width:min(180px,38%); }
+
   </style>
 </head>
 <body>
@@ -1135,6 +1246,8 @@
   </div>
   <p class="eyebrow rv"><span></span>Diferenciais</p>
   <h2 class="heading rv">Compra <em>segura</em> do início ao fim</h2>
+  <!-- VITRINE: iPhones ligando com os beneficios (conteudo montado por JS) -->
+  <div class="ivit rv" id="ivit" aria-hidden="true"></div>
   <div class="g-grid">
     <div class="gc rv">
       <div class="gc-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
@@ -1923,145 +2036,241 @@
     }, { threshold: 0 }).observe(mq);
   })();
 
-  /* ============ SPOTLIGHT TEATRAL — escuridao dramatica + facho dourado (#bgLive) ============
-     O palco fica quase preto (vinheta forte no #bgBase); um facho de luz dourada segue o
-     cursor com atraso pesado (lerp .08) e revela uma textura da marca — malha wireframe,
-     micro-pontos e o wordmark ELETRONIC fantasma — que SO existe dentro da luz.
-     Textura pre-renderizada 1x em canvas offscreen (re-render so em resize/fonte);
-     frame = 2 gradientes radiais + 1 drawImage mascarado (destination-in). 60fps facil. */
+  /* ============ FOOTAGE CINEMATOGRAFICO — bokeh vivo fora de foco (#bgLive) ============
+     A cena imita um VIDEO real desfocado de uma loja premium a noite, filmado na mao:
+     - bokeh dourado/ambar em 3 planos (halo gaussiano + anel alaranjado = aberracao cromatica)
+     - micro-tremor handheld GLOBAL (a "camera" respira junto) + drift lento das luzes
+     - rack focus a cada 8-12s (um plano ganha nitidez, os outros abrem/esmaecem)
+     - light leaks diagonais a cada 12-18s (banda dourada em 'screen')
+     - grao de filme animado (4 tiles pre-gerados, ~0.033 de alpha efetivo)
+     Interacao: paralaxe por plano segue o olhar (lerp lento); luzes perto do cursor
+     acendem e crescem ~15%; clique = flare anamorfico + nasce uma luz nova ali.
+     Sprites pre-renderizados: 1 drawImage por luz. Governor: EMA > 26ms corta luzes,
+     depois derruba o dpr, depois desliga o grao. */
   (function () {
     var canvas = document.getElementById('bgLive');
     if (!canvas || !canvas.getContext) return;
     var ctx = canvas.getContext('2d');
 
-    /* --- constantes-chave --- */
-    var RAIO = 420, RAIO_PEQ = 300;          /* nucleo do facho (<=480px reduzido) */
-    var HALO_K = 1.78;                       /* halo difuso = raio * 1.78 (~750px) */
-    var LERP_LUZ = 0.08, LERP_VOLTA = 0.022; /* seguir o cursor / derivar de volta ao centro */
-    var RESP_AMP = 0.03, RESP_MS = 4000;     /* a luz respira: raio +-3% em ciclo de 4s */
-    var PULSO_MS = 600, PULSO_AMP = 0.35;    /* clique: raio expande 35% e volta com mola */
-    var FLASH_MS = 180;                      /* flash curto no nucleo ao clicar */
-    var MASK_K = 1.25;                       /* mascara de revelacao um pouco alem do nucleo */
-    var SCROLL_K = 0.06;                     /* offset da textura com o scroll (ela "vive") */
-    var LISSA_MS = 30000;                    /* touch: caminho Lissajous, ~30s por ciclo */
-    var TEX_PICO = 0.9;                      /* ganho global da textura dentro da luz */
-
     var COARSE = !FINO;
-    var SMALL = matchMedia('(max-width:480px)');
-    var W = 0, H = 0, dprCap = 1.5, dpr = 1;
-    var luz = { x: 0, y: 0, tx: 0, ty: 0, dentro: false };
-    var rolagem = window.scrollY || 0;
-    var pulsoT = -1e9;
-    var emaDt = 16.7, lastT = 0, lastDrop = 0;
-    var raf = 0, rodando = false;
+    var MOBILE = COARSE || matchMedia('(max-width:700px)').matches;
+    var ALVO_N = MOBILE ? 12 : 22;   /* luzes na cena */
+    var CAP_N = ALVO_N + 8;          /* teto contando as nascidas por clique */
+    var MARGEM = 240;                /* faixa extra fora da tela para o wrap */
+    var LEAK_MS = 2800;              /* duracao da varredura do light leak */
+    var FOCO_LERP = 0.035;           /* velocidade do rack focus */
+    var PAR_LERP = 0.045;            /* a camera acompanha o olhar devagar */
 
-    var tex = document.createElement('canvas');   /* textura da marca (estatica) */
-    var rev = document.createElement('canvas');   /* palco da revelacao (por frame) */
-    var revCtx = rev.getContext('2d');
+    var W = 0, H = 0, dpr = 1, dprCap = 1.5;
+    var luzes = [], flares = [];
+    var mx = -1e4, my = -1e4, temMouse = false;
+    var par = [{ x: 0, y: 0 }, { x: 0, y: 0 }, { x: 0, y: 0 }];
+    var foco = [{ k: 1.1, a: .7 }, { k: .94, a: .95 }, { k: 1.1, a: .7 }];
+    var focoAlvo = 1, proxFoco = 0;
+    var leakT = -1e9, leakDir = 1, proxLeak = 0;
+    var grainOn = true, grainSalta = false, grainPat = [], grainI = 0, grainFrame = 0;
+    var rolagem = window.scrollY || 0;
+    var emaDt = 16.7, lastT = 0, nivel = 0, lastDrop = 0;
+    var raf = 0, rodando = false, t0 = performance.now();
+
+    /* --- sprites de bokeh: nucleo claro, falloff gaussiano, borda quente (aberracao) --- */
+    var PAL = [
+      ['255,238,196', '240,216,150', '201,142,39',  '255,148,58'],  /* dourado quente */
+      ['255,246,214', '243,222,160', '214,168,52',  '255,160,72'],  /* dourado claro */
+      ['255,216,150', '238,168,92',  '214,128,48',  '255,128,48'],  /* ambar */
+      ['255,202,132', '230,148,70',  '198,108,40',  '255,118,44'],  /* ambar profundo */
+      ['240,244,252', '216,224,240', '168,184,214', '255,168,118']  /* creme frio (realismo) */
+    ];
+    function fazSprite(p) {
+      var s = document.createElement('canvas'), d = 256, r = d / 2;
+      s.width = s.height = d;
+      var c = s.getContext('2d');
+      var g = c.createRadialGradient(r, r, 0, r, r, r);
+      g.addColorStop(0,    'rgba(' + p[0] + ',0.88)');
+      g.addColorStop(0.26, 'rgba(' + p[1] + ',0.52)');
+      g.addColorStop(0.55, 'rgba(' + p[2] + ',0.20)');
+      g.addColorStop(0.78, 'rgba(' + p[2] + ',0.075)');
+      g.addColorStop(0.90, 'rgba(' + p[3] + ',0.105)'); /* anel alaranjado na borda */
+      g.addColorStop(1,    'rgba(' + p[3] + ',0)');
+      c.fillStyle = g;
+      c.fillRect(0, 0, d, d);
+      return s;
+    }
+    var sprites = [fazSprite(PAL[0]), fazSprite(PAL[1]), fazSprite(PAL[2]), fazSprite(PAL[3]), fazSprite(PAL[4])];
+
+    /* --- banda de light leak (tambem vira o risco anamorfico do flare) --- */
+    var leakTex = (function () {
+      var s = document.createElement('canvas');
+      s.width = 64; s.height = 256;
+      var c = s.getContext('2d');
+      var g = c.createLinearGradient(0, 0, 0, 256);
+      g.addColorStop(0,    'rgba(255,190,90,0)');
+      g.addColorStop(0.42, 'rgba(255,214,130,0.30)');
+      g.addColorStop(0.5,  'rgba(255,236,180,0.44)');
+      g.addColorStop(0.58, 'rgba(255,206,110,0.28)');
+      g.addColorStop(1,    'rgba(255,170,70,0)');
+      c.fillStyle = g;
+      c.fillRect(0, 0, 64, 256);
+      return s;
+    })();
+
+    /* --- lavagem ambiente quente (interior de loja), pre-renderizada pequena --- */
+    var amb = document.createElement('canvas');
+    function pintarAmb() {
+      amb.width = Math.max(2, W >> 2); amb.height = Math.max(2, H >> 2);
+      var c = amb.getContext('2d'), w = amb.width, h = amb.height;
+      c.clearRect(0, 0, w, h);
+      var g1 = c.createRadialGradient(w * .72, h * .9, 0, w * .72, h * .9, Math.max(w, h) * .9);
+      g1.addColorStop(0, 'rgba(140,92,30,0.18)');
+      g1.addColorStop(.5, 'rgba(96,62,22,0.08)');
+      g1.addColorStop(1, 'rgba(60,40,16,0)');
+      c.fillStyle = g1; c.fillRect(0, 0, w, h);
+      var g2 = c.createRadialGradient(w * .14, h * .16, 0, w * .14, h * .16, Math.max(w, h) * .7);
+      g2.addColorStop(0, 'rgba(120,96,44,0.10)');
+      g2.addColorStop(1, 'rgba(80,64,30,0)');
+      c.fillStyle = g2; c.fillRect(0, 0, w, h);
+    }
+
+    /* --- grao de filme: 4 tiles de ruido viram patterns --- */
+    function fazGrain() {
+      grainPat.length = 0;
+      for (var n = 0; n < 4; n++) {
+        var s = document.createElement('canvas');
+        s.width = s.height = 144;
+        var c = s.getContext('2d');
+        var img = c.createImageData(144, 144), d = img.data;
+        for (var i = 0; i < d.length; i += 4) {
+          var v = (Math.random() * 255) | 0;
+          d[i] = d[i + 1] = d[i + 2] = v;
+          d[i + 3] = 26;
+        }
+        c.putImageData(img, 0, 0);
+        grainPat.push(ctx.createPattern(s, 'repeat'));
+      }
+    }
+    function pintaGrain(estatico) {
+      if (!grainOn || !grainPat.length) return;
+      var ox = 0, oy = 0;
+      if (!estatico) {
+        grainFrame++;
+        if (!grainSalta || !(grainFrame & 1)) grainI = (grainI + 1) % grainPat.length;
+        ox = (Math.random() * 144) | 0; oy = (Math.random() * 144) | 0;
+      }
+      ctx.save();
+      ctx.globalAlpha = 0.32; /* tile ja carrega ~0.1 -> ~0.033 efetivo */
+      ctx.translate(-ox, -oy);
+      ctx.fillStyle = grainPat[grainI];
+      ctx.fillRect(0, 0, W + 144, H + 144);
+      ctx.restore();
+    }
+
+    function novaLuz(plano, sp, nx, ny, nasc) {
+      var base = plano === 0 ? 26 + Math.random() * 34
+               : plano === 1 ? 55 + Math.random() * 62
+               : 100 + Math.random() * 120;              /* raios 26..220px */
+      return {
+        plano: plano, sp: sp, nx: nx, ny: ny,
+        r: MOBILE ? base * .82 : base,
+        vx: (Math.random() - .5) * 0.012,                /* deriva lenta, fracao da tela/s */
+        vy: (Math.random() - .5) * 0.005,
+        sway: 6 + Math.random() * 18,
+        swf: .05 + Math.random() * .14,
+        ph: Math.random() * 6.2832,
+        ff: .3 + Math.random() * .5,
+        aBase: .5 + Math.random() * .38,
+        hov: 0, nasc: nasc || -1e9, ex: false
+      };
+    }
+    function semear() {
+      luzes.length = 0;
+      var creme = 0, maxCreme = MOBILE ? 2 : 3;
+      for (var i = 0; i < ALVO_N; i++) {
+        var rr = Math.random(), sp;
+        if (creme < maxCreme && rr > .87) { sp = 4; creme++; }
+        else sp = rr < .3 ? 0 : rr < .55 ? 1 : rr < .8 ? 2 : 3;
+        luzes.push(novaLuz(i % 3, sp, Math.random(), Math.random(), 0));
+      }
+    }
 
     function medir() {
       dpr = Math.min(window.devicePixelRatio || 1, dprCap);
       W = window.innerWidth; H = window.innerHeight;
       canvas.width = W * dpr; canvas.height = H * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      rev.width = W * dpr; rev.height = H * dpr;
-      revCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      pintarAmb();
     }
 
-    /* --- TEXTURA DA MARCA — dourado sobre transparente, pintada UMA vez --- */
-    function pintarTextura() {
-      var c = tex.getContext('2d');
-      tex.width = W * dpr; tex.height = H * dpr;
-      c.setTransform(dpr, 0, 0, dpr, 0, 0);
-      c.clearRect(0, 0, W, H);
-
-      /* (a) malha wireframe fina de contornos — o vocabulario da marca, parado */
-      c.lineWidth = 1;
-      var i, x, y;
-      for (i = 0; i < 11; i++) {
-        var yb = (i + 0.5) * H / 11;
-        var f1 = 0.006 + (i % 3) * 0.0016, ph = i * 1.7;
-        c.strokeStyle = 'rgba(205,168,60,' + (0.30 + (i % 4) * 0.08).toFixed(2) + ')';
-        c.beginPath();
-        for (x = -8; x <= W + 8; x += 10) {
-          y = yb + Math.sin(x * f1 + ph) * 9 + Math.sin(x * 0.0021 + ph * 2.3) * 15;
-          if (x === -8) c.moveTo(x, y); else c.lineTo(x, y);
-        }
-        c.stroke();
-      }
-      /* (b) micro-pontos em grade esparsa (jitter deterministico) */
-      c.fillStyle = 'rgba(224,190,92,0.55)';
-      for (y = 44; y < H; y += 88) {
-        for (x = 44; x < W; x += 88) {
-          var s = Math.sin(x * 12.9898 + y * 78.233) * 43758.5453; s -= Math.floor(s);
-          c.beginPath();
-          c.arc(x + (s - 0.5) * 34, y + ((s * 7 - Math.floor(s * 7)) - 0.5) * 34,
-                s > 0.85 ? 1.5 : 1, 0, 6.2832);
-          c.fill();
-        }
-      }
-      /* (c) wordmark ELETRONIC fantasma — serifa outline, 3 ocorrencias marca-dagua */
-      function marca(cx, cy, tam, ang, alfa, lw) {
-        c.save();
-        c.translate(cx, cy); c.rotate(ang);
-        c.font = '700 ' + Math.round(tam) + 'px "Cormorant Garamond", Georgia, serif';
-        try { c.letterSpacing = '0.14em'; } catch (e) {}
-        c.textAlign = 'center'; c.textBaseline = 'middle';
-        c.lineWidth = lw;
-        c.strokeStyle = 'rgba(214,178,80,' + alfa + ')';
-        c.strokeText('ELETRONIC', 0, 0);
-        c.restore();
-      }
-      marca(W * 0.52, H * 0.30, Math.max(90, W * 0.155), -0.045, 0.62, 1.3);
-      marca(W * 0.94, H * 0.55, Math.max(48, W * 0.062), Math.PI / 2, 0.45, 1);
-      marca(W * 0.24, H * 0.84, Math.max(56, W * 0.075), -0.18, 0.52, 1.1);
-    }
-
-    /* --- um quadro do teatro --- */
-    function quadro(now) {
+    function quadro(now, estatico) {
+      var t = (now - t0) / 1000;
       ctx.clearRect(0, 0, W, H);
-      var resp = 1 + RESP_AMP * Math.sin(now * 6.2832 / RESP_MS);
-      var idade = now - pulsoT, pulso = 0, flash = 0;
-      if (idade < PULSO_MS) {
-        var p = idade / PULSO_MS;
-        pulso = PULSO_AMP * Math.sin(p * Math.PI) * (1 - 0.45 * p); /* sobe rapido, assenta com peso */
+      ctx.drawImage(amb, 0, 0, W, H);
+
+      /* micro-tremor handheld: ruido de baixa frequencia GLOBAL (3 senos por eixo) */
+      var shx = 0, shy = 0;
+      if (!estatico) {
+        shx = Math.sin(t * .87) * 3.4 + Math.sin(t * 2.13 + 1.7) * 1.4 + Math.sin(t * .29 + .5) * 2.6;
+        shy = Math.cos(t * .78 + .6) * 3.0 + Math.sin(t * 1.91 + 4.1) * 1.2 + Math.cos(t * .23 + 2.1) * 2.2;
       }
-      if (idade < FLASH_MS) flash = (1 - idade / FLASH_MS) * 0.10;
-      var R = (SMALL.matches ? RAIO_PEQ : RAIO) * resp * (1 + pulso);
 
-      /* o facho: halo largo + nucleo quente (aditivos sobre o breu) */
       ctx.globalCompositeOperation = 'lighter';
-      var RH = R * HALO_K;
-      var g2 = ctx.createRadialGradient(luz.x, luz.y, 0, luz.x, luz.y, RH);
-      g2.addColorStop(0, 'rgba(212,176,96,0.05)');
-      g2.addColorStop(1, 'rgba(212,176,96,0)');
-      ctx.fillStyle = g2;
-      ctx.fillRect(luz.x - RH, luz.y - RH, RH * 2, RH * 2);
-      var g1 = ctx.createRadialGradient(luz.x, luz.y, 0, luz.x, luz.y, R);
-      g1.addColorStop(0, 'rgba(240,215,140,' + (0.16 + flash).toFixed(3) + ')');
-      g1.addColorStop(0.3, 'rgba(232,195,108,0.095)');
-      g1.addColorStop(0.62, 'rgba(201,150,52,0.042)');
-      g1.addColorStop(1, 'rgba(180,124,40,0)');
-      ctx.fillStyle = g1;
-      ctx.fillRect(luz.x - R, luz.y - R, R * 2, R * 2);
-      ctx.globalCompositeOperation = 'source-over';
+      var spanY = H + MARGEM * 2;
+      for (var i = 0; i < luzes.length; i++) {
+        var L = luzes[i], f = foco[L.plano];
+        var prof = .38 + L.plano * .31;
+        var x = L.nx * (W + MARGEM * 2) - MARGEM
+              + Math.sin(t * L.swf + L.ph) * L.sway
+              + par[L.plano].x + shx * prof;
+        var y = L.ny * spanY - MARGEM
+              + Math.cos(t * L.swf * .8 + L.ph * 1.3) * L.sway * .6
+              + par[L.plano].y + shy * prof
+              - rolagem * (.015 + L.plano * .03);
+        y = ((y + MARGEM) % spanY + spanY) % spanY - MARGEM;
+        var nascK = Math.min(1, (now - L.nasc) / 700);
+        nascK = 1 - (1 - nascK) * (1 - nascK);
+        var hovAlvo = 0;
+        if (temMouse) {
+          var dx = x - mx, dyy = y - my;
+          if (dx * dx + dyy * dyy < 48400) hovAlvo = 1;  /* raio de 220px */
+        }
+        L.hov += (hovAlvo - L.hov) * .12;
+        var R = L.r * f.k * (1 + .3 * L.hov) * (.5 + .5 * nascK);
+        var a = L.aBase * f.a * (.8 + .2 * Math.sin(t * L.ff + L.ph)) * (1 + 1.1 * L.hov) * nascK;
+        ctx.globalAlpha = a > 1 ? 1 : a;
+        ctx.drawImage(sprites[L.sp], x - R, y - R, R * 2, R * 2);
+      }
+      ctx.globalAlpha = 1;
 
-      /* a revelacao: textura mascarada pela mesma distancia ao cursor */
-      revCtx.clearRect(0, 0, W, H);
-      revCtx.globalCompositeOperation = 'source-over';
-      revCtx.globalAlpha = TEX_PICO;
-      var dy = -((rolagem * SCROLL_K) % H);
-      revCtx.drawImage(tex, 0, dy, W, H);
-      revCtx.drawImage(tex, 0, dy + H, W, H);
-      revCtx.globalAlpha = 1;
-      revCtx.globalCompositeOperation = 'destination-in';
-      var gm = revCtx.createRadialGradient(luz.x, luz.y, 0, luz.x, luz.y, R * MASK_K);
-      gm.addColorStop(0, 'rgba(0,0,0,1)');
-      gm.addColorStop(0.5, 'rgba(0,0,0,0.72)');
-      gm.addColorStop(1, 'rgba(0,0,0,0)');
-      revCtx.fillStyle = gm;
-      revCtx.fillRect(0, 0, W, H);
-      ctx.drawImage(rev, 0, 0, W, H);
+      /* flares de clique: burst radial + risco anamorfico */
+      for (i = flares.length - 1; i >= 0; i--) {
+        var fl = flares[i], p = (now - fl.t) / 480;
+        if (p >= 1) { flares.splice(i, 1); continue; }
+        var rf = 70 + p * 210, aa = (1 - p) * (1 - p) * .55;
+        var g = ctx.createRadialGradient(fl.x, fl.y, 0, fl.x, fl.y, rf);
+        g.addColorStop(0, 'rgba(255,238,190,' + (aa * .9).toFixed(3) + ')');
+        g.addColorStop(.4, 'rgba(240,196,110,' + (aa * .4).toFixed(3) + ')');
+        g.addColorStop(1, 'rgba(255,150,60,0)');
+        ctx.fillStyle = g;
+        ctx.fillRect(fl.x - rf, fl.y - rf, rf * 2, rf * 2);
+        ctx.globalAlpha = aa * .5;
+        ctx.drawImage(leakTex, fl.x - rf * 1.9, fl.y - rf * .12, rf * 3.8, rf * .24);
+        ctx.globalAlpha = 1;
+      }
+
+      /* light leak varrendo a tela em diagonal */
+      var lp = (now - leakT) / LEAK_MS;
+      if (lp >= 0 && lp <= 1) {
+        var diag = Math.sqrt(W * W + H * H);
+        ctx.save();
+        ctx.globalCompositeOperation = 'screen';
+        ctx.globalAlpha = Math.sin(lp * Math.PI) * .5;
+        ctx.translate(W * (leakDir > 0 ? lp * 1.4 - .2 : 1.2 - lp * 1.4), H * (.1 + lp * .8));
+        ctx.rotate(leakDir > 0 ? -.62 : .62);
+        ctx.drawImage(leakTex, -diag * .75, -H * .34, diag * 1.5, H * .68);
+        ctx.restore();
+      }
+
+      ctx.globalCompositeOperation = 'source-over';
+      pintaGrain(estatico);
     }
 
     function passo(now) {
@@ -2070,21 +2279,45 @@
       var dt = lastT ? now - lastT : 16.7;
       if (dt > 100) dt = 16.7;
       lastT = now;
-      emaDt += (dt - emaDt) * 0.08;
-      /* governor: EMA > 26ms derruba o dpr uma vez; nunca regride */
-      if (emaDt > 26 && dprCap > 1 && now - lastDrop > 1500) {
-        dprCap = 1; lastDrop = now; emaDt = 16.7;
-        medir(); pintarTextura();
+      emaDt += (dt - emaDt) * .08;
+      /* governor em 3 degraus: luzes -> dpr -> grao */
+      if (emaDt > 26 && now - lastDrop > 1500 && nivel < 3) {
+        nivel++; lastDrop = now; emaDt = 16.7;
+        if (nivel === 1) {
+          luzes.sort(function (a, b) { return a.plano - b.plano; });
+          var alvo = Math.max(8, (luzes.length * 2 / 3) | 0);
+          if (luzes.length > alvo) luzes.splice(0, luzes.length - alvo);
+          grainSalta = true;
+        } else if (nivel === 2) { dprCap = 1; medir(); }
+        else grainOn = false;
       }
-      if (COARSE) { /* sem cursor: a luz vagueia sozinha, Lissajous lento */
-        var t = now * 6.2832 / LISSA_MS;
-        luz.tx = W * 0.5 + W * 0.30 * Math.sin(t);
-        luz.ty = H * 0.42 + H * 0.26 * Math.sin(t * 2 + 1.3);
+      /* deriva das luzes (wrap suave nas bordas) */
+      for (var i = 0; i < luzes.length; i++) {
+        var L = luzes[i];
+        L.nx += L.vx * dt / 1000;
+        L.ny += L.vy * dt / 1000;
+        if (L.nx > 1.05) L.nx -= 1.1; else if (L.nx < -.05) L.nx += 1.1;
+        if (L.ny > 1.05) L.ny -= 1.1; else if (L.ny < -.05) L.ny += 1.1;
       }
-      var k = (luz.dentro || COARSE) ? LERP_LUZ : LERP_VOLTA;
-      luz.x += (luz.tx - luz.x) * k;
-      luz.y += (luz.ty - luz.y) * k;
-      quadro(now);
+      /* paralaxe por plano + rack focus */
+      for (i = 0; i < 3; i++) {
+        var ax = temMouse ? (mx - W / 2) * -(0.012 + i * 0.014) : 0;
+        var ay = temMouse ? (my - H / 2) * -(0.008 + i * 0.010) : 0;
+        par[i].x += (ax - par[i].x) * PAR_LERP;
+        par[i].y += (ay - par[i].y) * PAR_LERP;
+        var ek = i === focoAlvo ? .92 : 1.18, ea = i === focoAlvo ? 1 : .6;
+        foco[i].k += (ek - foco[i].k) * FOCO_LERP;
+        foco[i].a += (ea - foco[i].a) * FOCO_LERP;
+      }
+      if (now > proxFoco) {
+        focoAlvo = (focoAlvo + 1 + ((Math.random() * 2) | 0)) % 3;
+        proxFoco = now + 8000 + Math.random() * 4000;
+      }
+      if (now > proxLeak) {
+        leakT = now; leakDir = -leakDir;
+        proxLeak = now + LEAK_MS + 12000 + Math.random() * 6000;
+      }
+      quadro(now, false);
       raf = requestAnimationFrame(passo);
     }
     function liga() {
@@ -2095,35 +2328,236 @@
       if (rodando && !raf) raf = requestAnimationFrame(passo);
     }
 
-    medir(); pintarTextura();
-    luz.x = luz.tx = W / 2; luz.y = luz.ty = H * 0.3;
+    medir(); fazGrain(); semear();
 
-    if (REDUZ) { /* quadro estatico elegante: glow suave fixo no centro-superior + textura */
-      quadro(0);
-      if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { pintarTextura(); quadro(0); });
-      window.addEventListener('resize', function () {
-        medir(); pintarTextura();
-        luz.x = luz.tx = W / 2; luz.y = luz.ty = H * 0.3;
-        quadro(0);
-      });
+    if (REDUZ) { /* frame unico da cena: bokeh parado, grao fixo, sem tremor */
+      quadro(t0, true);
+      window.addEventListener('resize', function () { medir(); quadro(t0, true); });
       return;
     }
 
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { pintarTextura(); });
-    window.addEventListener('resize', function () { medir(); pintarTextura(); });
+    proxFoco = t0 + 8000;
+    proxLeak = t0 + 4200; /* primeiro leak cedo — a cena ja nasce viva */
+    window.addEventListener('resize', function () { medir(); });
     window.addEventListener('scroll', function () { rolagem = window.scrollY || 0; }, { passive: true });
     if (!COARSE) {
-      window.addEventListener('mousemove', function (e) {
-        luz.tx = e.clientX; luz.ty = e.clientY; luz.dentro = true;
-      });
-      document.documentElement.addEventListener('mouseleave', function () {
-        luz.dentro = false;                     /* deriva devagar de volta ao centro-superior */
-        luz.tx = W / 2; luz.ty = H * 0.3;       /* e continua respirando */
-      });
+      window.addEventListener('mousemove', function (e) { mx = e.clientX; my = e.clientY; temMouse = true; });
+      document.documentElement.addEventListener('mouseleave', function () { temMouse = false; mx = my = -1e4; });
     }
-    window.addEventListener('pointerdown', function () { pulsoT = performance.now(); });
+    window.addEventListener('pointerdown', function (e) {
+      flares.push({ x: e.clientX, y: e.clientY, t: performance.now() });
+      if (flares.length > 6) flares.shift();
+      var plano = 1 + ((Math.random() * 2) | 0);
+      var nl = novaLuz(plano, (Math.random() * 4) | 0,
+        (e.clientX + MARGEM) / (W + MARGEM * 2),
+        (e.clientY + MARGEM + rolagem * (.015 + plano * .03)) / (H + MARGEM * 2),
+        performance.now());
+      nl.ex = true;
+      luzes.push(nl);
+      if (luzes.length > CAP_N) {
+        for (var i = 0; i < luzes.length; i++) if (luzes[i].ex) { luzes.splice(i, 1); break; }
+      }
+    });
     document.addEventListener('visibilitychange', liga);
     liga();
+  })();
+
+  /* ============ VITRINE — IPHONES LIGANDO na secao de diferenciais ============
+     3 iPhones em DOM (texto nitido) com maquina de estados dessincronizada:
+     OFF -> BOOT (raio acende + anel de luz na moldura) -> ON (lockscreen com hora
+     real + card de beneficio + bateria carregando) -> SHUTDOWN (fade a preto).
+     Hover: OFF liga na hora, ON pausa para ler. Clique/tap: proximo beneficio.
+     Tilt 3D leve no mouse. Mobile <=700px: so o iPhone central. */
+  (function () {
+    var vit = document.getElementById('ivit');
+    if (!vit) return;
+    var ICO = {
+      escudo: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>',
+      selo:   '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4.5 8.5A2.5 2.5 0 0 1 7 6h10a2.5 2.5 0 0 1 2.5 2.5v9A2.5 2.5 0 0 1 17 20H7a2.5 2.5 0 0 1-2.5-2.5z"/><path d="M8 6V4.5A1.5 1.5 0 0 1 9.5 3h5A1.5 1.5 0 0 1 16 4.5V6"/><path d="M9 13.5l2 2 4-4.5"/></svg>',
+      cartao: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="1.5" y="5" width="21" height="15" rx="2"/><line x1="1.5" y1="10" x2="22.5" y2="10"/><line x1="5" y1="15.5" x2="9" y2="15.5"/></svg>',
+      caixa:  '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 8l-9-5-9 5v9l9 5 9-5z"/><path d="M3.3 8.2L12 13l8.7-4.8"/><line x1="12" y1="13" x2="12" y2="22"/></svg>',
+      troca:  '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>'
+    };
+    var BENS = [
+      { ic: 'escudo', t: '1 ANO DE GARANTIA', s: 'Cobertura total em todos os aparelhos' },
+      { ic: 'selo',   t: 'NOTA FISCAL SEMPRE', s: 'Operação 100% formal e transparente' },
+      { ic: 'cartao', t: 'ATÉ 18X NO CARTÃO', s: 'Parcele sem apertar o orçamento' },
+      { ic: 'caixa',  t: 'ENTREGA PARA TODO O BRASIL', s: 'Envio rastreado e embalagem reforçada' },
+      { ic: 'troca',  t: 'SEU IPHONE VALE COMO ENTRADA', s: 'Avaliamos o seu usado na hora' }
+    ];
+    var DIAS = ['domingo', 'segunda-feira', 'terça-feira', 'quarta-feira', 'quinta-feira', 'sexta-feira', 'sábado'];
+    var MESES = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
+    function horaAgora() {
+      var d = new Date();
+      return (d.getHours() < 10 ? '0' : '') + d.getHours() + ':' + (d.getMinutes() < 10 ? '0' : '') + d.getMinutes();
+    }
+    function dataAgora() {
+      var d = new Date();
+      return DIAS[d.getDay()] + ', ' + d.getDate() + ' de ' + MESES[d.getMonth()];
+    }
+
+    var fones = [];
+    for (var i = 0; i < 3; i++) {
+      var el = document.createElement('div');
+      el.className = 'iph off p' + i;
+      el.innerHTML =
+        '<div class="iph-body">' +
+          '<div class="iph-screen">' +
+            '<div class="iph-lock">' +
+              '<div class="iph-time">--:--</div>' +
+              '<div class="iph-date"></div>' +
+              '<div class="iph-card"><div class="iph-card-ic"></div><div class="iph-card-t"></div><div class="iph-card-s"></div></div>' +
+              '<div class="iph-batt"><span class="iph-batt-sh"><i></i></span><span class="iph-batt-pc">0%</span></div>' +
+            '</div>' +
+            '<div class="iph-shade"></div>' +
+            '<div class="iph-boot"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>' +
+            '<div class="iph-reflex"></div>' +
+            '<div class="iph-island"></div>' +
+          '</div>' +
+          '<div class="iph-ring"></div>' +
+        '</div>' +
+        '<div class="iph-sombra"></div>';
+      vit.appendChild(el);
+      fones.push({
+        el: el, idx: i, estado: 'off', resta: 350 + i * 950,
+        batt: 0, battAcc: 0, pausa: false,
+        hEl: el.querySelector('.iph-time'), dEl: el.querySelector('.iph-date'),
+        icEl: el.querySelector('.iph-card-ic'), tEl: el.querySelector('.iph-card-t'),
+        sEl: el.querySelector('.iph-card-s'),
+        bBar: el.querySelector('.iph-batt-sh i'), bPc: el.querySelector('.iph-batt-pc')
+      });
+    }
+
+    function pinta(f) {
+      var b = BENS[f.idx % BENS.length];
+      f.icEl.innerHTML = ICO[b.ic];
+      f.tEl.textContent = b.t;
+      f.sEl.textContent = b.s;
+      f.hEl.textContent = horaAgora();
+      f.dEl.textContent = dataAgora();
+    }
+    function atualizaBat(f) {
+      f.bBar.style.width = f.batt + '%';
+      f.bPc.textContent = f.batt + '%';
+    }
+    /* nunca mostrar o mesmo beneficio em dois aparelhos ao mesmo tempo */
+    function semColide(f) {
+      var usados = {}, g = 0;
+      for (var k = 0; k < fones.length; k++) {
+        var o = fones[k];
+        if (o !== f && o.estado !== 'off') usados[o.idx % BENS.length] = 1;
+      }
+      while (usados[f.idx % BENS.length] && g < BENS.length) { f.idx++; g++; }
+    }
+    function estado(f, novo, dur) {
+      f.estado = novo; f.resta = dur;
+      f.el.classList.remove('off', 'boot', 'on', 'shut');
+      if (novo === 'shut') { f.el.classList.add('on', 'shut'); }
+      else f.el.classList.add(novo);
+      if (novo === 'boot') { semColide(f); pinta(f); }
+      if (novo === 'on') {
+        f.batt = 56 + ((Math.random() * 22) | 0); f.battAcc = 0; atualizaBat(f);
+        /* se ja esta sob o mouse quando liga, pausa para deixar ler */
+        if (FINO && f.el.matches(':hover')) f.pausa = true;
+      }
+      if (novo === 'off') f.pausa = false;
+    }
+    function tique(f, dt) {
+      if (f.estado === 'on' && f.pausa) return;
+      f.resta -= dt;
+      if (f.estado === 'on' && f.batt < 100) {
+        f.battAcc += dt;
+        if (f.battAcc > 430) { f.battAcc = 0; f.batt++; atualizaBat(f); }
+      }
+      if (f.resta > 0) return;
+      if (f.estado === 'off') estado(f, 'boot', 2000);
+      else if (f.estado === 'boot') estado(f, 'on', 5200 + Math.random() * 2600);
+      else if (f.estado === 'on') estado(f, 'shut', 620);
+      else { f.idx++; estado(f, 'off', 500 + Math.random() * 1600); }
+    }
+
+    if (REDUZ) { /* 3 iPhones ON estaticos com beneficios fixos */
+      for (var j = 0; j < fones.length; j++) {
+        var fr = fones[j];
+        pinta(fr);
+        fr.batt = 80; atualizaBat(fr);
+        fr.estado = 'on';
+        fr.el.classList.remove('off');
+        fr.el.classList.add('on');
+      }
+      return;
+    }
+
+    /* motor: um interval leve so quando a secao esta visivel e a aba ativa */
+    var visVit = false, rodaVit = false, intervalo = 0, ultimo = 0;
+    function tocaVit() {
+      var quer = visVit && !document.hidden;
+      if (quer === rodaVit) return;
+      rodaVit = quer;
+      if (rodaVit) {
+        ultimo = performance.now();
+        intervalo = setInterval(function () {
+          var agora = performance.now(), dt = Math.min(400, agora - ultimo);
+          ultimo = agora;
+          for (var k = 0; k < fones.length; k++) tique(fones[k], dt);
+        }, 120);
+      } else { clearInterval(intervalo); intervalo = 0; }
+    }
+    new IntersectionObserver(function (es) { visVit = es[0].isIntersecting; tocaVit(); }, { threshold: .12 }).observe(vit);
+    document.addEventListener('visibilitychange', tocaVit);
+
+    /* a hora real atualiza por minuto nos aparelhos ligados */
+    setInterval(function () {
+      for (var k = 0; k < fones.length; k++) if (fones[k].estado !== 'off') fones[k].hEl.textContent = horaAgora();
+    }, 20000);
+
+    function foneDe(alvo) {
+      var el = alvo && alvo.closest ? alvo.closest('.iph') : null;
+      if (!el) return null;
+      for (var k = 0; k < fones.length; k++) if (fones[k].el === el) return fones[k];
+      return null;
+    }
+    vit.addEventListener('click', function (e) {
+      var f = foneDe(e.target);
+      if (!f) return;
+      if (f.estado === 'on') { /* avanca para o proximo beneficio com transicao */
+        f.idx++;
+        semColide(f);
+        pinta(f);
+        f.el.classList.remove('on', 'shut');
+        void f.el.offsetWidth;
+        f.el.classList.add('on');
+        f.resta = 6200;
+        f.batt = 56 + ((Math.random() * 22) | 0); f.battAcc = 0; atualizaBat(f);
+      } else if (f.estado === 'off') f.resta = 0;
+    });
+    if (FINO) {
+      vit.addEventListener('mouseover', function (e) {
+        var el = e.target.closest ? e.target.closest('.iph') : null;
+        if (!el || (e.relatedTarget && el.contains(e.relatedTarget))) return;
+        var f = foneDe(el);
+        if (!f) return;
+        if (f.estado === 'off') f.resta = 0;   /* hover liga na hora */
+        else if (f.estado === 'on') f.pausa = true; /* hover deixa ler */
+      });
+      vit.addEventListener('mouseout', function (e) {
+        var el = e.target.closest ? e.target.closest('.iph') : null;
+        if (!el || (e.relatedTarget && el.contains(e.relatedTarget))) return;
+        var f = foneDe(el);
+        if (f) f.pausa = false;
+        var corpo = el.querySelector('.iph-body');
+        if (corpo) corpo.style.transform = '';
+      });
+      vit.addEventListener('mousemove', function (e) { /* tilt 3D leve */
+        var el = e.target.closest ? e.target.closest('.iph') : null;
+        if (!el) return;
+        var corpo = el.querySelector('.iph-body');
+        var r = el.getBoundingClientRect();
+        var rx = ((e.clientY - r.top) / r.height - .5) * -7;
+        var ry = ((e.clientX - r.left) / r.width - .5) * 7;
+        corpo.style.transform = 'rotateX(' + rx.toFixed(2) + 'deg) rotateY(' + ry.toFixed(2) + 'deg)';
+      });
+    }
   })();
 
   /* ============ CTAs DOURADOS — atração magnética leve ============ */
