@@ -47,11 +47,10 @@
         radial-gradient(ellipse 85% 70% at 50% 72%, rgba(7,18,51,.85) 0%, transparent 70%),
         linear-gradient(180deg, #020510 0%, #04091c 45%, #030714 100%);
     }
-    /* footage cinematografico full-page — bokeh dourado fora de foco, como um video real
-       rodando atras do site (camera handheld + rack focus + light leaks + grao de filme).
+    /* OURO LIQUIDO — mar de causticas de ouro fundido na faixa inferior (canvas full-page).
        width/height 100% OBRIGATORIOS: canvas e replaced element, inset:0 sozinho NAO estica —
        ficaria no tamanho intrinseco (W*dpr) e em tela HiDPI a cena erraria o cursor em ate 50%. */
-    #bgLive { position:fixed; inset:0; width:100%; height:100%; z-index:-1; pointer-events:none; display:none!important; }
+    #bgLive { position:fixed; inset:0; width:100%; height:100%; z-index:-1; pointer-events:none; }
     @media (pointer:fine) { body { cursor:none; } }
     #cur  { width:10px;height:10px;background:var(--gold);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9999;opacity:0;transition:width .25s,height .25s,opacity .3s; }
     #cur2 { width:32px;height:32px;border:1px solid rgba(201,162,39,.5);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9998;opacity:0;transition:width .25s,height .25s,border-color .25s,background .25s,opacity .3s; }
@@ -2036,241 +2035,293 @@
     }, { threshold: 0 }).observe(mq);
   })();
 
-  /* ============ FOOTAGE CINEMATOGRAFICO — bokeh vivo fora de foco (#bgLive) ============
-     A cena imita um VIDEO real desfocado de uma loja premium a noite, filmado na mao:
-     - bokeh dourado/ambar em 3 planos (halo gaussiano + anel alaranjado = aberracao cromatica)
-     - micro-tremor handheld GLOBAL (a "camera" respira junto) + drift lento das luzes
-     - rack focus a cada 8-12s (um plano ganha nitidez, os outros abrem/esmaecem)
-     - light leaks diagonais a cada 12-18s (banda dourada em 'screen')
-     - grao de filme animado (4 tiles pre-gerados, ~0.033 de alpha efetivo)
-     Interacao: paralaxe por plano segue o olhar (lerp lento); luzes perto do cursor
-     acendem e crescem ~15%; clique = flare anamorfico + nasce uma luz nova ali.
-     Sprites pre-renderizados: 1 drawImage por luz. Governor: EMA > 26ms corta luzes,
-     depois derruba o dpr, depois desliga o grao. */
+  /* ============ OURO LIQUIDO — mar de causticas de ouro fundido (#bgLive) ============
+     Estetica aprovada (demo-ouro): filamentos causticos aditivos na metade inferior —
+     senos cruzados com fase nao-linear por linha; onde as linhas se aproximam, o
+     'lighter' soma e vira no brilhante de ouro derretido. Brilho quente submerso na
+     borda + linha de horizonte + fagulhas subindo.
+     COMPORTAMENTO DE MAR:
+     - VAGAS: 3 trens de onda viajantes (periodos 9s/14s/23s; comprimentos 860/1520/2400px;
+       direcoes alternadas) somados ao campo. A crista comprime as linhas localmente
+       (+35% de amplitude) e levanta a agua (heave) — cristas de brilho PASSAM na tela.
+     - MARE: a faixa respira ±4% de H (~8% pico a pico) num ciclo de ~20s; rolar a
+       pagina soma paralaxe de 0.06x e ate +5% de mare no fundo (o mar acompanha).
+     - ESPUMA: as fagulhas ganham "spray" (mais alpha e sobem mais rapido) quando uma
+       crista de vaga passa sob elas.
+     REATIVIDADE (so pointer:fine):
+     - VENTO do mouse: rastro 1D de energia (96 celulas, decaimento ~1.5s). Num raio
+       ~200px a amplitude local sobe ate +60%, um chop rapido agita a agua e um brilho
+       suave segue o cursor (+40%), tudo com lerp.
+     - SPLASH no clique: anel radial que viaja (~460px em 1.2s) deformando as causticas
+       + flash central + coroa de fagulhas douradas com gravidade.
+     Perf: o mar e rasterizado num offscreen a ~0.6x e ampliado no blit (o upscale ainda
+     suaviza o brilho); canvas alpha sobre o #bgBase; governor EMA>26ms (corta
+     filamentos → reduz a escala do offscreen → passo maior); pausa com a aba oculta;
+     reduced-motion = 1 frame estatico do mar. */
   (function () {
     var canvas = document.getElementById('bgLive');
     if (!canvas || !canvas.getContext) return;
     var ctx = canvas.getContext('2d');
+    var off = document.createElement('canvas');
+    var octx = off.getContext('2d');
 
     var COARSE = !FINO;
-    var MOBILE = COARSE || matchMedia('(max-width:700px)').matches;
-    var ALVO_N = MOBILE ? 12 : 22;   /* luzes na cena */
-    var CAP_N = ALVO_N + 8;          /* teto contando as nascidas por clique */
-    var MARGEM = 240;                /* faixa extra fora da tela para o wrap */
-    var LEAK_MS = 2800;              /* duracao da varredura do light leak */
-    var FOCO_LERP = 0.035;           /* velocidade do rack focus */
-    var PAR_LERP = 0.045;            /* a camera acompanha o olhar devagar */
+    var PEQUENO = matchMedia('(max-width:480px)').matches;
 
-    var W = 0, H = 0, dpr = 1, dprCap = 1.5;
-    var luzes = [], flares = [];
-    var mx = -1e4, my = -1e4, temMouse = false;
-    var par = [{ x: 0, y: 0 }, { x: 0, y: 0 }, { x: 0, y: 0 }];
-    var foco = [{ k: 1.1, a: .7 }, { k: .94, a: .95 }, { k: 1.1, a: .7 }];
-    var focoAlvo = 1, proxFoco = 0;
-    var leakT = -1e9, leakDir = 1, proxLeak = 0;
-    var grainOn = true, grainSalta = false, grainPat = [], grainI = 0, grainFrame = 0;
-    var rolagem = window.scrollY || 0;
-    var emaDt = 16.7, lastT = 0, nivel = 0, lastDrop = 0;
-    var raf = 0, rodando = false, t0 = performance.now();
+    /* --- constantes do mar --- */
+    var BAND_BASE = 0.42;                 /* topo da faixa caustica (fracao de H) */
+    var MARE_AMP = 0.04;                  /* respiracao: ±4% de H */
+    var MARE_T = 20;                      /* periodo da mare (s) */
+    var MARE_SCROLL = 0.05;               /* mare extra no fundo da pagina */
+    var PARALAXE = 0.06;                  /* faixa acompanha o scroll */
+    var TAU = 6.28318530718;
+    /* trens de vaga: [comprimento px, periodo s, amplitude, direcao, fase] */
+    var VAGAS = [[860, 9, 1.0, 1, 0], [1520, 14, 0.75, -1, 2.1], [2400, 23, 0.55, 1, 4.4]];
+    var VNORM = 1 / (1.0 + 0.75 + 0.55);
+    var VENTO_R2 = -1 / (2 * 110 * 110);  /* gaussiana vertical do vento (~raio 200px) */
+    var VENTO_AMP = 0.6;                  /* +60% de amplitude local */
+    var VENTO_DECAI = 450;                /* ms — rastro some em ~1.5s */
+    var TCELLS = 96;
+    var SPLASH_MS = 1200, SPLASH_R = 460, SPLASH_AMP = 26;
+    var SPLASH_K = TAU / 90;              /* comprimento da ondulacao do anel */
+    var SPLASH_S2 = -1 / (2 * 58 * 58);   /* espessura gaussiana do anel */
 
-    /* --- sprites de bokeh: nucleo claro, falloff gaussiano, borda quente (aberracao) --- */
-    var PAL = [
-      ['255,238,196', '240,216,150', '201,142,39',  '255,148,58'],  /* dourado quente */
-      ['255,246,214', '243,222,160', '214,168,52',  '255,160,72'],  /* dourado claro */
-      ['255,216,150', '238,168,92',  '214,128,48',  '255,128,48'],  /* ambar */
-      ['255,202,132', '230,148,70',  '198,108,40',  '255,118,44'],  /* ambar profundo */
-      ['240,244,252', '216,224,240', '168,184,214', '255,168,118']  /* creme frio (realismo) */
-    ];
-    function fazSprite(p) {
-      var s = document.createElement('canvas'), d = 256, r = d / 2;
-      s.width = s.height = d;
-      var c = s.getContext('2d');
-      var g = c.createRadialGradient(r, r, 0, r, r, r);
-      g.addColorStop(0,    'rgba(' + p[0] + ',0.88)');
-      g.addColorStop(0.26, 'rgba(' + p[1] + ',0.52)');
-      g.addColorStop(0.55, 'rgba(' + p[2] + ',0.20)');
-      g.addColorStop(0.78, 'rgba(' + p[2] + ',0.075)');
-      g.addColorStop(0.90, 'rgba(' + p[3] + ',0.105)'); /* anel alaranjado na borda */
-      g.addColorStop(1,    'rgba(' + p[3] + ',0)');
-      c.fillStyle = g;
-      c.fillRect(0, 0, d, d);
-      return s;
+    /* densidade (PEQUENO <=480px reduzida) */
+    var N1_BASE = PEQUENO ? 92 : (COARSE ? 128 : 160); /* corpo ambar */
+    var N2_BASE = PEQUENO ? 30 : (COARSE ? 42 : 52);   /* filamentos claros */
+    var PASSO0 = PEQUENO ? 11 : 9;
+    var N_FAISCAS = PEQUENO ? 24 : 46;
+
+    var W = 0, H = 0, dpr = 1;
+    var marS = PEQUENO ? 0.55 : 0.6;      /* escala do offscreen do mar */
+    var marS0 = marS;
+    var docH = 1, rolagem = window.scrollY || 0;
+    var fator = 1, passoX = PASSO0, nivel = 0, emaDt = 16.7, lastDrop = 0, bomDesde = 0;
+    var lastT = 0, raf = 0, rodando = false, t0 = performance.now();
+    var spanAtual = 0;
+
+    /* vento (rastro do mouse) */
+    var tE = new Float32Array(TCELLS), tY = new Float32Array(TCELLS);
+    var temVento = false, ventoGlow = 0;
+    var mx = -1e4, my = -1e4, mxS = -1e4, myS = -1e4, lmx = -1e4, lmy = -1e4, temMouse = false;
+
+    /* splash */
+    var ondas = [], borrifos = [];
+
+    /* fagulhas (espuma) */
+    var FAISCAS = [];
+    for (var fi = 0; fi < N_FAISCAS; fi++) {
+      FAISCAS.push({
+        x: Math.random(), p: Math.random(),
+        s: 0.018 + Math.random() * 0.035,
+        r: 0.8 + Math.random() * 1.4,
+        tw: Math.random() * TAU
+      });
     }
-    var sprites = [fazSprite(PAL[0]), fazSprite(PAL[1]), fazSprite(PAL[2]), fazSprite(PAL[3]), fazSprite(PAL[4])];
 
-    /* --- banda de light leak (tambem vira o risco anamorfico do flare) --- */
-    var leakTex = (function () {
-      var s = document.createElement('canvas');
-      s.width = 64; s.height = 256;
-      var c = s.getContext('2d');
-      var g = c.createLinearGradient(0, 0, 0, 256);
-      g.addColorStop(0,    'rgba(255,190,90,0)');
-      g.addColorStop(0.42, 'rgba(255,214,130,0.30)');
-      g.addColorStop(0.5,  'rgba(255,236,180,0.44)');
-      g.addColorStop(0.58, 'rgba(255,206,110,0.28)');
-      g.addColorStop(1,    'rgba(255,170,70,0)');
-      c.fillStyle = g;
-      c.fillRect(0, 0, 64, 256);
-      return s;
-    })();
-
-    /* --- lavagem ambiente quente (interior de loja), pre-renderizada pequena --- */
+    /* brilho quente submerso + horizonte, pre-renderizado a 1/4 (1 drawImage/frame) */
     var amb = document.createElement('canvas');
     function pintarAmb() {
       amb.width = Math.max(2, W >> 2); amb.height = Math.max(2, H >> 2);
       var c = amb.getContext('2d'), w = amb.width, h = amb.height;
       c.clearRect(0, 0, w, h);
-      var g1 = c.createRadialGradient(w * .72, h * .9, 0, w * .72, h * .9, Math.max(w, h) * .9);
-      g1.addColorStop(0, 'rgba(140,92,30,0.18)');
-      g1.addColorStop(.5, 'rgba(96,62,22,0.08)');
-      g1.addColorStop(1, 'rgba(60,40,16,0)');
-      c.fillStyle = g1; c.fillRect(0, 0, w, h);
-      var g2 = c.createRadialGradient(w * .14, h * .16, 0, w * .14, h * .16, Math.max(w, h) * .7);
-      g2.addColorStop(0, 'rgba(120,96,44,0.10)');
-      g2.addColorStop(1, 'rgba(80,64,30,0)');
-      c.fillStyle = g2; c.fillRect(0, 0, w, h);
-    }
-
-    /* --- grao de filme: 4 tiles de ruido viram patterns --- */
-    function fazGrain() {
-      grainPat.length = 0;
-      for (var n = 0; n < 4; n++) {
-        var s = document.createElement('canvas');
-        s.width = s.height = 144;
-        var c = s.getContext('2d');
-        var img = c.createImageData(144, 144), d = img.data;
-        for (var i = 0; i < d.length; i += 4) {
-          var v = (Math.random() * 255) | 0;
-          d[i] = d[i + 1] = d[i + 2] = v;
-          d[i + 3] = 26;
-        }
-        c.putImageData(img, 0, 0);
-        grainPat.push(ctx.createPattern(s, 'repeat'));
-      }
-    }
-    function pintaGrain(estatico) {
-      if (!grainOn || !grainPat.length) return;
-      var ox = 0, oy = 0;
-      if (!estatico) {
-        grainFrame++;
-        if (!grainSalta || !(grainFrame & 1)) grainI = (grainI + 1) % grainPat.length;
-        ox = (Math.random() * 144) | 0; oy = (Math.random() * 144) | 0;
-      }
-      ctx.save();
-      ctx.globalAlpha = 0.32; /* tile ja carrega ~0.1 -> ~0.033 efetivo */
-      ctx.translate(-ox, -oy);
-      ctx.fillStyle = grainPat[grainI];
-      ctx.fillRect(0, 0, W + 144, H + 144);
-      ctx.restore();
-    }
-
-    function novaLuz(plano, sp, nx, ny, nasc) {
-      var base = plano === 0 ? 26 + Math.random() * 34
-               : plano === 1 ? 55 + Math.random() * 62
-               : 100 + Math.random() * 120;              /* raios 26..220px */
-      return {
-        plano: plano, sp: sp, nx: nx, ny: ny,
-        r: MOBILE ? base * .82 : base,
-        vx: (Math.random() - .5) * 0.012,                /* deriva lenta, fracao da tela/s */
-        vy: (Math.random() - .5) * 0.005,
-        sway: 6 + Math.random() * 18,
-        swf: .05 + Math.random() * .14,
-        ph: Math.random() * 6.2832,
-        ff: .3 + Math.random() * .5,
-        aBase: .5 + Math.random() * .38,
-        hov: 0, nasc: nasc || -1e9, ex: false
-      };
-    }
-    function semear() {
-      luzes.length = 0;
-      var creme = 0, maxCreme = MOBILE ? 2 : 3;
-      for (var i = 0; i < ALVO_N; i++) {
-        var rr = Math.random(), sp;
-        if (creme < maxCreme && rr > .87) { sp = 4; creme++; }
-        else sp = rr < .3 ? 0 : rr < .55 ? 1 : rr < .8 ? 2 : 3;
-        luzes.push(novaLuz(i % 3, sp, Math.random(), Math.random(), 0));
-      }
+      var g = c.createRadialGradient(w * .60, h * 1.12, h * .05, w * .60, h * 1.12, h * .85);
+      g.addColorStop(0, 'rgba(220,152,42,0.26)');
+      g.addColorStop(.5, 'rgba(165,108,26,0.10)');
+      g.addColorStop(1, 'rgba(0,0,0,0)');
+      c.fillStyle = g; c.fillRect(0, h * .3, w, h * .7);
+      var hz = c.createLinearGradient(0, h - 28, 0, h);
+      hz.addColorStop(0, 'rgba(0,0,0,0)');
+      hz.addColorStop(1, 'rgba(255,188,88,0.12)');
+      c.fillStyle = hz; c.fillRect(0, h - 28, w, 28);
     }
 
     function medir() {
-      dpr = Math.min(window.devicePixelRatio || 1, dprCap);
+      dpr = Math.min(window.devicePixelRatio || 1, 1.5);
       W = window.innerWidth; H = window.innerHeight;
-      canvas.width = W * dpr; canvas.height = H * dpr;
+      canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      off.width = Math.ceil(W * marS); off.height = Math.ceil(H * marS);
+      octx.setTransform(marS, 0, 0, marS, 0, 0);
+      docH = Math.max(1, (document.documentElement.scrollHeight || H) - H);
       pintarAmb();
     }
 
-    function quadro(now, estatico) {
-      var t = (now - t0) / 1000;
-      ctx.clearRect(0, 0, W, H);
-      ctx.drawImage(amb, 0, 0, W, H);
+    /* campo de dobras da demo aprovada — senos cruzados com fase nao-linear */
+    function fold(x, k, t) {
+      var u = x * 0.0036 + t * 0.34;
+      var v = x * 0.0074 - t * 0.47;
+      var w = x * 0.0014 + t * 0.12;
+      return Math.sin(u + k * 11.0 + Math.sin(v + k * 5.5) * 2.1) * 0.55
+           + Math.sin(v * 1.6 + k * 19.0 - Math.sin(w * 2.3 + t * 0.26) * 1.5) * 0.34
+           + Math.sin(w * 3.4 + k * 7.0 + t * 0.6) * 0.42;
+    }
 
-      /* micro-tremor handheld: ruido de baixa frequencia GLOBAL (3 senos por eixo) */
-      var shx = 0, shy = 0;
-      if (!estatico) {
-        shx = Math.sin(t * .87) * 3.4 + Math.sin(t * 2.13 + 1.7) * 1.4 + Math.sin(t * .29 + .5) * 2.6;
-        shy = Math.cos(t * .78 + .6) * 3.0 + Math.sin(t * 1.91 + 4.1) * 1.2 + Math.cos(t * .23 + 2.1) * 2.2;
-      }
+    /* fases das vagas — recalculadas 1x por frame */
+    var vk1 = 0, vk2 = 0, vk3 = 0, vq1 = 0, vq2 = 0, vq3 = 0, vA1 = 0, vA2 = 0, vA3 = 0;
+    function prepararVagas(t) {
+      vk1 = TAU * VAGAS[0][3] / VAGAS[0][0]; vq1 = -t * TAU / VAGAS[0][1] + VAGAS[0][4]; vA1 = VAGAS[0][2] * VNORM;
+      vk2 = TAU * VAGAS[1][3] / VAGAS[1][0]; vq2 = -t * TAU / VAGAS[1][1] + VAGAS[1][4]; vA2 = VAGAS[1][2] * VNORM;
+      vk3 = TAU * VAGAS[2][3] / VAGAS[2][0]; vq3 = -t * TAU / VAGAS[2][1] + VAGAS[2][4]; vA3 = VAGAS[2][2] * VNORM;
+    }
+    function vagaEm(x) {
+      return Math.sin(x * vk1 + vq1) * vA1 + Math.sin(x * vk2 + vq2) * vA2 + Math.sin(x * vk3 + vq3) * vA3;
+    }
 
-      ctx.globalCompositeOperation = 'lighter';
-      var spanY = H + MARGEM * 2;
-      for (var i = 0; i < luzes.length; i++) {
-        var L = luzes[i], f = foco[L.plano];
-        var prof = .38 + L.plano * .31;
-        var x = L.nx * (W + MARGEM * 2) - MARGEM
-              + Math.sin(t * L.swf + L.ph) * L.sway
-              + par[L.plano].x + shx * prof;
-        var y = L.ny * spanY - MARGEM
-              + Math.cos(t * L.swf * .8 + L.ph * 1.3) * L.sway * .6
-              + par[L.plano].y + shy * prof
-              - rolagem * (.015 + L.plano * .03);
-        y = ((y + MARGEM) % spanY + spanY) % spanY - MARGEM;
-        var nascK = Math.min(1, (now - L.nasc) / 700);
-        nascK = 1 - (1 - nascK) * (1 - nascK);
-        var hovAlvo = 0;
-        if (temMouse) {
-          var dx = x - mx, dyy = y - my;
-          if (dx * dx + dyy * dyy < 48400) hovAlvo = 1;  /* raio de 220px */
+    function desenharPasse(t, n, baseAlpha, lw, corFn, fase, interativo) {
+      octx.lineWidth = lw;
+      var cellInv = TCELLS / W;
+      var nOndas = ondas.length;
+      for (var i = 0; i < n; i++) {
+        var k = n === 1 ? 1 : i / (n - 1);          /* 0 = fundo, 1 = topo da faixa */
+        var yBase = H + 14 - spanAtual * Math.pow(k, 1.18) + Math.sin(t * 0.4 + k * 6.0) * 6;
+        var amp = (30 + 55 * k) * (0.9 + 0.1 * Math.sin(t * 0.3 + k * 11));
+        var flick = 0.80 + 0.20 * Math.sin(t * 0.9 + k * 21 + fase * 40);
+        var a = baseAlpha * (0.45 + 0.55 * (1 - k)) * flick;
+        if (a < 0.004) continue;
+        var heave = 10 + 24 * k;                    /* subida/descida da vaga */
+        octx.strokeStyle = corFn(k, a);
+        octx.beginPath();
+        for (var x = -24; x <= W + 24; x += passoX) {
+          var swn = Math.sin(x * vk1 + vq1) * vA1 + Math.sin(x * vk2 + vq2) * vA2 + Math.sin(x * vk3 + vq3) * vA3;
+          var ampL = amp * (1 + 0.35 * swn);
+          var foldV = fold(x, k + fase, t);
+          var y = yBase + swn * heave + foldV * ampL;
+          if (interativo) {
+            /* vento do mouse: rastro 1D com falloff vertical gaussiano */
+            if (temVento) {
+              var c = (x * cellInv) | 0;
+              if (c < 0) c = 0; else if (c >= TCELLS) c = TCELLS - 1;
+              var e = tE[c];
+              if (e > 0.02) {
+                var dvy = yBase - tY[c];
+                var g = e * Math.exp(dvy * dvy * VENTO_R2);
+                if (g > 0.01) {
+                  if (g > 1) g = 1;
+                  y += foldV * ampL * VENTO_AMP * g + g * 7 * Math.sin(x * 0.045 + t * 7.3);
+                }
+              }
+            }
+            /* splash: anel radial deformando o campo */
+            for (var oi = 0; oi < nOndas; oi++) {
+              var od = ondas[oi];
+              var dx = x - od.x;
+              if (dx > od.win || dx < -od.win) continue;
+              var dyy = yBase - od.y;
+              var dd = Math.sqrt(dx * dx + dyy * dyy) - od.R;
+              if (dd > 130 || dd < -130) continue;
+              y += Math.exp(dd * dd * SPLASH_S2) * Math.sin(dd * SPLASH_K) * SPLASH_AMP * od.fade;
+            }
+          }
+          if (x === -24) octx.moveTo(x, y); else octx.lineTo(x, y);
         }
-        L.hov += (hovAlvo - L.hov) * .12;
-        var R = L.r * f.k * (1 + .3 * L.hov) * (.5 + .5 * nascK);
-        var a = L.aBase * f.a * (.8 + .2 * Math.sin(t * L.ff + L.ph)) * (1 + 1.1 * L.hov) * nascK;
-        ctx.globalAlpha = a > 1 ? 1 : a;
-        ctx.drawImage(sprites[L.sp], x - R, y - R, R * 2, R * 2);
+        octx.stroke();
       }
-      ctx.globalAlpha = 1;
+    }
 
-      /* flares de clique: burst radial + risco anamorfico */
-      for (i = flares.length - 1; i >= 0; i--) {
-        var fl = flares[i], p = (now - fl.t) / 480;
-        if (p >= 1) { flares.splice(i, 1); continue; }
-        var rf = 70 + p * 210, aa = (1 - p) * (1 - p) * .55;
-        var g = ctx.createRadialGradient(fl.x, fl.y, 0, fl.x, fl.y, rf);
-        g.addColorStop(0, 'rgba(255,238,190,' + (aa * .9).toFixed(3) + ')');
-        g.addColorStop(.4, 'rgba(240,196,110,' + (aa * .4).toFixed(3) + ')');
-        g.addColorStop(1, 'rgba(255,150,60,0)');
-        ctx.fillStyle = g;
-        ctx.fillRect(fl.x - rf, fl.y - rf, rf * 2, rf * 2);
-        ctx.globalAlpha = aa * .5;
-        ctx.drawImage(leakTex, fl.x - rf * 1.9, fl.y - rf * .12, rf * 3.8, rf * .24);
-        ctx.globalAlpha = 1;
+    function quadro(now, estatico) {
+      var t = (now - t0) / 1000 + 11.3;
+      prepararVagas(t);
+
+      /* mare: respiracao ~20s + scroll (mar sobe no fundo da pagina) + paralaxe */
+      var fracScroll = rolagem / docH; if (fracScroll > 1) fracScroll = 1;
+      var mare = MARE_AMP * Math.sin(t * TAU / MARE_T) + MARE_SCROLL * fracScroll;
+      var bandTop = H * (BAND_BASE - mare) - rolagem * PARALAXE;
+      var minTop = H * 0.20;
+      if (bandTop < minTop) bandTop = minTop;
+      spanAtual = H - bandTop;
+
+      octx.clearRect(0, 0, W, H);
+      octx.globalCompositeOperation = 'lighter';
+      octx.drawImage(amb, 0, 0, W, H);
+
+      var interativo = !estatico;
+
+      /* passada 1 — corpo caustico (ambar) — cores da demo aprovada
+         (alpha/lw compensam a rasterizacao a ~0.6x) */
+      desenharPasse(t, (N1_BASE * fator) | 0, 0.138, 1.4, function (k, a) {
+        var r = 255 - 60 * k, g = 198 - 55 * k, b = 92 - 42 * k;
+        return 'rgba(' + (r | 0) + ',' + (g | 0) + ',' + (b | 0) + ',' + a + ')';
+      }, 0, interativo);
+
+      /* passada 2 — filamentos quentes (ouro claro, quase branco) */
+      desenharPasse(t, (N2_BASE * fator) | 0, 0.20, 1.0, function (k, a) {
+        return 'rgba(255,' + ((230 - 30 * k) | 0) + ',' + ((158 - 40 * k) | 0) + ',' + a + ')';
+      }, 0.006, interativo);
+
+      /* fagulhas / espuma — spray quando a crista da vaga passa */
+      for (var si = 0; si < FAISCAS.length; si++) {
+        var s = FAISCAS[si];
+        var aF;
+        if (!estatico) {
+          var swS = vagaEm(s.x * W);
+          var spray = swS > 0.3 ? (swS - 0.3) * 1.6 : 0;
+          s.p += s.s * (1 + spray * 1.5) / 60;
+          if (s.p > 1) { s.p = 0; s.x = Math.random(); }
+          aF = Math.sin(Math.PI * s.p) * (0.28 + 0.22 * Math.sin(t * 3 + s.tw)) * (1 + spray);
+        } else {
+          aF = Math.sin(Math.PI * s.p) * 0.3;
+        }
+        if (aF <= 0) continue;
+        if (aF > 0.9) aF = 0.9;
+        octx.fillStyle = 'rgba(255,214,120,' + aF.toFixed(3) + ')';
+        octx.beginPath();
+        octx.arc(s.x * W, H - s.p * H * 0.55, s.r, 0, TAU);
+        octx.fill();
       }
 
-      /* light leak varrendo a tela em diagonal */
-      var lp = (now - leakT) / LEAK_MS;
-      if (lp >= 0 && lp <= 1) {
-        var diag = Math.sqrt(W * W + H * H);
-        ctx.save();
-        ctx.globalCompositeOperation = 'screen';
-        ctx.globalAlpha = Math.sin(lp * Math.PI) * .5;
-        ctx.translate(W * (leakDir > 0 ? lp * 1.4 - .2 : 1.2 - lp * 1.4), H * (.1 + lp * .8));
-        ctx.rotate(leakDir > 0 ? -.62 : .62);
-        ctx.drawImage(leakTex, -diag * .75, -H * .34, diag * 1.5, H * .68);
-        ctx.restore();
+      if (interativo) {
+        /* aneis do splash (visiveis) + flash central */
+        for (var oi2 = ondas.length - 1; oi2 >= 0; oi2--) {
+          var od2 = ondas[oi2];
+          var aA = od2.fade * 0.45;
+          if (aA > 0.005) {
+            octx.strokeStyle = 'rgba(255,220,140,' + aA.toFixed(3) + ')';
+            octx.lineWidth = 2.2;
+            octx.beginPath(); octx.arc(od2.x, od2.y, od2.R, 0, TAU); octx.stroke();
+            octx.strokeStyle = 'rgba(255,244,205,' + (aA * 0.55).toFixed(3) + ')';
+            octx.lineWidth = 1.2;
+            octx.beginPath(); octx.arc(od2.x, od2.y, od2.R * 0.82, 0, TAU); octx.stroke();
+            /* flash: a agua pega luz no ponto do mergulho e apaga junto com o anel */
+            var rFl = 70 + od2.R * 0.45;
+            var gf = octx.createRadialGradient(od2.x, od2.y, 0, od2.x, od2.y, rFl);
+            gf.addColorStop(0, 'rgba(255,232,164,' + (od2.fade * od2.fade * 0.34).toFixed(3) + ')');
+            gf.addColorStop(0.55, 'rgba(240,180,80,' + (od2.fade * od2.fade * 0.13).toFixed(3) + ')');
+            gf.addColorStop(1, 'rgba(0,0,0,0)');
+            octx.fillStyle = gf;
+            octx.fillRect(od2.x - rFl, od2.y - rFl, rFl * 2, rFl * 2);
+          }
+        }
+        /* coroa de fagulhas do splash */
+        for (var bi = borrifos.length - 1; bi >= 0; bi--) {
+          var b = borrifos[bi], pb = (now - b.t) / 900;
+          if (pb >= 1) { borrifos.splice(bi, 1); continue; }
+          var bx = b.x + b.vx * pb, by = b.y + b.vy * pb + 260 * pb * pb;
+          var ab = (1 - pb) * (1 - pb) * 0.8;
+          octx.fillStyle = 'rgba(255,224,140,' + ab.toFixed(3) + ')';
+          octx.beginPath(); octx.arc(bx, by, b.r * (1 - pb * 0.5) * 1.3, 0, TAU); octx.fill();
+        }
+        /* brilho que segue o cursor (a "mao na agua"): +40% de luz local */
+        if (ventoGlow > 0.02 && mxS > -9e3) {
+          var bandTopAtual = H - spanAtual;
+          var fadeV = 1 - (bandTopAtual - myS) / 260;
+          if (fadeV > 1) fadeV = 1;
+          if (fadeV > 0.02) {
+            var gm = octx.createRadialGradient(mxS, myS, 0, mxS, myS, 210);
+            gm.addColorStop(0, 'rgba(255,214,120,' + (0.20 * ventoGlow * fadeV).toFixed(3) + ')');
+            gm.addColorStop(0.55, 'rgba(230,160,60,' + (0.08 * ventoGlow * fadeV).toFixed(3) + ')');
+            gm.addColorStop(1, 'rgba(0,0,0,0)');
+            octx.fillStyle = gm;
+            octx.fillRect(mxS - 210, myS - 210, 420, 420);
+          }
+        }
       }
 
-      ctx.globalCompositeOperation = 'source-over';
-      pintaGrain(estatico);
+      octx.globalCompositeOperation = 'source-over';
+
+      /* blit: offscreen 0.6x ampliado para a tela (o upscale suaviza o brilho) */
+      ctx.clearRect(0, 0, W, H);
+      ctx.drawImage(off, 0, 0, off.width, off.height, 0, 0, W, H);
     }
 
     function passo(now) {
@@ -2279,43 +2330,52 @@
       var dt = lastT ? now - lastT : 16.7;
       if (dt > 100) dt = 16.7;
       lastT = now;
-      emaDt += (dt - emaDt) * .08;
-      /* governor em 3 degraus: luzes -> dpr -> grao */
-      if (emaDt > 26 && now - lastDrop > 1500 && nivel < 3) {
-        nivel++; lastDrop = now; emaDt = 16.7;
-        if (nivel === 1) {
-          luzes.sort(function (a, b) { return a.plano - b.plano; });
-          var alvo = Math.max(8, (luzes.length * 2 / 3) | 0);
-          if (luzes.length > alvo) luzes.splice(0, luzes.length - alvo);
-          grainSalta = true;
-        } else if (nivel === 2) { dprCap = 1; medir(); }
-        else grainOn = false;
+      emaDt += (dt - emaDt) * 0.08;
+      /* governor: filamentos → escala do offscreen → passo. COM RECUPERACAO:
+         um engasgo transitorio (carga da intro, fetch do catalogo, volta de aba)
+         nao pode afinar o mar para sempre — 3s de frames bons desfazem 1 degrau
+         (histerese: cai com EMA>26ms, so recupera com EMA<19ms). Os primeiros 4s
+         pos-load nao contam (a EMA ainda esta poluida pela carga da pagina). */
+      if (emaDt > 26 && now - t0 > 4000 && now - lastDrop > 1500 && nivel < 3) {
+        nivel++; lastDrop = now; emaDt = 16.7; bomDesde = 0;
+        if (nivel === 1) fator = 0.66;
+        else if (nivel === 2) { marS = Math.max(0.42, marS0 - 0.12); medir(); }
+        else { fator = 0.5; passoX = PASSO0 + 3; }
+      } else if (nivel > 0) {
+        if (emaDt < 19) {
+          if (!bomDesde) bomDesde = now;
+          else if (now - bomDesde > 3000) {
+            nivel--; lastDrop = now; emaDt = 16.7; bomDesde = 0;
+            if (nivel === 2) { fator = 0.66; passoX = PASSO0; }
+            else if (nivel === 1) { marS = marS0; medir(); }
+            else fator = 1;
+          }
+        } else if (emaDt > 21) bomDesde = 0;
       }
-      /* deriva das luzes (wrap suave nas bordas) */
-      for (var i = 0; i < luzes.length; i++) {
-        var L = luzes[i];
-        L.nx += L.vx * dt / 1000;
-        L.ny += L.vy * dt / 1000;
-        if (L.nx > 1.05) L.nx -= 1.1; else if (L.nx < -.05) L.nx += 1.1;
-        if (L.ny > 1.05) L.ny -= 1.1; else if (L.ny < -.05) L.ny += 1.1;
+      /* decaimento do rastro do vento (~1.5s) e do brilho do cursor */
+      if (temVento || ventoGlow > 0.01) {
+        var dk = Math.exp(-dt / VENTO_DECAI), maxE = 0;
+        for (var c = 0; c < TCELLS; c++) {
+          var e = tE[c];
+          if (e > 0.001) { e *= dk; tE[c] = e; if (e > maxE) maxE = e; }
+          else if (e) tE[c] = 0;
+        }
+        temVento = maxE > 0.02;
+        ventoGlow *= dk;
       }
-      /* paralaxe por plano + rack focus */
-      for (i = 0; i < 3; i++) {
-        var ax = temMouse ? (mx - W / 2) * -(0.012 + i * 0.014) : 0;
-        var ay = temMouse ? (my - H / 2) * -(0.008 + i * 0.010) : 0;
-        par[i].x += (ax - par[i].x) * PAR_LERP;
-        par[i].y += (ay - par[i].y) * PAR_LERP;
-        var ek = i === focoAlvo ? .92 : 1.18, ea = i === focoAlvo ? 1 : .6;
-        foco[i].k += (ek - foco[i].k) * FOCO_LERP;
-        foco[i].a += (ea - foco[i].a) * FOCO_LERP;
+      /* cursor suavizado (lerp) */
+      if (temMouse) {
+        if (mxS < -9e3) { mxS = mx; myS = my; }
+        mxS += (mx - mxS) * 0.22; myS += (my - myS) * 0.22;
       }
-      if (now > proxFoco) {
-        focoAlvo = (focoAlvo + 1 + ((Math.random() * 2) | 0)) % 3;
-        proxFoco = now + 8000 + Math.random() * 4000;
-      }
-      if (now > proxLeak) {
-        leakT = now; leakDir = -leakDir;
-        proxLeak = now + LEAK_MS + 12000 + Math.random() * 6000;
+      /* aneis do splash avancam e esmaecem */
+      for (var i = ondas.length - 1; i >= 0; i--) {
+        var od = ondas[i], p = (now - od.t) / SPLASH_MS;
+        if (p >= 1) { ondas.splice(i, 1); continue; }
+        var ease = 1 - (1 - p) * (1 - p);
+        od.R = 36 + (SPLASH_R - 36) * ease;
+        od.fade = (1 - p) * (1 - p);
+        od.win = od.R + 150;
       }
       quadro(now, false);
       raf = requestAnimationFrame(passo);
@@ -2328,36 +2388,61 @@
       if (rodando && !raf) raf = requestAnimationFrame(passo);
     }
 
-    medir(); fazGrain(); semear();
+    medir();
 
-    if (REDUZ) { /* frame unico da cena: bokeh parado, grao fixo, sem tremor */
-      quadro(t0, true);
-      window.addEventListener('resize', function () { medir(); quadro(t0, true); });
+    if (REDUZ) { /* mar congelado num instante bonito — sem animacao */
+      quadro(t0 + 4000, true);
+      window.addEventListener('resize', function () { medir(); quadro(t0 + 4000, true); });
       return;
     }
 
-    proxFoco = t0 + 8000;
-    proxLeak = t0 + 4200; /* primeiro leak cedo — a cena ja nasce viva */
     window.addEventListener('resize', function () { medir(); });
     window.addEventListener('scroll', function () { rolagem = window.scrollY || 0; }, { passive: true });
-    if (!COARSE) {
-      window.addEventListener('mousemove', function (e) { mx = e.clientX; my = e.clientY; temMouse = true; });
-      document.documentElement.addEventListener('mouseleave', function () { temMouse = false; mx = my = -1e4; });
+
+    if (!COARSE) { /* pointer:coarse fica autonomo: vagas + mare seguem sozinhas */
+      window.addEventListener('mousemove', function (ev) {
+        mx = ev.clientX; my = ev.clientY; temMouse = true;
+        if (lmx > -9e3) {
+          var dxm = mx - lmx, dym = my - lmy;
+          var spd = Math.sqrt(dxm * dxm + dym * dym);
+          if (spd > 0) {
+            var dep = spd * 0.022; if (dep > 0.5) dep = 0.5;
+            var c0 = (mx / W * TCELLS) | 0;
+            for (var o = -2; o <= 2; o++) {
+              var cc = c0 + o;
+              if (cc < 0 || cc >= TCELLS) continue;
+              var wgt = o === 0 ? 1 : (o === -1 || o === 1) ? 0.62 : 0.25;
+              var nv = tE[cc] + dep * wgt;
+              tY[cc] = tE[cc] > 0.01 ? tY[cc] + (my - tY[cc]) * 0.45 : my;
+              tE[cc] = nv > 1 ? 1 : nv;
+            }
+            temVento = true;
+            ventoGlow += spd * 0.006; if (ventoGlow > 1) ventoGlow = 1;
+          }
+        }
+        lmx = mx; lmy = my;
+      });
+      document.documentElement.addEventListener('mouseleave', function () {
+        temMouse = false; mx = my = lmx = lmy = -1e4;
+      });
+      window.addEventListener('pointerdown', function (ev) {
+        ondas.push({ x: ev.clientX, y: ev.clientY, t: performance.now(), R: 36, fade: 1, win: 190 });
+        if (ondas.length > 3) ondas.shift();
+        for (var i = 0; i < 14; i++) {
+          var ang = -Math.PI * (0.15 + Math.random() * 0.7);
+          var vel = 90 + Math.random() * 220;
+          borrifos.push({
+            x: ev.clientX, y: ev.clientY,
+            vx: Math.cos(ang) * vel * (Math.random() < 0.5 ? 1 : -1),
+            vy: Math.sin(ang) * vel,
+            r: 0.8 + Math.random() * 1.4,
+            t: performance.now()
+          });
+        }
+        if (borrifos.length > 60) borrifos.splice(0, borrifos.length - 60);
+      });
     }
-    window.addEventListener('pointerdown', function (e) {
-      flares.push({ x: e.clientX, y: e.clientY, t: performance.now() });
-      if (flares.length > 6) flares.shift();
-      var plano = 1 + ((Math.random() * 2) | 0);
-      var nl = novaLuz(plano, (Math.random() * 4) | 0,
-        (e.clientX + MARGEM) / (W + MARGEM * 2),
-        (e.clientY + MARGEM + rolagem * (.015 + plano * .03)) / (H + MARGEM * 2),
-        performance.now());
-      nl.ex = true;
-      luzes.push(nl);
-      if (luzes.length > CAP_N) {
-        for (var i = 0; i < luzes.length; i++) if (luzes[i].ex) { luzes.splice(i, 1); break; }
-      }
-    });
+
     document.addEventListener('visibilitychange', liga);
     liga();
   })();
