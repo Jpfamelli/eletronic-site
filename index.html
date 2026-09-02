@@ -1168,7 +1168,7 @@
           </div>
           <div class="bc-prize-right">
             <span class="bc-prize-label">GRANDE PRÊMIO DE NATAL</span>
-            <strong class="bc-prize-name">iPhone 17 Pro Max</strong>
+            <strong class="bc-prize-name">iPhone 17</strong>
             <span class="bc-prize-sub">+ Sorteios exclusivos ao longo do ano</span>
           </div>
         </div>
@@ -1198,7 +1198,7 @@
             <div class="bc-step-num">03</div>
             <div class="bc-step-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg></div>
             <strong>Ganhe prêmios</strong>
-            <p>Sorteios ao longo do ano + iPhone 17 Pro Max no Natal</p>
+            <p>Sorteios ao longo do ano + iPhone 17 no Natal</p>
           </div>
         </div>
       </div>
@@ -1210,7 +1210,7 @@
             <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 21h8M12 17v4"/><path d="M17 4H7v5a5 5 0 0 0 10 0V4z"/><path d="M7 6H4v1a4 4 0 0 0 4 4M17 6h3v1a4 4 0 0 1-4 4"/></svg></span>
           </div>
           <div class="bc-card-natal-body">
-            <strong>iPhone 17 Pro Max</strong>
+            <strong>iPhone 17</strong>
             <p>Grande sorteio de Natal — o prêmio mais esperado do ano</p>
           </div>
           <div class="bc-card-natal-tag">NATAL</div>
@@ -1766,11 +1766,54 @@
     var ctx = canvas.getContext('2d');
     var W = 0, H = 0, t = 0, raf = 0, visivel = true, rodando = false;
     var COLS = 44, ROWS = 24, CAM = 13, ESC = .6;
-    var nivel = 0, emaDt = 16, ultimoT = 0;
-    var mwx = 0, mwz = 32, mAmp = 0, mAlvo = 0, sobe = [], ultimoSpawn = 0;
+    var nivel = 0, emaDt = 16, ultimoT = 0, calmo = 0, precisaCalmo = 90, gracas = 0;
+    var mwx = 0, mwz = 32, mAmp = 0, mAlvo = 0, mVel = 0, sobe = [], ultimoSpawn = 0;
+    var ondas = [], picos = [];
+    var gradFog = null, gradFundo = null, gradVin = null, gradFacho = null, gradHor = null;
+    var cadente = null, proxCadente = 4 + Math.random() * 3;
+    var estrelas = [];
+    for (var i = 0; i < 46; i++) {
+      estrelas.push({ x: Math.random(), y: Math.random(), r: .4 + Math.random() * .9, ph: Math.random() * Math.PI * 2, vel: .5 + Math.random() });
+    }
+    var ruido = document.createElement('canvas'), patRuido = null;
+    ruido.width = ruido.height = 64;
+    (function () {
+      var rc = ruido.getContext('2d');
+      if (!rc) return;
+      var im = rc.createImageData(64, 64), d = im.data;
+      for (var k = 0; k < d.length; k += 4) {
+        var v = (Math.random() * 255) | 0;
+        d[k] = d[k + 1] = d[k + 2] = v; d[k + 3] = 255;
+      }
+      rc.putImageData(im, 0, 0);
+      patRuido = ctx.createPattern(ruido, 'repeat');
+    })();
     var parts = [];
-    for (var i = 0; i < 60; i++) {
+    for (i = 0; i < 60; i++) {
       parts.push({ x: (Math.random() - .5) * 60, y: Math.random() * 15, z: (Math.random() - .5) * 52, ph: Math.random() * Math.PI * 2 });
+    }
+    function gradientes() {
+      var hor = H * .3;
+      /* fog: linhas distantes (perto do horizonte) esmaecem para o navy */
+      gradFog = ctx.createLinearGradient(0, hor - 2, 0, H);
+      gradFog.addColorStop(0, 'rgba(201,162,39,0)');
+      gradFog.addColorStop(.2, 'rgba(201,162,39,.5)');
+      gradFog.addColorStop(.6, 'rgba(212,175,55,.95)');
+      gradFog.addColorStop(1, '#e0b93e');
+      gradFundo = ctx.createLinearGradient(0, hor - 2, 0, H);
+      gradFundo.addColorStop(0, 'rgba(122,90,20,0)');
+      gradFundo.addColorStop(.35, 'rgba(122,90,20,.5)');
+      gradFundo.addColorStop(1, 'rgba(140,102,24,.85)');
+      gradVin = ctx.createRadialGradient(W / 2, H * .55, Math.min(W, H) * .34, W / 2, H * .55, Math.max(W, H) * .78);
+      gradVin.addColorStop(0, 'rgba(4,9,28,0)');
+      gradVin.addColorStop(1, 'rgba(4,9,28,.55)');
+      gradFacho = ctx.createLinearGradient(0, hor + 2, 0, 0);
+      gradFacho.addColorStop(0, 'rgba(236,203,102,.6)');
+      gradFacho.addColorStop(.65, 'rgba(212,175,55,.12)');
+      gradFacho.addColorStop(1, 'rgba(212,175,55,0)');
+      gradHor = ctx.createRadialGradient(W / 2, hor, 0, W / 2, hor, W * .3);
+      gradHor.addColorStop(0, 'rgba(232,196,92,.4)');
+      gradHor.addColorStop(1, 'rgba(232,196,92,0)');
     }
     function medir() {
       var r = wrap.getBoundingClientRect();
@@ -1779,15 +1822,21 @@
       W = r.width; H = r.height;
       canvas.width = W * dpr; canvas.height = H * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      gradientes();
       return true;
     }
     function alt(x, z, tt) {
       var h = Math.sin(x * .18) * 2.5 + Math.sin(z * .22) * 2 + Math.sin((x + z) * .12) * 3 +
         Math.cos(x * .08) * 1.5 + Math.sin(z * .3) * 1 +
         Math.sin(x * .2 + tt) * .6 + Math.sin(z * .15 + tt * .7) * .5;
-      if (mAmp > .015) {
+      if (mAmp > .015 || mAmp < -.015) {
         var bx = x - mwx, bz = z - mwz;
         h += mAmp * 3.6 * Math.exp(-(bx * bx + bz * bz) / 85);
+      }
+      for (var w = 0; w < ondas.length; w++) {
+        var o = ondas[w], dx = x - o.x, dz = z - o.z;
+        var d = Math.sqrt(dx * dx + dz * dz) - o.r;
+        if (d > -5 && d < 5) h += o.amp * 2.8 * Math.cos(d * .7) * Math.exp(-d * d / 9);
       }
       return h;
     }
@@ -1795,19 +1844,23 @@
       var f = H * .38, hor = H * .3;
       return { x: W / 2 + x * f / z, y: hor + (CAM - y * ESC) * f / z };
     }
-    function camada(tt, yOff, cor, alfa, saltaVert) {
+    function camada(tt, yOff, estilo, alfa, saltaVert, coleta) {
       var a = Math.sin(tt * .15) * .08, ca = Math.cos(a), sa = Math.sin(a);
-      ctx.strokeStyle = cor; ctx.globalAlpha = alfa; ctx.lineWidth = 1;
+      ctx.strokeStyle = estilo; ctx.globalAlpha = alfa; ctx.lineWidth = saltaVert ? .7 : 1;
       ctx.beginPath();
-      var i, j, x, z, p;
+      var i, j, x, z, p, h;
       var dj = nivel > 1 ? 2 : 1;
       var di = (saltaVert ? 4 : 2) * (nivel > 1 ? 2 : 1);
       for (j = 0; j <= ROWS; j += dj) {
         z = 6 + (1 - j / ROWS) * 52;
         for (i = 0; i <= COLS; i++) {
           x = (i / COLS - .5) * 68;
-          p = proj(x * ca + (z - 32) * sa, z, alt(x, z, tt) + yOff);
+          h = alt(x, z, tt);
+          p = proj(x * ca + (z - 32) * sa, z, h + yOff);
           if (i === 0) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y);
+          if (coleta && h > 5.7 && z < 46 && picos.length < 40) {
+            picos.push({ x: p.x, y: p.y, f: Math.min(1, (h - 5.7) / 2.2) * (1 - (z - 6) / 52 * .65) });
+          }
         }
       }
       for (i = 0; i <= COLS; i += di) {
@@ -1822,9 +1875,110 @@
     }
     function quadro(tt) {
       ctx.clearRect(0, 0, W, H);
-      mAmp += (mAlvo - mAmp) * .07;
-      if (nivel < 1) camada(tt, -.5, '#8a6010', .25, true);
-      camada(tt, 0, '#c9a227', .45 + Math.sin(tt * .5) * .1, false);
+      var hor = H * .3, i, x, p;
+      /* bump do mouse com inercia de mola (continua ondulando apos parar) */
+      mVel += (mAlvo - mAmp) * .05;
+      mVel *= .9;
+      mAmp += mVel;
+      /* ondas circulares de clique */
+      for (i = ondas.length - 1; i >= 0; i--) {
+        var on = ondas[i];
+        on.r += .55; on.amp *= .988;
+        if (on.amp < .05 || on.r > 80) ondas.splice(i, 1);
+      }
+      /* ceu: estrelas raras + estrela cadente (cortado no nivel 1) */
+      if (nivel === 0) {
+        ctx.fillStyle = '#e8d9a0';
+        for (i = 0; i < estrelas.length; i++) {
+          var st = estrelas[i];
+          ctx.globalAlpha = .16 + .42 * Math.abs(Math.sin(tt * st.vel * 3 + st.ph));
+          ctx.beginPath();
+          ctx.arc(st.x * W, 4 + st.y * (hor - 14), st.r, 0, 6.2832);
+          ctx.fill();
+        }
+        if (!REDUZ) {
+          if (!cadente && tt > proxCadente) {
+            cadente = { x: W * (.12 + Math.random() * .4), y: 6 + Math.random() * hor * .4, vx: W * .0016, vy: H * .00045, vida: 1 };
+            if (Math.random() < .5) { cadente.x = W - cadente.x; cadente.vx = -cadente.vx; }
+            proxCadente = tt + 5.8 + Math.random() * 3.8;
+          }
+          if (cadente) {
+            cadente.x += cadente.vx; cadente.y += cadente.vy; cadente.vida -= .006;
+            if (cadente.vida <= 0 || cadente.y > hor - 6) cadente = null;
+            else {
+              var caA = Math.min(1, cadente.vida * 2.5) * Math.min(1, (1 - cadente.vida) * 8);
+              ctx.globalAlpha = caA * .8;
+              ctx.strokeStyle = '#ffe9a8'; ctx.lineWidth = 1.2;
+              ctx.beginPath();
+              ctx.moveTo(cadente.x - cadente.vx * 26, cadente.y - cadente.vy * 26);
+              ctx.lineTo(cadente.x, cadente.y);
+              ctx.stroke();
+              ctx.globalAlpha = caA;
+              ctx.fillStyle = '#fff6d8';
+              ctx.beginPath(); ctx.arc(cadente.x, cadente.y, 1.4, 0, 6.2832); ctx.fill();
+            }
+          }
+        }
+      }
+      /* facho do premio subindo do horizonte central, pulsando devagar */
+      var pul = .55 + .45 * Math.sin(tt * 2.2);
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.globalAlpha = .1 + .1 * pul;
+      ctx.fillStyle = gradFacho;
+      ctx.beginPath();
+      ctx.moveTo(W * .445, hor + 2);
+      ctx.lineTo(W * .33, 0);
+      ctx.lineTo(W * .67, 0);
+      ctx.lineTo(W * .555, hor + 2);
+      ctx.closePath();
+      ctx.fill();
+      ctx.globalAlpha = .22 + .16 * pul;
+      ctx.fillStyle = gradHor;
+      ctx.fillRect(W * .18, hor - H * .1, W * .64, H * .24);
+      ctx.globalCompositeOperation = 'source-over';
+      /* terreno: camada de paralaxe atras (cortada no nivel 2) + principal com fog */
+      picos.length = 0;
+      if (nivel < 2) camada(tt * .82 + 1.7, -.9, gradFundo, .38, true, false);
+      camada(tt, 0, gradFog, .55 + Math.sin(tt * .5) * .08, false, true);
+      /* linha de varredura de radar percorrendo o terreno */
+      if (nivel === 0 && !REDUZ) {
+        var ciclo = tt % 3.4;
+        if (ciclo < 1.25) {
+          var pv = ciclo / 1.25;
+          var fadeS = Math.min(1, pv * 6, (1 - pv) * 6);
+          var aS = Math.sin(tt * .15) * .08, caS = Math.cos(aS), saS = Math.sin(aS);
+          ctx.globalCompositeOperation = 'lighter';
+          for (var l = 0; l < 3; l++) {
+            var zL = 58 - pv * 52 + l * 1.6;
+            if (zL > 58) continue;
+            ctx.strokeStyle = '#ffe9a8';
+            ctx.globalAlpha = fadeS * (l === 0 ? .5 : .16 / l);
+            ctx.lineWidth = l === 0 ? 1.4 : 2.4;
+            ctx.beginPath();
+            for (i = 0; i <= COLS; i += 2) {
+              x = (i / COLS - .5) * 68;
+              p = proj(x * caS + (zL - 32) * saS, zL, alt(x, zL, tt));
+              if (i === 0) ctx.moveTo(p.x, p.y); else ctx.lineTo(p.x, p.y);
+            }
+            ctx.stroke();
+          }
+          ctx.globalCompositeOperation = 'source-over';
+        }
+      }
+      /* picos mais altos acendem branco-dourado */
+      if (picos.length) {
+        ctx.globalCompositeOperation = 'lighter';
+        for (i = 0; i < picos.length; i++) {
+          var pk = picos[i];
+          ctx.globalAlpha = pk.f * .12;
+          ctx.fillStyle = '#ffd76a';
+          ctx.beginPath(); ctx.arc(pk.x, pk.y, 5, 0, 6.2832); ctx.fill();
+          ctx.globalAlpha = pk.f * .85;
+          ctx.fillStyle = '#fff3cf';
+          ctx.beginPath(); ctx.arc(pk.x, pk.y, 1.3, 0, 6.2832); ctx.fill();
+        }
+        ctx.globalCompositeOperation = 'source-over';
+      }
       var b = tt * .03, cb = Math.cos(b), sb = Math.sin(b);
       ctx.fillStyle = '#c9a227';
       for (var i = 0; i < parts.length; i++) {
@@ -1851,6 +2005,19 @@
         ctx.arc(sq.x, sq.y, q.r, 0, Math.PI * 2);
         ctx.fill();
       }
+      /* vinheta interna + grao sutil */
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = gradVin;
+      ctx.fillRect(0, 0, W, H);
+      if (patRuido) {
+        var gx = REDUZ ? 0 : (Math.random() * 64) | 0, gy = REDUZ ? 0 : (Math.random() * 64) | 0;
+        ctx.globalAlpha = .035;
+        ctx.fillStyle = patRuido;
+        ctx.save();
+        ctx.translate(-gx, -gy);
+        ctx.fillRect(0, 0, W + 64, H + 64);
+        ctx.restore();
+      }
       ctx.globalAlpha = 1;
     }
     function passo(agora) {
@@ -1858,7 +2025,13 @@
       if (!rodando) return;
       if (ultimoT) {
         emaDt += (Math.min(agora - ultimoT, 80) - emaDt) * .08;
-        if (emaDt > 26 && nivel < 2) { nivel++; emaDt = 16; }
+        if (gracas > 0) { gracas--; emaDt = 16; } /* jank transitorio de retomada nao conta */
+        else if (emaDt > 26 && nivel < 2) {
+          nivel++; emaDt = 16; calmo = 0;
+          precisaCalmo = Math.min(360, precisaCalmo * 2); /* histerese: flapping exige calma cada vez maior */
+        } else if (nivel > 0 && emaDt < 19) {
+          if (++calmo > precisaCalmo) { nivel--; emaDt = 16; calmo = 0; }
+        } else calmo = 0;
       }
       ultimoT = agora;
       t += .008;
@@ -1869,7 +2042,7 @@
       var quer = visivel && !document.hidden && W > 0;
       if (quer === rodando) return;
       rodando = quer;
-      if (rodando && !raf) { ultimoT = 0; raf = requestAnimationFrame(passo); }
+      if (rodando && !raf) { ultimoT = 0; gracas = 90; raf = requestAnimationFrame(passo); }
     }
     if (REDUZ) {
       if (medir()) quadro(0);
@@ -1906,6 +2079,18 @@
         }
       });
       wrap.addEventListener('mouseleave', function () { mAlvo = 0; });
+      wrap.addEventListener('click', function (e) {
+        if (!H) return;
+        var rr = canvas.getBoundingClientRect();
+        var f = H * .38, hor = H * .3;
+        var dy = (e.clientY - rr.top) - hor;
+        var z = dy > 6 ? CAM * f / dy : 40;
+        z = Math.max(8, Math.min(55, z));
+        var wx = ((e.clientX - rr.left) - W / 2) * z / f;
+        wx = Math.max(-40, Math.min(40, wx));
+        if (ondas.length > 2) ondas.shift();
+        ondas.push({ x: wx, z: z, r: 1, amp: 1.15 });
+      });
     }
     liga();
   }
