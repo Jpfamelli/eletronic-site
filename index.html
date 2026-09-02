@@ -65,7 +65,9 @@
       color: var(--cream);
       font-family: 'DM Sans', sans-serif;
       font-weight: 300;
+      /* clip nao cria scroll container — hidden quebraria o position:sticky do showcase */
       overflow-x: hidden;
+      overflow-x: clip;
     }
     /* ===== PALCO ESCURO — quase preto dramatico + vinheta forte (camada fixa, composited) ===== */
     #bgBase {
@@ -481,8 +483,8 @@
       .heading { font-size: 1.5rem !important; }
     }
 
-    /* PREVENIR OVERFLOW HORIZONTAL */
-    html, body { max-width: 100vw; overflow-x: hidden; }
+    /* PREVENIR OVERFLOW HORIZONTAL (clip: nao vira scroll container, sticky sobrevive) */
+    html, body { max-width: 100vw; overflow-x: hidden; overflow-x: clip; }
     img, video, iframe { max-width: 100%; }
 
   
@@ -988,6 +990,319 @@
       .fc li { margin-bottom:2px; }
       .cat-tab { padding-top:14px !important; padding-bottom:14px !important; }
     }
+
+    /* ============================================
+       SEXTO PASSE — SHOWCASE SCROLLYTELLING,
+       INSTAGRAM, WHATSAPP CLARO E COMO FUNCIONA
+       ============================================ */
+
+    /* ===== SHOWCASE — iPhone 2D guiado pelo scroll ===== */
+    .show { position:relative; height:300vh; }
+    .show-sticky { position:sticky; top:0; height:100vh; overflow:hidden;
+      display:flex; flex-direction:column; align-items:center; justify-content:flex-start;
+      padding:96px 24px 34px; }
+    /* barra de progresso fina dourada na lateral do palco */
+    .show-prog { position:absolute; right:28px; top:50%; transform:translateY(-50%);
+      width:2px; height:36vh; background:rgba(201,162,39,.16); }
+    .show-prog i { display:block; width:100%; height:100%;
+      background:linear-gradient(180deg,#f5d76e,var(--gold) 60%,#8a6a10);
+      transform:scaleY(0); transform-origin:50% 0; }
+    .show-eyebrow { font-size:.66rem; font-weight:600; letter-spacing:.36em; text-transform:uppercase;
+      color:var(--gold); display:flex; align-items:center; gap:12px; margin-bottom:10px; }
+    .show-eyebrow span { display:block; width:28px; height:1px; background:var(--gold); }
+    .show-titles { position:relative; width:100%; max-width:900px; height:4.2rem; margin-bottom:1.2vh; }
+    .show-title { position:absolute; inset:0; margin:0; text-align:center;
+      font-family:'Cormorant Garamond',serif; font-weight:700; letter-spacing:-.015em;
+      font-size:clamp(1.9rem,3.6vw,3.2rem); line-height:1.05; color:var(--cream); }
+    .show-title em { font-style:italic; color:var(--gold); }
+    .show-stage { position:relative; flex:1; width:100%; max-width:1100px; min-height:0;
+      display:flex; align-items:center; justify-content:center; }
+
+    /* o iPhone grande — mesma linguagem da vitrine (moldura navy, borda dourada, island) */
+    .shp { position:relative; height:min(56vh,520px); aspect-ratio:300/640; z-index:2; }
+    .shp-trace { position:absolute; inset:-3px; width:calc(100% + 6px); height:calc(100% + 6px); z-index:3; pointer-events:none; }
+    .shp-trace rect { fill:none; stroke:var(--gold); stroke-width:2.5;
+      stroke-dasharray:1000; stroke-dashoffset:1000;
+      filter:drop-shadow(0 0 8px rgba(240,216,150,.55)); }
+    .shp-body { position:absolute; inset:0; border-radius:14% / 6.6%;
+      background:linear-gradient(155deg,#0d1738 0%,#060c22 55%,#0a1230 100%);
+      border:1.5px solid rgba(201,162,39,.65);
+      box-shadow:inset 0 0 0 4px #010309, inset 0 0 18px rgba(0,0,0,.8), 0 40px 80px -22px rgba(0,0,0,.75); }
+    .shp-screen { position:absolute; inset:3.2%; border-radius:11% / 5.2%; background:#000; overflow:hidden; }
+    .shp-island { position:absolute; top:3.4%; left:50%; transform:translateX(-50%);
+      width:34%; height:3.4%; border-radius:100px; background:#050507; z-index:6;
+      box-shadow:inset 0 0 4px rgba(255,255,255,.06); }
+    .shp-reflex { position:absolute; inset:0; z-index:5; pointer-events:none;
+      background:linear-gradient(118deg,transparent 34%,rgba(255,255,255,.05) 44%,rgba(255,255,255,.10) 48%,rgba(255,255,255,.03) 54%,transparent 62%); }
+    .shp-glow { position:absolute; inset:-14%; z-index:-1; pointer-events:none; opacity:0;
+      background:radial-gradient(50% 50% at 50% 50%, rgba(201,162,39,.28) 0%, transparent 70%); }
+    .shp-scr { position:absolute; inset:0; display:flex; flex-direction:column;
+      align-items:center; justify-content:center; gap:6px; opacity:0;
+      background:
+        radial-gradient(120% 60% at 50% 0%, rgba(201,162,39,.14) 0%, transparent 60%),
+        radial-gradient(150% 70% at 50% 112%, rgba(15,32,96,.85) 0%, transparent 72%),
+        linear-gradient(180deg,#060b1e,#03060f); }
+    .shp-scr-raio svg { width:34%; height:auto; fill:var(--gold);
+      filter:drop-shadow(0 0 22px rgba(240,216,150,.85)); }
+    .s18-ate, .s18-sub { font-size:clamp(.6rem,1.2vh,.8rem); font-weight:700; letter-spacing:.34em;
+      text-transform:uppercase; color:var(--gold-pale); }
+    .s18-big { font-family:'Cormorant Garamond',serif; font-weight:700; line-height:.9;
+      font-size:clamp(3rem,11vh,6rem); color:var(--gold);
+      font-variant-numeric:lining-nums; font-feature-settings:'lnum' 1;
+      text-shadow:0 0 34px rgba(201,162,39,.5); }
+    .s18-sub { color:#aab6cf; letter-spacing:.22em; }
+
+    /* fila da família — 2 iPhones menores atrás no estágio final */
+    .show-mini { position:absolute; top:50%; height:min(42vh,380px); aspect-ratio:300/640;
+      z-index:1; opacity:0; pointer-events:none; }
+    .show-mini-l { left:50%; transform:translate(-150%,-46%) scale(.92); }
+    .show-mini-r { left:50%; transform:translate(50%,-46%) scale(.92); }
+    .smini-body { position:absolute; inset:0; border-radius:14% / 6.6%;
+      background:linear-gradient(155deg,#0c1533 0%,#050a1d 60%);
+      border:1px solid rgba(201,162,39,.45);
+      box-shadow:inset 0 0 0 3px #010309, 0 30px 60px -20px rgba(0,0,0,.7); }
+    .smini-screen { position:absolute; inset:3.4%; border-radius:11% / 5.2%;
+      background:radial-gradient(120% 60% at 50% 0%, rgba(201,162,39,.10) 0%, transparent 60%), #04060f; }
+    .smini-island { position:absolute; top:3.6%; left:50%; transform:translateX(-50%);
+      width:32%; height:3.2%; border-radius:100px; background:#050507; }
+
+    /* callouts com hairlines douradas */
+    .sc-call { position:absolute; z-index:4; opacity:0; display:flex; align-items:center; gap:0;
+      pointer-events:none; }
+    .sc-txt { font-size:.78rem; font-weight:600; letter-spacing:.14em; text-transform:uppercase;
+      color:var(--gold-pale); white-space:nowrap; display:flex; flex-direction:column; gap:3px; }
+    .sc-txt small { font-size:.64rem; font-weight:400; letter-spacing:.08em; text-transform:none;
+      color:#aab6cf; }
+    .sc-line { display:block; width:clamp(48px,7vw,110px); height:1px;
+      background:linear-gradient(90deg,var(--gold),rgba(201,162,39,.15));
+      transform:scaleX(0); }
+    .sc-l { right:calc(50% + min(15vh,140px)); text-align:right; }
+    .sc-l .sc-txt { order:0; align-items:flex-end; margin-right:14px; }
+    .sc-l .sc-line { order:1; transform-origin:100% 50%;
+      background:linear-gradient(270deg,var(--gold),rgba(201,162,39,.15)); }
+    .sc-r { left:calc(50% + min(15vh,140px)); }
+    .sc-r .sc-txt { order:1; margin-left:14px; }
+    .sc-r .sc-line { order:0; transform-origin:0 50%; }
+    .sc-a1 { top:26%; } .sc-a2 { top:52%; }
+    .sc-b1 { top:30%; } .sc-b2 { top:56%; }
+
+    /* CTA final do palco */
+    .show-cta { display:flex; gap:16px; align-items:center; justify-content:center; flex-wrap:wrap;
+      margin-top:2.6vh; opacity:0; transform:translateY(20px); }
+
+    @media (max-width:900px) {
+      .show-prog { right:12px; }
+      .shp { height:min(46vh,420px); }
+      .show-titles { height:3.4rem; }
+    }
+    @media (max-width:700px) {
+      .show-sticky { padding:84px 16px 20px !important; }
+      /* callouts empilhados sob o aparelho — grupos A e B ocupam as mesmas vagas */
+      .sc-call { left:16px !important; right:16px !important; justify-content:center; text-align:center; }
+      .sc-call .sc-line { display:none; }
+      .sc-call .sc-txt { align-items:center !important; margin:0 !important; white-space:normal; }
+      .sc-a1, .sc-b1 { top:auto !important; bottom:16%; }
+      .sc-a2, .sc-b2 { top:auto !important; bottom:5%; }
+      .shp { height:min(38vh,330px); margin-bottom:12vh; }
+      .show-mini { height:min(30vh,250px); }
+      .show-mini-l { transform:translate(-136%,-46%) scale(.92); }
+      .show-mini-r { transform:translate(36%,-46%) scale(.92); }
+      .show-cta { margin-top:1.6vh; gap:10px; }
+      .show-cta .btn-g, .show-cta .btn-claro { padding:12px 18px; font-size:.7rem; }
+    }
+    /* reduced-motion: composição final estática, todos os textos visíveis */
+    @media (prefers-reduced-motion: reduce) {
+      .show { height:auto !important; }
+      .show-sticky { position:static; height:auto; min-height:0; padding:90px 24px 60px; }
+      .show-titles { position:static; height:auto; margin-bottom:24px; }
+      .show-title { position:static; display:none; }
+      .show-title.st-0 { display:block; }
+      .show-stage { min-height:520px; }
+      .shp-trace { display:none; }
+      .shp-body, .shp-scr-18x, .show-mini, .show-cta, .sc-call, .shp-glow { opacity:1 !important; transform:none !important; }
+      .show-mini { position:absolute; }
+      .show-mini-l { transform:translate(-150%,-46%) scale(.92) !important; }
+      .show-mini-r { transform:translate(50%,-46%) scale(.92) !important; }
+      .sc-line { transform:none !important; }
+      .show-cta { transform:none !important; visibility:visible !important; }
+      .show-prog { display:none; }
+      /* todos os callouts visiveis ao mesmo tempo: cada um ganha a sua altura */
+      .sc-a1 { top:12%; } .sc-b1 { top:32%; }
+      .sc-a2 { top:50%; } .sc-b2 { top:68%; }
+    }
+    @media (prefers-reduced-motion: reduce) and (max-width:700px) {
+      .shp { margin-bottom:0; }
+      .sc-a1 { top:auto !important; bottom:27%; } .sc-b1 { top:auto !important; bottom:19%; }
+      .sc-a2 { top:auto !important; bottom:11%; } .sc-b2 { top:auto !important; bottom:3%; }
+      .show-stage { min-height:560px; }
+    }
+
+    /* ===== WHATSAPP CLARO — botão luminoso creme (destaque máximo no dark) ===== */
+    .btn-claro { display:inline-flex; align-items:center; justify-content:center; gap:10px;
+      background:var(--cream); color:var(--navy); padding:15px 36px; font-size:.78rem; font-weight:700;
+      letter-spacing:.14em; text-transform:uppercase; text-decoration:none;
+      box-shadow:0 6px 26px rgba(247,243,232,.18), 0 2px 8px rgba(0,0,0,.4);
+      transition:background .2s, transform .2s, box-shadow .2s; position:relative; overflow:hidden; }
+    .btn-claro svg { width:17px; height:17px; fill:#0e7a43; flex-shrink:0; }
+    .btn-claro:hover { background:#fffdf6; transform:translateY(-2px);
+      box-shadow:0 10px 34px rgba(247,243,232,.28), 0 4px 12px rgba(0,0,0,.45); }
+    .btn-claro::after { content:''; position:absolute; top:-30%; bottom:-30%; left:-45%; width:30%;
+      background:linear-gradient(105deg,transparent,rgba(201,162,39,.35),transparent);
+      transform:skewX(-18deg); opacity:0; pointer-events:none; }
+    .btn-claro:hover::after { animation:glare .55s ease; }
+    .btn-claro:active { transform:scale(.97) !important; }
+    /* CTA da nav vira sólido creme com ícone verde */
+    .nav-btn { display:inline-flex; align-items:center; gap:8px;
+      background:var(--cream); border:1px solid var(--cream); color:var(--navy);
+      box-shadow:0 4px 18px rgba(247,243,232,.16); }
+    .nav-btn svg { width:15px; height:15px; fill:#0e7a43; flex-shrink:0; }
+    .nav-btn:hover { background:#fffdf6; color:var(--navy); }
+    .mmenu .mmenu-wa { display:inline-flex; align-items:center; gap:10px; background:var(--cream); color:var(--navy); }
+    .mmenu .mmenu-wa svg { width:17px; height:17px; fill:#0e7a43; }
+
+    /* float do WhatsApp — 64px, pulso de anel a cada ~8s, tooltip na primeira visita */
+    .wa-float { position:fixed; right:22px; bottom:22px; z-index:250; width:64px; height:64px;
+      border-radius:50%; background:#25d366; display:flex; align-items:center; justify-content:center;
+      box-shadow:0 10px 30px rgba(0,0,0,.5), 0 4px 14px rgba(37,211,102,.35);
+      transition:transform .2s, box-shadow .2s; }
+    .wa-float svg { width:32px; height:32px; fill:#fff; }
+    .wa-float:hover { transform:translateY(-3px) scale(1.04);
+      box-shadow:0 14px 38px rgba(0,0,0,.55), 0 6px 20px rgba(37,211,102,.45); }
+    .wa-float:active { transform:scale(.94); }
+    .wa-float::before { content:''; position:absolute; inset:0; border-radius:50%;
+      border:2px solid rgba(37,211,102,.85); opacity:0; animation:waPulse 8s ease-out infinite 2s; }
+    @keyframes waPulse {
+      0% { transform:scale(1); opacity:.9; }
+      10% { transform:scale(1.65); opacity:0; }
+      100% { transform:scale(1.65); opacity:0; }
+    }
+    .wa-float-tip { position:absolute; right:calc(100% + 14px); top:50%; transform:translateY(-50%);
+      background:var(--cream); color:var(--navy); font-size:.74rem; font-weight:700;
+      letter-spacing:.06em; padding:10px 16px; white-space:nowrap;
+      box-shadow:0 8px 24px rgba(0,0,0,.45); animation:tipIn .4s ease both; }
+    .wa-float-tip::after { content:''; position:absolute; left:100%; top:50%; transform:translateY(-50%);
+      border:6px solid transparent; border-left-color:var(--cream); }
+    @keyframes tipIn { from { opacity:0; transform:translateY(-50%) translateX(8px); } to { opacity:1; transform:translateY(-50%); } }
+    @media (max-width:700px) {
+      .wa-float { width:58px; height:58px; right:16px; bottom:16px; }
+      .wa-float svg { width:28px; height:28px; }
+    }
+
+    /* ===== COMO FUNCIONA — 4 passos com linha que se desenha ===== */
+    .como-wrap { position:relative; margin-top:64px; }
+    .como-line { position:absolute; top:44px; left:0; width:100%; height:60px; pointer-events:none; }
+    .como-line path { fill:none; stroke:var(--gold); stroke-width:1.4; opacity:.55;
+      stroke-dasharray:1000; stroke-dashoffset:1000; }
+    .como-grid { list-style:none; display:grid; grid-template-columns:repeat(4,1fr); gap:28px;
+      padding:0; margin:0; position:relative; z-index:1; counter-reset:passo; }
+    .como-step { padding-top:8px; }
+    .como-num { font-family:'Cormorant Garamond',serif; font-size:4.6rem; font-weight:700; line-height:1;
+      color:transparent; -webkit-text-stroke:1.5px rgba(201,162,39,.55); display:block; margin-bottom:16px;
+      font-variant-numeric:lining-nums; font-feature-settings:'lnum' 1;
+      background:#030714; width:max-content; padding-right:16px; position:relative; }
+    .como-step h3 { font-family:'Cormorant Garamond',serif; font-size:1.35rem; font-weight:700;
+      color:var(--gold); margin-bottom:10px;
+      font-variant-numeric:lining-nums; font-feature-settings:'lnum' 1; }
+    .como-step p { font-size:.83rem; line-height:1.72; color:var(--gray); }
+    .como-step { position:relative; border-top:1px solid rgba(201,162,39,.14);
+      transition:border-color .3s; }
+    .como-step:hover { border-top-color:rgba(201,162,39,.5); }
+    @media (max-width:900px) {
+      .como-grid { grid-template-columns:1fr 1fr; gap:32px 20px; }
+      .como-line { display:none; }
+      .como-num { font-size:3.4rem; }
+    }
+    @media (max-width:560px) { .como-grid { grid-template-columns:1fr; } }
+    @media (prefers-reduced-motion: reduce) { .como-line path { stroke-dashoffset:0 !important; } }
+
+    /* ===== INSTAGRAM — a loja na vida real ===== */
+    .ig-head { display:flex; align-items:center; justify-content:space-between; gap:24px;
+      flex-wrap:wrap; margin-top:44px; padding:24px 28px;
+      border:1px solid rgba(201,162,39,.2); background:rgba(255,255,255,.03); }
+    .ig-id { display:flex; flex-direction:column; gap:8px; }
+    .ig-handle { display:inline-flex; align-items:center; gap:8px;
+      font-family:'Cormorant Garamond',serif; font-size:1.7rem; font-weight:700; color:var(--cream); }
+    .ig-verif { width:20px; height:20px; flex-shrink:0; }
+    .ig-stats { font-size:.78rem; letter-spacing:.08em; color:var(--gray); }
+    .ig-stats b { color:var(--gold-pale); font-weight:600; }
+    .ig-follow { display:inline-flex; align-items:center; gap:10px;
+      background:var(--cream); color:var(--navy); padding:14px 30px; font-size:.75rem; font-weight:700;
+      letter-spacing:.14em; text-transform:uppercase; text-decoration:none;
+      box-shadow:0 6px 24px rgba(247,243,232,.16);
+      transition:background .2s, transform .2s; position:relative; overflow:hidden; }
+    .ig-follow svg { width:16px; height:16px; stroke:#b0356d; fill:none; stroke-width:2;
+      stroke-linecap:round; stroke-linejoin:round; }
+    .ig-follow:hover { background:#fffdf6; transform:translateY(-2px); }
+    .ig-follow:active { transform:scale(.97); }
+    .ig-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:22px; }
+    .ig-item { position:relative; min-height:420px; border:1px solid rgba(201,162,39,.16);
+      background:rgba(255,255,255,.02); overflow:hidden; }
+    .ig-item .instagram-media { position:relative; z-index:2; margin:0 !important;
+      min-width:0 !important; width:100% !important; max-width:100% !important;
+      background:transparent !important; border:none !important; box-shadow:none !important; }
+    /* âncora crua do blockquote antes do embed.js processar — discreta, sem azul default */
+    .ig-item .instagram-media a { display:inline-block; padding:14px 16px; color:var(--gray);
+      font-size:.7rem; letter-spacing:.08em; text-decoration:none; }
+    /* enquanto o embed nao materializa, o blockquote fica invisivel (layout preservado:
+       o vigia ainda mede offsetHeight do iframe) — so o placeholder aparece */
+    .ig-item:not(.ig-ok) .instagram-media { visibility:hidden; }
+    /* o embed.js renomeia o blockquote para -registered enquanto processa: a ancora
+       crua dele escaparia do estilo e pintaria por cima do placeholder — some */
+    .ig-item blockquote.instagram-media-registered { display:none !important; }
+    /* placeholder elegante navy/ouro com shimmer — vira card "Ver no Instagram" no fallback */
+    .ig-ph { position:absolute; inset:0; z-index:1; display:flex; flex-direction:column;
+      align-items:center; justify-content:center; gap:14px; text-decoration:none;
+      background:linear-gradient(160deg,rgba(13,23,56,.6),rgba(4,9,28,.85)); }
+    .ig-ph::after { content:''; position:absolute; inset:0;
+      background:linear-gradient(100deg, transparent 30%, rgba(201,162,39,.08) 50%, transparent 70%);
+      transform:translateX(-100%); animation:skelSweep 1.6s ease infinite; }
+    .ig-ph svg { width:38px; height:38px; stroke:rgba(201,162,39,.6); fill:none; stroke-width:1.4;
+      stroke-linecap:round; stroke-linejoin:round; }
+    .ig-ph span { font-size:.72rem; letter-spacing:.16em; text-transform:uppercase; color:var(--gray); }
+    .ig-ph .ig-ph-cta { display:none; border:1px solid var(--gold); color:var(--gold);
+      padding:10px 22px; font-size:.7rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; }
+    .ig-item.ig-ok .ig-ph { display:none; }
+    .ig-item.ig-fallback .ig-ph::after { display:none; }
+    .ig-item.ig-fallback .ig-ph .ig-ph-cta { display:inline-block; }
+    /* no fallback some TUDO que o embed.js tenha deixado — só o card clicável fica */
+    .ig-item.ig-fallback > :not(.ig-ph) { display:none !important; }
+    .ig-chips { display:flex; flex-wrap:wrap; gap:10px; margin-top:26px; }
+    .ig-chip { border:1px solid rgba(201,162,39,.28); background:rgba(201,162,39,.06);
+      color:var(--gold-pale); font-size:.68rem; font-weight:600; letter-spacing:.16em;
+      text-transform:uppercase; padding:9px 18px; text-decoration:none;
+      transition:background .2s, border-color .2s, transform .2s; }
+    .ig-chip:hover { background:rgba(201,162,39,.14); border-color:var(--gold); transform:translateY(-2px); }
+    .ig-chip:active { transform:scale(.97); }
+    @media (max-width:900px) { .ig-grid { grid-template-columns:1fr; } .ig-item { min-height:380px; } }
+    @media (prefers-reduced-motion: reduce) { .ig-ph::after { display:none !important; } }
+
+    /* ===== MICRO-INTERAÇÕES EXTRA ===== */
+    /* raio da aba Black Club pisca no hover */
+    @keyframes raioPisca {
+      0%, 100% { opacity:1; filter:none; }
+      25% { opacity:.25; }
+      45% { opacity:1; filter:drop-shadow(0 0 6px rgba(240,216,150,.9)); }
+      65% { opacity:.4; }
+      80% { opacity:1; filter:drop-shadow(0 0 4px rgba(240,216,150,.7)); }
+    }
+    .black-club-tab:hover svg { animation:raioPisca .6s ease 1; }
+    /* raio da nav pisca quando o scrollspy troca de seção */
+    .logo-mark.zap svg { animation:raioPisca .6s ease 1; }
+    .logo-mark.zap { box-shadow:0 0 14px rgba(201,162,39,.45); transition:box-shadow .6s; }
+    /* tilt no card do prêmio (transform via JS; transição suave) */
+    .bc-prize-box { transition:transform .18s ease-out, box-shadow .3s; will-change:transform; }
+    .bc-prize-box:hover { box-shadow:0 14px 40px rgba(201,162,39,.18); }
+    /* stats agora com 6 colunas no desktop */
+    .stats { grid-template-columns:repeat(6,1fr); }
+    @media (max-width:900px) and (min-width:701px) { .stats { grid-template-columns:repeat(3,1fr); } .stat:nth-child(3) { border-right:none; } }
+    /* rodapé com 5 colunas (coluna Instagram) */
+    .ft { grid-template-columns:1.4fr 1fr 1fr 1fr 1fr; }
+    @media (max-width:900px) { .ft { grid-template-columns:1fr 1fr; } }
+    @media (max-width:700px) { .ft { grid-template-columns:1fr !important; } }
+    @media (prefers-reduced-motion: reduce) {
+      .wa-float::before, .wa-float-tip { display:none !important; }
+      .black-club-tab:hover svg, .logo-mark.zap svg { animation:none !important; }
+    }
   </style>
 </head>
 <body>
@@ -1049,10 +1364,11 @@
     <li><a href="#produtos">Produtos</a></li>
     <li><a href="#produtos" onclick="irCat('blackclub')">Black Club</a></li>
     <li><a href="#garantias">Garantia</a></li>
+    <li><a href="#instagram">Instagram</a></li>
     <li><a href="#contato">Contato</a></li>
   </ul>
   <div class="nav-right">
-    <a href="https://wa.me/5512997463135" target="_blank" rel="noopener" class="nav-btn">Chamar no WhatsApp</a>
+    <a href="https://wa.me/5512997463135" target="_blank" rel="noopener" class="nav-btn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.5 14.4c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.46-2.4-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.91-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.87 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.7.63.71.22 1.36.19 1.87.11.57-.08 1.76-.72 2-1.41.25-.7.25-1.29.18-1.41-.08-.13-.28-.2-.58-.35zM12 2C6.5 2 2 6.48 2 12c0 1.77.46 3.44 1.27 4.89L2 22l5.23-1.26A9.95 9.95 0 0 0 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm0 18.19a8.17 8.17 0 0 1-4.16-1.14l-.3-.18-3.1.75.77-3-.19-.3A8.15 8.15 0 0 1 3.84 12c0-4.5 3.67-8.17 8.16-8.17S20.16 7.5 20.16 12 16.5 20.19 12 20.19z"/></svg>Chamar no WhatsApp</a>
     <button class="nav-burger" id="navBurger" aria-label="Abrir menu" aria-expanded="false" aria-controls="mmenu">
       <span></span><span></span>
     </button>
@@ -1065,9 +1381,16 @@
   <a href="#produtos">Produtos</a>
   <a href="#produtos" onclick="irCat('blackclub')">Black Club</a>
   <a href="#garantias">Garantia</a>
+  <a href="#instagram">Instagram</a>
   <a href="#contato">Contato</a>
-  <a class="mmenu-wa" href="https://wa.me/5512997463135" target="_blank" rel="noopener">Chamar no WhatsApp</a>
+  <a class="mmenu-wa" href="https://wa.me/5512997463135" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.5 14.4c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.46-2.4-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.91-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.87 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.7.63.71.22 1.36.19 1.87.11.57-.08 1.76-.72 2-1.41.25-.7.25-1.29.18-1.41-.08-.13-.28-.2-.58-.35zM12 2C6.5 2 2 6.48 2 12c0 1.77.46 3.44 1.27 4.89L2 22l5.23-1.26A9.95 9.95 0 0 0 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm0 18.19a8.17 8.17 0 0 1-4.16-1.14l-.3-.18-3.1.75.77-3-.19-.3A8.15 8.15 0 0 1 3.84 12c0-4.5 3.67-8.17 8.16-8.17S20.16 7.5 20.16 12 16.5 20.19 12 20.19z"/></svg>Chamar no WhatsApp</a>
 </div>
+
+<!-- FLOAT WHATSAPP — 64px, pulso de anel, tooltip na primeira visita -->
+<a id="waFloat" class="wa-float" href="https://wa.me/5512997463135" target="_blank" rel="noopener" aria-label="Falar com a Eletronic no WhatsApp">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.5 14.4c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.46-2.4-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.91-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.87 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.7.63.71.22 1.36.19 1.87.11.57-.08 1.76-.72 2-1.41.25-.7.25-1.29.18-1.41-.08-.13-.28-.2-.58-.35zM12 2C6.5 2 2 6.48 2 12c0 1.77.46 3.44 1.27 4.89L2 22l5.23-1.26A9.95 9.95 0 0 0 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm0 18.19a8.17 8.17 0 0 1-4.16-1.14l-.3-.18-3.1.75.77-3-.19-.3A8.15 8.15 0 0 1 3.84 12c0-4.5 3.67-8.17 8.16-8.17S20.16 7.5 20.16 12 16.5 20.19 12 20.19z"/></svg>
+  <span class="wa-float-tip" id="waTip" hidden>Fale com a gente</span>
+</a>
 
 <main id="conteudo">
 <!-- HERO -->
@@ -1095,7 +1418,7 @@
     <span class="rs">— Avaliações verificadas</span>
   </div>
   <div class="actions">
-    <a href="https://wa.me/5512997463135" target="_blank" rel="noopener" class="btn-g">Chamar no WhatsApp</a>
+    <a href="https://wa.me/5512997463135" target="_blank" rel="noopener" class="btn-claro"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.5 14.4c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.46-2.4-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.91-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.87 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.7.63.71.22 1.36.19 1.87.11.57-.08 1.76-.72 2-1.41.25-.7.25-1.29.18-1.41-.08-.13-.28-.2-.58-.35zM12 2C6.5 2 2 6.48 2 12c0 1.77.46 3.44 1.27 4.89L2 22l5.23-1.26A9.95 9.95 0 0 0 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm0 18.19a8.17 8.17 0 0 1-4.16-1.14l-.3-.18-3.1.75.77-3-.19-.3A8.15 8.15 0 0 1 3.84 12c0-4.5 3.67-8.17 8.16-8.17S20.16 7.5 20.16 12 16.5 20.19 12 20.19z"/></svg>Chamar no WhatsApp</a>
     <a href="#produtos" class="btn-t">Ver modelos</a>
   </div>
 </section>
@@ -1113,6 +1436,52 @@
     </span>
   </div>
 </div>
+
+<!-- SHOWCASE — iPhone 2D guiado pelo scroll (palco sticky de 300vh) -->
+<section class="show" id="showcase" aria-label="A experiência Eletronic — iPhone original do lacre à sua mão">
+  <div class="show-sticky">
+    <p class="show-eyebrow"><span></span>A experiência Eletronic</p>
+    <div class="show-titles">
+      <h3 class="show-title st-0">Original. <em>Lacrado.</em> Seu.</h3>
+      <h3 class="show-title st-1">Tudo <em>no papel</em> — e no seu nome.</h3>
+      <h3 class="show-title st-2">Cabe no <em>seu bolso</em>.</h3>
+      <h3 class="show-title st-3">A família <em>completa</em> espera você.</h3>
+    </div>
+    <div class="show-stage">
+      <div class="show-mini show-mini-l" aria-hidden="true"><div class="smini-body"><div class="smini-screen"></div><div class="smini-island"></div></div></div>
+      <div class="show-mini show-mini-r" aria-hidden="true"><div class="smini-body"><div class="smini-screen"></div><div class="smini-island"></div></div></div>
+      <div class="shp" id="shp" aria-hidden="true">
+        <svg class="shp-trace" viewBox="0 0 306 646" preserveAspectRatio="none" aria-hidden="true">
+          <rect id="shpTraceR" x="3" y="3" width="300" height="640" rx="44" pathLength="1000"/>
+        </svg>
+        <div class="shp-body">
+          <div class="shp-screen">
+            <div class="shp-scr shp-scr-raio" id="shpRaio">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+            </div>
+            <div class="shp-scr shp-scr-18x" id="shp18">
+              <span class="s18-ate">Até</span>
+              <span class="s18-big">18x</span>
+              <span class="s18-sub">no cartão</span>
+            </div>
+            <div class="shp-reflex"></div>
+            <div class="shp-island"></div>
+          </div>
+        </div>
+        <div class="shp-glow" id="shpGlow"></div>
+      </div>
+      <div class="sc-call sc-l sc-a1"><span class="sc-txt">Nota Fiscal<small>em todos os aparelhos</small></span><span class="sc-line"></span></div>
+      <div class="sc-call sc-r sc-a2"><span class="sc-line"></span><span class="sc-txt">Garantia 1 ano<small>da loja, no lacrado e no seminovo</small></span></div>
+      <div class="sc-call sc-l sc-b1"><span class="sc-txt">Seu iPhone vale como entrada<small>avaliamos o usado na hora</small></span><span class="sc-line"></span></div>
+      <div class="sc-call sc-r sc-b2"><span class="sc-line"></span><span class="sc-txt">Entrega para todo o Brasil<small>envio rastreado e reforçado</small></span></div>
+    </div>
+    <div class="show-cta" id="showCta">
+      <a href="#produtos" class="btn-g">Ver modelos disponíveis</a>
+      <a href="https://wa.me/5512997463135?text=Ol%C3%A1!%20Quero%20garantir%20o%20meu%20iPhone." target="_blank" rel="noopener" class="btn-claro"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.5 14.4c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.46-2.4-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.91-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.87 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.7.63.71.22 1.36.19 1.87.11.57-.08 1.76-.72 2-1.41.25-.7.25-1.29.18-1.41-.08-.13-.28-.2-.58-.35zM12 2C6.5 2 2 6.48 2 12c0 1.77.46 3.44 1.27 4.89L2 22l5.23-1.26A9.95 9.95 0 0 0 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm0 18.19a8.17 8.17 0 0 1-4.16-1.14l-.3-.18-3.1.75.77-3-.19-.3A8.15 8.15 0 0 1 3.84 12c0-4.5 3.67-8.17 8.16-8.17S20.16 7.5 20.16 12 16.5 20.19 12 20.19z"/></svg>Chamar no WhatsApp</a>
+    </div>
+    <div class="show-prog" aria-hidden="true"><i id="showProgFill"></i></div>
+  </div>
+</section>
 
 <!-- CATALOG -->
 <section class="sec" id="produtos">
@@ -1248,6 +1617,22 @@
 
 </section>
 
+<!-- COMO FUNCIONA -->
+<section class="sec como" id="comofunciona">
+  <p class="eyebrow rv"><span></span>Como Funciona</p>
+  <h2 class="heading rv">Do <em>olá</em> ao iPhone no bolso</h2>
+  <div class="como-wrap">
+    <svg class="como-line" viewBox="0 0 1000 60" preserveAspectRatio="none" aria-hidden="true">
+      <path id="comoPath" pathLength="1000" d="M0 30 C 90 6, 160 54, 250 30 S 410 6, 500 30 S 660 54, 750 30 S 910 6, 1000 30"/>
+    </svg>
+    <ol class="como-grid">
+      <li class="como-step rv"><span class="como-num">01</span><h3>Escolha ou consulte</h3><p>Escolha no catálogo ao vivo ou chame no WhatsApp para ver a vitrine do dia — a gente te ajuda a achar o modelo certo.</p></li>
+      <li class="como-step rv" style="transition-delay:.08s"><span class="como-num">02</span><h3>Confirme com Nota Fiscal</h3><p>Aparelho conferido na sua frente e nota fiscal emitida na hora. Operação 100% formal, sem letra miúda.</p></li>
+      <li class="como-step rv" style="transition-delay:.16s"><span class="como-num">03</span><h3>Transferência na hora</h3><p>Seus dados, fotos e contatos migram para o novo iPhone no ato da compra. Você sai com tudo funcionando.</p></li>
+      <li class="como-step rv" style="transition-delay:.24s"><span class="como-num">04</span><h3>Saia com 1 ano de garantia</h3><p>Garantia de 12 meses da loja e um contato salvo para o que precisar depois. Suporte de verdade.</p></li>
+    </ol>
+  </div>
+</section>
 
 <!-- QUALITY -->
 <div class="quality rv">
@@ -1321,9 +1706,11 @@
 <!-- STATS -->
 <div class="stats">
   <div class="stat rv"><span class="stat-n" data-count="4,8">4,8</span><span class="stat-l">Estrelas Google</span></div>
-  <div class="stat rv" style="transition-delay:.1s"><span class="stat-n" data-count="18" data-suffix="x">18x</span><span class="stat-l">Parcelamento</span></div>
-  <div class="stat rv" style="transition-delay:.2s"><span class="stat-n">1 ano</span><span class="stat-l">de Garantia</span></div>
-  <div class="stat rv" style="transition-delay:.3s"><span class="stat-n">Brasil</span><span class="stat-l">Entrega Nacional</span></div>
+  <div class="stat rv" style="transition-delay:.08s"><span class="stat-n" data-count="5" data-suffix="+">5+</span><span class="stat-l">Anos Realizando Sonhos</span></div>
+  <div class="stat rv" style="transition-delay:.16s"><span class="stat-n" data-count="8400" data-prefix="+">+8.400</span><span class="stat-l">Seguidores</span></div>
+  <div class="stat rv" style="transition-delay:.24s"><span class="stat-n" data-count="18" data-suffix="x">18x</span><span class="stat-l">Parcelamento</span></div>
+  <div class="stat rv" style="transition-delay:.32s"><span class="stat-n">1 ano</span><span class="stat-l">de Garantia</span></div>
+  <div class="stat rv" style="transition-delay:.4s"><span class="stat-n">Brasil</span><span class="stat-l">Entrega Nacional</span></div>
 </div>
 
 <!-- TESTIMONIALS -->
@@ -1346,6 +1733,58 @@
   <p>Atendimento especializado pelo WhatsApp — tire todas as suas dúvidas agora</p>
   <a href="https://wa.me/5512997463135" target="_blank" rel="noopener" class="btn-wa">(12) 99746-3135</a>
 </div>
+
+<!-- INSTAGRAM — A LOJA NA VIDA REAL -->
+<section class="sec igsec" id="instagram">
+  <p class="eyebrow rv"><span></span>Instagram</p>
+  <h2 class="heading rv">A loja na <em>vida real</em></h2>
+  <div class="ig-head rv">
+    <div class="ig-id">
+      <span class="ig-handle">@eletronic.oficial
+        <svg class="ig-verif" viewBox="0 0 24 24" role="img" aria-label="Perfil verificado"><path fill="#3897f0" d="M12 1.5l2.45 1.9 3.05-.4 1.17 2.87 2.87 1.17-.4 3.05L23 12l-1.86 2.45.4 3.05-2.87 1.17-1.17 2.87-3.05-.4L12 22.5l-2.45-1.86-3.05.4-1.17-2.87-2.87-1.17.4-3.05L1 12l1.86-2.45-.4-3.05 2.87-1.17L6.5 2.46l3.05.4z"/><path fill="#fff" d="M10.6 15.7l-3.1-3.1 1.27-1.27 1.83 1.83 4.63-4.63 1.27 1.28z"/></svg>
+      </span>
+      <span class="ig-stats"><b>+8.400 seguidores</b> · <b>254 posts</b> · 5+ anos realizando sonhos com segurança</span>
+    </div>
+    <a class="ig-follow" href="https://www.instagram.com/eletronic.oficial" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="1.1" fill="#b0356d" stroke="none"/></svg>
+      Seguir no Instagram
+    </a>
+  </div>
+  <div class="ig-grid rv" id="igGrid">
+    <div class="ig-item" data-ig="https://www.instagram.com/eletronic.oficial/reel/DcyVWkjgLnM/">
+      <a class="ig-ph" data-ig-keep href="https://www.instagram.com/eletronic.oficial/reel/DcyVWkjgLnM/" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="1.1"/></svg>
+        <span>@eletronic.oficial</span>
+        <span class="ig-ph-cta">Ver no Instagram</span>
+      </a>
+      <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/eletronic.oficial/reel/DcyVWkjgLnM/" data-instgrm-version="14"><a data-ig-keep href="https://www.instagram.com/eletronic.oficial/reel/DcyVWkjgLnM/" target="_blank" rel="noopener">Ver esta publicação no Instagram</a></blockquote>
+    </div>
+    <div class="ig-item" data-ig="https://www.instagram.com/eletronic.oficial/p/DbqGB1VFeHP/">
+      <a class="ig-ph" data-ig-keep href="https://www.instagram.com/eletronic.oficial/p/DbqGB1VFeHP/" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="1.1"/></svg>
+        <span>@eletronic.oficial</span>
+        <span class="ig-ph-cta">Ver no Instagram</span>
+      </a>
+      <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/eletronic.oficial/p/DbqGB1VFeHP/" data-instgrm-version="14"><a data-ig-keep href="https://www.instagram.com/eletronic.oficial/p/DbqGB1VFeHP/" target="_blank" rel="noopener">Ver esta publicação no Instagram</a></blockquote>
+    </div>
+    <div class="ig-item" data-ig="https://www.instagram.com/eletronic.oficial/p/DcylgPAgFyR/">
+      <a class="ig-ph" data-ig-keep href="https://www.instagram.com/eletronic.oficial/p/DcylgPAgFyR/" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="1.1"/></svg>
+        <span>@eletronic.oficial</span>
+        <span class="ig-ph-cta">Ver no Instagram</span>
+      </a>
+      <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/eletronic.oficial/p/DcylgPAgFyR/" data-instgrm-version="14"><a data-ig-keep href="https://www.instagram.com/eletronic.oficial/p/DcylgPAgFyR/" target="_blank" rel="noopener">Ver esta publicação no Instagram</a></blockquote>
+    </div>
+  </div>
+  <div class="ig-chips rv" aria-label="Destaques do perfil">
+    <a class="ig-chip" href="https://www.instagram.com/eletronic.oficial" target="_blank" rel="noopener">Seguro</a>
+    <a class="ig-chip" href="https://www.instagram.com/eletronic.oficial" target="_blank" rel="noopener">Indicações</a>
+    <a class="ig-chip" href="https://www.instagram.com/eletronic.oficial" target="_blank" rel="noopener">Entregas</a>
+    <a class="ig-chip" href="https://www.instagram.com/eletronic.oficial" target="_blank" rel="noopener">Clientes</a>
+    <a class="ig-chip" href="https://www.instagram.com/eletronic.oficial" target="_blank" rel="noopener">Ofertas</a>
+    <a class="ig-chip" href="https://www.instagram.com/eletronic.oficial" target="_blank" rel="noopener">Equipe</a>
+  </div>
+</section>
 
 <!-- CONTACT -->
 <section class="contact" id="contato">
@@ -1421,6 +1860,17 @@
         <li><a href="https://wa.me/5512997463135?text=Ol%C3%A1!%20Quero%20saber%20sobre%20as%20formas%20de%20pagamento." target="_blank" rel="noopener">Formas de Pagamento</a></li>
         <li><a href="https://wa.me/5512997463135?text=Ol%C3%A1!%20Quero%20saber%20sobre%20entrega%20e%20frete." target="_blank" rel="noopener">Entrega e Frete</a></li>
         <li><a href="https://wa.me/5512997463135?text=Ol%C3%A1!%20Quero%20saber%20sobre%20trocas%20e%20devolu%C3%A7%C3%B5es." target="_blank" rel="noopener">Trocas e Devoluções</a></li>
+      </ul>
+    </div>
+    <div class="fc">
+      <h4>Instagram</h4>
+      <ul>
+        <li><a href="https://www.instagram.com/eletronic.oficial" target="_blank" rel="noopener">Seguro</a></li>
+        <li><a href="https://www.instagram.com/eletronic.oficial" target="_blank" rel="noopener">Indicações</a></li>
+        <li><a href="https://www.instagram.com/eletronic.oficial" target="_blank" rel="noopener">Entregas</a></li>
+        <li><a href="https://www.instagram.com/eletronic.oficial" target="_blank" rel="noopener">Clientes</a></li>
+        <li><a href="https://www.instagram.com/eletronic.oficial" target="_blank" rel="noopener">Ofertas</a></li>
+        <li><a href="https://www.instagram.com/eletronic.oficial" target="_blank" rel="noopener">Equipe</a></li>
       </ul>
     </div>
     <div class="fc">
@@ -1547,11 +1997,19 @@
     if(!links.length||!('IntersectionObserver' in window))return;
     const mapa={};
     links.forEach(a=>{ const id=a.getAttribute('href').slice(1); if(id&&!mapa[id]) mapa[id]=a; });
+    const marca=document.querySelector('nav .logo-mark');
     const spy=new IntersectionObserver(es=>{
       es.forEach(en=>{
         const a=mapa[en.target.id];
         if(!a)return;
-        if(en.isIntersecting){ links.forEach(l=>l.classList.remove('on')); a.classList.add('on'); }
+        if(en.isIntersecting&&!a.classList.contains('on')){
+          links.forEach(l=>l.classList.remove('on'));
+          a.classList.add('on');
+          /* o raio da marca "pisca" ao trocar de seção */
+          if(marca&&!matchMedia('(prefers-reduced-motion: reduce)').matches){
+            marca.classList.remove('zap'); void marca.offsetWidth; marca.classList.add('zap');
+          }
+        }
       });
     },{rootMargin:'-40% 0px -55% 0px'});
     Object.keys(mapa).forEach(id=>{ const s=document.getElementById(id); if(s) spy.observe(s); });
@@ -1692,6 +2150,8 @@
       if (/\(\d{2}\)\s?\d{4,5}-\d{4}/.test(a.textContent)) a.textContent = telaBonito;
     });
     document.querySelectorAll('a[href*="instagram.com"]').forEach(function (a) {
+      /* links de POSTS especificos (embeds/fallbacks da secao Instagram) nao viram o perfil */
+      if (a.hasAttribute('data-ig-keep')) return;
       a.href = 'https://www.instagram.com/' + ig;
       if (/@/.test(a.textContent)) a.textContent = a.textContent.replace(/@[\w.]+/, '@' + ig);
     });
@@ -2231,19 +2691,24 @@
   (function () {
     var els = document.querySelectorAll('.stat-n[data-count]');
     if (!els.length || !('IntersectionObserver' in window)) return;
-    function formata(v, dec) { return v.toFixed(dec).replace('.', ','); }
+    function formata(v, dec) {
+      if (dec) return v.toFixed(dec).replace('.', ',');
+      var n = Math.round(v);
+      return n >= 1000 ? n.toLocaleString('pt-BR') : String(n);
+    }
     function conta(el) {
       var bruto = el.getAttribute('data-count');
       var sufixo = el.getAttribute('data-suffix') || '';
+      var prefixo = el.getAttribute('data-prefix') || '';
       var dec = bruto.indexOf(',') > -1 ? 1 : 0;
       var alvo = parseFloat(bruto.replace(',', '.'));
       if (isNaN(alvo)) return;
-      if (REDUZ) { el.textContent = formata(alvo, dec) + sufixo; return; }
+      if (REDUZ) { el.textContent = prefixo + formata(alvo, dec) + sufixo; return; }
       var ini = performance.now();
       (function passo(agora) {
         var p = Math.min(1, (agora - ini) / 900);
         var e = 1 - Math.pow(1 - p, 3);
-        el.textContent = formata(alvo * e, dec) + sufixo;
+        el.textContent = prefixo + formata(alvo * e, dec) + sufixo;
         if (p < 1) requestAnimationFrame(passo);
       })(ini);
     }
@@ -2987,6 +3452,262 @@
       btn.addEventListener('mouseleave', function () { btn.style.transform = ''; });
     });
   }
+
+  /* ============ BLACK CLUB — tilt 3D no card do prêmio ============ */
+  if (FINO && !REDUZ) {
+    var premio = document.querySelector('.bc-prize-box');
+    if (premio) {
+      premio.addEventListener('mousemove', function (e) {
+        var r = premio.getBoundingClientRect();
+        var rx = ((e.clientY - r.top) / r.height - .5) * -8;
+        var ry = ((e.clientX - r.left) / r.width - .5) * 8;
+        premio.style.transform = 'perspective(700px) rotateX(' + rx.toFixed(2) + 'deg) rotateY(' + ry.toFixed(2) + 'deg) translateY(-2px)';
+      });
+      premio.addEventListener('mouseleave', function () { premio.style.transform = ''; });
+    }
+  }
+})();
+</script>
+
+<script>
+'use strict';
+(function () {
+  var REDUZ = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ============ SHOWCASE — iPhone 2D guiado pelo scroll ============
+     Palco sticky de 100vh dentro de 300vh. Um unico rAF le o scroll,
+     faz lerp do progresso (funciona nas duas direcoes) e pinta os
+     4 estagios so com transform/opacity (composited). Pausa fora do
+     viewport e com a aba oculta. Reduced-motion: o CSS mostra a
+     composicao final estatica e o motor nem liga. */
+  (function () {
+    var sec = document.getElementById('showcase');
+    if (!sec) return;
+    var q = function (s) { return sec.querySelector(s); };
+    var trace = document.getElementById('shpTraceR');
+    var shp = document.getElementById('shp');
+    var body = q('.shp-body');
+    var raio = document.getElementById('shpRaio');
+    var s18 = document.getElementById('shp18');
+    var glow = document.getElementById('shpGlow');
+    var prog = document.getElementById('showProgFill');
+    var cta = document.getElementById('showCta');
+    var minis = sec.querySelectorAll('.show-mini');
+    var titulos = sec.querySelectorAll('.show-title');
+    var callsA = sec.querySelectorAll('.sc-a1, .sc-a2');
+    var callsB = sec.querySelectorAll('.sc-b1, .sc-b2');
+    if (!trace || !shp || !body) return;
+    if (REDUZ) return; /* CSS ja pinta a composicao final */
+
+    function clamp(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
+    function seg(p, a, b) { return clamp((p - a) / (b - a)); }
+
+    function pintaCall(el, op, i) {
+      el.style.opacity = op.toFixed(3);
+      var linha = el.querySelector('.sc-line');
+      if (linha) linha.style.transform = 'scaleX(' + op.toFixed(3) + ')';
+      var txt = el.querySelector('.sc-txt');
+      if (txt) txt.style.transform = 'translateY(' + ((1 - op) * 10).toFixed(1) + 'px)';
+    }
+    function pintaTitulo(el, a, b, p) {
+      var vis = seg(p, a, a + .04) * (1 - seg(p, b - .04, b));
+      el.style.opacity = vis.toFixed(3);
+      el.style.transform = 'translateY(' + ((1 - vis) * 14).toFixed(1) + 'px)';
+    }
+
+    var pS = -1;
+    function pinta(p) {
+      var i;
+      /* barra de progresso lateral */
+      if (prog) prog.style.transform = 'scaleY(' + p.toFixed(4) + ')';
+
+      /* ESTAGIO 1 — o iPhone se desenha (contorno tracado, corpo preenche) */
+      var traco = seg(p, 0, .16);
+      trace.style.strokeDashoffset = (1000 * (1 - traco)).toFixed(1);
+      trace.style.opacity = (1 - seg(p, .3, .42)).toFixed(3); /* o traco cede ao corpo */
+      body.style.opacity = seg(p, .1, .24).toFixed(3);
+
+      /* ESTAGIO 2 — giro leve (rotateY fake via scaleX) + tela acende com o raio */
+      var giro = Math.sin(seg(p, .25, .5) * Math.PI); /* vai e volta dentro do estagio */
+      var sx = 1 - .13 * giro;
+      /* ESTAGIO 4 — zoom-out elegante */
+      var zoom = 1 - .17 * seg(p, .75, .95);
+      shp.style.transform = 'scale(' + zoom.toFixed(4) + ') scaleX(' + sx.toFixed(4) + ')';
+      body.style.boxShadow = 'inset 0 0 0 4px #010309, inset 0 0 18px rgba(0,0,0,.8), ' +
+        (giro * 28).toFixed(1) + 'px 40px 80px -22px rgba(0,0,0,.75)';
+      var acende = seg(p, .28, .4);
+      raio.style.opacity = (acende * (1 - seg(p, .5, .56))).toFixed(3);
+      if (glow) glow.style.opacity = (acende * .9 * (1 - .35 * seg(p, .75, .95))).toFixed(3);
+
+      /* ESTAGIO 3 — a tela mostra ATE 18X */
+      s18.style.opacity = seg(p, .52, .6).toFixed(3);
+      s18.style.transform = 'scale(' + (0.92 + .08 * seg(p, .52, .62)).toFixed(3) + ')';
+
+      /* callouts A (Nota Fiscal / Garantia 1 ano) e B (entrada / entrega) */
+      var opA = seg(p, .3, .38) * (1 - seg(p, .47, .53));
+      var opB = seg(p, .55, .63) * (1 - seg(p, .72, .78));
+      for (i = 0; i < callsA.length; i++) pintaCall(callsA[i], opA, i);
+      for (i = 0; i < callsB.length; i++) pintaCall(callsB[i], opB, i);
+
+      /* ESTAGIO 4 — fila da familia + CTA */
+      var fim = seg(p, .78, .9);
+      for (i = 0; i < minis.length; i++) {
+        var m = minis[i];
+        m.style.opacity = fim.toFixed(3);
+        var dir = m.classList.contains('show-mini-l') ? -150 : 50;
+        var desloca = (1 - fim) * (m.classList.contains('show-mini-l') ? 26 : -26);
+        m.style.transform = 'translate(calc(' + dir + '% + ' + desloca.toFixed(1) + 'px), -46%) scale(.92)';
+      }
+      if (cta) {
+        var opCta = seg(p, .8, .9);
+        cta.style.opacity = opCta.toFixed(3);
+        cta.style.transform = 'translateY(' + ((1 - opCta) * 20).toFixed(1) + 'px)';
+        cta.style.pointerEvents = opCta > .5 ? 'auto' : 'none';
+        /* invisivel = fora da ordem de tabulacao (opacity nao tira do tab) */
+        cta.style.visibility = opCta > .05 ? 'visible' : 'hidden';
+      }
+
+      /* titulos por estagio */
+      if (titulos.length === 4) {
+        pintaTitulo(titulos[0], 0, .25, p === 0 ? .001 : p); /* st-0 visivel ja no topo */
+        if (p < .04) { titulos[0].style.opacity = '1'; titulos[0].style.transform = 'none'; }
+        pintaTitulo(titulos[1], .27, .5, p);
+        pintaTitulo(titulos[2], .52, .75, p);
+        pintaTitulo(titulos[3], .77, 1.04, p);
+      }
+    }
+
+    var raf = 0, visivel = false, rodando = false;
+    function alvo() {
+      var r = sec.getBoundingClientRect();
+      var total = r.height - window.innerHeight;
+      return total > 0 ? clamp(-r.top / total) : 0;
+    }
+    function passo() {
+      raf = 0;
+      if (!rodando) return;
+      var a = alvo();
+      if (pS < 0) pS = a;
+      pS += (a - pS) * .14; /* lerp suave nas duas direcoes */
+      if (Math.abs(a - pS) < .0006) pS = a;
+      pinta(pS);
+      raf = requestAnimationFrame(passo);
+    }
+    function liga() {
+      var quer = visivel && !document.hidden;
+      if (quer === rodando) return;
+      rodando = quer;
+      if (rodando && !raf) raf = requestAnimationFrame(passo);
+    }
+    pinta(0); /* estado inicial coerente mesmo antes de rolar */
+    new IntersectionObserver(function (es) { visivel = es[0].isIntersecting; liga(); }, { threshold: 0 }).observe(sec);
+    document.addEventListener('visibilitychange', liga);
+  })();
+
+  /* ============ COMO FUNCIONA — linha que se desenha ao rolar ============ */
+  (function () {
+    var path = document.getElementById('comoPath');
+    var sec = document.getElementById('comofunciona');
+    if (!path || !sec) return;
+    if (REDUZ) { path.style.strokeDashoffset = '0'; return; }
+    var raf = 0, visivel = false;
+    function pinta() {
+      raf = 0;
+      if (!visivel) return;
+      var r = sec.getBoundingClientRect();
+      var vh = window.innerHeight;
+      /* desenha conforme a secao atravessa o viewport */
+      var p = (vh - r.top) / (vh * .85);
+      p = p < 0 ? 0 : p > 1 ? 1 : p;
+      path.style.strokeDashoffset = (1000 * (1 - p)).toFixed(1);
+    }
+    function pede() { if (!raf) raf = requestAnimationFrame(pinta); }
+    new IntersectionObserver(function (es) {
+      visivel = es[0].isIntersecting;
+      if (visivel) pede();
+    }, { rootMargin: '80px 0px' }).observe(sec);
+    window.addEventListener('scroll', pede, { passive: true });
+    window.addEventListener('resize', pede);
+  })();
+
+  /* ============ INSTAGRAM — embeds oficiais LAZY + fallback ============
+     O embed.js so e injetado (uma vez) quando a secao chega a 600px do
+     viewport. Enquanto isso, placeholders navy/ouro com shimmer. Se o
+     embed nao materializar um iframe em 6s, o placeholder vira card
+     clicavel "Ver no Instagram" (link do proprio post). */
+  (function () {
+    var grid = document.getElementById('igGrid');
+    if (!grid) return;
+    var itens = grid.querySelectorAll('.ig-item');
+    var pediu = false;
+
+    /* um item so esconde o placeholder quando o iframe tem altura REAL
+       (iframe raso = embed ainda carregando; o shimmer segue por tras) */
+    function checa(tentativas) {
+      var pendentes = 0;
+      for (var i = 0; i < itens.length; i++) {
+        var it = itens[i];
+        if (it.classList.contains('ig-ok') || it.classList.contains('ig-fallback')) continue;
+        var frame = it.querySelector('iframe');
+        if (frame && frame.offsetHeight > 150) { it.classList.add('ig-ok'); continue; }
+        /* 6s sem nem um iframe -> card "Ver no Instagram"; 15s raso -> idem */
+        if ((!frame && tentativas >= 12) || tentativas >= 30) it.classList.add('ig-fallback');
+        else pendentes++;
+      }
+      return pendentes;
+    }
+
+    function injeta() {
+      if (pediu) return;
+      pediu = true;
+      var s = document.createElement('script');
+      s.async = true;
+      s.src = 'https://www.instagram.com/embed.js';
+      s.onload = function () {
+        try { if (window.instgrm && window.instgrm.Embeds) window.instgrm.Embeds.process(); } catch (e) { /* fallback cobre */ }
+      };
+      s.onerror = function () { checa(99); };
+      document.body.appendChild(s);
+      var tentativas = 0;
+      var vigia = setInterval(function () {
+        tentativas++;
+        if (!checa(tentativas)) clearInterval(vigia);
+      }, 500);
+    }
+
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (es) {
+        if (!es[0].isIntersecting) return;
+        io.disconnect();
+        injeta();
+      }, { rootMargin: '600px 0px' });
+      io.observe(grid);
+    } else injeta();
+  })();
+
+  /* ============ FLOAT WHATSAPP — tooltip na primeira visita ============ */
+  (function () {
+    var flt = document.getElementById('waFloat');
+    var tip = document.getElementById('waTip');
+    if (!flt || !tip || REDUZ) return;
+    var visto = false;
+    try { visto = !!localStorage.getItem('el_wa_tip_v1'); } catch (e) { /* modo privado */ }
+    if (visto) return;
+    var some;
+    function esconde() {
+      clearTimeout(some);
+      tip.hidden = true;
+      try { localStorage.setItem('el_wa_tip_v1', '1'); } catch (e) { /* ok */ }
+      flt.removeEventListener('pointerenter', esconde);
+      flt.removeEventListener('click', esconde);
+    }
+    setTimeout(function () {
+      tip.hidden = false;
+      some = setTimeout(esconde, 8000);
+    }, 2500);
+    flt.addEventListener('pointerenter', esconde);
+    flt.addEventListener('click', esconde);
+  })();
 })();
 </script>
 
