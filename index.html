@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Eletronic — Produtos Apple Originais</title>
+  <title>Eletronic — iPhones Originais em Taubaté · Seminovos e Lacrados</title>
   <meta name="description" content="iPhones originais com nota fiscal e 1 ano de garantia em Taubaté-SP. Seminovos e lacrados, até 18x no cartão e entrega para todo o Brasil."/>
   <meta property="og:title" content="Eletronic — Produtos Apple Originais"/>
   <meta property="og:description" content="iPhones originais com nota fiscal e 1 ano de garantia em Taubaté-SP. Até 18x no cartão e entrega para todo o Brasil."/>
@@ -40,6 +40,26 @@
       "addressCountry": "BR"
     },
     "sameAs": ["https://www.instagram.com/eletronic.oficial"]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      { "@type": "Question", "name": "Os iPhones da Eletronic são originais?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Sim. Trabalhamos somente com aparelhos 100% originais Apple, com nota fiscal em todos os pedidos. Você confere o aparelho funcionando antes de fechar a compra." } },
+      { "@type": "Question", "name": "Como funciona a garantia de 1 ano?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Todo aparelho — lacrado ou seminovo — sai com 12 meses de garantia da loja. Precisou de qualquer coisa, é só chamar no WhatsApp: você fala direto com a gente, sem central de atendimento." } },
+      { "@type": "Question", "name": "Seminovo é confiável?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Aqui, é. Cada seminovo passa por revisão completa, tem a saúde da bateria informada e sai com a mesma nota fiscal e o mesmo 1 ano de garantia do lacrado. A diferença fica só no preço." } },
+      { "@type": "Question", "name": "Meu iPhone atual vale como entrada?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Vale. Avaliamos o seu usado na hora e o valor vira desconto direto no próximo aparelho. Mande o modelo e o estado dele no WhatsApp e receba a avaliação em minutos." } },
+      { "@type": "Question", "name": "Posso parcelar? Em quantas vezes?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Sim, em até 18x no cartão. Chame no WhatsApp com o modelo que você quer e a gente simula o parcelamento exato, sem compromisso." } },
+      { "@type": "Question", "name": "Vocês entregam na minha cidade?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Entregamos para todo o Brasil, com envio rastreado e embalagem reforçada. Em Taubaté e região, você também pode retirar na loja: R. Dr. Souza Alves, 384 — Centro." } }
+    ]
   }
   </script>
   <style>
@@ -84,7 +104,7 @@
     /* cursor nativo some em TODOS os alvos interativos (senão a setinha/mãozinha
        do navegador aparece em cima do ponto dourado) */
     @media (pointer:fine) {
-      body, a, button, .cat-tab, .iph, .pcard, .logo, .nav-btn { cursor:none; }
+      body, a, button, summary, .cat-tab, .iph, .pcard, .logo, .nav-btn { cursor:none; }
     }
     body.cdown #cur { width:14px; height:14px; }
     body.cdown #cur2 { width:26px; height:26px; border-color:var(--gold-light); }
@@ -589,7 +609,7 @@
     .hero .badge { background:rgba(8,16,36,.5); color:#f0dfa8; }
 
     /* foco visível no teclado */
-    a:focus-visible, button:focus-visible {
+    a:focus-visible, button:focus-visible, summary:focus-visible {
       outline:2px solid var(--gold); outline-offset:3px;
     }
 
@@ -1303,6 +1323,90 @@
       .wa-float::before, .wa-float-tip { display:none !important; }
       .black-club-tab:hover svg, .logo-mark.zap svg { animation:none !important; }
     }
+
+    /* ============================================
+       SÉTIMO PASSE — conteúdo que fecha venda:
+       Lacrado × Seminovo, troca como entrada e FAQ
+       ============================================ */
+
+    /* ===== LACRADO × SEMINOVO — o duelo amigável ===== */
+    .duelo-intro { margin-top:22px; max-width:520px; color:var(--gray); font-size:.95rem; line-height:1.8; }
+    .duelo { display:grid; grid-template-columns:1fr auto 1fr; gap:28px; align-items:stretch; margin-top:56px; }
+    .duelo-card { border:1px solid rgba(201,162,39,.2); background:rgba(255,255,255,.03); padding:44px 40px;
+      display:flex; flex-direction:column; position:relative; overflow:hidden;
+      transition:border-color .3s, transform .3s, box-shadow .3s; }
+    .duelo-card::after { content:''; position:absolute; inset:0; pointer-events:none; opacity:0; transition:opacity .3s;
+      background:radial-gradient(320px circle at var(--mx,50%) var(--my,50%), rgba(201,162,39,.1), transparent 65%); }
+    .duelo-card:hover::after { opacity:1; }
+    .duelo-card:hover { border-color:rgba(201,162,39,.55); transform:translateY(-4px);
+      box-shadow:0 20px 44px rgba(0,0,0,.45), 0 8px 22px rgba(201,162,39,.12); }
+    .duelo-card > * { position:relative; z-index:1; }
+    .duelo-nome { font-family:'Cormorant Garamond',serif; font-size:2.4rem; font-weight:700; color:var(--gold); line-height:1; }
+    .duelo-frase { margin-top:10px; font-size:.85rem; color:#c6d1e6; letter-spacing:.02em; line-height:1.6; }
+    .duelo-lista { list-style:none; margin:26px 0 30px; padding:0; display:flex; flex-direction:column; gap:12px; flex:1; }
+    .duelo-lista li { font-size:.86rem; color:var(--gray); line-height:1.6; padding-left:24px; position:relative; }
+    .duelo-lista li::before { content:''; position:absolute; left:0; top:.62em; width:12px; height:1px; background:var(--gold); }
+    .duelo-cta { align-self:flex-start; border:1px solid var(--gold); color:var(--gold); padding:13px 28px;
+      font-size:.75rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; text-decoration:none;
+      transition:background .2s, color .2s; }
+    .duelo-cta:hover { background:var(--gold); color:var(--navy); }
+    .duelo-cta:active { transform:scale(.97); }
+    .duelo-ou { align-self:center; font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1.5rem;
+      color:var(--gold); width:64px; height:64px; border:1px solid rgba(201,162,39,.35); border-radius:50%;
+      display:flex; align-items:center; justify-content:center; background:rgba(4,9,28,.8); flex-shrink:0; }
+    .duelo-comum { margin-top:32px; padding:18px 24px; border:1px solid rgba(201,162,39,.16);
+      background:rgba(201,162,39,.05); font-size:.82rem; color:var(--gold-pale); letter-spacing:.04em; line-height:1.9; }
+    .duelo-comum strong { color:var(--gold); letter-spacing:.14em; text-transform:uppercase; font-size:.68rem; margin-right:10px; }
+    @media (max-width:900px) {
+      .duelo { grid-template-columns:1fr; gap:14px; margin-top:40px; }
+      .duelo-ou { justify-self:center; width:52px; height:52px; font-size:1.2rem; }
+      .duelo-card { padding:30px 22px; }
+      .duelo-nome { font-size:2rem; }
+      .duelo-cta { align-self:stretch; text-align:center; }
+    }
+
+    /* ===== TROCA — o usado vira entrada (faixa dourada) ===== */
+    .sec.troca { padding-top:80px; padding-bottom:80px;
+      background:linear-gradient(180deg, rgba(201,162,39,.11) 0%, rgba(201,162,39,.03) 100%) !important;
+      border-top:1px solid rgba(201,162,39,.28); border-bottom:1px solid rgba(201,162,39,.28); }
+    .troca-grid { display:grid; grid-template-columns:1.4fr 1fr; gap:48px; align-items:center; }
+    .troca-titulo { font-family:'Cormorant Garamond',serif; font-size:clamp(2.2rem,4.4vw,3.8rem);
+      font-weight:700; line-height:1.05; letter-spacing:-.015em; color:var(--cream); }
+    .troca-titulo em { font-style:italic; color:var(--gold); }
+    .troca-sub { margin-top:18px; font-size:.95rem; color:#c6d1e6; max-width:480px; line-height:1.8; }
+    .troca-acao { display:flex; flex-direction:column; gap:14px; align-items:flex-start; justify-self:end; }
+    .troca-hint { font-size:.7rem; letter-spacing:.14em; text-transform:uppercase; color:var(--gray); }
+    @media (max-width:900px) {
+      .troca-grid { grid-template-columns:1fr; gap:28px; }
+      .troca-acao { justify-self:start; align-items:stretch; width:100%; }
+      .troca-acao .btn-g { text-align:center; }
+    }
+
+    /* ===== FAQ — dúvidas frequentes (details nativo) ===== */
+    .faq { margin-top:56px; max-width:860px; border-top:1px solid rgba(201,162,39,.18); }
+    .faq-item { border-bottom:1px solid rgba(201,162,39,.18); }
+    .faq-item summary { list-style:none; cursor:pointer; display:flex; align-items:baseline;
+      justify-content:space-between; gap:24px; padding:26px 4px;
+      font-family:'Cormorant Garamond',serif; font-size:1.45rem; font-weight:700; color:var(--cream);
+      transition:color .2s; }
+    .faq-item summary::-webkit-details-marker { display:none; }
+    .faq-item summary::marker { content:''; }
+    .faq-item summary:hover { color:var(--gold-pale); }
+    .faq-item[open] summary { color:var(--gold); }
+    .faq-mais { font-family:'DM Sans',sans-serif; font-weight:300; font-size:1.6rem; color:var(--gold);
+      flex-shrink:0; line-height:1; transition:transform .3s; }
+    .faq-item[open] .faq-mais { transform:rotate(45deg); }
+    .faq-a { padding:0 44px 28px 4px; font-size:.9rem; line-height:1.85; color:var(--gray); max-width:70ch; }
+    .faq-a a { color:var(--gold); }
+    .faq-item[open] .faq-a { animation:faqAbre .35s ease; }
+    @keyframes faqAbre { from { opacity:0; transform:translateY(-6px); } to { opacity:1; transform:none; } }
+    .faq-mao { margin-top:30px; font-size:.9rem; color:var(--gray); line-height:1.8; }
+    .faq-mao a { color:var(--gold); }
+    @media (max-width:700px) {
+      .faq-item summary { font-size:1.15rem; padding:20px 2px; gap:14px; }
+      .faq-a { padding:0 24px 22px 2px; font-size:.85rem; }
+    }
+    @media (prefers-reduced-motion: reduce) { .faq-item[open] .faq-a { animation:none !important; } }
   </style>
 </head>
 <body>
@@ -1617,6 +1721,40 @@
 
 </section>
 
+<!-- LACRADO × SEMINOVO -->
+<section class="sec" id="qualescolher">
+  <p class="eyebrow rv"><span></span>Qual é o seu?</p>
+  <h2 class="heading rv">Lacrado ou <em>seminovo?</em></h2>
+  <p class="duelo-intro rv">Não existe resposta errada — existe o iPhone certo para o seu momento.
+    E os dois saem daqui com a mesma segurança.</p>
+  <div class="duelo rv">
+    <article class="duelo-card">
+      <h3 class="duelo-nome">Lacrado</h3>
+      <p class="duelo-frase">Para quem quer estrear o aparelho do zero.</p>
+      <ul class="duelo-lista">
+        <li>Caixa selada Apple — quem rompe o lacre é você</li>
+        <li>Bateria em 100%, zero uso</li>
+        <li>Cores e capacidades sob consulta</li>
+        <li>Aquele primeiro "olá" que ninguém esquece</li>
+      </ul>
+      <a class="duelo-cta" target="_blank" rel="noopener" href="https://wa.me/5512997463135?text=Ol%C3%A1!%20Quero%20um%20iPhone%20lacrado.%20Quais%20modelos%20voc%C3%AAs%20t%C3%AAm%3F">Quero um lacrado</a>
+    </article>
+    <div class="duelo-ou" aria-hidden="true">ou</div>
+    <article class="duelo-card">
+      <h3 class="duelo-nome">Seminovo</h3>
+      <p class="duelo-frase">Para quem quer o máximo de iPhone pelo melhor preço.</p>
+      <ul class="duelo-lista">
+        <li>Revisado e conferido funcionando na sua frente</li>
+        <li>Saúde da bateria informada antes da compra</li>
+        <li>Preço que cabe em muito mais bolsos</li>
+        <li>Pronta entrega: viu, gostou, levou</li>
+      </ul>
+      <a class="duelo-cta" target="_blank" rel="noopener" href="https://wa.me/5512997463135?text=Ol%C3%A1!%20Quero%20um%20iPhone%20seminovo.%20O%20que%20tem%20em%20pronta%20entrega%3F">Quero um seminovo</a>
+    </article>
+  </div>
+  <p class="duelo-comum rv"><strong>Nos dois</strong> 1 ano de garantia da loja · Nota fiscal · Até 18x no cartão · Entrega para todo o Brasil</p>
+</section>
+
 <!-- COMO FUNCIONA -->
 <section class="sec como" id="comofunciona">
   <p class="eyebrow rv"><span></span>Como Funciona</p>
@@ -1638,7 +1776,7 @@
 <div class="quality rv">
   <div>
     <h2>Qualidade que você <em>sente</em> desde o primeiro contato.</h2>
-    <div class="about-team-wrap rv"><img class="about-team-img" src="images/background-4.jpg" alt="Equipe Eletronic" width="560" height="700"/></div>
+    <div class="about-team-wrap rv"><img class="about-team-img" src="images/background-4.jpg" alt="Equipe Eletronic" width="560" height="700" loading="lazy" decoding="async"/></div>
   </div>
   <div>
     <div class="g-rat">
@@ -1728,11 +1866,22 @@
   </div>
 </section>
 
-<!-- WA STRIP -->
-<div class="wa rv">
-  <p>Atendimento especializado pelo WhatsApp — tire todas as suas dúvidas agora</p>
-  <a href="https://wa.me/5512997463135" target="_blank" rel="noopener" class="btn-wa">(12) 99746-3135</a>
-</div>
+<!-- TROCA — o usado vira entrada -->
+<section class="sec troca" id="troca" aria-label="Seu iPhone atual vale como entrada">
+  <div class="troca-grid">
+    <div>
+      <p class="eyebrow rv"><span></span>Troca Inteligente</p>
+      <h2 class="troca-titulo rv">Seu iPhone atual<br/><em>vale dinheiro</em> aqui.</h2>
+      <p class="troca-sub rv">Traga o seu usado: a gente avalia na hora e ele vira desconto direto
+        no próximo aparelho. Sem burocracia, sem espera — mande o modelo e o estado dele
+        no WhatsApp e receba a avaliação em minutos.</p>
+    </div>
+    <div class="troca-acao rv">
+      <a href="https://wa.me/5512997463135?text=Ol%C3%A1!%20Quero%20avaliar%20meu%20iPhone%20como%20entrada%20para%20um%20novo." target="_blank" rel="noopener" class="btn-g">Avaliar meu iPhone agora</a>
+      <span class="troca-hint">Leva menos de 5 minutos pelo WhatsApp</span>
+    </div>
+  </div>
+</section>
 
 <!-- INSTAGRAM — A LOJA NA VIDA REAL -->
 <section class="sec igsec" id="instagram">
@@ -1784,6 +1933,47 @@
     <a class="ig-chip" href="https://www.instagram.com/eletronic.oficial" target="_blank" rel="noopener">Ofertas</a>
     <a class="ig-chip" href="https://www.instagram.com/eletronic.oficial" target="_blank" rel="noopener">Equipe</a>
   </div>
+</section>
+
+<!-- FAQ -->
+<section class="sec" id="duvidas">
+  <p class="eyebrow rv"><span></span>Dúvidas Frequentes</p>
+  <h2 class="heading rv">O que todo mundo <em>pergunta</em></h2>
+  <div class="faq rv">
+    <details class="faq-item">
+      <summary>Os iPhones da Eletronic são originais?<span class="faq-mais" aria-hidden="true">+</span></summary>
+      <div class="faq-a"><p>Sim. Trabalhamos somente com aparelhos 100% originais Apple, com nota fiscal
+        em todos os pedidos. Você confere o aparelho funcionando antes de fechar a compra.</p></div>
+    </details>
+    <details class="faq-item">
+      <summary>Como funciona a garantia de 1 ano?<span class="faq-mais" aria-hidden="true">+</span></summary>
+      <div class="faq-a"><p>Todo aparelho — lacrado ou seminovo — sai com 12 meses de garantia da loja.
+        Precisou de qualquer coisa, é só chamar no WhatsApp: você fala direto com a gente,
+        sem central de atendimento.</p></div>
+    </details>
+    <details class="faq-item">
+      <summary>Seminovo é confiável?<span class="faq-mais" aria-hidden="true">+</span></summary>
+      <div class="faq-a"><p>Aqui, é. Cada seminovo passa por revisão completa, tem a saúde da bateria
+        informada e sai com a mesma nota fiscal e o mesmo 1 ano de garantia do lacrado.
+        A diferença fica só no preço.</p></div>
+    </details>
+    <details class="faq-item">
+      <summary>Meu iPhone atual vale como entrada?<span class="faq-mais" aria-hidden="true">+</span></summary>
+      <div class="faq-a"><p>Vale. Avaliamos o seu usado na hora e o valor vira desconto direto no próximo
+        aparelho. <a href="https://wa.me/5512997463135?text=Ol%C3%A1!%20Quero%20avaliar%20meu%20iPhone%20como%20entrada." target="_blank" rel="noopener">Mande o modelo e o estado dele no WhatsApp</a> e receba a avaliação em minutos.</p></div>
+    </details>
+    <details class="faq-item">
+      <summary>Posso parcelar? Em quantas vezes?<span class="faq-mais" aria-hidden="true">+</span></summary>
+      <div class="faq-a"><p>Sim, em até 18x no cartão. Chame no WhatsApp com o modelo que você quer
+        e a gente simula o parcelamento exato, sem compromisso.</p></div>
+    </details>
+    <details class="faq-item">
+      <summary>Vocês entregam na minha cidade?<span class="faq-mais" aria-hidden="true">+</span></summary>
+      <div class="faq-a"><p>Entregamos para todo o Brasil, com envio rastreado e embalagem reforçada.
+        Em Taubaté e região, você também pode retirar na loja: R. Dr. Souza Alves, 384 — Centro.</p></div>
+    </details>
+  </div>
+  <p class="faq-mao rv">Ficou com outra dúvida? <a href="https://wa.me/5512997463135?text=Ol%C3%A1!%20Tenho%20uma%20d%C3%BAvida." target="_blank" rel="noopener">Chama no WhatsApp</a> — a gente responde rapidinho.</p>
 </section>
 
 <!-- CONTACT -->
@@ -1857,6 +2047,8 @@
       <h4>Informações</h4>
       <ul>
         <li><a href="#garantias">Garantia</a></li>
+        <li><a href="#duvidas">Dúvidas Frequentes</a></li>
+        <li><a href="#troca">Troca como Entrada</a></li>
         <li><a href="https://wa.me/5512997463135?text=Ol%C3%A1!%20Quero%20saber%20sobre%20as%20formas%20de%20pagamento." target="_blank" rel="noopener">Formas de Pagamento</a></li>
         <li><a href="https://wa.me/5512997463135?text=Ol%C3%A1!%20Quero%20saber%20sobre%20entrega%20e%20frete." target="_blank" rel="noopener">Entrega e Frete</a></li>
         <li><a href="https://wa.me/5512997463135?text=Ol%C3%A1!%20Quero%20saber%20sobre%20trocas%20e%20devolu%C3%A7%C3%B5es." target="_blank" rel="noopener">Trocas e Devoluções</a></li>
@@ -1976,7 +2168,7 @@
     });
     document.addEventListener('mouseover',e=>{
       const t=e.target;
-      document.body.classList.toggle('hov',!!(t.closest&&t.closest('a,button,.pcard,.cat-tab,.iph')));
+      document.body.classList.toggle('hov',!!(t.closest&&t.closest('a,button,summary,.pcard,.cat-tab,.iph')));
       document.body.classList.toggle('curoff',!!(t.closest&&t.closest('.cmap')));
     });
     // press físico no vocabulário do cursor
@@ -2660,6 +2852,7 @@
     };
     mira(document.querySelector('.g-grid'), '.gc');
     mira(document.getElementById('tab-blackclub'), '.bc-step'); /* SpotlightCard nos passos */
+    mira(document.querySelector('.duelo'), '.duelo-card');      /* Lacrado × Seminovo */
 
     /* spotlight + tilt 3D no catálogo (delegado — sobrevive ao re-render) */
     (function () {
@@ -3683,6 +3876,18 @@
       }, { rootMargin: '600px 0px' });
       io.observe(grid);
     } else injeta();
+  })();
+
+  /* ============ FAQ — um aberto por vez ============ */
+  (function () {
+    var itens = document.querySelectorAll('.faq-item');
+    if (!itens.length) return;
+    itens.forEach(function (d) {
+      d.addEventListener('toggle', function () {
+        if (!d.open) return;
+        itens.forEach(function (o) { if (o !== d && o.open) o.open = false; });
+      });
+    });
   })();
 
   /* ============ FLOAT WHATSAPP — tooltip na primeira visita ============ */
