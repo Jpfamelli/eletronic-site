@@ -1407,6 +1407,432 @@
       .faq-a { padding:0 24px 22px 2px; font-size:.85rem; }
     }
     @media (prefers-reduced-motion: reduce) { .faq-item[open] .faq-a { animation:none !important; } }
+
+    /* ============================================================
+       SISTEMA DE GRÁFICOS DOURADOS (elcChart) — porte do nxChart
+       Traço #c9a227 → #f0d896 → #f7f3e8 sobre navy, área que esmaece,
+       grade hairline, crosshair + tooltip, desenho ao entrar.
+       Reduced-motion: tudo completo e parado.
+       ============================================================ */
+    :root { --elc-ease-out: cubic-bezier(.22,.9,.3,1); --elc-ease-expo: cubic-bezier(.16,1,.3,1); }
+    .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+    .elc-defs { position:absolute; width:0; height:0; overflow:hidden; }
+    .elc { position:relative; display:block; width:100%; min-width:0; --elc-h:8rem; }
+    .elc > svg { display:block; width:100%; height:var(--elc-h); overflow:visible; }
+    .elc-k-donut { --elc-h:8.5rem; }
+    .elc-k-heat { --elc-h:8.75rem; }
+    .elc-k-stack { --elc-h:.55rem; }
+    .elc-k-spark > svg, .elc-k-monitor > svg { height:100%; }
+    .elc-clicavel > svg { cursor:pointer; }
+    @media (pointer:fine) { .elc-clicavel > svg { cursor:none; } }
+
+    /* grade e rótulos: hairline + DM Sans miúda */
+    .elc-grid line { stroke:rgba(247,243,232,.08); stroke-width:1; vector-effect:non-scaling-stroke; }
+    .elc-ylab, .elc-xlab { font-family:'DM Sans',sans-serif; font-size:9.5px; font-weight:500; letter-spacing:.06em; fill:rgba(247,243,232,.66); }
+    .elc-xlab { text-transform:uppercase; }
+
+    /* linha / área */
+    .elc-line { stroke-width:2; stroke-linejoin:round; stroke-linecap:round; vector-effect:non-scaling-stroke;
+      stroke-dasharray:1000; stroke-dashoffset:1000; transition:stroke-dashoffset 1.6s var(--elc-ease-out); }
+    .elc-halo { stroke:#f0d896; stroke-width:3; stroke-linejoin:round; stroke-linecap:round; opacity:.5; vector-effect:non-scaling-stroke;
+      stroke-dasharray:1000; stroke-dashoffset:1000; transition:stroke-dashoffset 1.6s var(--elc-ease-out); }
+    .elc.is-drawn .elc-line, .elc.is-drawn .elc-halo { stroke-dashoffset:0; }
+    .elc-area { opacity:0; transition:opacity .9s var(--elc-ease-out) .7s; }
+    .elc.is-drawn .elc-area { opacity:1; }
+    .elc-end { fill:#f0d896; stroke:#04091c; stroke-width:1.5; opacity:0; transition:opacity .4s var(--elc-ease-out) 1.3s; }
+    .elc.is-drawn .elc-end { opacity:1; }
+    .elc-k-live .elc-end { transition-delay:0s; }
+
+    /* crosshair + foco */
+    .elc-cross { opacity:0; transition:opacity .16s var(--elc-ease-out); pointer-events:none; }
+    .elc.is-hover .elc-cross { opacity:1; }
+    .elc-cross line { stroke:rgba(247,243,232,.4); stroke-width:1; stroke-dasharray:3 3; vector-effect:non-scaling-stroke; }
+    .elc-cross circle { fill:#f0d896; stroke:#04091c; stroke-width:1.5; vector-effect:non-scaling-stroke; }
+    .elc-focus { fill:rgba(247,243,232,.06); opacity:0; transition:opacity .16s var(--elc-ease-out); pointer-events:none; }
+    .elc-focus-cell { fill:none; stroke:#f0d896; stroke-width:1.2; vector-effect:non-scaling-stroke; }
+    .elc.is-hover .elc-focus { opacity:1; }
+
+    /* tooltip */
+    .elc-tip { position:absolute; top:0; left:0; z-index:6; min-width:6.5rem; border:1px solid rgba(201,162,39,.55);
+      border-left:2px solid var(--gold); background:rgba(4,9,28,.97); color:var(--cream); padding:.45rem .65rem .5rem;
+      font-family:'DM Sans',sans-serif; font-size:.66rem; line-height:1.5; letter-spacing:.04em; white-space:nowrap;
+      max-width:calc(100% - 4px); box-shadow:0 10px 30px rgba(0,0,0,.5); pointer-events:none; will-change:transform; }
+    .elc-k-stack .elc-tip { white-space:normal; min-width:0; width:max-content; max-width:min(22rem, calc(100% - 4px)); }
+    .elc-k-stack .elc-tip span { display:block; line-height:1.55; }
+    .elc-tip small { display:block; font-size:.56rem; letter-spacing:.14em; text-transform:uppercase; color:rgba(247,243,232,.6); }
+    .elc-tip b { display:block; font-family:'Cormorant Garamond',serif; font-size:1.25rem; font-weight:700; letter-spacing:0;
+      color:var(--gold-pale); font-variant-numeric:lining-nums tabular-nums; font-feature-settings:'lnum' 1; line-height:1.1; }
+    .elc-tip span { display:flex; align-items:center; gap:.4rem; color:rgba(247,243,232,.75); }
+    .elc-tip span b { display:inline; margin-left:auto; font-size:.9rem; }
+    .elc-sw { display:inline-block; width:.55rem; height:.55rem; flex:0 0 auto; border-radius:1px; background:linear-gradient(180deg,#f0d896,#c9a227); }
+    .elc-sw-2 { background:rgba(247,243,232,.42); }
+    .elc-sw-3 { background:#f0d896; }
+    .elc-sw-4 { background:rgba(201,162,39,.45); }
+
+    /* barras: crescem ao entrar */
+    .elc-bar { fill:url(#elc-bar); transform-box:fill-box; transform-origin:50% 100%; transform:scaleY(0);
+      transition:transform .72s var(--elc-ease-expo), opacity .3s; transition-delay:calc(var(--d,0) * 1ms), 0s; }
+    .elc-bar-s2 { fill:rgba(247,243,232,.42); }
+    .elc-bar-ok { fill:rgba(247,243,232,.32); }
+    .elc-bar.is-dim { opacity:.14; }
+    .elc.is-drawn .elc-bar { transform:scaleY(1); }
+
+    /* barra horizontal empilhada */
+    .elc-seg { transform-box:fill-box; transform-origin:0 50%; transform:scaleX(0); transition:transform .64s var(--elc-ease-expo); transition-delay:calc(var(--d,0) * 1ms); }
+    .elc-seg-1 { fill:var(--gold); }
+    .elc-seg-2 { fill:#f0d896; }
+    .elc-seg-3 { fill:#f7f3e8; }
+    .elc-seg-4 { fill:rgba(201,162,39,.45); }
+    .elc.is-drawn .elc-seg { transform:scaleX(1); }
+    .elc-k-stack .elc-focus { fill:rgba(255,255,255,.22); }
+    .elc-k-stack .elc-sw-1 { background:var(--gold); }
+    .elc-k-stack .elc-sw-2 { background:#f0d896; }
+    .elc-k-stack .elc-sw-3 { background:#f7f3e8; }
+    .elc-k-stack .elc-sw-4 { background:rgba(201,162,39,.45); }
+
+    .elc-legend { display:flex; flex-wrap:wrap; gap:.35rem 1rem; margin-top:.6rem; font-family:'DM Sans',sans-serif; font-size:.62rem; font-weight:500;
+      letter-spacing:.12em; text-transform:uppercase; color:rgba(247,243,232,.6); }
+    .elc-legend-item { display:inline-flex; align-items:center; gap:.45rem; }
+    .elc-legend-item b { color:var(--gold-pale); font-weight:600; font-variant-numeric:lining-nums tabular-nums; }
+
+    /* anel */
+    .elc-track { stroke:rgba(247,243,232,.07); }
+    .elc-arc { stroke-linecap:butt; transition:opacity .2s var(--elc-ease-out); }
+    .elc-arc-1 { stroke:url(#elc-arc); }
+    .elc-arc-2 { stroke:rgba(247,243,232,.22); }
+    .elc-arc-3 { stroke:#f7f3e8; }
+    .elc-arc-4 { stroke:rgba(201,162,39,.45); }
+    .elc-k-donut.is-hover .elc-arc:not(.is-on) { opacity:.35; }
+    .elc-k-donut .elc-sw-1 { background:linear-gradient(135deg,#c9a227,#f0d896); }
+    .elc-k-donut .elc-sw-2 { background:rgba(247,243,232,.22); }
+    .elc-k-donut .elc-sw-3 { background:#f7f3e8; }
+    .elc-center { position:absolute; top:calc(var(--elc-h) / 2); left:50%; display:grid; justify-items:center; transform:translate(-50%,-50%); text-align:center; pointer-events:none; }
+    .elc-center strong { display:block; font-family:'Cormorant Garamond',serif; font-size:1em; font-weight:700; letter-spacing:-.02em; line-height:1;
+      color:var(--gold-pale); font-variant-numeric:lining-nums tabular-nums; font-feature-settings:'lnum' 1; }
+    .elc-center small { display:block; margin-top:.25em; font-family:'DM Sans',sans-serif; font-size:.36em; font-weight:600; letter-spacing:.16em; text-transform:uppercase; color:rgba(247,243,232,.55); }
+
+    /* heatmap */
+    .elc-cell { fill:#f0d896; opacity:0; transition:opacity .52s var(--elc-ease-out); transition-delay:calc(var(--d,0) * 1ms); }
+    .elc.is-drawn .elc-cell { opacity:1; }
+
+    /* monitor */
+    .elc-mon-base { stroke:rgba(201,162,39,.3); stroke-width:1; vector-effect:non-scaling-stroke; }
+    .elc-mon-line { stroke-width:1.6; stroke-linejoin:round; stroke-linecap:round; vector-effect:non-scaling-stroke; }
+    .elc-mon-head { fill:#f0d896; filter:drop-shadow(0 0 4px rgba(247,243,232,.95)); transition:opacity .12s linear; }
+
+    .elc-note { margin:.55rem 0 0; font-family:'DM Sans',sans-serif; font-size:.58rem; font-weight:500; letter-spacing:.16em; text-transform:uppercase; color:rgba(247,243,232,.62); }
+
+    @media (prefers-reduced-motion: reduce) {
+      .elc-line, .elc-halo { stroke-dashoffset:0; transition:none; }
+      .elc-area, .elc-end { opacity:1; transition:none; }
+      .elc-bar { transform:scaleY(1); transition:none; }
+      .elc-seg { transform:scaleX(1); transition:none; }
+      .elc-cell { opacity:1; transition:none; }
+      .elc-cross, .elc-focus, .elc-arc, .elc-mon-head { transition:none; }
+    }
+
+    /* ============================================================
+       GRÁFICOS DOURADOS — aplicações (anel 4,8 / odômetros / estoque /
+       simulador / linha da garantia / bilhetes do Black Club)
+       ============================================================ */
+    /* anel da nota no bloco de stats */
+    .stat-anel { padding-top:34px; padding-bottom:34px; }
+    .stat-anel .elc { --elc-h:6.6rem; width:6.6rem; margin:0 auto 4px; }
+    .stat-anel .elc-center strong { color:var(--gold); }
+    .stat-anel .elc-center small { color:rgba(247,243,232,.6); }
+    .stat-stars { display:flex; justify-content:center; gap:3px; margin:4px 0 10px; }
+    .stat-stars svg { width:12px; height:12px; fill:var(--gold); }
+    /* mini-anel do hero (eco do 96%) */
+    .hero-anel { display:inline-block; width:34px; height:34px; flex-shrink:0; }
+    .hero-anel .elc { --elc-h:34px; width:34px; }
+    .hero-anel .elc-center { display:none; }
+    /* odômetro (Counter): colunas de dígitos rolando */
+    .odo { display:inline-flex; align-items:center; white-space:nowrap; line-height:1; }
+    .odo-fix { display:inline-block; line-height:1; }
+    .odo-d { position:relative; display:inline-block; height:1em; width:.56em; overflow:hidden; vertical-align:middle;
+      -webkit-mask-image:linear-gradient(to bottom, transparent 0, #000 16%, #000 84%, transparent 100%);
+      mask-image:linear-gradient(to bottom, transparent 0, #000 16%, #000 84%, transparent 100%); }
+    .odo-d.odo-sep { width:.28em; overflow:visible; -webkit-mask-image:none; mask-image:none; }
+    .odo-n { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; line-height:1; will-change:transform; }
+    @media (max-width:700px) { .stat-anel .elc { --elc-h:5.6rem; width:5.6rem; } }
+
+    /* ===== ESTOQUE AGORA — contagem real por categoria (Supabase, realtime) ===== */
+    .estoque { margin-top:40px; border:1px solid rgba(201,162,39,.2); background:rgba(255,255,255,.03); padding:22px 26px 18px; position:relative; overflow:hidden; }
+    .estoque::before { content:''; position:absolute; inset:0; pointer-events:none;
+      background:radial-gradient(60% 120% at 100% 0%, rgba(201,162,39,.08), transparent 60%); }
+    .est-head { display:flex; justify-content:space-between; align-items:baseline; gap:16px; flex-wrap:wrap; position:relative; }
+    .est-titulo { display:inline-flex; align-items:center; gap:10px; font-size:.68rem; font-weight:700; letter-spacing:.3em; text-transform:uppercase; color:var(--gold); }
+    .est-dot { width:8px; height:8px; border-radius:50%; background:var(--gold); box-shadow:0 0 10px rgba(201,162,39,.8); animation:estPulse 2.4s ease-in-out infinite; }
+    @keyframes estPulse { 0%,100%{ opacity:1; transform:scale(1);} 50%{ opacity:.45; transform:scale(.75);} }
+    .est-sub { font-size:.72rem; letter-spacing:.06em; color:var(--gray); font-variant-numeric:lining-nums tabular-nums; }
+    .est-chart { position:relative; margin-top:14px; }
+    .est-chart .elc { --elc-h:7.4rem; }
+    .est-chart .elc-xlab { font-size:.62rem; fill:rgba(247,243,232,.72); }
+    .est-chart .elc-vlab { font-family:'Cormorant Garamond',serif; font-size:1.05rem; font-weight:700; fill:var(--gold-pale); font-variant-numeric:lining-nums; }
+    .est-vazio { margin-top:16px; font-size:.9rem; line-height:1.8; color:var(--gray); position:relative; }
+    .est-vazio a { color:var(--gold); }
+    .est-nota { margin-top:10px; font-size:.6rem; letter-spacing:.14em; text-transform:uppercase; color:rgba(247,243,232,.62); position:relative; }
+    @media (max-width:700px) { .estoque { padding:18px 16px 14px; margin-top:28px; } .est-chart .elc { --elc-h:6.4rem; } .est-nota { display:none; } }
+
+    /* ===== SIMULADOR DE PARCELAS — com os números do visitante ===== */
+    .sim-intro { margin-top:22px; max-width:520px; color:var(--gray); font-size:.95rem; line-height:1.8; }
+    .sim-grid { display:grid; grid-template-columns:minmax(280px,.9fr) 1.4fr; gap:40px; margin-top:52px; align-items:start; }
+    .sim-ctl { display:flex; flex-direction:column; gap:30px; border:1px solid rgba(201,162,39,.2); background:rgba(255,255,255,.03); padding:32px 30px; }
+    .sim-campo { display:grid; grid-template-columns:1fr auto; gap:8px 12px; align-items:baseline; }
+    .sim-lbl { font-size:.66rem; font-weight:700; letter-spacing:.22em; text-transform:uppercase; color:var(--gold); }
+    .sim-out { font-family:'Cormorant Garamond',serif; font-size:1.6rem; font-weight:700; color:var(--cream); line-height:1;
+      font-variant-numeric:lining-nums tabular-nums; font-feature-settings:'lnum' 1; justify-self:end; }
+    .sim-campo input[type=range] { grid-column:1 / -1; -webkit-appearance:none; appearance:none; width:100%; height:2px; margin:10px 0 0;
+      background:linear-gradient(90deg, var(--gold) 0, var(--gold) var(--p,0%), rgba(201,162,39,.22) var(--p,0%), rgba(201,162,39,.22) 100%); outline:none; }
+    .sim-campo input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:22px; height:22px; border-radius:50%; background:var(--gold);
+      border:3px solid #04091c; box-shadow:0 0 0 1px var(--gold), 0 0 16px rgba(201,162,39,.5); cursor:pointer; transition:transform .15s; }
+    .sim-campo input[type=range]::-webkit-slider-thumb:hover, .sim-campo input[type=range]:active::-webkit-slider-thumb { transform:scale(1.15); }
+    .sim-campo input[type=range]::-moz-range-thumb { width:18px; height:18px; border-radius:50%; background:var(--gold); border:3px solid #04091c; box-shadow:0 0 0 1px var(--gold); cursor:pointer; }
+    .sim-campo input[type=range]::-moz-range-track { height:2px; background:rgba(201,162,39,.22); }
+    .sim-campo input[type=range]::-moz-range-progress { height:2px; background:var(--gold); }
+    .sim-campo input[type=range]:focus-visible { outline:2px solid var(--gold); outline-offset:8px; }
+    .sim-seg { grid-column:1 / -1; display:flex; border:1px solid rgba(201,162,39,.35); margin-top:4px; }
+    .sim-seg button { flex:1; background:transparent; border:none; color:var(--gray); font-family:'DM Sans',sans-serif; font-size:.78rem; font-weight:700;
+      letter-spacing:.14em; padding:13px 0; transition:background .2s, color .2s; border-right:1px solid rgba(201,162,39,.35);
+      font-variant-numeric:lining-nums tabular-nums; }
+    .sim-seg button:last-child { border-right:none; }
+    .sim-seg button:hover { color:var(--gold-pale); }
+    .sim-seg button.on { background:var(--gold); color:var(--navy); }
+    .sim-viz { position:relative; border:1px solid rgba(201,162,39,.2); background:rgba(255,255,255,.03); padding:30px 32px 30px; }
+    .sim-viz::before { content:''; position:absolute; inset:0; pointer-events:none; background:radial-gradient(50% 80% at 100% 0%, rgba(201,162,39,.08), transparent 60%); }
+    .sim-big { display:flex; align-items:baseline; gap:14px; flex-wrap:wrap; position:relative; }
+    .sim-big-n { font-size:.72rem; font-weight:700; letter-spacing:.24em; text-transform:uppercase; color:var(--gold); }
+    .sim-big-n b { font-family:'Cormorant Garamond',serif; font-size:1.7rem; letter-spacing:0; color:var(--gold-pale); font-variant-numeric:lining-nums; font-feature-settings:'lnum' 1; }
+    .sim-big strong { font-family:'Cormorant Garamond',serif; font-size:clamp(2.6rem,4.4vw,3.8rem); font-weight:700; color:var(--gold); line-height:1;
+      font-variant-numeric:lining-nums tabular-nums; font-feature-settings:'lnum' 1; text-shadow:0 0 30px rgba(201,162,39,.25); }
+    .sim-bars { margin-top:18px; position:relative; }
+    .sim-bars .elc { --elc-h:8rem; }
+    .sim-bars .elc-xlab { font-size:.58rem; }
+    .sim-linha { display:grid; grid-template-columns:auto 1fr; gap:26px; align-items:center; margin-top:22px; padding-top:22px; border-top:1px solid rgba(201,162,39,.16); position:relative; }
+    .sim-anel { width:9.5rem; }
+    .sim-anel .elc { --elc-h:8rem; }
+    .sim-anel .elc-legend { justify-content:center; margin-top:8px; }
+    .sim-res { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin:0; }
+    .sim-res div { border-left:2px solid rgba(201,162,39,.3); padding-left:14px; }
+    .sim-res dt { font-size:.6rem; font-weight:700; letter-spacing:.22em; text-transform:uppercase; color:var(--gray); margin-bottom:6px; }
+    .sim-res dd { margin:0; font-family:'Cormorant Garamond',serif; font-size:1.5rem; font-weight:700; color:var(--cream); line-height:1;
+      font-variant-numeric:lining-nums tabular-nums; font-feature-settings:'lnum' 1; }
+    .sim-aviso { margin-top:24px; font-size:.62rem; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:var(--gold-pale);
+      border:1px dashed rgba(201,162,39,.4); padding:10px 14px; display:inline-block; position:relative; }
+    .sim-viz .btn-claro { margin-top:18px; position:relative; }
+    @media (max-width:900px) { .sim-grid { grid-template-columns:1fr; gap:22px; margin-top:36px; } }
+    @media (max-width:700px) {
+      .sim-ctl { padding:22px 18px; gap:22px; }
+      .sim-viz { padding:22px 16px 24px; }
+      .sim-linha { grid-template-columns:1fr; gap:18px; }
+      .sim-anel { margin:0 auto; }
+      .sim-res { grid-template-columns:repeat(3,1fr); gap:8px; }
+      .sim-res div { padding-left:10px; }
+      .sim-res dd { font-size:1.15rem; }
+      .sim-bars .elc { --elc-h:6.4rem; }
+      .sim-aviso { font-size:.56rem; letter-spacing:.12em; }
+      .sim-viz .btn-claro { width:100%; }
+    }
+    @media (prefers-reduced-motion: reduce) { .est-dot { animation:none; } }
+
+    /* ===== LINHA DO TEMPO DA GARANTIA — desenha no scroll, marcos acendem (Stepper) ===== */
+    .gtl { position:relative; margin:56px 0 8px; --p:0; }
+    .gtl-svg { position:absolute; left:0; right:0; top:19px; width:100%; height:8px; pointer-events:none; }
+    .gtl-track { stroke:rgba(201,162,39,.18); stroke-width:1.5; }
+    .gtl-fill { stroke:url(#elc-stroke); stroke-width:2; stroke-dasharray:1000; stroke-dashoffset:1000;
+      filter:drop-shadow(0 0 6px rgba(240,216,150,.5)); }
+    .gtl-steps { list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(4,1fr); gap:24px; position:relative; z-index:1; }
+    .gtl-step { position:relative; padding-top:0; }
+    .gtl-dot { position:relative; width:46px; height:46px; border-radius:50%; border:1px solid rgba(201,162,39,.4); background:#04091c;
+      display:flex; align-items:center; justify-content:center; margin-bottom:18px; transition:border-color .4s, box-shadow .5s, background .4s; }
+    .gtl-num { font-family:'Cormorant Garamond',serif; font-style:normal; font-size:1.2rem; font-weight:700; color:rgba(201,162,39,.72);
+      font-variant-numeric:lining-nums; font-feature-settings:'lnum' 1; transition:opacity .3s, transform .3s; }
+    .gtl-check { position:absolute; width:20px; height:20px; fill:none; stroke:#04091c; stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round; opacity:0; }
+    .gtl-check path { stroke-dasharray:100; stroke-dashoffset:100; }
+    .gtl-dot::after { content:''; position:absolute; width:12px; height:12px; border-radius:50%; background:#04091c; opacity:0; transform:scale(.4); transition:opacity .3s, transform .4s cubic-bezier(.22,.9,.3,1); }
+    .gtl-dot::before { content:''; position:absolute; inset:-1px; border-radius:50%; border:1px solid rgba(240,216,150,.9); opacity:0; }
+    .gtl-when { display:block; font-size:.62rem; font-weight:700; letter-spacing:.26em; text-transform:uppercase; color:var(--gold); margin-bottom:8px; }
+    .gtl-txt strong { display:block; font-family:'Cormorant Garamond',serif; font-size:1.3rem; font-weight:700; color:var(--cream); line-height:1.15; margin-bottom:8px; }
+    .gtl-txt p { font-size:.82rem; line-height:1.7; color:var(--gray); margin:0; max-width:26ch; }
+    .gtl-txt { opacity:.45; transform:translateY(8px); transition:opacity .5s cubic-bezier(.22,.9,.3,1), transform .5s cubic-bezier(.22,.9,.3,1); }
+    /* ativo: ponto gold com miolo navy e anel pulsando */
+    .gtl-step.is-on .gtl-dot { background:var(--gold); border-color:var(--gold); box-shadow:0 0 0 6px rgba(201,162,39,.12), 0 0 28px rgba(201,162,39,.45); }
+    .gtl-step.is-on .gtl-num { opacity:0; transform:scale(.6); }
+    .gtl-step.is-on .gtl-dot::after { opacity:1; transform:scale(1); }
+    .gtl-step.is-on .gtl-dot::before { animation:gtlPulse 2.2s ease-out infinite; }
+    @keyframes gtlPulse { 0%{ transform:scale(1); opacity:.9; } 100%{ transform:scale(1.9); opacity:0; } }
+    .gtl-step.is-on .gtl-txt, .gtl-step.is-done .gtl-txt { opacity:1; transform:none; }
+    /* concluído: check desenhado */
+    .gtl-step.is-done .gtl-dot { background:var(--gold); border-color:var(--gold); }
+    .gtl-step.is-done .gtl-num { opacity:0; }
+    .gtl-step.is-done .gtl-check { opacity:1; }
+    .gtl-step.is-done .gtl-check path { animation:gtlCheck .4s .1s ease-out forwards; }
+    @keyframes gtlCheck { to { stroke-dashoffset:0; } }
+    @media (max-width:900px) {
+      .gtl { margin:40px 0 0; padding-left:26px; }
+      .gtl-svg { display:none; }
+      .gtl::before { content:''; position:absolute; left:22px; top:8px; bottom:8px; width:1px; background:rgba(201,162,39,.18); }
+      .gtl::after { content:''; position:absolute; left:22px; top:8px; width:1px; height:calc(var(--p) * (100% - 16px)); background:linear-gradient(180deg,var(--gold),#f0d896);
+        box-shadow:0 0 8px rgba(240,216,150,.5); }
+      .gtl-steps { grid-template-columns:1fr; gap:26px; }
+      .gtl-step { display:grid; grid-template-columns:auto 1fr; gap:16px; align-items:start; }
+      .gtl-dot { width:38px; height:38px; margin:0; margin-left:-27px; }
+      .gtl-txt p { max-width:none; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .gtl-fill { stroke-dashoffset:0 !important; }
+      .gtl { --p:1 !important; }
+      .gtl-txt { opacity:1 !important; transform:none !important; transition:none; }
+      .gtl-step.is-on .gtl-dot::before { animation:none; }
+      .gtl-check path { animation:none !important; stroke-dashoffset:0; }
+    }
+
+    /* ===== BLACK CLUB — SEUS NÚMEROS DA SORTE (bilhetes que se materializam) ===== */
+    .bcs-intro { font-size:.88rem; color:#aab6cf; margin-bottom:22px; line-height:1.7; }
+    .bcs-grid { display:grid; grid-template-columns:minmax(240px,.8fr) 1.4fr; gap:22px; align-items:start; }
+    .bcs-ctl { display:flex; flex-direction:column; gap:14px; }
+    .bcs-step { display:flex; align-items:center; justify-content:space-between; gap:14px; background:rgba(255,255,255,.02); border:1px solid rgba(201,162,39,.16); padding:14px 16px; }
+    .bcs-lbl { font-size:.68rem; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:var(--gold); }
+    .bcs-btns { display:flex; align-items:center; gap:6px; }
+    .bcs-btns button { width:38px; height:38px; background:transparent; border:1px solid rgba(201,162,39,.45); color:var(--gold); font-size:1.2rem; line-height:1;
+      font-family:'DM Sans',sans-serif; transition:background .2s, color .2s, transform .15s; }
+    .bcs-btns button:hover { background:var(--gold); color:#000; }
+    .bcs-btns button:active { transform:scale(.92); }
+    .bcs-btns button:disabled { opacity:.3; pointer-events:none; }
+    .bcs-val { min-width:2.2ch; text-align:center; font-family:'Cormorant Garamond',serif; font-size:1.7rem; font-weight:700; color:#fff;
+      font-variant-numeric:lining-nums tabular-nums; font-feature-settings:'lnum' 1; }
+    .bcs-total { display:flex; align-items:baseline; gap:12px; padding:16px 18px; border:1px solid rgba(201,162,39,.4); background:linear-gradient(135deg,rgba(201,162,39,.14),rgba(201,162,39,.03)); }
+    .bcs-total strong { font-family:'Cormorant Garamond',serif; font-size:3rem; font-weight:700; color:var(--gold); line-height:1;
+      font-variant-numeric:lining-nums tabular-nums; font-feature-settings:'lnum' 1; text-shadow:0 0 24px rgba(201,162,39,.4); }
+    .bcs-total span { font-size:.68rem; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:#ddd; line-height:1.4; }
+    .bcs-bilhetes { display:grid; grid-template-columns:repeat(auto-fill, minmax(112px,1fr)); gap:10px; min-height:96px; align-content:start; }
+    .bcs-vazio { grid-column:1 / -1; align-self:center; text-align:center; font-size:.8rem; color:#7f8aa0; padding:28px 12px; border:1px dashed rgba(201,162,39,.25); line-height:1.6; }
+    .bcs-bilhete { position:relative; display:grid; grid-template-columns:1fr auto; align-items:center; gap:8px; padding:10px 10px 10px 14px;
+      background:linear-gradient(135deg,#1a1508,#0c0a04); border:1px solid rgba(201,162,39,.55); color:var(--gold-pale);
+      opacity:0; transform:translateY(14px) scale(.85) rotate(-4deg); transition:opacity .45s cubic-bezier(.22,.9,.3,1), transform .55s cubic-bezier(.22,.9,.3,1);
+      transition-delay:var(--d,0ms); }
+    .bcs-bilhete::before, .bcs-bilhete::after { content:''; position:absolute; top:50%; width:10px; height:10px; border-radius:50%; background:#0d0d0d; transform:translateY(-50%); border:1px solid rgba(201,162,39,.55); }
+    .bcs-bilhete::before { left:-6px; }
+    .bcs-bilhete::after { right:-6px; }
+    .bcs-bilhete.is-in { opacity:1; transform:none; }
+    .bcs-bilhete.is-out { opacity:0; transform:scale(.7); transition-delay:0ms; }
+    .bcs-b-lbl { display:block; font-size:.5rem; font-weight:700; letter-spacing:.22em; text-transform:uppercase; color:rgba(201,162,39,.75); }
+    .bcs-b-num { display:block; font-family:'Cormorant Garamond',serif; font-size:1.35rem; font-weight:700; color:var(--gold); line-height:1; margin-top:2px;
+      font-variant-numeric:lining-nums tabular-nums; font-feature-settings:'lnum' 1; }
+    .bcs-b-raio { width:14px; height:14px; fill:var(--gold); opacity:.8; border-left:1px dashed rgba(201,162,39,.4); padding-left:8px; box-sizing:content-box; }
+    .bcs-nota { margin-top:18px; font-size:.74rem; color:#8f99ad; line-height:1.7; }
+    .bcs-nota strong { color:var(--gold); }
+    #bcSorte .bc-cta-btn { margin-top:18px; }
+    @media (max-width:700px) { .bcs-grid { grid-template-columns:1fr; } .bcs-bilhetes { grid-template-columns:repeat(auto-fill, minmax(96px,1fr)); } }
+    @media (prefers-reduced-motion: reduce) { .bcs-bilhete { transition:none; opacity:1; transform:none; } }
+
+    /* ============================================================
+       DNA DE ANIMAÇÃO — Dock iOS (mobile), FlowingMenu (nav),
+       GlassIcons (diferenciais), ClickSpark (CTAs)
+       ============================================================ */
+    /* ===== DOCK — barra flutuante inferior com magnificação (só <=700px) ===== */
+    .dock { display:none; position:fixed; left:0; right:0; bottom:0; z-index:250; justify-content:center; pointer-events:none;
+      padding:0 12px calc(10px + env(safe-area-inset-bottom, 0px)); transform:translateY(0); transition:transform .38s cubic-bezier(.22,.9,.3,1); }
+    .dock.dock-hide { transform:translateY(calc(100% + 24px)); }
+    .dock-panel { pointer-events:auto; display:flex; align-items:flex-end; gap:8px; height:64px; padding:0 8px 7px;
+      background:rgba(6,12,32,.86); border:1px solid rgba(201,162,39,.35); border-radius:22px;
+      box-shadow:0 14px 40px rgba(0,0,0,.55), 0 0 0 1px rgba(0,0,0,.4) inset; backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px);
+      touch-action:none; -webkit-tap-highlight-color:transparent; }
+    .dock-item { position:relative; display:flex; align-items:center; justify-content:center; width:46px; height:46px; border-radius:14px;
+      background:rgba(255,255,255,.04); border:1px solid rgba(201,162,39,.22); color:var(--gold); text-decoration:none; flex:0 0 auto;
+      will-change:width,height; transition:background .2s, border-color .2s; }
+    .dock-item.is-on { background:rgba(201,162,39,.16); border-color:rgba(201,162,39,.7); }
+    .dock-item svg { width:52%; height:52%; stroke:currentColor; fill:none; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round; }
+    .dock-item.dock-bolt svg { fill:currentColor; stroke:none; }
+    .dock-item.dock-wa { background:#25d366; border-color:#25d366; color:#04240f; }
+    .dock-item.dock-wa svg { fill:currentColor; stroke:none; width:58%; height:58%; }
+    .dock-label { position:absolute; bottom:calc(100% + 10px); left:50%; transform:translate(-50%,6px); white-space:nowrap;
+      background:var(--cream); color:var(--navy); font-size:.62rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase;
+      padding:5px 10px; opacity:0; pointer-events:none; transition:opacity .2s, transform .25s cubic-bezier(.22,.9,.3,1); }
+    .dock-item.is-on .dock-label { opacity:1; transform:translate(-50%,0); }
+    @media (max-width:700px) {
+      .dock { display:flex; }
+      /* dock à mostra: o float dorme; dock recolhido ao rolar para baixo: o float volta (WhatsApp sempre à mão) */
+      body.has-dock .wa-float { opacity:0; transform:scale(.5) translateY(18px); pointer-events:none; visibility:hidden;
+        transition:opacity .28s, transform .38s cubic-bezier(.22,.9,.3,1), visibility 0s .38s; }
+      body.has-dock.dock-off .wa-float { opacity:1; transform:none; pointer-events:auto; visibility:visible; transition-delay:0s; }
+      body.has-dock .wa-float-tip { display:none !important; }
+      body.has-dock { padding-bottom:86px; }
+      body.has-dock footer { padding-bottom:calc(32px + 86px) !important; }
+    }
+    @media (prefers-reduced-motion: reduce) { .dock, .dock-item, .dock-label, body.has-dock .wa-float { transition:none !important; } }
+
+    /* ===== FLOWING MENU — faixa marquee dourada atrás do link (nav desktop) ===== */
+    .nav-links a.fm { position:relative; display:inline-block; padding:9px 12px; margin:-9px -12px; overflow:hidden; isolation:isolate; }
+    .nav-links a.fm .fm-t { position:relative; z-index:1; }
+    .fm-mq { position:absolute; inset:0; z-index:2; background:var(--gold); color:var(--navy); overflow:hidden; pointer-events:none;
+      transform:translate3d(0,101%,0); transition:transform .6s cubic-bezier(.16,1,.3,1); }
+    .fm-in { position:absolute; inset:0; display:flex; align-items:center; transform:translate3d(0,-101%,0); transition:transform .6s cubic-bezier(.16,1,.3,1); }
+    .fm-track { display:flex; align-items:center; white-space:nowrap; will-change:transform; animation:fmRun 5s linear infinite; animation-play-state:paused; }
+    .fm-track span { display:inline-flex; align-items:center; gap:10px; padding:0 8px; font-size:.78rem; font-weight:700; letter-spacing:.16em; text-transform:uppercase; }
+    .fm-track span::after { content:'\25C6'; font-size:.5rem; color:rgba(4,9,28,.55); }
+    .fm.is-on .fm-track { animation-play-state:running; }
+    .fm.fm-snap .fm-mq, .fm.fm-snap .fm-in { transition:none; }
+    @keyframes fmRun { to { transform:translateX(-50%); } }
+    @media (prefers-reduced-motion: reduce) { .fm-mq, .fm-in { transition:none; } .fm-track { animation:none !important; } }
+
+    /* ===== GLASS ICONS — vidro com camada dourada atrás (diferenciais) ===== */
+    .gc-icon.glass { width:58px; height:58px; border:none; perspective:24em; transform-style:preserve-3d; margin-bottom:26px; position:relative; }
+    .glass-back, .glass-front { position:absolute; inset:0; border-radius:16px; transition:transform .35s cubic-bezier(.83,0,.17,1), box-shadow .35s; }
+    .glass-back { background:linear-gradient(135deg,#f0d896 0%,#c9a227 45%,#8a6a10 100%); transform:rotate(15deg); transform-origin:100% 100%;
+      box-shadow:.4em -.4em .8em rgba(0,0,0,.45); will-change:transform; }
+    .glass-front { display:flex; align-items:center; justify-content:center; background:rgba(247,243,232,.08);
+      box-shadow:inset 0 0 0 1px rgba(247,243,232,.28), inset 0 1px 0 rgba(255,255,255,.18);
+      backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); transform-origin:80% 50%; will-change:transform; }
+    .glass-front svg { width:24px; height:24px; stroke:var(--gold-pale); fill:none; stroke-width:1.5; transition:filter .3s, stroke .3s; }
+    .gc:hover .glass-back, .gc:focus-within .glass-back { transform:rotate(25deg) translate3d(-.5em,-.5em,.5em); box-shadow:.6em -.6em 1.2em rgba(0,0,0,.5), 0 0 22px rgba(201,162,39,.45); }
+    .gc:hover .glass-front, .gc:focus-within .glass-front { transform:translate3d(0,0,2em); box-shadow:inset 0 0 0 1px rgba(240,216,150,.7), inset 0 1px 0 rgba(255,255,255,.3), 0 0 0 1px rgba(201,162,39,.25); }
+    .gc:hover .glass-front svg { stroke:#fff6d8; filter:drop-shadow(0 0 7px rgba(240,216,150,.95)); }
+    @media (prefers-reduced-motion: reduce) { .glass-back, .glass-front, .glass-front svg { transition:none; } }
+
+    /* ===== CLICK SPARK — fagulhas douradas no clique dos CTAs ===== */
+    .spark { position:fixed; left:0; top:0; width:0; height:0; z-index:9997; pointer-events:none; }
+    .spark i { position:absolute; left:-1.5px; top:-14px; width:3px; height:14px; border-radius:2px; background:linear-gradient(180deg,#fff6d8,var(--gold));
+      transform-origin:50% 100%; transform:rotate(var(--a)) translateY(-6px) scaleY(1); animation:sparkFly .5s cubic-bezier(.16,1,.3,1) forwards; }
+    @keyframes sparkFly { 0%{ transform:rotate(var(--a)) translateY(-6px) scaleY(1); opacity:1; } 100%{ transform:rotate(var(--a)) translateY(-30px) scaleY(.2); opacity:0; } }
+
+    /* ===== SCROLLSTACK — os 4 cards de garantia empilham (sticky + escala) ===== */
+    .gua { overflow:clip; } /* hidden viraria scroll container e mataria o sticky */
+    .g-grid.sstack { display:block; margin:64px auto 0; max-width:880px; padding-bottom:12vh; }
+    .g-grid.sstack .gc { position:sticky; top:calc(var(--stack-top, 120px) + var(--i, 0) * 28px); margin-bottom:96px;
+      display:grid; grid-template-columns:auto 1fr; gap:10px 30px; align-items:start; padding:40px 44px 42px;
+      background:linear-gradient(160deg,#0a1433 0%,#060c22 70%); border:1px solid rgba(201,162,39,.22); border-radius:6px;
+      box-shadow:0 30px 70px -30px rgba(0,0,0,.85), 0 0 0 1px rgba(0,0,0,.5) inset;
+      transform-origin:top center; will-change:transform; backface-visibility:hidden; transition:border-color .3s, box-shadow .3s; }
+    .g-grid.sstack .gc:last-child { margin-bottom:0; }
+    .g-grid.sstack .gc:hover { border-color:rgba(201,162,39,.5); }
+    .g-grid.sstack .gc-icon { grid-row:1 / span 2; margin:0; }
+    .g-grid.sstack .gc-title { font-size:1.7rem; margin:4px 0 6px; }
+    .g-grid.sstack .gc-desc { font-size:.9rem; max-width:52ch; }
+    .g-grid.sstack .gc-n { position:absolute; right:26px; top:22px; font-family:'Cormorant Garamond',serif; font-size:2.6rem; font-weight:700; line-height:1;
+      color:transparent; -webkit-text-stroke:1px rgba(201,162,39,.4); font-variant-numeric:lining-nums; font-feature-settings:'lnum' 1; }
+    @media (max-width:900px) {
+      .g-grid.sstack { padding-bottom:6vh; }
+      .g-grid.sstack .gc { top:calc(78px + var(--i, 0) * 16px); margin-bottom:60px; grid-template-columns:1fr; gap:6px; padding:28px 22px 30px; transform:none !important; }
+      .g-grid.sstack .gc-icon { grid-row:auto; margin-bottom:12px; }
+      .g-grid.sstack .gc-title { font-size:1.4rem; }
+      .g-grid.sstack .gc-n { font-size:2rem; right:18px; top:16px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .g-grid.sstack .gc { position:static; transform:none !important; margin-bottom:14px; }
+      .g-grid.sstack { padding-bottom:0; }
+    }
+
+    /* ===== COMO FUNCIONA — passo ativo acende com a linha (Stepper) ===== */
+    .como-step { transition:border-color .5s; }
+    .como-step.is-on { border-top-color:rgba(201,162,39,.7); }
+    .como-num { transition:-webkit-text-stroke-color .5s, color .5s, text-shadow .5s; }
+    .como-step.is-on .como-num { -webkit-text-stroke-color:var(--gold); color:rgba(201,162,39,.12); text-shadow:0 0 22px rgba(201,162,39,.25); }
+
+    /* ===== CARDSWAP — os 3 iPhones do estágio 4 trocam de posição ===== */
+    #showcase.is-swap .show-mini, #showcase.is-swap .shp { transition:none; }
+    #showcase.is-swap .show-mini { opacity:1 !important; }
+
   </style>
 </head>
 <body>
@@ -1495,6 +1921,17 @@
   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.5 14.4c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.46-2.4-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.91-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.87 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.7.63.71.22 1.36.19 1.87.11.57-.08 1.76-.72 2-1.41.25-.7.25-1.29.18-1.41-.08-.13-.28-.2-.58-.35zM12 2C6.5 2 2 6.48 2 12c0 1.77.46 3.44 1.27 4.89L2 22l5.23-1.26A9.95 9.95 0 0 0 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm0 18.19a8.17 8.17 0 0 1-4.16-1.14l-.3-.18-3.1.75.77-3-.19-.3A8.15 8.15 0 0 1 3.84 12c0-4.5 3.67-8.17 8.16-8.17S20.16 7.5 20.16 12 16.5 20.19 12 20.19z"/></svg>
   <span class="wa-float-tip" id="waTip" hidden>Fale com a gente</span>
 </a>
+
+<!-- DOCK iOS — atalhos com magnificação ao toque (só no mobile; integra o WhatsApp do float) -->
+<div class="dock" id="dock" role="navigation" aria-label="Atalhos rápidos">
+  <div class="dock-panel" role="toolbar" aria-label="Atalhos">
+    <a class="dock-item" href="#produtos" aria-label="Produtos"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2.5"/><line x1="10" y1="18.5" x2="14" y2="18.5"/></svg><span class="dock-label" aria-hidden="true">Produtos</span></a>
+    <a class="dock-item dock-bolt" href="#produtos" onclick="irCat('blackclub')" aria-label="Black Club"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg><span class="dock-label" aria-hidden="true">Black Club</span></a>
+    <a class="dock-item" href="#garantias" aria-label="Garantia"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg><span class="dock-label" aria-hidden="true">Garantia</span></a>
+    <a class="dock-item" href="#instagram" aria-label="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="1" fill="currentColor" stroke="none"/></svg><span class="dock-label" aria-hidden="true">Instagram</span></a>
+    <a class="dock-item dock-wa" href="https://wa.me/5512997463135" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.5 14.4c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.46-2.4-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.91-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.87 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.7.63.71.22 1.36.19 1.87.11.57-.08 1.76-.72 2-1.41.25-.7.25-1.29.18-1.41-.08-.13-.28-.2-.58-.35zM12 2C6.5 2 2 6.48 2 12c0 1.77.46 3.44 1.27 4.89L2 22l5.23-1.26A9.95 9.95 0 0 0 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm0 18.19a8.17 8.17 0 0 1-4.16-1.14l-.3-.18-3.1.75.77-3-.19-.3A8.15 8.15 0 0 1 3.84 12c0-4.5 3.67-8.17 8.16-8.17S20.16 7.5 20.16 12 16.5 20.19 12 20.19z"/></svg><span class="dock-label" aria-hidden="true">WhatsApp</span></a>
+  </div>
+</div>
 
 <main id="conteudo">
 <!-- HERO -->
@@ -1606,6 +2043,17 @@
     </ul>
   </div>
 
+  <!-- ESTOQUE AGORA — barras douradas com a contagem REAL por categoria (mesmos dados das abas; realtime) -->
+  <div class="estoque rv" id="estoqueAgora">
+    <div class="est-head">
+      <span class="est-titulo"><i class="est-dot"></i>Estoque agora</span>
+      <span class="est-sub" id="estSub" aria-live="polite">consultando a vitrine…</span>
+    </div>
+    <div class="est-chart" id="estChart"></div>
+    <p class="est-vazio" id="estVazio" hidden>Estoque renovando — <a target="_blank" rel="noopener" href="https://wa.me/5512997463135?text=Ol%C3%A1!%20Queria%20saber%20quais%20iPhones%20est%C3%A3o%20chegando.">chame no WhatsApp</a> e reserve o próximo antes de todo mundo.</p>
+    <p class="est-nota" id="estNota" hidden>Aparelhos publicados por categoria · clique numa barra para abrir a aba</p>
+  </div>
+
   <div class="cat-tabs rv" id="catTabs" role="tablist" aria-label="Categorias do catálogo">
     <button class="cat-tab black-club-tab" role="tab" aria-selected="false" id="tabbtn-blackclub" aria-controls="tab-blackclub" data-slug="blackclub" onclick="switchTab('blackclub',this)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>Black Club</button>
   </div>
@@ -1698,6 +2146,30 @@
         </div>
       </div>
 
+      <div class="bc-section rv" id="bcSorte">
+        <h3 class="bc-section-title">Seus números da sorte</h3>
+        <p class="bcs-intro">Regra do clube: <strong>cada compra ou indicação que fechar gera 1 número da sorte</strong>. Conte os seus e veja os bilhetes aparecerem.</p>
+        <div class="bcs-grid">
+          <div class="bcs-ctl">
+            <div class="bcs-step" data-step="compras">
+              <span class="bcs-lbl" id="bcsLblC">Compras</span>
+              <div class="bcs-btns"><button type="button" class="bcs-menos" aria-label="Menos uma compra">&minus;</button><output class="bcs-val" id="bcsCompras" aria-labelledby="bcsLblC">0</output><button type="button" class="bcs-mais" aria-label="Mais uma compra">+</button></div>
+            </div>
+            <div class="bcs-step" data-step="indic">
+              <span class="bcs-lbl" id="bcsLblI">Indicações fechadas</span>
+              <div class="bcs-btns"><button type="button" class="bcs-menos" aria-label="Menos uma indicação">&minus;</button><output class="bcs-val" id="bcsIndic" aria-labelledby="bcsLblI">0</output><button type="button" class="bcs-mais" aria-label="Mais uma indicação">+</button></div>
+            </div>
+            <div class="bcs-total" aria-live="polite"><strong id="bcsTotal">0</strong><span>números<br/>da sorte</span></div>
+          </div>
+          <div class="bcs-bilhetes" id="bcsBilhetes"><p class="bcs-vazio">Toque em + para contar as suas compras e indicações — cada uma vira um bilhete dourado aqui.</p></div>
+        </div>
+        <p class="bcs-nota">Os sorteios acontecem ao longo do ano e o <strong>grande prêmio de Natal é um iPhone 17</strong>. Os números oficiais são registrados pela loja no grupo do clube.</p>
+        <a id="bcsCta" class="bc-cta-btn" href="https://wa.me/5512997463135?text=Ol%C3%A1!%20Quero%20entrar%20no%20Black%20Club%20da%20Eletronic!" target="_blank" rel="noopener">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/><path d="M12 2C6.477 2 2 6.477 2 12c0 1.771.461 3.437 1.268 4.886L2 22l5.234-1.258A9.953 9.953 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18.186a8.168 8.168 0 01-4.162-1.136l-.299-.177-3.105.747.776-2.994-.196-.309A8.152 8.152 0 013.837 12c0-4.507 3.666-8.173 8.163-8.173S20.163 7.493 20.163 12c0 4.508-3.659 8.186-8.163 8.186z"/></svg>
+          Entrar no Black Club
+        </a>
+      </div>
+
       <div class="bc-cta-wrap rv">
         <p>Faça parte agora e garanta seus números da sorte!</p>
         <a href="https://wa.me/5512997463135?text=Ol%C3%A1!%20Quero%20entrar%20no%20Black%20Club%20da%20Eletronic!" target="_blank" rel="noopener" class="bc-cta-btn">
@@ -1719,6 +2191,49 @@
   </div>
 
 
+</section>
+
+<!-- SIMULADOR DE PARCELAS — com os números do visitante (ilustrativo, sem juros) -->
+<section class="sec sim" id="simulador" aria-labelledby="simTitulo">
+  <p class="eyebrow rv"><span></span>Com os seus números</p>
+  <h2 class="heading rv" id="simTitulo">Quanto fica <em>por mês?</em></h2>
+  <p class="sim-intro rv">Mexa nos controles e veja a conta na hora. O seu iPhone atual entra como parte do pagamento — o valor exato a gente confirma no WhatsApp.</p>
+  <div class="sim-grid rv">
+    <div class="sim-ctl">
+      <label class="sim-campo">
+        <span class="sim-lbl">Valor do iPhone</span>
+        <output class="sim-out" id="simValorOut" for="simValor">R$ 6.000</output>
+        <input type="range" id="simValor" min="2000" max="12000" step="100" value="6000" aria-label="Valor do iPhone" aria-valuetext="R$ 6.000">
+      </label>
+      <label class="sim-campo">
+        <span class="sim-lbl">Seu iPhone atual como entrada</span>
+        <output class="sim-out" id="simEntradaOut" for="simEntrada">R$ 0</output>
+        <input type="range" id="simEntrada" min="0" max="6000" step="100" value="0" aria-label="Valor do seu iPhone atual como entrada" aria-valuetext="R$ 0">
+      </label>
+      <div class="sim-campo">
+        <span class="sim-lbl" id="simParcLbl">Parcelas no cartão</span>
+        <div class="sim-seg" id="simParcelas" role="radiogroup" aria-labelledby="simParcLbl">
+          <button type="button" role="radio" aria-checked="false" data-n="6">6x</button>
+          <button type="button" role="radio" aria-checked="false" data-n="12">12x</button>
+          <button type="button" role="radio" aria-checked="true" class="on" data-n="18">18x</button>
+        </div>
+      </div>
+    </div>
+    <div class="sim-viz">
+      <div class="sim-big" aria-live="polite"><span class="sim-big-n"><b id="simN">18</b>x de</span><strong id="simParcela">R$ 333</strong></div>
+      <div class="sim-bars" id="simBars"></div>
+      <div class="sim-linha">
+        <div class="sim-anel" id="simAnel"></div>
+        <dl class="sim-res">
+          <div><dt>Entrada</dt><dd id="simEntradaRes">R$ 0</dd></div>
+          <div><dt>Financiado</dt><dd id="simFinanciado">R$ 6.000</dd></div>
+          <div><dt>Total</dt><dd id="simTotal">R$ 6.000</dd></div>
+        </dl>
+      </div>
+      <p class="sim-aviso">Simulação ilustrativa sem juros — condições confirmadas no WhatsApp</p>
+      <div><a class="btn-claro" id="simCta" href="https://wa.me/5512997463135?text=Ol%C3%A1!%20Simulei%20no%20site." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.5 14.4c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.46-2.4-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.91-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.87 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.7.63.71.22 1.36.19 1.87.11.57-.08 1.76-.72 2-1.41.25-.7.25-1.29.18-1.41-.08-.13-.28-.2-.58-.35zM12 2C6.5 2 2 6.48 2 12c0 1.77.46 3.44 1.27 4.89L2 22l5.23-1.26A9.95 9.95 0 0 0 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm0 18.19a8.17 8.17 0 0 1-4.16-1.14l-.3-.18-3.1.75.77-3-.19-.3A8.15 8.15 0 0 1 3.84 12c0-4.5 3.67-8.17 8.16-8.17S20.16 7.5 20.16 12 16.5 20.19 12 20.19z"/></svg>Confirmar condições no WhatsApp</a></div>
+    </div>
+  </div>
 </section>
 
 <!-- LACRADO × SEMINOVO -->
@@ -1815,6 +2330,23 @@
   </div>
   <p class="eyebrow rv"><span></span>Diferenciais</p>
   <h2 class="heading rv">Compra <em>segura</em> do início ao fim</h2>
+  <!-- LINHA DO TEMPO DA GARANTIA — só marcos factuais; desenha ao rolar, marcos acendem em cascata -->
+  <div class="gtl rv" id="gtl">
+    <svg class="gtl-svg" viewBox="0 0 1000 8" preserveAspectRatio="none" aria-hidden="true">
+      <line class="gtl-track" x1="0" y1="4" x2="1000" y2="4"/>
+      <line class="gtl-fill" id="gtlFill" x1="0" y1="4" x2="1000" y2="4" pathLength="1000"/>
+    </svg>
+    <ol class="gtl-steps" role="list" aria-label="O que acompanha a sua compra, do dia zero ao próximo iPhone">
+      <li class="gtl-step" role="listitem"><span class="gtl-dot" aria-hidden="true"><i class="gtl-num">1</i><svg class="gtl-check" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg></span>
+        <div class="gtl-txt"><span class="gtl-when">Dia 0</span><strong>Compra com nota fiscal</strong><p>Aparelho conferido na sua frente e nota emitida na hora.</p></div></li>
+      <li class="gtl-step" role="listitem"><span class="gtl-dot" aria-hidden="true"><i class="gtl-num">2</i><svg class="gtl-check" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg></span>
+        <div class="gtl-txt"><span class="gtl-when">Na mesma hora</span><strong>Transferência de dados</strong><p>Fotos, contatos e apps migram no ato da compra. Você sai com tudo funcionando.</p></div></li>
+      <li class="gtl-step" role="listitem"><span class="gtl-dot" aria-hidden="true"><i class="gtl-num">3</i><svg class="gtl-check" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg></span>
+        <div class="gtl-txt"><span class="gtl-when">12 meses</span><strong>1 ano de garantia da loja</strong><p>No lacrado e no seminovo. Precisou, é só chamar no WhatsApp.</p></div></li>
+      <li class="gtl-step" role="listitem"><span class="gtl-dot" aria-hidden="true"><i class="gtl-num">4</i><svg class="gtl-check" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg></span>
+        <div class="gtl-txt"><span class="gtl-when">No próximo</span><strong>Seu iPhone vale como entrada</strong><p>Quando quiser trocar, o aparelho vira desconto direto no próximo.</p></div></li>
+    </ol>
+  </div>
   <!-- VITRINE: iPhones ligando com os beneficios (conteudo montado por JS) -->
   <div class="ivit rv" id="ivit" aria-hidden="true"></div>
   <div class="g-grid">
@@ -1841,11 +2373,21 @@
   </div>
 </section>
 
-<!-- STATS -->
+<!-- STATS — anel dourado da nota (96% = 4,8 de 5) + odômetros -->
 <div class="stats">
-  <div class="stat rv"><span class="stat-n" data-count="4,8">4,8</span><span class="stat-l">Estrelas Google</span></div>
-  <div class="stat rv" style="transition-delay:.08s"><span class="stat-n" data-count="5" data-suffix="+">5+</span><span class="stat-l">Anos Realizando Sonhos</span></div>
-  <div class="stat rv" style="transition-delay:.16s"><span class="stat-n" data-count="8400" data-prefix="+">+8.400</span><span class="stat-l">Seguidores</span></div>
+  <div class="stat stat-anel rv">
+    <div id="statAnel"></div>
+    <div class="stat-stars" aria-hidden="true">
+      <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+      <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+      <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+      <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+      <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+    </div>
+    <span class="stat-l">Estrelas Google</span>
+  </div>
+  <div class="stat rv" style="transition-delay:.08s"><span class="stat-n" data-odo="5" data-suffix="+">5+</span><span class="stat-l">Anos Realizando Sonhos</span></div>
+  <div class="stat rv" style="transition-delay:.16s"><span class="stat-n" data-odo="8400" data-prefix="+">+8.400</span><span class="stat-l">Seguidores</span></div>
   <div class="stat rv" style="transition-delay:.24s"><span class="stat-n" data-count="18" data-suffix="x">18x</span><span class="stat-l">Parcelamento</span></div>
   <div class="stat rv" style="transition-delay:.32s"><span class="stat-n">1 ano</span><span class="stat-l">de Garantia</span></div>
   <div class="stat rv" style="transition-delay:.4s"><span class="stat-n">Brasil</span><span class="stat-l">Entrega Nacional</span></div>
@@ -2168,7 +2710,7 @@
     });
     document.addEventListener('mouseover',e=>{
       const t=e.target;
-      document.body.classList.toggle('hov',!!(t.closest&&t.closest('a,button,summary,.pcard,.cat-tab,.iph')));
+      document.body.classList.toggle('hov',!!(t.closest&&t.closest('a,button,summary,.pcard,.cat-tab,.iph,.elc-clicavel,input[type=range]')));
       document.body.classList.toggle('curoff',!!(t.closest&&t.closest('.cmap')));
     });
     // press físico no vocabulário do cursor
@@ -2216,6 +2758,1893 @@
 
 
 
+<!-- MOTOR DE GRÁFICOS DOURADOS (elcChart) -->
+<script>
+'use strict';
+/* ============================================================
+   elcChart — motor de gráficos dourados da Eletronic.
+   Porte do nxChart (Nexus v25) para a paleta ouro da loja:
+   traço #c9a227 → #f0d896 → #f7f3e8 sobre navy quase preto.
+   SVG inline gerado por JS a partir de dados. Área que esmaece,
+   brilho leve (só desktop), grade hairline, crosshair + tooltip
+   (mouse; toque no celular), desenho ao entrar (IO, uma vez),
+   tween por relógio real quando os dados mudam e um único rAF
+   central para tudo. Reduced-motion: estado final direto.
+   Tipos: line/area, live, bars, stack, donut, heat, spark, monitor
+   e enhance (realce de um SVG existente). Wrapper: .elc.elc-k-<tipo>.
+   ============================================================ */
+window.elcChart = (function () {
+  var NS = "http://www.w3.org/2000/svg";
+  var reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var finePointer = window.matchMedia("(pointer: fine)").matches;
+  var coarse = window.matchMedia("(pointer: coarse)").matches;
+  var GLOW = !reducedMotion && finePointer && window.matchMedia("(min-width: 840px)").matches;
+  var seq = 0;
+
+  var fmtInt = function (n) {
+    return String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+  };
+  var fmtBRL = function (n) {
+    return "R$ " + fmtInt(n);
+  };
+
+  function mk(tag, attrs, parent) {
+    var n = document.createElementNS(NS, tag);
+    if (attrs) {
+      for (var k in attrs) {
+        if (attrs[k] !== null && attrs[k] !== undefined) n.setAttribute(k, attrs[k]);
+      }
+    }
+    if (parent) parent.appendChild(n);
+    return n;
+  }
+  function div(cls, parent, text) {
+    var n = document.createElement("div");
+    n.className = cls;
+    if (text !== undefined) n.textContent = text;
+    if (parent) parent.appendChild(n);
+    return n;
+  }
+  function esc(s) {
+    return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+
+  /* ---------- defs globais: gradientes e brilho, uma vez no body ---------- */
+  (function () {
+    var defsSvg = mk("svg", { class: "elc-defs", "aria-hidden": "true", focusable: "false", width: "0", height: "0" });
+    var defs = mk("defs", null, defsSvg);
+    var g1 = mk("linearGradient", { id: "elc-stroke", x1: "0", y1: "0", x2: "1", y2: "0" }, defs);
+    mk("stop", { offset: "0", "stop-color": "#c9a227" }, g1);
+    mk("stop", { offset: "0.6", "stop-color": "#f0d896" }, g1);
+    mk("stop", { offset: "1", "stop-color": "#f7f3e8" }, g1);
+    var g2 = mk("linearGradient", { id: "elc-fill", x1: "0", y1: "0", x2: "0", y2: "1" }, defs);
+    mk("stop", { offset: "0", "stop-color": "#f0d896", "stop-opacity": "0.42" }, g2);
+    mk("stop", { offset: "0.55", "stop-color": "#c9a227", "stop-opacity": "0.12" }, g2);
+    mk("stop", { offset: "1", "stop-color": "#c9a227", "stop-opacity": "0" }, g2);
+    var g3 = mk("linearGradient", { id: "elc-bar", x1: "0", y1: "0", x2: "0", y2: "1" }, defs);
+    mk("stop", { offset: "0", "stop-color": "#f0d896" }, g3);
+    mk("stop", { offset: "1", "stop-color": "#c9a227" }, g3);
+    var g4 = mk("linearGradient", { id: "elc-bar-h", x1: "0", y1: "0", x2: "1", y2: "0" }, defs);
+    mk("stop", { offset: "0", "stop-color": "#c9a227" }, g4);
+    mk("stop", { offset: "1", "stop-color": "#f0d896" }, g4);
+    var g5 = mk("linearGradient", { id: "elc-arc", x1: "0", y1: "0", x2: "1", y2: "1" }, defs);
+    mk("stop", { offset: "0", "stop-color": "#c9a227" }, g5);
+    mk("stop", { offset: "1", "stop-color": "#f0d896" }, g5);
+    var f = mk("filter", { id: "elc-glow", x: "-10%", y: "-40%", width: "120%", height: "180%" }, defs);
+    mk("feGaussianBlur", { stdDeviation: "2.4", result: "b" }, f);
+    var m = mk("feMerge", null, f);
+    mk("feMergeNode", { in: "b" }, m);
+    mk("feMergeNode", { in: "SourceGraphic" }, m);
+    var montar = function () {
+      if (document.body && !defsSvg.parentNode) document.body.appendChild(defsSvg);
+    };
+    if (document.body) montar();
+    else document.addEventListener("DOMContentLoaded", montar);
+  })();
+
+  /* ---------- relógio central: um rAF para tweens e linhas vivas ---------- */
+  var tarefas = [];
+  var raf = 0;
+  function passo(ts) {
+    for (var i = tarefas.length - 1; i >= 0; i--) {
+      var manter = false;
+      try {
+        manter = tarefas[i](ts);
+      } catch (_) {
+        manter = false;
+      }
+      if (!manter) tarefas.splice(i, 1);
+    }
+    raf = tarefas.length ? window.requestAnimationFrame(passo) : 0;
+  }
+  function agendar(fn) {
+    tarefas.push(fn);
+    if (!raf) raf = window.requestAnimationFrame(passo);
+  }
+  /* gráficos que andam sozinhos: religam ao voltar para a aba */
+  var vivos = [];
+  document.addEventListener("visibilitychange", function () {
+    if (document.hidden) return;
+    if (tarefas.length && !raf) raf = window.requestAnimationFrame(passo);
+    window.setTimeout(function () {
+      for (var i = 0; i < vivos.length; i++) if (vivos[i].desenhado && vivos[i].ligar) vivos[i].ligar();
+    }, 60);
+  });
+
+  /* tween de um vetor: from→to em dur ms, easing cúbico, relógio real */
+  function tween(from, to, dur, cb, done) {
+    var n = to.length;
+    var cur = new Array(n);
+    var i;
+    if (reducedMotion || dur <= 0) {
+      for (i = 0; i < n; i++) cur[i] = to[i];
+      cb(cur, 1);
+      if (done) done();
+      return function () {};
+    }
+    var t0 = performance.now();
+    var vivo = true;
+    agendar(function (ts) {
+      if (!vivo) return false;
+      var p = Math.min((ts - t0) / dur, 1);
+      var e = 1 - Math.pow(1 - p, 3);
+      for (var k = 0; k < n; k++) cur[k] = from[k] + (to[k] - from[k]) * e;
+      cb(cur, p);
+      if (p >= 1) {
+        vivo = false;
+        if (done) done();
+        return false;
+      }
+      return true;
+    });
+    return function () {
+      vivo = false;
+    };
+  }
+
+  /* ---------- observadores compartilhados ---------- */
+  var ioDesenho = null;
+  var ioPresenca = null;
+  if ("IntersectionObserver" in window) {
+    ioDesenho = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (e) {
+          if (!e.isIntersecting) return;
+          ioDesenho.unobserve(e.target);
+          var inst = e.target.__elc;
+          if (inst) inst.reveal();
+        });
+      },
+      { threshold: 0.3 }
+    );
+    ioPresenca = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (e) {
+          var inst = e.target.__elc;
+          if (inst) inst.setVisible(e.isIntersecting);
+        });
+      },
+      { threshold: 0.05 }
+    );
+  }
+
+  /* ---------- base comum: wrapper, svg em px reais, tooltip ---------- */
+  var tipAberto = null;
+  document.addEventListener(
+    "pointerdown",
+    function (e) {
+      if (tipAberto && !(e.target instanceof Element && tipAberto.wrap.contains(e.target))) tipAberto.esconder();
+    },
+    { passive: true }
+  );
+  window.addEventListener(
+    "scroll",
+    function () {
+      if (tipAberto && coarse) tipAberto.esconder();
+    },
+    { passive: true }
+  );
+
+  function Base(tipo, opts) {
+    var self = this;
+    self.id = "elc" + ++seq;
+    self.opts = opts;
+    self.format = opts.format || fmtInt;
+    self.host = typeof opts.host === "string" ? document.querySelector(opts.host) : opts.host;
+    self.wrap = div("elc elc-k-" + tipo + (opts.className ? " " + opts.className : ""));
+    self.wrap.__elc = self;
+    self.svg = opts.label
+      ? mk("svg", { role: "img", "aria-label": opts.label, focusable: "false", "aria-describedby": opts.table ? self.id + "-t" : null }, self.wrap)
+      : mk("svg", { "aria-hidden": "true", focusable: "false" }, self.wrap);
+    self.W = 0;
+    self.H = 0;
+    self.desenhado = false;
+    self.visivel = true;
+    self.stop = null;
+    self.tip = div("elc-tip", self.wrap);
+    self.tip.setAttribute("aria-hidden", "true");
+    self.tip.hidden = true;
+    if (opts.table) {
+      self.tabela = document.createElement("table");
+      self.tabela.className = "sr-only";
+      self.tabela.id = self.id + "-t";
+      self.wrap.appendChild(self.tabela);
+    }
+    if (opts.note) {
+      var nota = div("elc-note", null, opts.note);
+      self.nota = nota;
+    }
+    if (self.host) {
+      self.host.appendChild(self.wrap);
+      if (self.nota) self.host.appendChild(self.nota);
+    }
+    self.medir();
+    var ro = 0;
+    var remedir = function () {
+      window.clearTimeout(ro);
+      ro = window.setTimeout(function () {
+        if (self.medir()) self.render();
+      }, 120);
+    };
+    if ("ResizeObserver" in window) {
+      new ResizeObserver(remedir).observe(self.wrap);
+    } else {
+      window.addEventListener("resize", remedir, { passive: true });
+    }
+    if (ioDesenho && !reducedMotion && !opts.immediate) ioDesenho.observe(self.wrap);
+    else { self.desenhado = true; self.wrap.classList.add("is-drawn"); }
+    if (ioPresenca && opts.live) ioPresenca.observe(self.wrap);
+
+    /* interação: mouse segue; toque fixa */
+    if (opts.hover !== false) {
+      var mover = function (e) {
+        var r = self.svg.getBoundingClientRect();
+        self.apontar(e.clientX - r.left, e.clientY - r.top);
+      };
+      if (!coarse) {
+        self.wrap.addEventListener("pointermove", mover, { passive: true });
+        self.wrap.addEventListener("pointerleave", function () {
+          self.esconder();
+        });
+      } else {
+        self.wrap.addEventListener(
+          "pointerdown",
+          function (e) {
+            mover(e);
+          },
+          { passive: true }
+        );
+      }
+    }
+    /* clique num item (barras/fatias): quem chama recebe o índice */
+    if (opts.onClick) {
+      self.wrap.classList.add("elc-clicavel");
+      self.wrap.addEventListener("click", function (e) {
+        var r = self.svg.getBoundingClientRect();
+        var i = self.indiceEm ? self.indiceEm(e.clientX - r.left, e.clientY - r.top) : -1;
+        if (i >= 0) opts.onClick(i, e);
+      });
+    }
+  }
+  Base.prototype.medir = function () {
+    var w = this.wrap.clientWidth;
+    var h = this.svg.clientHeight || this.wrap.clientHeight;
+    if (!w || !h) return false;
+    if (w === this.W && h === this.H) return false;
+    this.W = w;
+    this.H = h;
+    this.svg.setAttribute("viewBox", "0 0 " + w + " " + h);
+    return true;
+  };
+  Base.prototype.reveal = function () {
+    if (this.desenhado) return;
+    this.desenhado = true;
+    this.wrap.classList.add("is-drawn");
+    if (this.aoDesenhar) this.aoDesenhar();
+  };
+  Base.prototype.setVisible = function (v) {
+    this.visivel = v;
+    this.wrap.classList.toggle("is-idle", !v);
+    if (this.aoVisivel) this.aoVisivel(v);
+  };
+  Base.prototype.mostrar = function (x, y, html, ancora) {
+    var tip = this.tip;
+    tip.innerHTML = html;
+    tip.hidden = false;
+    var tw = tip.offsetWidth;
+    var th = tip.offsetHeight;
+    var px = x + 12;
+    if (px + tw > this.W - 4) px = x - tw - 12;
+    if (px < 2) px = 2;
+    var py = (ancora !== undefined ? ancora : y) - th - 10;
+    if (py < 2) py = this.H - th > 24 ? 2 : y + 14;
+    tip.style.transform = "translate3d(" + Math.round(px) + "px, " + Math.round(py) + "px, 0)";
+    this.wrap.classList.add("is-hover");
+    tipAberto = this;
+  };
+  Base.prototype.esconder = function () {
+    this.tip.hidden = true;
+    this.wrap.classList.remove("is-hover");
+    if (this.aoEsconder) this.aoEsconder();
+    if (tipAberto === this) tipAberto = null;
+  };
+  Base.prototype.apontar = function () {};
+  Base.prototype.render = function () {};
+  Base.prototype.tabelaHTML = function (cab, linhas) {
+    if (!this.tabela) return;
+    var h = "<caption>" + esc(this.opts.label || "") + "</caption><thead><tr>";
+    for (var i = 0; i < cab.length; i++) h += "<th scope=\"col\">" + esc(cab[i]) + "</th>";
+    h += "</tr></thead><tbody>";
+    for (var r = 0; r < linhas.length; r++) {
+      h += "<tr>";
+      for (var c = 0; c < linhas[r].length; c++) h += (c ? "<td>" : "<th scope=\"row\">") + esc(linhas[r][c]) + (c ? "</td>" : "</th>");
+      h += "</tr>";
+    }
+    this.tabela.innerHTML = h + "</tbody>";
+  };
+
+  /* caminho suave por pontos médios */
+  function suave(xs, ys) {
+    var n = xs.length;
+    if (!n) return "";
+    var d = "M" + xs[0].toFixed(1) + " " + ys[0].toFixed(1);
+    for (var j = 1; j < n; j++) {
+      var mx = ((xs[j - 1] + xs[j]) / 2).toFixed(1);
+      var my = ((ys[j - 1] + ys[j]) / 2).toFixed(1);
+      d += " Q" + xs[j - 1].toFixed(1) + " " + ys[j - 1].toFixed(1) + " " + mx + " " + my;
+    }
+    d += " L" + xs[n - 1].toFixed(1) + " " + ys[n - 1].toFixed(1);
+    return d;
+  }
+  function teto(v, fixo) {
+    if (fixo) return fixo;
+    var m = 0;
+    for (var i = 0; i < v.length; i++) if (v[i] > m) m = v[i];
+    if (m <= 0) return 1;
+    var p = Math.pow(10, Math.floor(Math.log(m) / Math.LN10));
+    var k = Math.ceil(m / p);
+    if (k > 5) k = 10;
+    else if (k > 2) k = 5;
+    else if (k > 1) k = 2;
+    return k * p;
+  }
+  function fmtCurto(n) {
+    if (n >= 1000000) return (n / 1000000).toFixed(n % 1000000 ? 1 : 0).replace(".", ",") + "M";
+    if (n >= 1000) return (n / 1000).toFixed(n % 1000 ? 1 : 0).replace(".", ",") + "k";
+    return String(Math.round(n));
+  }
+
+  /* ======================= LINHA / ÁREA ======================= */
+  function Line(opts) {
+    Base.call(this, "line", opts);
+    var s = this;
+    s.valores = opts.values.slice();
+    s.mostrados = s.valores.slice();
+    s.labels = opts.labels || [];
+    s.padL = opts.axes === false ? 4 : 34;
+    s.padR = 10;
+    s.padT = 12;
+    s.padB = opts.axes === false ? 6 : 20;
+    s.clip = mk("clipPath", { id: s.id + "-c" }, mk("defs", null, s.svg));
+    s.clipRect = mk("rect", null, s.clip);
+    s.grade = mk("g", { class: "elc-grid" }, s.svg);
+    s.gl = [mk("line", null, s.grade), mk("line", null, s.grade), mk("line", null, s.grade)];
+    s.gt = [];
+    if (opts.axes !== false) {
+      for (var i = 0; i < 3; i++) s.gt.push(mk("text", { class: "elc-ylab", "text-anchor": "end" }, s.grade));
+    }
+    s.xt = [];
+    s.area = mk("path", { class: "elc-area", fill: "url(#elc-fill)", "clip-path": "url(#" + s.id + "-c)" }, s.svg);
+    if (GLOW) s.halo = mk("path", { class: "elc-halo", fill: "none", filter: "url(#elc-glow)", pathLength: "1000" }, s.svg);
+    s.linha = mk("path", { class: "elc-line", fill: "none", stroke: "url(#elc-stroke)", pathLength: "1000" }, s.svg);
+    s.ponta = mk("circle", { class: "elc-end", r: "3.5" }, s.svg);
+    s.cross = mk("g", { class: "elc-cross" }, s.svg);
+    s.crossL = mk("line", null, s.cross);
+    s.crossC = mk("circle", { r: "4" }, s.cross);
+    s.render();
+    s.atualizarTabela();
+  }
+  Line.prototype = Object.create(Base.prototype);
+  Line.prototype.geom = function (vals) {
+    var s = this;
+    var n = vals.length;
+    var max = teto(s.valores, s.opts.ymax);
+    var pw = s.W - s.padL - s.padR;
+    var ph = s.H - s.padT - s.padB;
+    var xs = [], ys = [];
+    for (var i = 0; i < n; i++) {
+      xs.push(s.padL + (n > 1 ? (i * pw) / (n - 1) : pw / 2));
+      ys.push(s.padT + ph - (Math.max(0, vals[i]) / max) * ph);
+    }
+    return { xs: xs, ys: ys, max: max, pw: pw, ph: ph };
+  };
+  Line.prototype.render = function () {
+    var s = this;
+    if (!s.W) return;
+    var g = s.geom(s.mostrados);
+    s.g = g;
+    var d = suave(g.xs, g.ys);
+    s.linha.setAttribute("d", d);
+    if (s.halo) s.halo.setAttribute("d", d);
+    s.area.setAttribute("d", d + " L" + g.xs[g.xs.length - 1].toFixed(1) + " " + (s.padT + g.ph) + " L" + g.xs[0].toFixed(1) + " " + (s.padT + g.ph) + " Z");
+    s.clipRect.setAttribute("x", s.padL - 1);
+    s.clipRect.setAttribute("y", 0);
+    s.clipRect.setAttribute("width", g.pw + 2);
+    s.clipRect.setAttribute("height", s.H);
+    var ult = g.xs.length - 1;
+    s.ponta.setAttribute("cx", g.xs[ult].toFixed(1));
+    s.ponta.setAttribute("cy", g.ys[ult].toFixed(1));
+    for (var i = 0; i < 3; i++) {
+      var y = s.padT + (g.ph * i) / 2;
+      s.gl[i].setAttribute("x1", s.padL);
+      s.gl[i].setAttribute("x2", s.W - s.padR);
+      s.gl[i].setAttribute("y1", y.toFixed(1));
+      s.gl[i].setAttribute("y2", y.toFixed(1));
+      if (s.gt[i]) {
+        s.gt[i].setAttribute("x", s.padL - 7);
+        s.gt[i].setAttribute("y", (y + 3).toFixed(1));
+        s.gt[i].textContent = fmtCurto(g.max * (1 - i / 2));
+      }
+    }
+    if (s.opts.axes !== false && s.labels.length) {
+      var passo = Math.max(1, Math.ceil(s.labels.length / Math.max(2, Math.floor(g.pw / 34))));
+      var k = 0;
+      for (var j = 0; j < s.labels.length; j++) {
+        if (j % passo !== 0) continue;
+        var t = s.xt[k] || (s.xt[k] = mk("text", { class: "elc-xlab", "text-anchor": "middle" }, s.grade));
+        t.setAttribute("x", g.xs[j].toFixed(1));
+        t.setAttribute("y", s.H - 6);
+        t.textContent = s.labels[j];
+        t.style.display = "";
+        k++;
+      }
+      for (; k < s.xt.length; k++) s.xt[k].style.display = "none";
+    }
+  };
+  Line.prototype.update = function (vals, imediato) {
+    var s = this;
+    s.valores = vals.slice();
+    if (s.stop) s.stop();
+    s.atualizarTabela();
+    if (imediato || !s.desenhado) {
+      s.mostrados = vals.slice();
+      s.render();
+      return;
+    }
+    var de = s.mostrados.slice();
+    while (de.length < vals.length) de.push(de.length ? de[de.length - 1] : 0);
+    de.length = vals.length;
+    s.stop = tween(de, vals, s.opts.dur || 520, function (cur) {
+      s.mostrados = cur.slice();
+      s.render();
+    });
+  };
+  Line.prototype.atualizarTabela = function () {
+    var s = this;
+    if (!s.tabela) return;
+    var rows = [];
+    for (var i = 0; i < s.valores.length; i++) rows.push([s.labels[i] || String(i + 1), s.format(s.valores[i])]);
+    s.tabelaHTML([s.opts.xName || "Período", s.opts.yName || "Valor"], rows);
+  };
+  Line.prototype.apontar = function (x, y) {
+    var s = this;
+    if (!s.g || !s.g.xs.length) return;
+    var n = s.g.xs.length;
+    var pw = s.g.pw;
+    var i = Math.round(((x - s.padL) / pw) * (n - 1));
+    if (i < 0) i = 0;
+    if (i > n - 1) i = n - 1;
+    var px = s.g.xs[i];
+    var py = s.g.ys[i];
+    s.crossL.setAttribute("x1", px.toFixed(1));
+    s.crossL.setAttribute("x2", px.toFixed(1));
+    s.crossL.setAttribute("y1", s.padT);
+    s.crossL.setAttribute("y2", s.padT + s.g.ph);
+    s.crossC.setAttribute("cx", px.toFixed(1));
+    s.crossC.setAttribute("cy", py.toFixed(1));
+    var lab = s.labels[i] !== undefined ? s.labels[i] : "";
+    var html = (lab ? "<small>" + esc(lab) + "</small>" : "") + "<b>" + esc(s.format(s.valores[i])) + "</b>";
+    if (s.opts.tip) html = s.opts.tip(i, s.valores[i], lab);
+    s.mostrar(px, y, html, py);
+  };
+
+  /* ======================= LINHA VIVA (anda por relógio real) ======================= */
+  function Live(opts) {
+    opts.live = true;
+    opts.axes = opts.axes === undefined ? false : opts.axes;
+    opts.hover = opts.hover === undefined ? true : opts.hover;
+    Line.call(this, opts);
+    var s = this;
+    s.N = opts.values.length;
+    s.desloc = 0;
+    s.ultimoTick = 0;
+    s.periodo = opts.period || 900;
+    s.gerar = opts.next;
+    s.wrap.classList.add("elc-k-live");
+    vivos.push(s);
+  }
+  Live.prototype = Object.create(Line.prototype);
+  Live.prototype.geom = function (vals) {
+    var g = Line.prototype.geom.call(this, vals);
+    var n = vals.length;
+    var dx = n > 1 ? g.pw / (n - 1) : 0;
+    var desloc = this.desloc || 0;
+    for (var i = 0; i < n; i++) g.xs[i] += desloc * dx;
+    return g;
+  };
+  Live.prototype.aoDesenhar = function () {
+    this.ligar();
+  };
+  Live.prototype.aoVisivel = function (v) {
+    if (v) this.ligar();
+  };
+  Live.prototype.pausado = function () {
+    return document.hidden || !this.visivel || (this.opts.gate && this.opts.gate());
+  };
+  Live.prototype.ligar = function () {
+    var s = this;
+    if (s.ligado || reducedMotion || !s.desenhado) return;
+    s.ligado = true;
+    s.ultimoTick = performance.now();
+    agendar(function (ts) {
+      if (s.pausado()) {
+        s.ligado = false;
+        s.ultimoTick = 0;
+        return false;
+      }
+      if (!s.ultimoTick) s.ultimoTick = ts;
+      var p = (ts - s.ultimoTick) / s.periodo;
+      if (p >= 1) {
+        s.valores.shift();
+        s.valores.push(s.gerar ? s.gerar(s.valores) : s.valores[s.valores.length - 1]);
+        s.mostrados = s.valores.slice();
+        s.ultimoTick = ts;
+        p = 0;
+        if (s.opts.onTick) s.opts.onTick(s.valores[s.valores.length - 1]);
+      }
+      s.desloc = 1 - p;
+      s.render();
+      return true;
+    });
+  };
+
+  /* ======================= BARRAS ======================= */
+  function Bars(opts) {
+    Base.call(this, "bars", opts);
+    var s = this;
+    s.series = opts.series.map(function (sr) {
+      return { name: sr.name, values: sr.values.slice(), cls: sr.cls || "" };
+    });
+    s.labels = opts.labels || [];
+    s.mostrados = s.series.map(function (sr) {
+      return sr.values.slice();
+    });
+    s.padL = opts.axes === false ? 4 : 34;
+    s.padR = 8;
+    s.padT = opts.valueLabels ? 22 : 10;
+    s.padB = opts.axes === false ? (opts.xLabels ? 20 : 4) : 20;
+    s.grade = mk("g", { class: "elc-grid" }, s.svg);
+    s.gl = [mk("line", null, s.grade), mk("line", null, s.grade), mk("line", null, s.grade)];
+    s.gt = [];
+    if (opts.axes !== false) for (var i = 0; i < 3; i++) s.gt.push(mk("text", { class: "elc-ylab", "text-anchor": "end" }, s.grade));
+    s.xt = [];
+    s.vt = [];
+    s.foco = mk("rect", { class: "elc-focus" }, s.svg);
+    s.gb = mk("g", { class: "elc-bars-g" }, s.svg);
+    s.rects = [];
+    for (var k = 0; k < s.series.length; k++) {
+      s.rects.push([]);
+      for (var j = 0; j < s.series[k].values.length; j++) {
+        var r = mk("rect", { class: "elc-bar elc-bar-s" + (k + 1) + (s.series[k].cls ? " " + s.series[k].cls : ""), rx: "1" }, s.gb);
+        r.style.setProperty("--d", String(j * 45 + k * 30));
+        s.rects[k].push(r);
+      }
+    }
+    s.render();
+    s.atualizarTabela();
+  }
+  Bars.prototype = Object.create(Base.prototype);
+  Bars.prototype.render = function () {
+    var s = this;
+    if (!s.W) return;
+    var todos = [];
+    for (var k = 0; k < s.series.length; k++) todos = todos.concat(s.series[k].values);
+    var max = teto(todos, s.opts.ymax);
+    var pw = s.W - s.padL - s.padR;
+    var ph = s.H - s.padT - s.padB;
+    var n = s.series[0].values.length;
+    var gw = pw / n;
+    var ns = s.series.length;
+    var bw = Math.max(2, (gw * (s.opts.barFrac || 0.62)) / ns);
+    var gap = Math.min(3, bw * 0.18);
+    s.g = { pw: pw, ph: ph, gw: gw, max: max, n: n };
+    for (k = 0; k < ns; k++) {
+      for (var j = 0; j < n; j++) {
+        var v = Math.max(0, s.mostrados[k][j]);
+        var h = (v / max) * ph;
+        var x = s.padL + j * gw + (gw - (bw * ns + gap * (ns - 1))) / 2 + k * (bw + gap);
+        var r = s.rects[k][j];
+        r.setAttribute("x", x.toFixed(1));
+        r.setAttribute("width", bw.toFixed(1));
+        r.setAttribute("y", (s.padT + ph - h).toFixed(1));
+        r.setAttribute("height", Math.max(0.5, h).toFixed(1));
+        if (s.opts.valueLabels && k === 0) {
+          var vt = s.vt[j] || (s.vt[j] = mk("text", { class: "elc-vlab", "text-anchor": "middle" }, s.gb));
+          vt.setAttribute("x", (x + bw / 2).toFixed(1));
+          vt.setAttribute("y", (s.padT + ph - h - 6).toFixed(1));
+          vt.textContent = s.format(Math.round(s.mostrados[k][j]));
+        }
+      }
+    }
+    for (var i = 0; i < 3; i++) {
+      var y = s.padT + (ph * i) / 2;
+      s.gl[i].setAttribute("x1", s.padL);
+      s.gl[i].setAttribute("x2", s.W - s.padR);
+      s.gl[i].setAttribute("y1", y.toFixed(1));
+      s.gl[i].setAttribute("y2", y.toFixed(1));
+      if (s.gt[i]) {
+        s.gt[i].setAttribute("x", s.padL - 7);
+        s.gt[i].setAttribute("y", (y + 3).toFixed(1));
+        s.gt[i].textContent = fmtCurto(max * (1 - i / 2));
+      }
+    }
+    if ((s.opts.axes !== false || s.opts.xLabels) && s.labels.length) {
+      var passo = Math.max(1, Math.ceil(n / Math.max(2, Math.floor(pw / (s.opts.labelMin || 30)))));
+      var c = 0;
+      for (j = 0; j < n; j++) {
+        if (j % passo !== 0) continue;
+        var t = s.xt[c] || (s.xt[c] = mk("text", { class: "elc-xlab", "text-anchor": "middle" }, s.grade));
+        t.setAttribute("x", (s.padL + j * gw + gw / 2).toFixed(1));
+        t.setAttribute("y", s.H - 6);
+        t.textContent = s.labels[j];
+        t.style.display = "";
+        c++;
+      }
+      for (; c < s.xt.length; c++) s.xt[c].style.display = "none";
+    }
+  };
+  Bars.prototype.update = function (series, imediato) {
+    var s = this;
+    for (var k = 0; k < s.series.length; k++) s.series[k].values = series[k].slice();
+    if (s.stop) s.stop();
+    s.atualizarTabela();
+    var flat = [];
+    var de = [];
+    for (k = 0; k < s.series.length; k++) {
+      flat = flat.concat(s.series[k].values);
+      de = de.concat(s.mostrados[k]);
+    }
+    if (imediato || !s.desenhado) {
+      s.mostrados = s.series.map(function (sr) {
+        return sr.values.slice();
+      });
+      s.render();
+      return;
+    }
+    var n = s.series[0].values.length;
+    s.stop = tween(de, flat, s.opts.dur || 520, function (cur) {
+      for (var q = 0; q < s.series.length; q++) s.mostrados[q] = cur.slice(q * n, (q + 1) * n);
+      s.render();
+    });
+  };
+  /* rótulos do eixo X podem mudar junto com os dados (estoque por categoria) */
+  Bars.prototype.setLabels = function (labels) {
+    this.labels = labels.slice();
+    this.render();
+    this.atualizarTabela();
+  };
+  /* barras "apagadas" a partir do índice n (parcelas não escolhidas) */
+  Bars.prototype.dimFrom = function (n) {
+    for (var k = 0; k < this.rects.length; k++)
+      for (var j = 0; j < this.rects[k].length; j++) this.rects[k][j].classList.toggle("is-dim", j >= n);
+  };
+  Bars.prototype.atualizarTabela = function () {
+    var s = this;
+    if (!s.tabela) return;
+    var cab = [s.opts.xName || "Período"].concat(
+      s.series.map(function (sr) {
+        return sr.name;
+      })
+    );
+    var rows = [];
+    for (var j = 0; j < s.series[0].values.length; j++) {
+      var row = [s.labels[j] || String(j + 1)];
+      for (var k = 0; k < s.series.length; k++) row.push(s.format(s.series[k].values[j]));
+      rows.push(row);
+    }
+    s.tabelaHTML(cab, rows);
+  };
+  Bars.prototype.indiceEm = function (x) {
+    var s = this;
+    if (!s.g) return -1;
+    var j = Math.floor((x - s.padL) / s.g.gw);
+    if (j < 0) j = 0;
+    if (j > s.g.n - 1) j = s.g.n - 1;
+    return j;
+  };
+  Bars.prototype.apontar = function (x, y) {
+    var s = this;
+    if (!s.g) return;
+    var j = s.indiceEm(x);
+    s.foco.setAttribute("x", (s.padL + j * s.g.gw).toFixed(1));
+    s.foco.setAttribute("y", s.padT);
+    s.foco.setAttribute("width", s.g.gw.toFixed(1));
+    s.foco.setAttribute("height", s.g.ph);
+    var lab = s.labels[j] !== undefined ? s.labels[j] : "";
+    var html = lab ? "<small>" + esc(lab) + "</small>" : "";
+    if (s.opts.tip) {
+      html = s.opts.tip(j, s.series, lab);
+    } else {
+      for (var k = 0; k < s.series.length; k++) {
+        html += "<span><i class=\"elc-sw elc-sw-" + (k + 1) + "\"></i>" + esc(s.series[k].name) + " <b>" + esc(s.format(s.series[k].values[j])) + "</b></span>";
+      }
+    }
+    var top = s.padT + s.g.ph;
+    for (k = 0; k < s.series.length; k++) {
+      var yy = s.padT + s.g.ph - (Math.max(0, s.series[k].values[j]) / s.g.max) * s.g.ph;
+      if (yy < top) top = yy;
+    }
+    s.mostrar(s.padL + j * s.g.gw + s.g.gw / 2, y, html, top);
+  };
+
+  /* ======================= BARRA HORIZONTAL EMPILHADA ======================= */
+  function Stack(opts) {
+    Base.call(this, "stack", opts);
+    var s = this;
+    s.itens = opts.items;
+    s.total = 0;
+    for (var i = 0; i < s.itens.length; i++) s.total += s.itens[i].value;
+    s.rects = [];
+    for (i = 0; i < s.itens.length; i++) {
+      var r = mk("rect", { class: "elc-seg elc-seg-" + (i + 1) + (s.itens[i].cls ? " " + s.itens[i].cls : "") }, s.svg);
+      r.style.setProperty("--d", String(i * 110));
+      s.rects.push(r);
+    }
+    s.foco = mk("rect", { class: "elc-focus" }, s.svg);
+    s.render();
+    if (s.tabela) {
+      s.tabelaHTML(
+        [opts.xName || "Parte", opts.yName || "Itens"],
+        s.itens.map(function (it) {
+          return [it.label, String(it.value)];
+        })
+      );
+    }
+    if (opts.legend !== false) {
+      var leg = div("elc-legend", s.wrap);
+      s.itens.forEach(function (it, k) {
+        var li = div("elc-legend-item", leg);
+        li.innerHTML = "<i class=\"elc-sw elc-sw-" + (k + 1) + "\"></i>" + esc(it.label) + " <b>" + it.value + "</b>";
+      });
+    }
+  }
+  Stack.prototype = Object.create(Base.prototype);
+  Stack.prototype.render = function () {
+    var s = this;
+    if (!s.W || !s.total) return;
+    var gap = 2;
+    var pw = s.W - gap * (s.itens.length - 1);
+    var x = 0;
+    s.pos = [];
+    for (var i = 0; i < s.itens.length; i++) {
+      var w = (s.itens[i].value / s.total) * pw;
+      var r = s.rects[i];
+      r.setAttribute("x", x.toFixed(1));
+      r.setAttribute("y", 0);
+      r.setAttribute("width", Math.max(0, w).toFixed(1));
+      r.setAttribute("height", s.H);
+      s.pos.push({ x: x, w: w });
+      x += w + gap;
+    }
+  };
+  Stack.prototype.indiceEm = function (x) {
+    if (!this.pos) return -1;
+    for (var i = 0; i < this.pos.length; i++) if (x >= this.pos[i].x && x <= this.pos[i].x + this.pos[i].w) return i;
+    return -1;
+  };
+  Stack.prototype.apontar = function (x, y) {
+    var s = this;
+    var i = s.indiceEm(x);
+    if (i < 0) return;
+    s.foco.setAttribute("x", s.pos[i].x.toFixed(1));
+    s.foco.setAttribute("y", 0);
+    s.foco.setAttribute("width", s.pos[i].w.toFixed(1));
+    s.foco.setAttribute("height", s.H);
+    var it = s.itens[i];
+    var html = "<small>" + esc(it.label) + "</small><b>" + it.value + " de " + s.total + "</b>" + (it.detail ? "<span>" + esc(it.detail) + "</span>" : "");
+    s.mostrar(s.pos[i].x + s.pos[i].w / 2, y, html, 0);
+  };
+
+  /* ======================= ANEL / DONUT ======================= */
+  function Donut(opts) {
+    Base.call(this, "donut", opts);
+    var s = this;
+    s.fatias = opts.slices.map(function (f) {
+      return { label: f.label, value: f.value };
+    });
+    s.mostrados = s.fatias.map(function (f) {
+      return f.value;
+    });
+    s.prog = reducedMotion || opts.immediate ? 1 : 0;
+    s.arcos = [];
+    s.trilho = mk("circle", { class: "elc-track", fill: "none" }, s.svg);
+    for (var i = 0; i < s.fatias.length; i++) {
+      s.arcos.push(mk("circle", { class: "elc-arc elc-arc-" + (i + 1), fill: "none", pathLength: "100" }, s.svg));
+    }
+    s.centro = div("elc-center", s.wrap);
+    s.centroN = document.createElement("strong");
+    s.centroL = document.createElement("small");
+    s.centro.appendChild(s.centroN);
+    s.centro.appendChild(s.centroL);
+    s.centro.setAttribute("aria-hidden", "true");
+    s.centroMostrado = 0;
+    if (opts.legend !== false) {
+      s.leg = div("elc-legend", s.wrap);
+      s.legItens = s.fatias.map(function (f, k) {
+        var li = div("elc-legend-item", s.leg);
+        li.innerHTML = "<i class=\"elc-sw elc-sw-" + (k + 1) + "\"></i>" + esc(f.label) + " <b></b>";
+        return li.querySelector("b");
+      });
+    }
+    s.render();
+    s.atualizarTexto(s.prog === 1);
+  }
+  Donut.prototype = Object.create(Base.prototype);
+  Donut.prototype.render = function () {
+    var s = this;
+    if (!s.W) return;
+    var cx = s.W / 2;
+    var cy = s.H / 2;
+    var R = Math.min(s.W, s.H) / 2 - 8;
+    var sw = Math.max(6, R * (s.opts.thick || 0.3));
+    var r = R - sw / 2;
+    s.geo = { cx: cx, cy: cy, r: r, sw: sw };
+    s.trilho.setAttribute("cx", cx);
+    s.trilho.setAttribute("cy", cy);
+    s.trilho.setAttribute("r", r);
+    s.trilho.setAttribute("stroke-width", sw);
+    var total = 0;
+    var i;
+    for (i = 0; i < s.mostrados.length; i++) total += s.mostrados[i];
+    var acc = 0;
+    s.fatiaIni = [];
+    for (i = 0; i < s.arcos.length; i++) {
+      var frac = total ? s.mostrados[i] / total : 0;
+      var len = Math.max(0, frac * 100 * s.prog - (s.opts.gapless ? 0 : 1.2));
+      var a = s.arcos[i];
+      a.setAttribute("cx", cx);
+      a.setAttribute("cy", cy);
+      a.setAttribute("r", r);
+      a.setAttribute("stroke-width", sw);
+      a.setAttribute("stroke-dasharray", len.toFixed(2) + " " + (100 - len).toFixed(2));
+      a.setAttribute("stroke-dashoffset", (-acc * 100 * s.prog + 25).toFixed(2));
+      s.fatiaIni.push({ a0: acc, a1: acc + frac });
+      acc += frac;
+    }
+    s.centro.style.fontSize = Math.max(14, Math.round(R * (s.opts.centerScale || 0.42))) + "px";
+  };
+  /* texto central: por padrão a participação % da 1ª fatia; opts.center(frac, total) personaliza */
+  Donut.prototype.textoCentro = function (v) {
+    var s = this;
+    if (s.opts.center) return s.opts.center(v);
+    return Math.round(v) + "%";
+  };
+  Donut.prototype.atualizarTexto = function (imediato) {
+    var s = this;
+    var total = 0;
+    var i;
+    for (i = 0; i < s.fatias.length; i++) total += s.fatias[i].value;
+    var alvo = total ? (s.fatias[0].value / total) * 100 : 0;
+    s.centroL.textContent = s.opts.centerLabel !== undefined ? s.opts.centerLabel : s.fatias[0].label;
+    var fmtLeg = s.opts.legendFormat || function (f) { return (total ? Math.round((f.value / total) * 100) : 0) + "%"; };
+    if (s.legItens) {
+      for (i = 0; i < s.fatias.length; i++) s.legItens[i].textContent = fmtLeg(s.fatias[i], total);
+    }
+    if (s.tabela) {
+      s.tabelaHTML(
+        [s.opts.xName || "Parte", s.opts.yName || "Participação"],
+        s.fatias.map(function (f) {
+          return [f.label, fmtLeg(f, total)];
+        })
+      );
+    }
+    if (imediato || reducedMotion) {
+      s.centroMostrado = alvo;
+      s.centroN.textContent = s.textoCentro(alvo);
+      return;
+    }
+    if (s.stopC) s.stopC();
+    s.stopC = tween([s.centroMostrado], [alvo], 900, function (cur) {
+      s.centroMostrado = cur[0];
+      s.centroN.textContent = s.textoCentro(cur[0]);
+    });
+  };
+  Donut.prototype.aoDesenhar = function () {
+    var s = this;
+    if (s.stop) s.stop();
+    s.stop = tween([0], [1], 1100, function (cur) {
+      s.prog = cur[0];
+      s.render();
+    });
+    s.atualizarTexto(false);
+  };
+  Donut.prototype.update = function (vals) {
+    var s = this;
+    for (var i = 0; i < s.fatias.length; i++) s.fatias[i].value = vals[i];
+    if (s.stop) s.stop();
+    if (!s.desenhado) {
+      s.mostrados = vals.slice();
+      s.render();
+      s.atualizarTexto(true);
+      return;
+    }
+    s.stop = tween(s.mostrados.slice(), vals, 640, function (cur) {
+      s.mostrados = cur.slice();
+      s.render();
+    });
+    s.atualizarTexto(false);
+  };
+  Donut.prototype.indiceEm = function (x, y) {
+    var s = this;
+    if (!s.geo || !s.fatiaIni) return -1;
+    var dx = x - s.geo.cx;
+    var dy = y - s.geo.cy;
+    var d = Math.sqrt(dx * dx + dy * dy);
+    if (d < s.geo.r - s.geo.sw / 2 - 2 || d > s.geo.r + s.geo.sw / 2 + 2) return -1;
+    var ang = (Math.atan2(dy, dx) + Math.PI / 2) / (Math.PI * 2);
+    if (ang < 0) ang += 1;
+    for (var i = 0; i < s.fatiaIni.length; i++) if (ang >= s.fatiaIni[i].a0 && ang < s.fatiaIni[i].a1) return i;
+    return -1;
+  };
+  Donut.prototype.apontar = function (x, y) {
+    var s = this;
+    var i = s.indiceEm(x, y);
+    if (i < 0) {
+      s.esconder();
+      return;
+    }
+    var f = s.fatias[i];
+    var total = 0;
+    for (var k = 0; k < s.fatias.length; k++) total += s.fatias[k].value;
+    for (k = 0; k < s.arcos.length; k++) s.arcos[k].classList.toggle("is-on", k === i);
+    var html = s.opts.tip ? s.opts.tip(i, f, total) : "<small>" + esc(f.label) + "</small><b>" + (total ? Math.round((f.value / total) * 100) : 0) + "%</b>";
+    s.mostrar(x, y, html, y);
+  };
+  Donut.prototype.aoEsconder = function () {
+    for (var k = 0; k < this.arcos.length; k++) this.arcos[k].classList.remove("is-on");
+  };
+
+  /* ======================= HEATMAP ======================= */
+  function Heat(opts) {
+    Base.call(this, "heat", opts);
+    var s = this;
+    s.linhas = opts.rows;
+    s.rowLabels = opts.rowLabels || [];
+    s.colLabels = opts.colLabels || [];
+    s.padL = 30;
+    s.padT = 4;
+    s.padB = 16;
+    s.max = 0;
+    var r, c;
+    for (r = 0; r < s.linhas.length; r++) for (c = 0; c < s.linhas[r].length; c++) if (s.linhas[r][c] > s.max) s.max = s.linhas[r][c];
+    s.cells = [];
+    s.gc = mk("g", { class: "elc-cells" }, s.svg);
+    for (r = 0; r < s.linhas.length; r++) {
+      s.cells.push([]);
+      for (c = 0; c < s.linhas[r].length; c++) {
+        var rc = mk("rect", { class: "elc-cell", rx: "1" }, s.gc);
+        rc.style.setProperty("--d", String((r + c) * 55));
+        rc.setAttribute("fill-opacity", (0.07 + 0.93 * (s.max ? s.linhas[r][c] / s.max : 0)).toFixed(3));
+        s.cells[r].push(rc);
+      }
+    }
+    s.rt = s.rowLabels.map(function () {
+      return mk("text", { class: "elc-ylab", "text-anchor": "end" }, s.svg);
+    });
+    s.ct = s.colLabels.map(function () {
+      return mk("text", { class: "elc-xlab", "text-anchor": "middle" }, s.svg);
+    });
+    s.foco = mk("rect", { class: "elc-focus elc-focus-cell" }, s.svg);
+    s.render();
+    if (s.tabela) {
+      var rows = [];
+      for (r = 0; r < s.linhas.length; r++) {
+        rows.push([s.rowLabels[r] || String(r + 1)].concat(s.linhas[r].map(String)));
+      }
+      s.tabelaHTML(["Dia"].concat(s.colLabels), rows);
+    }
+  }
+  Heat.prototype = Object.create(Base.prototype);
+  Heat.prototype.render = function () {
+    var s = this;
+    if (!s.W) return;
+    var R = s.linhas.length;
+    var C = s.linhas[0].length;
+    var pw = s.W - s.padL - 2;
+    var ph = s.H - s.padT - s.padB;
+    var cw = pw / C;
+    var ch = ph / R;
+    var gap = Math.min(2, cw * 0.14);
+    s.g = { cw: cw, ch: ch, R: R, C: C };
+    for (var r = 0; r < R; r++) {
+      for (var c = 0; c < C; c++) {
+        var rc = s.cells[r][c];
+        rc.setAttribute("x", (s.padL + c * cw + gap / 2).toFixed(1));
+        rc.setAttribute("y", (s.padT + r * ch + gap / 2).toFixed(1));
+        rc.setAttribute("width", Math.max(1, cw - gap).toFixed(1));
+        rc.setAttribute("height", Math.max(1, ch - gap).toFixed(1));
+      }
+      if (s.rt[r]) {
+        s.rt[r].setAttribute("x", s.padL - 6);
+        s.rt[r].setAttribute("y", (s.padT + r * ch + ch / 2 + 3).toFixed(1));
+        s.rt[r].textContent = s.rowLabels[r];
+      }
+    }
+    var passo = Math.max(1, Math.ceil(C / Math.max(2, Math.floor(pw / 26))));
+    for (c = 0; c < C; c++) {
+      if (!s.ct[c]) continue;
+      s.ct[c].style.display = c % passo ? "none" : "";
+      s.ct[c].setAttribute("x", (s.padL + c * cw + cw / 2).toFixed(1));
+      s.ct[c].setAttribute("y", s.H - 4);
+      s.ct[c].textContent = s.colLabels[c];
+    }
+  };
+  Heat.prototype.apontar = function (x, y) {
+    var s = this;
+    if (!s.g) return;
+    var c = Math.floor((x - s.padL) / s.g.cw);
+    var r = Math.floor((y - s.padT) / s.g.ch);
+    if (c < 0 || r < 0 || c >= s.g.C || r >= s.g.R) {
+      s.esconder();
+      return;
+    }
+    s.foco.setAttribute("x", (s.padL + c * s.g.cw).toFixed(1));
+    s.foco.setAttribute("y", (s.padT + r * s.g.ch).toFixed(1));
+    s.foco.setAttribute("width", s.g.cw.toFixed(1));
+    s.foco.setAttribute("height", s.g.ch.toFixed(1));
+    var v = s.linhas[r][c];
+    var html = "<small>" + esc((s.rowLabels[r] || "") + " · " + (s.colLabels[c] || "")) + "</small><b>" + esc(s.format(v)) + "</b>";
+    if (s.opts.tip) html = s.opts.tip(r, c, v);
+    s.mostrar(s.padL + c * s.g.cw + s.g.cw / 2, y, html, s.padT + r * s.g.ch);
+  };
+
+  /* ======================= MICRO-SPARK ======================= */
+  function Spark(opts) {
+    opts.axes = false;
+    opts.hover = false;
+    opts.table = false;
+    Line.call(this, opts);
+    this.wrap.classList.add("elc-k-spark");
+    this.padL = 2;
+    this.padR = 2;
+    this.padT = 4;
+    this.padB = 4;
+    this.render();
+  }
+  Spark.prototype = Object.create(Line.prototype);
+
+  /* ======================= MONITOR (pulso que varre por relógio real) ======================= */
+  function Monitor(opts) {
+    opts.hover = false;
+    opts.table = false;
+    opts.live = true;
+    opts.immediate = true;
+    Base.call(this, "monitor", opts);
+    var s = this;
+    s.periodo = opts.period || 3200;
+    s.gate = opts.gate;
+    var defs = mk("defs", null, s.svg);
+    s.clip = mk("clipPath", { id: s.id + "-c" }, defs);
+    s.clipRect = mk("rect", { x: "0", y: "0", width: "0", height: "100" }, s.clip);
+    s.grad = mk("linearGradient", { id: s.id + "-g", gradientUnits: "userSpaceOnUse", x1: "0", x2: "100", y1: "0", y2: "0" }, defs);
+    mk("stop", { offset: "0", "stop-color": "#c9a227", "stop-opacity": "0" }, s.grad);
+    mk("stop", { offset: "0.55", "stop-color": "#f0d896", "stop-opacity": "0.7" }, s.grad);
+    mk("stop", { offset: "1", "stop-color": "#f7f3e8", "stop-opacity": "1" }, s.grad);
+    s.base = mk("path", { class: "elc-mon-base", fill: "none" }, s.svg);
+    s.traco = mk("path", { class: "elc-mon-line", fill: "none", stroke: "url(#" + s.id + "-g)", "clip-path": "url(#" + s.id + "-c)" }, s.svg);
+    if (GLOW) s.traco.setAttribute("filter", "url(#elc-glow)");
+    s.cabeca = mk("circle", { class: "elc-mon-head", r: "2.4" }, s.svg);
+    s.fase = reducedMotion ? 0.72 : 0;
+    s.render();
+    vivos.push(s);
+    s.wrap.classList.add("is-drawn");
+    s.ligar();
+  }
+  Monitor.prototype = Object.create(Base.prototype);
+  Monitor.prototype.render = function () {
+    var s = this;
+    if (!s.W) return;
+    var y0 = s.H * 0.62;
+    var d = "M0 " + y0.toFixed(1);
+    var x = 0;
+    var P = 118;
+    s.pontos = [];
+    while (x < s.W + P) {
+      var seg = [
+        [x + 26, y0],
+        [x + 34, y0 - s.H * 0.12],
+        [x + 40, y0 + s.H * 0.08],
+        [x + 46, y0 - s.H * 0.5],
+        [x + 54, y0 + s.H * 0.26],
+        [x + 60, y0],
+        [x + 78, y0 - s.H * 0.14],
+        [x + 88, y0],
+        [x + P, y0]
+      ];
+      for (var i = 0; i < seg.length; i++) {
+        d += " L" + seg[i][0].toFixed(1) + " " + seg[i][1].toFixed(1);
+        s.pontos.push(seg[i]);
+      }
+      x += P;
+    }
+    s.base.setAttribute("d", d);
+    s.traco.setAttribute("d", d);
+    s.clipRect.setAttribute("height", s.H);
+    s.aplicar(s.fase || 0);
+  };
+  Monitor.prototype.yEm = function (x) {
+    var p = this.pontos;
+    if (!p || !p.length) return this.H * 0.62;
+    var prev = [0, this.H * 0.62];
+    for (var i = 0; i < p.length; i++) {
+      if (p[i][0] >= x) {
+        var t = (x - prev[0]) / Math.max(0.001, p[i][0] - prev[0]);
+        return prev[1] + (p[i][1] - prev[1]) * t;
+      }
+      prev = p[i];
+    }
+    return prev[1];
+  };
+  Monitor.prototype.aplicar = function (fase) {
+    var s = this;
+    s.fase = fase;
+    var cauda = Math.min(s.W * 0.55, 260);
+    var head = fase * (s.W + cauda) - 4;
+    var ini = head - cauda;
+    s.clipRect.setAttribute("x", ini.toFixed(1));
+    s.clipRect.setAttribute("width", cauda.toFixed(1));
+    s.grad.setAttribute("x1", ini.toFixed(1));
+    s.grad.setAttribute("x2", head.toFixed(1));
+    var dentro = head >= 0 && head <= s.W;
+    s.cabeca.style.opacity = dentro ? "1" : "0";
+    if (dentro) {
+      s.cabeca.setAttribute("cx", head.toFixed(1));
+      s.cabeca.setAttribute("cy", s.yEm(head).toFixed(1));
+    }
+  };
+  Monitor.prototype.pausado = function () {
+    return document.hidden || !this.visivel || (this.gate && this.gate());
+  };
+  Monitor.prototype.ligar = function () {
+    var s = this;
+    if (s.ligado || reducedMotion) return;
+    s.ligado = true;
+    var t0 = performance.now() - (s.fase || 0) * s.periodo;
+    agendar(function (ts) {
+      if (s.pausado()) {
+        s.ligado = false;
+        return false;
+      }
+      s.aplicar((Math.max(0, ts - t0) % s.periodo) / s.periodo);
+      return true;
+    });
+  };
+  Monitor.prototype.aoDesenhar = function () {
+    this.ligar();
+  };
+  Monitor.prototype.aoVisivel = function (v) {
+    if (v) this.ligar();
+  };
+  Monitor.prototype.reveal = function () {
+    if (this.desenhado) return;
+    this.desenhado = true;
+    this.wrap.classList.add("is-drawn");
+    if (reducedMotion) this.aplicar(0.72);
+    else this.ligar();
+  };
+
+  /* ---------- realce de um SVG já existente: gradiente, brilho, crosshair + tooltip ---------- */
+  function enhance(svg, opts) {
+    if (!svg) return null;
+    var wrap = svg.parentNode;
+    var inst = {
+      svg: svg,
+      wrap: wrap,
+      W: 0,
+      opts: opts,
+      format: opts.format || fmtInt,
+      tip: div("elc-tip", wrap)
+    };
+    inst.tip.hidden = true;
+    inst.tip.setAttribute("aria-hidden", "true");
+    wrap.classList.add("elc", "elc-enhanced");
+    wrap.style.position = "relative";
+    var line = svg.querySelector(opts.line);
+    if (line) {
+      line.setAttribute("stroke", "url(#elc-stroke)");
+      if (GLOW) {
+        var halo = line.cloneNode(false);
+        halo.removeAttribute("id");
+        halo.setAttribute("class", "elc-halo");
+        halo.setAttribute("filter", "url(#elc-glow)");
+        line.parentNode.insertBefore(halo, line);
+        inst.halo = halo;
+      }
+    }
+    var cross = mk("g", { class: "elc-cross" }, svg);
+    var crossL = mk("line", null, cross);
+    var crossC = mk("circle", { r: "4" }, cross);
+    inst.mostrar = Base.prototype.mostrar;
+    inst.esconder = Base.prototype.esconder;
+    inst.sync = function () {
+      if (inst.halo && line) inst.halo.setAttribute("d", line.getAttribute("d"));
+    };
+    inst.apontar = function (px, py) {
+      var r = svg.getBoundingClientRect();
+      inst.W = r.width;
+      inst.H = r.height;
+      var pts = opts.points();
+      if (!pts.length) return;
+      var vb = svg.viewBox.baseVal;
+      var sx = r.width / (vb.width || r.width);
+      var sy = r.height / (vb.height || r.height);
+      var melhor = 0;
+      var dm = Infinity;
+      for (var i = 0; i < pts.length; i++) {
+        var dd = Math.abs(pts[i].x * sx - px);
+        if (dd < dm) {
+          dm = dd;
+          melhor = i;
+        }
+      }
+      var p = pts[melhor];
+      crossL.setAttribute("x1", p.x);
+      crossL.setAttribute("x2", p.x);
+      crossL.setAttribute("y1", 0);
+      crossL.setAttribute("y2", vb.height || r.height);
+      crossC.setAttribute("cx", p.x);
+      crossC.setAttribute("cy", p.y);
+      inst.mostrar(p.x * sx, py, "<small>" + esc(p.label) + "</small><b>" + esc(inst.format(p.value)) + "</b>", p.y * sy);
+    };
+    var mover = function (e) {
+      var r = svg.getBoundingClientRect();
+      inst.apontar(e.clientX - r.left, e.clientY - r.top);
+    };
+    if (!coarse) {
+      wrap.addEventListener("pointermove", mover, { passive: true });
+      wrap.addEventListener("pointerleave", function () {
+        inst.esconder();
+      });
+    } else {
+      wrap.addEventListener("pointerdown", mover, { passive: true });
+    }
+    return inst;
+  }
+
+  /* ---------- CountUp de um número num elemento (relógio central, ease cúbico) ---------- */
+  function countUp(el, to, dur, fmt) {
+    /* parte do valor que está NA TELA (não do último alvo) e cancela o tween anterior:
+       cliques rápidos nunca deixam um tween velho sobrescrever o novo */
+    var de = parseFloat(el.getAttribute("data-elc-cur") || el.getAttribute("data-elc-v") || "0") || 0;
+    if (el.__elcStop) el.__elcStop();
+    el.setAttribute("data-elc-v", String(to));
+    el.__elcStop = tween([de], [to], dur || 700, function (cur) {
+      el.setAttribute("data-elc-cur", String(cur[0]));
+      el.textContent = fmt ? fmt(cur[0]) : fmtInt(cur[0]);
+    });
+    return el.__elcStop;
+  }
+
+  return {
+    line: function (o) { return new Line(o); },
+    live: function (o) { return new Live(o); },
+    bars: function (o) { return new Bars(o); },
+    stack: function (o) { return new Stack(o); },
+    donut: function (o) { return new Donut(o); },
+    heat: function (o) { return new Heat(o); },
+    spark: function (o) { return new Spark(o); },
+    monitor: function (o) { return new Monitor(o); },
+    enhance: enhance,
+    tween: tween,
+    countUp: countUp,
+    schedule: agendar,
+    fmtInt: fmtInt,
+    fmtBRL: fmtBRL,
+    reduced: reducedMotion,
+    coarse: coarse
+  };
+})();
+</script>
+
+<!-- ELC APPS — gráficos e DNA de animação -->
+<script>
+'use strict';
+/* ============ GRÁFICOS DOURADOS — aplicações pelo site ============
+   Só dado real (nota, estoque), input do visitante (simuladores) ou
+   estrutura factual (garantia, bilhetes). Nunca tendência inventada. */
+(function () {
+  var C = window.elcChart;
+  if (!C) return;
+  var REDUZ = C.reduced;
+  window.elcInst = window.elcInst || {};
+
+  /* ---------- ANEL DA NOTA: 4,8 de 5 = 96% ---------- */
+  function anelNota(host, opts) {
+    if (!host) return null;
+    return C.donut({
+      host: host,
+      slices: [{ label: '4,8 de 5', value: 4.8 }, { label: 'até 5', value: 0.2 }],
+      legend: false,
+      gapless: true,
+      thick: opts.thick || 0.16,
+      centerScale: opts.centerScale || 0.5,
+      centerLabel: 'de 5',
+      hover: opts.hover !== false,
+      /* decorativo (hero): o bloco de estrelas ao lado já anuncia "4,8 de 5" — sem repetir para o leitor de tela */
+      label: opts.decor ? null : 'Nota 4,8 de 5 no Google — 96% da nota máxima',
+      center: function (v) { return (v / 20).toFixed(1).replace('.', ','); },
+      tip: function (i, f) { return '<small>' + (i === 0 ? 'Nota Google' : 'Para os 5') + '</small><b>' + (i === 0 ? '4,8 · 96%' : '0,2 · 4%') + '</b>'; }
+    });
+  }
+  window.elcInst.anelStats = anelNota(document.getElementById('statAnel'), {});
+  (function () {
+    var rating = document.querySelector('.hero-rating');
+    if (!rating) return;
+    var h = document.createElement('span');
+    h.className = 'hero-anel';
+    h.setAttribute('aria-hidden', 'true');
+    rating.insertBefore(h, rating.firstChild);
+    window.elcInst.anelHero = anelNota(h, { thick: 0.22, hover: false, decor: true });
+  })();
+
+  /* ---------- ODÔMETRO (Counter DNA): cada casa é uma coluna 0-9 que rola pela
+     via mais curta; o valor anda numa mola (stiffness/damping) por relógio real. ---------- */
+  function odometro(el) {
+    var alvo = parseInt(el.getAttribute('data-odo'), 10);
+    if (isNaN(alvo)) return;
+    var pre = el.getAttribute('data-prefix') || '';
+    var suf = el.getAttribute('data-suffix') || '';
+    var txt = alvo.toLocaleString('pt-BR');           /* "8.400" */
+    var casas = [];                                    /* potências de 10 por dígito */
+    var nd = txt.replace(/\D/g, '').length;
+    el.textContent = '';
+    el.classList.add('odo');
+    /* leitor de tela ouve o número final (as colunas de dígitos ficam aria-hidden) */
+    var sr = document.createElement('span'); sr.className = 'sr-only'; sr.textContent = pre + txt + suf; el.appendChild(sr);
+    if (pre) { var p = document.createElement('span'); p.className = 'odo-fix'; p.textContent = pre; p.setAttribute('aria-hidden', 'true'); el.appendChild(p); }
+    var k = nd;
+    for (var i = 0; i < txt.length; i++) {
+      var ch = txt[i];
+      var d = document.createElement('span');
+      d.setAttribute('aria-hidden', 'true');
+      if (/\d/.test(ch)) {
+        k--;
+        d.className = 'odo-d';
+        var nums = [];
+        for (var n = 0; n < 10; n++) {
+          var s = document.createElement('span');
+          s.className = 'odo-n';
+          s.textContent = String(n);
+          d.appendChild(s);
+          nums.push(s);
+        }
+        casas.push({ place: Math.pow(10, k), nums: nums });
+      } else {
+        d.className = 'odo-d odo-sep';
+        d.textContent = ch;
+      }
+      el.appendChild(d);
+    }
+    if (suf) { var q = document.createElement('span'); q.className = 'odo-fix'; q.textContent = suf; q.setAttribute('aria-hidden', 'true'); el.appendChild(q); }
+    /* Counter DNA: cada casa tem a sua mola rumo a floor(valor/casa); o valor-mestre
+       sobe em ease-out. A roda de cada dígito rola pela via mais curta entre inteiros. */
+    for (var c0 = 0; c0 < casas.length; c0++) { casas[c0].y = 0; casas[c0].v = 0; casas[c0].alvo = 0; }
+    function pinta() {
+      for (var c = 0; c < casas.length; c++) {
+        var casa = casas[c];
+        var placeValue = ((casa.y % 10) + 10) % 10;
+        for (var n = 0; n < 10; n++) {
+          var off = (10 + n - placeValue) % 10;
+          if (off > 5) off -= 10;
+          casa.nums[n].style.transform = 'translateY(' + (off * 100).toFixed(1) + '%)';
+        }
+      }
+    }
+    function mira(v) { for (var c = 0; c < casas.length; c++) casas[c].alvo = Math.floor(v / casas[c].place); }
+    if (REDUZ) { mira(alvo); for (var c1 = 0; c1 < casas.length; c1++) casas[c1].y = casas[c1].alvo; pinta(); return; }
+    pinta();
+    var t0 = 0, tIni = 0, DUR = 1400, K = 210, D = 24;
+    var io = new IntersectionObserver(function (es) {
+      if (!es[0].isIntersecting) return;
+      io.disconnect();
+      C.schedule(function (ts) {
+        if (!t0) { t0 = ts; tIni = ts; return true; }
+        var dt = Math.min(0.12, (ts - t0) / 1000);
+        var sub = Math.max(4, Math.ceil(dt / 0.006));
+        t0 = ts;
+        var p = Math.min(1, (ts - tIni) / DUR);
+        mira(alvo * (1 - Math.pow(1 - p, 3)));
+        var quieto = p >= 1;
+        for (var c = 0; c < casas.length; c++) {
+          var k = casas[c];
+          for (var s = 0; s < sub; s++) {
+            var acc = K * (k.alvo - k.y) - D * k.v;
+            k.v += acc * dt / sub;
+            k.y += k.v * dt / sub;
+          }
+          if (Math.abs(k.alvo - k.y) > 0.01 || Math.abs(k.v) > 0.05) quieto = false;
+        }
+        if (quieto) { for (var c2 = 0; c2 < casas.length; c2++) casas[c2].y = casas[c2].alvo; pinta(); return false; }
+        pinta();
+        return true;
+      });
+    }, { threshold: 0.4 });
+    io.observe(el);
+  }
+  document.querySelectorAll('[data-odo]').forEach(odometro);
+
+  /* ---------- SCROLLSTACK (React Bits): cards de garantia pinam (sticky) e recuam em escala
+     conforme os seguintes empilham; ao subir, desempilham. Mobile: só o empilhamento. ---------- */
+  (function () {
+    var grid = document.querySelector('.g-grid');
+    if (!grid) return;
+    var cards = Array.prototype.slice.call(grid.querySelectorAll('.gc'));
+    if (!cards.length) return;
+    grid.classList.add('sstack');
+    cards.forEach(function (c, i) {
+      c.style.setProperty('--i', String(i));
+      if (!c.querySelector('.gc-n')) {
+        var n = document.createElement('span');
+        n.className = 'gc-n'; n.setAttribute('aria-hidden', 'true'); n.textContent = '0' + (i + 1);
+        c.appendChild(n);
+      }
+    });
+    if (REDUZ) return;
+    var STACK_POS = 0.16, SCALE_END = 0.08, STACK_DIST = 28, BASE = 0.86, ITEM = 0.035;
+    var tops = [], gridTop = 0, ult = [], raf = 0, visivel = false, largo = true;
+    function mede() {
+      largo = window.innerWidth > 900;
+      var vh = window.innerHeight;
+      grid.style.setProperty('--stack-top', Math.round(vh * STACK_POS) + 'px');
+      gridTop = grid.getBoundingClientRect().top + window.scrollY;
+      tops = cards.map(function (c) { return gridTop + c.offsetTop; });
+    }
+    function pinta() {
+      raf = 0;
+      if (!visivel) return;
+      if (!largo) { cards.forEach(function (c) { c.style.transform = ''; }); return; }
+      var y = window.scrollY, vh = window.innerHeight;
+      var stackPx = vh * STACK_POS, endPx = vh * SCALE_END;
+      for (var i = 0; i < cards.length; i++) {
+        var ini = tops[i] - stackPx - STACK_DIST * i;
+        var fim = tops[i] - endPx;
+        var p = y < ini ? 0 : y > fim ? 1 : (y - ini) / (fim - ini);
+        var alvo = BASE + i * ITEM;
+        var s = 1 - p * (1 - alvo);
+        s = Math.round(s * 1000) / 1000;
+        if (ult[i] !== s) { ult[i] = s; cards[i].style.transform = s === 1 ? '' : 'translate3d(0,0,0) scale(' + s + ')'; }
+      }
+    }
+    function pede() { if (!raf) raf = requestAnimationFrame(pinta); }
+    new IntersectionObserver(function (es) { visivel = es[0].isIntersecting; if (visivel) { mede(); pede(); } }, { rootMargin: '200px 0px' }).observe(grid);
+    window.addEventListener('scroll', pede, { passive: true });
+    window.addEventListener('resize', function () { mede(); pede(); });
+    if ('ResizeObserver' in window) new ResizeObserver(function () { mede(); pede(); }).observe(grid);
+    mede(); pede();
+  })();
+
+  /* ============ DNA DE ANIMAÇÃO ============ */
+
+  /* ---------- DOCK (React Bits Dock): magnificação por distância ao dedo, mola por item;
+     some ao rolar para baixo e volta ao subir; integra o WhatsApp do float no mobile ---------- */
+  (function () {
+    var dock = document.getElementById('dock');
+    if (!dock) return;
+    var painel = dock.querySelector('.dock-panel');
+    var itens = Array.prototype.slice.call(dock.querySelectorAll('.dock-item'));
+    var mq = matchMedia('(max-width:700px)');
+    function liga() { document.body.classList.toggle('has-dock', mq.matches); }
+    liga();
+    if (mq.addEventListener) mq.addEventListener('change', liga); else mq.addListener(liga);
+
+    var BASE = 46, MAG = 68, DIST = 110;
+    var est = itens.map(function () { return { s: BASE, v: 0, alvo: BASE }; });
+    var raf = 0, ultimoT = 0, px = Infinity, ativo = -1;
+    function alvos() {
+      for (var i = 0; i < itens.length; i++) {
+        var r = itens[i].getBoundingClientRect();
+        var d = px === Infinity ? Infinity : Math.abs(px - (r.left + r.width / 2));
+        var t = d > DIST ? 0 : 1 - d / DIST;
+        est[i].alvo = BASE + (MAG - BASE) * t;
+      }
+    }
+    function passo(ts) {
+      raf = 0;
+      var dt = ultimoT ? Math.min(0.05, (ts - ultimoT) / 1000) : 0.016;
+      ultimoT = ts;
+      var quieto = true;
+      for (var i = 0; i < itens.length; i++) {
+        var e = est[i];
+        /* mola: mass .1, stiffness 150, damping 12 (valores do Dock) — integrada em sub-passos de 4ms (estável) */
+        var sub = Math.max(1, Math.ceil(dt / 0.004)), h = dt / sub;
+        for (var k = 0; k < sub; k++) {
+          var a = (150 * (e.alvo - e.s) - 12 * e.v) / 0.1;
+          e.v += a * h;
+          e.s += e.v * h;
+        }
+        if (e.s < BASE * 0.9) e.s = BASE * 0.9; else if (e.s > MAG * 1.1) e.s = MAG * 1.1;
+        if (Math.abs(e.alvo - e.s) > 0.15 || Math.abs(e.v) > 1) quieto = false; else { e.s = e.alvo; e.v = 0; }
+        itens[i].style.width = e.s.toFixed(1) + 'px';
+        itens[i].style.height = e.s.toFixed(1) + 'px';
+      }
+      if (!quieto) raf = requestAnimationFrame(passo); else ultimoT = 0;
+    }
+    function pede() { alvos(); if (!raf) { ultimoT = 0; raf = requestAnimationFrame(passo); } }
+    function marca(x) {
+      var melhor = -1, dm = 1e9;
+      for (var i = 0; i < itens.length; i++) {
+        var r = itens[i].getBoundingClientRect();
+        var d = Math.abs(x - (r.left + r.width / 2));
+        if (d < dm) { dm = d; melhor = i; }
+      }
+      if (dm > 40) melhor = -1;
+      if (melhor !== ativo) {
+        ativo = melhor;
+        for (i = 0; i < itens.length; i++) itens[i].classList.toggle('is-on', i === ativo);
+      }
+    }
+    if (!REDUZ) {
+      painel.addEventListener('pointerdown', function (e) { px = e.clientX; marca(px); pede(); }, { passive: true });
+      painel.addEventListener('pointermove', function (e) { if (e.pointerType === 'mouse' && !e.buttons) { px = e.clientX; } else px = e.clientX; marca(px); pede(); }, { passive: true });
+      var solta = function () { px = Infinity; marca(-1e4); pede(); };
+      painel.addEventListener('pointerup', solta, { passive: true });
+      painel.addEventListener('pointercancel', solta, { passive: true });
+      painel.addEventListener('pointerleave', solta, { passive: true });
+    }
+    /* esconde ao rolar para baixo, volta ao subir */
+    var ultimoY = window.scrollY, acum = 0, sraf = 0;
+    function rola() {
+      sraf = 0;
+      var y = window.scrollY, dy = y - ultimoY;
+      ultimoY = y;
+      if ((dy > 0 && acum < 0) || (dy < 0 && acum > 0)) acum = 0;
+      acum += dy;
+      if (y < 80 || acum < -12) dock.classList.remove('dock-hide');
+      else if (acum > 14 && y > 120) dock.classList.add('dock-hide');
+      /* com o dock recolhido, o float do WhatsApp volta — o canal principal nunca some da tela */
+      document.body.classList.toggle('dock-off', dock.classList.contains('dock-hide'));
+    }
+    window.addEventListener('scroll', function () { if (!sraf) sraf = requestAnimationFrame(rola); }, { passive: true });
+    /* tocar num item também tira o destaque depois de navegar */
+    dock.addEventListener('click', function () { setTimeout(function () { px = Infinity; marca(-1e4); pede(); }, 250); });
+  })();
+
+  /* ---------- FLOWING MENU (React Bits): no hover, faixa dourada com o nome da seção
+     entra pela borda mais próxima e o marquee corre atrás do link ---------- */
+  (function () {
+    var links = document.querySelectorAll('.nav-links a[href]');
+    if (!links.length || !matchMedia('(pointer:fine)').matches) return;
+    Array.prototype.forEach.call(links, function (a) {
+      var txt = a.textContent.trim();
+      a.classList.add('fm');
+      a.innerHTML = '<span class="fm-t">' + txt + '</span>';
+      var mq = document.createElement('span');
+      mq.className = 'fm-mq';
+      mq.setAttribute('aria-hidden', 'true');
+      var inner = document.createElement('span');
+      inner.className = 'fm-in';
+      var track = document.createElement('span');
+      track.className = 'fm-track';
+      var parte = '';
+      for (var i = 0; i < 4; i++) parte += '<span>' + txt + '</span>';
+      track.innerHTML = parte + parte; /* duas cópias: translateX(-50%) fecha o loop sem emenda */
+      inner.appendChild(track);
+      mq.appendChild(inner);
+      a.appendChild(mq);
+      function borda(e) {
+        var r = a.getBoundingClientRect();
+        var y = e.clientY - r.top;
+        return y < r.height / 2 ? 'top' : 'bottom';
+      }
+      function poe(edge, aberto) {
+        mq.style.transform = aberto ? 'translate3d(0,0,0)' : 'translate3d(0,' + (edge === 'top' ? '-101%' : '101%') + ',0)';
+        inner.style.transform = aberto ? 'translate3d(0,0,0)' : 'translate3d(0,' + (edge === 'top' ? '101%' : '-101%') + ',0)';
+      }
+      a.addEventListener('mouseenter', function (e) {
+        if (REDUZ) { poe('top', true); a.classList.add('is-on'); return; }
+        var edge = borda(e);
+        a.classList.add('fm-snap');
+        poe(edge, false);
+        void mq.offsetWidth; /* aplica a posição inicial sem transição */
+        a.classList.remove('fm-snap');
+        a.classList.add('is-on');
+        poe(edge, true);
+      });
+      a.addEventListener('mouseleave', function (e) {
+        a.classList.remove('is-on');
+        poe(REDUZ ? 'top' : borda(e), false);
+      });
+    });
+  })();
+
+  /* ---------- GLASS ICONS (React Bits): ícone dos diferenciais vira vidro com lâmina dourada atrás ---------- */
+  (function () {
+    document.querySelectorAll('.gc .gc-icon').forEach(function (ic) {
+      var svg = ic.querySelector('svg');
+      if (!svg) return;
+      ic.classList.add('glass');
+      var back = document.createElement('span'); back.className = 'glass-back'; back.setAttribute('aria-hidden', 'true');
+      var front = document.createElement('span'); front.className = 'glass-front';
+      front.appendChild(svg);
+      ic.appendChild(back);
+      ic.appendChild(front);
+    });
+  })();
+
+  /* ---------- CLICK SPARK: fagulhas douradas no clique dos CTAs ---------- */
+  (function () {
+    if (REDUZ) return;
+    var SEL = '.btn-g, .btn-claro, .bc-cta-btn, .btn-wa, .cat-wa-link, .pcard-wa, .nav-btn, .tp-btn, .duelo-cta, .ig-follow, .dock-wa, .sim-seg button, .bcs-btns button';
+    document.addEventListener('pointerdown', function (e) {
+      var alvo = e.target.closest ? e.target.closest(SEL) : null;
+      if (!alvo) return;
+      var s = document.createElement('span');
+      s.className = 'spark';
+      s.setAttribute('aria-hidden', 'true');
+      s.style.transform = 'translate(' + e.clientX + 'px,' + e.clientY + 'px)';
+      var h = '';
+      for (var i = 0; i < 8; i++) h += '<i style="--a:' + (i * 45) + 'deg"></i>';
+      s.innerHTML = h;
+      document.body.appendChild(s);
+      setTimeout(function () { s.remove(); }, 560);
+    }, { passive: true });
+  })();
+
+  /* ---------- LINHA DO TEMPO DA GARANTIA: desenha com o scroll; marcos acendem (Stepper DNA) ---------- */
+  (function () {
+    var gtl = document.getElementById('gtl');
+    var fill = document.getElementById('gtlFill');
+    if (!gtl || !fill) return;
+    var steps = gtl.querySelectorAll('.gtl-step');
+    var LIM = [0.16, 0.4, 0.64, 0.88];
+    function aplica(p) {
+      fill.style.strokeDashoffset = (1000 * (1 - p)).toFixed(1);
+      gtl.style.setProperty('--p', p.toFixed(3));
+      var ativo = -1;
+      for (var i = 0; i < LIM.length; i++) if (p >= LIM[i]) ativo = i;
+      for (i = 0; i < steps.length; i++) {
+        steps[i].classList.toggle('is-done', i < ativo);
+        steps[i].classList.toggle('is-on', i === ativo);
+      }
+    }
+    if (REDUZ) { aplica(1); return; }
+    var raf = 0, visivel = false, ultimo = -1;
+    function pinta() {
+      raf = 0;
+      if (!visivel) return;
+      var r = gtl.getBoundingClientRect();
+      var vh = window.innerHeight;
+      var p = (vh - r.top) / (vh * 0.85);
+      p = p < 0 ? 0 : p > 1 ? 1 : p;
+      if (Math.abs(p - ultimo) < 0.002) return;
+      ultimo = p;
+      aplica(p);
+    }
+    function pede() { if (!raf) raf = requestAnimationFrame(pinta); }
+    new IntersectionObserver(function (es) { visivel = es[0].isIntersecting; if (visivel) pede(); }, { rootMargin: '80px 0px' }).observe(gtl);
+    window.addEventListener('scroll', pede, { passive: true });
+    window.addEventListener('resize', pede);
+    pede();
+  })();
+
+  /* ---------- BLACK CLUB: bilhetes = compras + indicações informadas (1 número por cada; sem probabilidade) ---------- */
+  (function () {
+    var box = document.getElementById('bcSorte');
+    if (!box) return;
+    var grade = document.getElementById('bcsBilhetes');
+    var elC = document.getElementById('bcsCompras'), elI = document.getElementById('bcsIndic');
+    var total = document.getElementById('bcsTotal');
+    var cta = document.getElementById('bcsCta');
+    var MAX = { compras: 12, indic: 24 };
+    var n = { compras: 0, indic: 0 };
+    var RAIO = '<svg class="bcs-b-raio" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>';
+    function bilhete(i) {
+      var b = document.createElement('span');
+      b.className = 'bcs-bilhete';
+      b.setAttribute('role', 'listitem');
+      /* "Bilhete 01" é a contagem — o número da sorte em si é o que a loja registra (nunca inventamos o número) */
+      b.innerHTML = '<span><span class="bcs-b-lbl">Bilhete</span><span class="bcs-b-num">' + (i < 9 ? '0' : '') + (i + 1) + '</span></span>' + RAIO;
+      return b;
+    }
+    function pinta() {
+      var t = n.compras + n.indic;
+      elC.textContent = String(n.compras);
+      elI.textContent = String(n.indic);
+      box.querySelector('[data-step="compras"] .bcs-mais').disabled = n.compras >= MAX.compras;
+      box.querySelector('[data-step="indic"] .bcs-mais').disabled = n.indic >= MAX.indic;
+      box.querySelector('[data-step="compras"] .bcs-menos').disabled = n.compras <= 0;
+      box.querySelector('[data-step="indic"] .bcs-menos').disabled = n.indic <= 0;
+      C.countUp(total, t, 420, function (v) { return String(Math.round(v)); });
+      var atuais = grade.querySelectorAll('.bcs-bilhete:not(.is-out)');
+      var vazio = grade.querySelector('.bcs-vazio');
+      if (t && vazio) vazio.remove();
+      if (!t && !vazio && !atuais.length) {
+        var v = document.createElement('p');
+        v.className = 'bcs-vazio';
+        v.textContent = 'Toque em + para contar as suas compras e indicações — cada uma vira um bilhete dourado aqui.';
+        grade.appendChild(v);
+      }
+      grade.setAttribute('role', 'list');
+      if (atuais.length < t) {
+        for (var i = atuais.length; i < t; i++) {
+          var b = bilhete(i);
+          b.style.setProperty('--d', ((i - atuais.length) * 70) + 'ms');
+          grade.appendChild(b);
+          if (REDUZ) b.classList.add('is-in');
+          else requestAnimationFrame(function (el) { return function () { requestAnimationFrame(function () { el.classList.add('is-in'); }); }; }(b));
+        }
+      } else if (atuais.length > t) {
+        for (var k = atuais.length - 1; k >= t; k--) {
+          (function (el) {
+            el.classList.add('is-out');
+            if (REDUZ) el.remove(); else setTimeout(function () { el.remove(); if (!grade.querySelector('.bcs-bilhete') && !grade.querySelector('.bcs-vazio')) pinta(); }, 320);
+          })(atuais[k]);
+        }
+      }
+      var num = (cta.href.match(/wa\.me\/(\d+)/) || [])[1] || '5512997463135';
+      var msg = 'Olá! Quero entrar no Black Club da Eletronic.' + (t ? ' Já contei ' + n.compras + (n.compras === 1 ? ' compra' : ' compras') + ' e ' + n.indic + (n.indic === 1 ? ' indicação' : ' indicações') + ' — ' + t + (t === 1 ? ' número da sorte' : ' números da sorte') + '.' : '');
+      cta.href = 'https://wa.me/' + num + '?text=' + encodeURIComponent(msg);
+    }
+    box.addEventListener('click', function (e) {
+      var b = e.target.closest('button');
+      if (!b) return;
+      var step = b.closest('.bcs-step');
+      if (!step) return;
+      var k = step.dataset.step;
+      if (b.classList.contains('bcs-mais')) n[k] = Math.min(MAX[k], n[k] + 1);
+      else n[k] = Math.max(0, n[k] - 1);
+      pinta();
+    });
+    pinta();
+  })();
+
+  /* ---------- ESTOQUE AGORA: barras = contagem REAL por categoria (chamado pelo catálogo) ---------- */
+  (function () {
+    var box = document.getElementById('estoqueAgora');
+    var host = document.getElementById('estChart');
+    var sub = document.getElementById('estSub');
+    var vazio = document.getElementById('estVazio');
+    var nota = document.getElementById('estNota');
+    if (!box || !host) return;
+    var chart = null, slugs = [];
+    window.elcEstoque = function (cats, porCat, wa) {
+      var labels = [], vals = [], total = 0;
+      slugs = [];
+      (cats || []).forEach(function (c) {
+        var n = porCat[c.id] || 0;
+        labels.push(c.nome); vals.push(n); slugs.push(c.slug); total += n;
+      });
+      if (wa) {
+        var a = vazio.querySelector('a');
+        if (a) a.href = 'https://wa.me/' + wa + '?text=' + encodeURIComponent('Olá! Queria saber quais iPhones estão chegando.');
+      }
+      if (!total) {
+        host.hidden = true; nota.hidden = true; vazio.hidden = false;
+        sub.textContent = cats && cats.length ? 'sem aparelhos publicados neste momento' : 'vitrine indisponível agora';
+        return;
+      }
+      host.hidden = false; vazio.hidden = true; nota.hidden = false;
+      sub.textContent = total + (total === 1 ? ' aparelho publicado' : ' aparelhos publicados') + ' · atualiza em tempo real';
+      if (chart && chart.series[0].values.length !== vals.length) { host.innerHTML = ''; chart = null; }
+      if (!chart) {
+        chart = C.bars({
+          host: host,
+          series: [{ name: 'Aparelhos', values: vals }],
+          labels: labels,
+          axes: false, xLabels: true, valueLabels: true, barFrac: 0.56, labelMin: 60,
+          label: 'Estoque agora: aparelhos publicados por categoria',
+          table: true, xName: 'Categoria', yName: 'Aparelhos',
+          tip: function (j, series, lab) {
+            var n = series[0].values[j];
+            return '<small>' + lab + '</small><b>' + n + (n === 1 ? ' aparelho' : ' aparelhos') + '</b><span>' + (C.coarse ? 'toque' : 'clique') + ' para abrir a aba</span>';
+          },
+          onClick: function (i) {
+            if (slugs[i] && window.irCat) {
+              window.irCat(slugs[i]);
+              var tabs = document.getElementById('catTabs');
+              if (tabs) tabs.scrollIntoView({ behavior: REDUZ ? 'auto' : 'smooth', block: 'start' });
+            }
+          }
+        });
+        window.elcInst.estoque = chart;
+      } else {
+        chart.setLabels(labels);
+        chart.update([vals]);
+      }
+    };
+  })();
+
+  /* ---------- SIMULADOR DE PARCELAS: 18 barras + anel entrada vs financiado ---------- */
+  (function () {
+    var sec = document.getElementById('simulador');
+    if (!sec) return;
+    var elV = document.getElementById('simValor'), elE = document.getElementById('simEntrada');
+    var outV = document.getElementById('simValorOut'), outE = document.getElementById('simEntradaOut');
+    var seg = document.getElementById('simParcelas');
+    var elN = document.getElementById('simN'), elP = document.getElementById('simParcela');
+    var elER = document.getElementById('simEntradaRes'), elF = document.getElementById('simFinanciado'), elT = document.getElementById('simTotal');
+    var cta = document.getElementById('simCta');
+    var n = 18;
+    var fmt = function (v) { return 'R$ ' + C.fmtInt(v); };
+    var labels = [];
+    for (var i = 1; i <= 18; i++) labels.push(String(i));
+    var zeros = labels.map(function () { return 0; });
+    var bars = C.bars({
+      host: '#simBars', series: [{ name: 'Parcela', values: zeros }], labels: labels,
+      axes: false, xLabels: true, barFrac: 0.7, labelMin: 22, format: fmt,
+      label: 'Parcelas da simulação', table: true, xName: 'Parcela', yName: 'Valor',
+      tip: function (j, series) {
+        return j < n ? '<small>Parcela ' + (j + 1) + ' de ' + n + '</small><b>' + fmt(series[0].values[j]) + '</b>'
+                     : '<small>Parcela ' + (j + 1) + '</small><b>fora do plano ' + n + 'x</b>';
+      }
+    });
+    var anel = C.donut({
+      host: '#simAnel', slices: [{ label: 'Financiado', value: 6000 }, { label: 'Entrada', value: 0 }],
+      thick: 0.26, gapless: true, centerLabel: 'financiado', centerScale: 0.44,
+      label: 'Entrada versus valor financiado', table: true, xName: 'Parte', yName: 'Valor',
+      legendFormat: function (f) { return fmt(f.value); },
+      tip: function (i, f) { return '<small>' + f.label + '</small><b>' + fmt(f.value) + '</b>'; }
+    });
+    window.elcInst.simBars = bars; window.elcInst.simAnel = anel;
+    function pct(el) { el.style.setProperty('--p', ((el.value - el.min) / (el.max - el.min) * 100).toFixed(1) + '%'); }
+    var pendente = 0;
+    function calcula() {
+      pendente = 0;
+      var valor = +elV.value;
+      elE.max = String(valor); /* a entrada (seu iPhone) nunca passa do valor do aparelho — o slider acompanha */
+      var entrada = Math.min(+elE.value, valor);
+      if (+elE.value > valor) { elE.value = valor; }
+      var fin = valor - entrada;
+      var parc = fin / n;
+      outV.textContent = fmt(valor); outE.textContent = fmt(entrada);
+      elV.setAttribute('aria-valuetext', fmt(valor)); elE.setAttribute('aria-valuetext', fmt(entrada));
+      pct(elV); pct(elE);
+      elN.textContent = String(n);
+      C.countUp(elP, parc, 520, fmt);
+      C.countUp(elER, entrada, 520, fmt);
+      C.countUp(elF, fin, 520, fmt);
+      C.countUp(elT, valor, 520, fmt);
+      var vals = labels.map(function (_, j) { return j < n ? parc : 0; });
+      bars.update([vals]);
+      bars.dimFrom(n);
+      anel.update([fin, entrada]);
+      var num = (cta.href.match(/wa\.me\/(\d+)/) || [])[1] || '5512997463135';
+      var msg = 'Olá! Simulei no site: iPhone de ' + fmt(valor) + ', meu iPhone atual como entrada de ' + fmt(entrada) +
+        ', financiando ' + fmt(fin) + ' em ' + n + 'x de ' + fmt(Math.round(parc)) + ' (simulação sem juros). Podem confirmar as condições?';
+      cta.href = 'https://wa.me/' + num + '?text=' + encodeURIComponent(msg);
+    }
+    function pede() { if (!pendente) pendente = requestAnimationFrame(calcula); }
+    elV.addEventListener('input', pede);
+    elE.addEventListener('input', pede);
+    seg.addEventListener('click', function (e) {
+      var b = e.target.closest('button[data-n]');
+      if (!b) return;
+      n = +b.dataset.n;
+      seg.querySelectorAll('button').forEach(function (x) { var on = x === b; x.classList.toggle('on', on); x.setAttribute('aria-checked', on ? 'true' : 'false'); });
+      pede();
+    });
+    seg.addEventListener('keydown', function (e) {
+      if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+      var bs = Array.prototype.slice.call(seg.querySelectorAll('button'));
+      var i = bs.findIndex(function (x) { return x.classList.contains('on'); });
+      i = (i + (e.key === 'ArrowRight' ? 1 : -1) + bs.length) % bs.length;
+      bs[i].click(); bs[i].focus(); e.preventDefault();
+    });
+    calcula();
+  })();
+})();
+</script>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
 'use strict';
@@ -2228,6 +4657,7 @@
     IG_PADRAO: 'eletronic.oficial',
   };
   if (!window.supabase) {
+    if (window.elcEstoque) { try { window.elcEstoque([], {}, CFG.WA_PADRAO); } catch (e0) { /* ok */ } }
     var semSb = document.getElementById('catPaineis');
     if (semSb) semSb.innerHTML = '<div class="cat-panel active"><div class="cat-vazia">' +
       'Nosso catálogo ao vivo está fora do ar neste momento.<br>' +
@@ -2289,6 +4719,7 @@
 
     var porCat = {};
     prods.forEach(function (p) { porCat[p.categoria_id] = (porCat[p.categoria_id] || 0) + 1; });
+    if (window.elcEstoque) { try { window.elcEstoque(cats, porCat, wa); } catch (e) { /* gráfico nunca derruba o catálogo */ } }
 
     var btns = cats.map(function (c) {
       var n = porCat[c.id] || 0;
@@ -2368,6 +4799,7 @@
       render(cats || [], prods || [], cfg);
     }).catch(function (e) {
       console.error('catálogo:', e);
+      if (window.elcEstoque) { try { window.elcEstoque([], {}, CFG.WA_PADRAO); } catch (e2) { /* ok */ } }
       var paineis = document.getElementById('catPaineis');
       if (paineis) {
         paineis.setAttribute('aria-busy', 'false');
@@ -3709,6 +6141,7 @@
     }
 
     var pS = -1;
+    var zoomS = 1; /* escala atual do iPhone grande (estágio 4) — o CardSwap parte dela */
     function pinta(p) {
       var i;
       /* barra de progresso lateral */
@@ -3725,6 +6158,7 @@
       var sx = 1 - .13 * giro;
       /* ESTAGIO 4 — zoom-out elegante */
       var zoom = 1 - .17 * seg(p, .75, .95);
+      zoomS = zoom; /* o CardSwap parte da MESMA escala que o palco pinta — sem salto ao ligar */
       shp.style.transform = 'scale(' + zoom.toFixed(4) + ') scaleX(' + sx.toFixed(4) + ')';
       body.style.boxShadow = 'inset 0 0 0 4px #010309, inset 0 0 18px rgba(0,0,0,.8), ' +
         (giro * 28).toFixed(1) + 'px 40px 80px -22px rgba(0,0,0,.75)';
@@ -3770,13 +6204,109 @@
       }
     }
 
+
+    /* ============ CARDSWAP (React Bits) — estágio 4: os 3 iPhones trocam de lugar em ciclo ============
+       Slots: 0 = centro (frente), 1 = esquerda, 2 = direita. A cada ciclo o da frente mergulha,
+       vai para a direita e o da esquerda promove ao centro (o da direita passa por trás para a
+       esquerda). Só roda com p >= .88, dentro do rAF do palco (pausa fora do viewport/aba). */
+    var swap = (function () {
+      var cards = [shp, minis[0], minis[1]];           /* home: 0 = grande (centro), 1 = mini-esq, 2 = mini-dir */
+      if (cards.length !== 3 || !minis[0] || !minis[1]) return { tick: function () {}, active: false };
+      var DUR = 1500, PERIODO = 3600, PRIMEIRO = 1100;
+      var ordem = [0, 1, 2];                             /* ordem[slot] = card que ocupa o slot */
+      var home = null, ativo = false, t0 = 0, anim = null, proximo = 0;
+      function mede() {
+        /* geometria de repouso: aplica os transforms de descanso, lê os retângulos, e o frame
+           seguinte reaplica a cena — sem pintura intermediária */
+        var guardado = cards.map(function (c) { return c.style.transform; });
+        cards[0].style.transform = 'scale(' + zoomS.toFixed(4) + ')';
+        cards[1].style.transform = 'translate(-150%, -46%) scale(.92)';
+        cards[2].style.transform = 'translate(50%, -46%) scale(.92)';
+        home = cards.map(function (c) {
+          var r = c.getBoundingClientRect();
+          return { x: r.left + r.width / 2, y: r.top + r.height / 2, w: r.width, h: r.height };
+        });
+        cards.forEach(function (c, i) { c.style.transform = guardado[i]; });
+      }
+      function easeBack(t) { var s = 1.25; t = t - 1; return t * t * ((s + 1) * t + s) + 1; }
+      function easeOut(t) { return 1 - Math.pow(1 - t, 3); }
+      function aplica(card, slot, bump, k0, z) {
+        var g = home[slot], h = home[card];
+        var dx = g.x - h.x, dy = g.y - h.y + (bump || 0);
+        var k = (g.w / h.w) * (k0 || 1);
+        var el = cards[card];
+        if (card === 0) el.style.transform = 'translate(' + dx.toFixed(1) + 'px,' + dy.toFixed(1) + 'px) scale(' + (zoomS * k).toFixed(4) + ')';
+        else el.style.transform = 'translate(' + (card === 1 ? -150 : 50) + '%, -46%) translate(' + dx.toFixed(1) + 'px,' + dy.toFixed(1) + 'px) scale(' + (0.92 * k).toFixed(4) + ')';
+        el.style.zIndex = String(z);
+      }
+      function cena(prog) {
+        /* prog = null: cena em repouso na ordem atual; senão interpola da ordem anterior para a nova */
+        for (var slot = 0; slot < 3; slot++) {
+          var card = ordem[slot];
+          if (prog === null) { aplica(card, slot, 0, 1, slot === 0 ? 3 : 1); continue; }
+          var de = anim.de[card], para = slot;
+          var e = easeBack(prog);
+          var gA = home[de], gB = home[para];
+          var h = home[card];
+          var x = gA.x + (gB.x - gA.x) * e, y = gA.y + (gB.y - gA.y) * e;
+          var w = gA.w + (gB.w - gA.w) * e;
+          var bump = 0, z = para === 0 ? 3 : 1;
+          if (card === anim.frente) {
+            /* o da frente mergulha (y+) e encolhe um pouco enquanto os outros promovem, e passa por trás */
+            bump = Math.sin(Math.PI * Math.min(1, prog / 0.85)) * h.h * 0.32;
+            z = prog < 0.6 ? 2 : 1;
+            w *= 1 - 0.08 * Math.sin(Math.PI * prog);
+          } else if (para === 0) z = prog > 0.5 ? 3 : 2;
+          var el = cards[card];
+          var dx = x - h.x, dy = y - h.y + bump, k = w / h.w;
+          if (card === 0) el.style.transform = 'translate(' + dx.toFixed(1) + 'px,' + dy.toFixed(1) + 'px) scale(' + (zoomS * k).toFixed(4) + ')';
+          else el.style.transform = 'translate(' + (card === 1 ? -150 : 50) + '%, -46%) translate(' + dx.toFixed(1) + 'px,' + dy.toFixed(1) + 'px) scale(' + (0.92 * k).toFixed(4) + ')';
+          el.style.zIndex = String(z);
+        }
+      }
+      function inicia(ts) {
+        mede();
+        var frente = ordem[0];
+        var de = [];
+        for (var s = 0; s < 3; s++) de[ordem[s]] = s;
+        /* rotação: centro → direita, esquerda → centro, direita → esquerda */
+        ordem = [ordem[1], ordem[2], ordem[0]];
+        anim = { de: de, frente: frente, t0: ts };
+      }
+      return {
+        active: false,
+        tick: function (p, ts) {
+          /* liga só com a fila já formada (p >= .9: minis e CTA em repouso) e desliga com histerese */
+          var quer = ativo ? p >= 0.86 : p >= 0.9;
+          if (quer !== ativo) {
+            ativo = quer;
+            sec.classList.toggle('is-swap', ativo);
+            if (ativo) { mede(); ordem = [0, 1, 2]; anim = null; proximo = ts + PRIMEIRO; cena(null); }
+            else { cards.forEach(function (c) { c.style.zIndex = ''; }); }
+            this.active = ativo;
+          }
+          if (!ativo) return;
+          if (anim) {
+            var prog = Math.min(1, (ts - anim.t0) / DUR);
+            cena(prog);
+            if (prog >= 1) { anim = null; proximo = ts + PERIODO - DUR; cena(null); }
+          } else {
+            if (ts >= proximo) inicia(ts); else cena(null);
+          }
+        },
+        pausa: function (ts) { /* ao retomar, o relógio do ciclo não conta o tempo parado */
+          if (anim) anim.t0 = ts - Math.min(DUR, ts - anim.t0); proximo = Math.max(proximo, ts + 400);
+        }
+      };
+    })();
+
     var raf = 0, visivel = false, rodando = false;
     function alvo() {
       var r = sec.getBoundingClientRect();
       var total = r.height - window.innerHeight;
       return total > 0 ? clamp(-r.top / total) : 0;
     }
-    function passo() {
+    function passo(ts) {
       raf = 0;
       if (!rodando) return;
       var a = alvo();
@@ -3784,13 +6314,14 @@
       pS += (a - pS) * .14; /* lerp suave nas duas direcoes */
       if (Math.abs(a - pS) < .0006) pS = a;
       pinta(pS);
+      swap.tick(pS, ts || performance.now());
       raf = requestAnimationFrame(passo);
     }
     function liga() {
       var quer = visivel && !document.hidden;
       if (quer === rodando) return;
       rodando = quer;
-      if (rodando && !raf) raf = requestAnimationFrame(passo);
+      if (rodando && !raf) { swap.pausa(performance.now()); raf = requestAnimationFrame(passo); }
     }
     pinta(0); /* estado inicial coerente mesmo antes de rolar */
     new IntersectionObserver(function (es) { visivel = es[0].isIntersecting; liga(); }, { threshold: 0 }).observe(sec);
@@ -3802,7 +6333,8 @@
     var path = document.getElementById('comoPath');
     var sec = document.getElementById('comofunciona');
     if (!path || !sec) return;
-    if (REDUZ) { path.style.strokeDashoffset = '0'; return; }
+    var passos = sec.querySelectorAll('.como-step');
+    if (REDUZ) { path.style.strokeDashoffset = '0'; for (var r0 = 0; r0 < passos.length; r0++) passos[r0].classList.add('is-on'); return; }
     var raf = 0, visivel = false;
     function pinta() {
       raf = 0;
@@ -3813,6 +6345,7 @@
       var p = (vh - r.top) / (vh * .85);
       p = p < 0 ? 0 : p > 1 ? 1 : p;
       path.style.strokeDashoffset = (1000 * (1 - p)).toFixed(1);
+      for (var i = 0; i < passos.length; i++) passos[i].classList.toggle('is-on', p >= (i + 0.55) / passos.length);
     }
     function pede() { if (!raf) raf = requestAnimationFrame(pinta); }
     new IntersectionObserver(function (es) {
