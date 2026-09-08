@@ -1463,7 +1463,6 @@
       transition:transform .72s var(--elc-ease-expo), opacity .3s; transition-delay:calc(var(--d,0) * 1ms), 0s; }
     .elc-bar-s2 { fill:rgba(247,243,232,.42); }
     .elc-bar-ok { fill:rgba(247,243,232,.32); }
-    .elc-bar.is-dim { opacity:.14; }
     .elc.is-drawn .elc-bar { transform:scaleY(1); }
 
     /* barra horizontal empilhada */
@@ -1522,7 +1521,7 @@
 
     /* ============================================================
        GRÁFICOS DOURADOS — aplicações (anel 4,8 / odômetros / estoque /
-       simulador / linha da garantia / bilhetes do Black Club)
+       quiz / linha da garantia / bilhetes do Black Club)
        ============================================================ */
     /* anel da nota no bloco de stats */
     .stat-anel { padding-top:34px; padding-bottom:34px; }
@@ -1563,65 +1562,6 @@
     .est-nota { margin-top:10px; font-size:.6rem; letter-spacing:.14em; text-transform:uppercase; color:rgba(247,243,232,.62); position:relative; }
     @media (max-width:700px) { .estoque { padding:18px 16px 14px; margin-top:28px; } .est-chart .elc { --elc-h:6.4rem; } .est-nota { display:none; } }
 
-    /* ===== SIMULADOR DE PARCELAS — com os números do visitante ===== */
-    .sim-intro { margin-top:22px; max-width:520px; color:var(--gray); font-size:.95rem; line-height:1.8; }
-    .sim-grid { display:grid; grid-template-columns:minmax(280px,.9fr) 1.4fr; gap:40px; margin-top:52px; align-items:start; }
-    .sim-ctl { display:flex; flex-direction:column; gap:30px; border:1px solid rgba(201,162,39,.2); background:rgba(255,255,255,.03); padding:32px 30px; }
-    .sim-campo { display:grid; grid-template-columns:1fr auto; gap:8px 12px; align-items:baseline; }
-    .sim-lbl { font-size:.66rem; font-weight:700; letter-spacing:.22em; text-transform:uppercase; color:var(--gold); }
-    .sim-out { font-family:'Cormorant Garamond',serif; font-size:1.6rem; font-weight:700; color:var(--cream); line-height:1;
-      font-variant-numeric:lining-nums tabular-nums; font-feature-settings:'lnum' 1; justify-self:end; }
-    .sim-campo input[type=range] { grid-column:1 / -1; -webkit-appearance:none; appearance:none; width:100%; height:2px; margin:10px 0 0;
-      background:linear-gradient(90deg, var(--gold) 0, var(--gold) var(--p,0%), rgba(201,162,39,.22) var(--p,0%), rgba(201,162,39,.22) 100%); outline:none; }
-    .sim-campo input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:22px; height:22px; border-radius:50%; background:var(--gold);
-      border:3px solid #04091c; box-shadow:0 0 0 1px var(--gold), 0 0 16px rgba(201,162,39,.5); cursor:pointer; transition:transform .15s; }
-    .sim-campo input[type=range]::-webkit-slider-thumb:hover, .sim-campo input[type=range]:active::-webkit-slider-thumb { transform:scale(1.15); }
-    .sim-campo input[type=range]::-moz-range-thumb { width:18px; height:18px; border-radius:50%; background:var(--gold); border:3px solid #04091c; box-shadow:0 0 0 1px var(--gold); cursor:pointer; }
-    .sim-campo input[type=range]::-moz-range-track { height:2px; background:rgba(201,162,39,.22); }
-    .sim-campo input[type=range]::-moz-range-progress { height:2px; background:var(--gold); }
-    .sim-campo input[type=range]:focus-visible { outline:2px solid var(--gold); outline-offset:8px; }
-    .sim-seg { grid-column:1 / -1; display:flex; border:1px solid rgba(201,162,39,.35); margin-top:4px; }
-    .sim-seg button { flex:1; background:transparent; border:none; color:var(--gray); font-family:'DM Sans',sans-serif; font-size:.78rem; font-weight:700;
-      letter-spacing:.14em; padding:13px 0; transition:background .2s, color .2s; border-right:1px solid rgba(201,162,39,.35);
-      font-variant-numeric:lining-nums tabular-nums; }
-    .sim-seg button:last-child { border-right:none; }
-    .sim-seg button:hover { color:var(--gold-pale); }
-    .sim-seg button.on { background:var(--gold); color:var(--navy); }
-    .sim-viz { position:relative; border:1px solid rgba(201,162,39,.2); background:rgba(255,255,255,.03); padding:30px 32px 30px; }
-    .sim-viz::before { content:''; position:absolute; inset:0; pointer-events:none; background:radial-gradient(50% 80% at 100% 0%, rgba(201,162,39,.08), transparent 60%); }
-    .sim-big { display:flex; align-items:baseline; gap:14px; flex-wrap:wrap; position:relative; }
-    .sim-big-n { font-size:.72rem; font-weight:700; letter-spacing:.24em; text-transform:uppercase; color:var(--gold); }
-    .sim-big-n b { font-family:'Cormorant Garamond',serif; font-size:1.7rem; letter-spacing:0; color:var(--gold-pale); font-variant-numeric:lining-nums; font-feature-settings:'lnum' 1; }
-    .sim-big strong { font-family:'Cormorant Garamond',serif; font-size:clamp(2.6rem,4.4vw,3.8rem); font-weight:700; color:var(--gold); line-height:1;
-      font-variant-numeric:lining-nums tabular-nums; font-feature-settings:'lnum' 1; text-shadow:0 0 30px rgba(201,162,39,.25); }
-    .sim-bars { margin-top:18px; position:relative; }
-    .sim-bars .elc { --elc-h:8rem; }
-    .sim-bars .elc-xlab { font-size:.58rem; }
-    .sim-linha { display:grid; grid-template-columns:auto 1fr; gap:26px; align-items:center; margin-top:22px; padding-top:22px; border-top:1px solid rgba(201,162,39,.16); position:relative; }
-    .sim-anel { width:9.5rem; }
-    .sim-anel .elc { --elc-h:8rem; }
-    .sim-anel .elc-legend { justify-content:center; margin-top:8px; }
-    .sim-res { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin:0; }
-    .sim-res div { border-left:2px solid rgba(201,162,39,.3); padding-left:14px; }
-    .sim-res dt { font-size:.6rem; font-weight:700; letter-spacing:.22em; text-transform:uppercase; color:var(--gray); margin-bottom:6px; }
-    .sim-res dd { margin:0; font-family:'Cormorant Garamond',serif; font-size:1.5rem; font-weight:700; color:var(--cream); line-height:1;
-      font-variant-numeric:lining-nums tabular-nums; font-feature-settings:'lnum' 1; }
-    .sim-aviso { margin-top:24px; font-size:.62rem; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:var(--gold-pale);
-      border:1px dashed rgba(201,162,39,.4); padding:10px 14px; display:inline-block; position:relative; }
-    .sim-viz .btn-claro { margin-top:18px; position:relative; }
-    @media (max-width:900px) { .sim-grid { grid-template-columns:1fr; gap:22px; margin-top:36px; } }
-    @media (max-width:700px) {
-      .sim-ctl { padding:22px 18px; gap:22px; }
-      .sim-viz { padding:22px 16px 24px; }
-      .sim-linha { grid-template-columns:1fr; gap:18px; }
-      .sim-anel { margin:0 auto; }
-      .sim-res { grid-template-columns:repeat(3,1fr); gap:8px; }
-      .sim-res div { padding-left:10px; }
-      .sim-res dd { font-size:1.15rem; }
-      .sim-bars .elc { --elc-h:6.4rem; }
-      .sim-aviso { font-size:.56rem; letter-spacing:.12em; }
-      .sim-viz .btn-claro { width:100%; }
-    }
     @media (prefers-reduced-motion: reduce) { .est-dot { animation:none; } }
 
     /* ===== LINHA DO TEMPO DA GARANTIA — desenha no scroll, marcos acendem (Stepper) ===== */
@@ -1918,22 +1858,18 @@
       outline:2px solid var(--gold-pale); outline-offset:4px; box-shadow:0 0 0 5px rgba(201,162,39,.22);
     }
     .btn-g[aria-disabled="true"], .btn-claro[aria-disabled="true"], .btn-dn[aria-disabled="true"], .bc-cta-btn[aria-disabled="true"],
-    .enq-btn:disabled, .bcs-btns button:disabled, .sim-seg button:disabled {
+    .enq-btn:disabled, .bcs-btns button:disabled, .quiz-nav button:disabled {
       opacity:.4; pointer-events:none; box-shadow:none; filter:saturate(.5);
     }
 
     /* chips e botões pequenos — nada quadrado sobra */
     .ig-chip { border-radius:var(--r-pill); padding:10px 20px; font-weight:600; letter-spacing:.14em; }
     .badge { border-radius:var(--r-pill); padding:9px 18px; font-weight:500; }
-    .bc-badge-top, .bc-card-natal-tag, .bc-card-tag-soon, .pcard-selo, .dock-label, .wa-float-tip, .troca-hint, .sim-aviso { border-radius:var(--r-pill); }
+    .bc-badge-top, .bc-card-natal-tag, .bc-card-tag-soon, .pcard-selo, .dock-label, .wa-float-tip, .troca-hint { border-radius:var(--r-pill); }
     .pcard-selo { padding:6px 12px; top:16px; left:16px; box-shadow:0 4px 12px -4px rgba(201,162,39,.6); }
     .bc-badge-top { padding:7px 18px; }
-    .sim-aviso { border-radius:12px; }
     .nav-burger, .mmenu-close { border-radius:14px; }
     .bcs-btns button { border-radius:50%; width:40px; height:40px; }
-    .sim-seg { border-radius:var(--r-pill); padding:4px; gap:4px; background:rgba(255,255,255,.03); }
-    .sim-seg button { border-radius:var(--r-pill); border-right:none; padding:12px 0; }
-    .sim-seg button.on { box-shadow:0 6px 16px -8px rgba(201,162,39,.7); }
     .dock-panel { border-radius:28px; }
     .dock-item { border-radius:16px; }
     .logo-mark { border-radius:11px; }
@@ -1943,7 +1879,7 @@
 
     /* cards e molduras — raios consistentes (14–20px) */
     .g-rat { border-radius:14px; }
-    .tprova, .estoque, .sim-ctl, .sim-viz, .ig-head, .duelo-card, .bc-cta-wrap, .about-team-wrap, .bcs-total, .bc-prize-box { border-radius:20px; }
+    .tprova, .estoque, .ig-head, .duelo-card, .bc-cta-wrap, .about-team-wrap, .bcs-total, .bc-prize-box { border-radius:20px; }
     .bc-step, .bc-card-natal, .bc-card-regular, .bcs-step, .skel, .ig-item, .duelo-comum { border-radius:16px; }
     .bcs-bilhete { border-radius:10px; }
     .bcs-vazio { border-radius:14px; }
@@ -2101,13 +2037,13 @@
     .eyebrow, .ey, .show-eyebrow { font-size:.72rem; font-weight:600; letter-spacing:.22em; }
     .ey { margin-bottom:28px; }
     .ey span, .eyebrow span, .show-eyebrow span { width:30px; }
-    .tier-label span, .ci-lbl, .fc h4, .est-titulo, .sim-lbl, .bc-section-title, .bcs-lbl, .gtl-when, .sim-big-n,
+    .tier-label span, .ci-lbl, .fc h4, .est-titulo, .bc-section-title, .bcs-lbl, .gtl-when, .quiz-step,
     .troca-hint, .tp-sub, .bc-prize-label, .cat-linha-title, .s18-ate { letter-spacing:.22em; font-weight:600; }
     .hero-sub { font-size:1.06rem; max-width:470px; }
     .gc-desc, .como-step p, .gtl-txt p { font-size:.9rem; }
     .g-grid.sstack .gc-desc { font-size:.95rem; }
     .duelo-lista li, .faq-a, .faq-mao { font-size:.95rem; }
-    .duelo-intro, .sim-intro, .cta p, .quality p, .troca-sub { font-size:1rem; }
+    .duelo-intro, .quiz-intro, .cta p, .quality p, .troca-sub { font-size:1rem; }
     .tp-lbl { font-size:1rem; }
     .fb p, .fc li a, .ci-val a { font-size:.88rem; }
     .ci-val { font-size:1rem; }
@@ -2130,6 +2066,186 @@
     .cmap-veu { position:absolute; inset:0; z-index:3; background:transparent; }
     @media (pointer:coarse) { .cmap-veu { display:none; } }
     .wa-float { text-decoration:none; }
+    /* ============================================================
+       NONO PASSE — pedidos do dono
+       1. os 2 iPhones menores do showcase (estágio 4) ACENDEM:
+          NOTA FISCAL (esq.) e GARANTIA 1 ANO (dir.), mesma linguagem
+          do lockscreen da vitrine (hora real + card dourado em traço).
+          O conteúdo vive DENTRO do aparelho — viaja com ele no CardSwap.
+          Tamanhos em cqw (a tela do mini é o container) com fallback em px.
+       2. QUIZ "Qual iPhone combina com você?" no lugar da calculadora de parcelas:
+          cards com profundidade (deck), barra dourada, resultado com
+          iPhone mock acendendo + gráfico de perfil (elcChart).
+       ============================================================ */
+    .smini-screen { overflow:hidden; container-type:size; }
+    .smini-island { z-index:6; }
+    .smini-lock { position:absolute; inset:0; z-index:1; display:flex; flex-direction:column; align-items:center; text-align:center;
+      padding:18% 8% 9%; opacity:0; transition:opacity .3s;
+      background:
+        radial-gradient(120% 60% at 50% 0%, rgba(201,162,39,.14) 0%, transparent 60%),
+        radial-gradient(150% 70% at 50% 112%, rgba(15,32,96,.85) 0%, transparent 72%),
+        linear-gradient(180deg,#060b1e,#03060f); }
+    .smini-time { font-family:'Cormorant Garamond',serif; font-weight:600; color:var(--cream); line-height:1; letter-spacing:.02em;
+      font-variant-numeric:lining-nums; font-feature-settings:'lnum' 1; font-size:1.9rem; font-size:21cqw; }
+    .smini-card { margin-top:auto; width:100%; display:flex; flex-direction:column; align-items:center;
+      border:1px solid rgba(201,162,39,.42); border-radius:12px; border-radius:8cqw;
+      background:linear-gradient(160deg,rgba(201,162,39,.17),rgba(201,162,39,.05)); padding:9% 6% 8%; }
+    .smini-card-ic svg { display:block; width:22px; height:22px; width:15cqw; height:15cqw; stroke:var(--gold); fill:none; stroke-width:1.3;
+      stroke-linecap:round; stroke-linejoin:round; }
+    .smini-card-t { display:block; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--gold-pale); line-height:1.3;
+      margin-top:6%; font-size:.58rem; font-size:6cqw; }
+    .smini-card-s { display:block; color:#a9b4d0; line-height:1.4; margin-top:3%; font-size:.5rem; font-size:4.9cqw; }
+    /* apagado = a tela escura de hoje (o shade É o visual antigo, então nada muda fora do estágio 4) */
+    .smini-shade { position:absolute; inset:0; z-index:4; opacity:1; transition:opacity .4s;
+      background:radial-gradient(120% 60% at 50% 0%, rgba(201,162,39,.10) 0%, transparent 60%), #04060f; }
+    .smini-boot { position:absolute; inset:0; z-index:5; display:flex; align-items:center; justify-content:center; opacity:0; pointer-events:none; }
+    .smini-boot svg { width:34px; height:34px; width:26cqw; height:26cqw; fill:var(--gold); }
+    .smini-reflex { position:absolute; inset:0; z-index:5; pointer-events:none;
+      background:linear-gradient(118deg,transparent 34%,rgba(255,255,255,.05) 44%,rgba(255,255,255,.10) 48%,rgba(255,255,255,.03) 54%,transparent 62%); }
+    .smini-ring { position:absolute; inset:-2px; border-radius:14% / 6.6%; padding:2px; opacity:0; pointer-events:none; z-index:7;
+      -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite:xor;
+      mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); mask-composite:exclude; }
+    .smini-ring::before { content:''; position:absolute; inset:-42%;
+      background:conic-gradient(from 0deg, transparent 0 70%, rgba(201,162,39,.25) 82%, rgba(240,216,150,.95) 92%, transparent 100%); }
+    .smini-body { transition:box-shadow .8s; }
+    /* aceso: boot rápido (raio + anel de luz, .5s) e o lockscreen entra em cascata */
+    .show-mini.lit .smini-lock { opacity:1; }
+    .show-mini.lit .smini-lock > * { animation:lockIn .55s cubic-bezier(.22,.9,.3,1) both; }
+    .show-mini.lit .smini-time { animation-delay:.24s; }
+    .show-mini.lit .smini-card { animation-delay:.36s; }
+    .show-mini.lit .smini-shade { opacity:0; transition:opacity .35s .12s; }
+    .show-mini.lit .smini-boot { animation:sminiBoot .5s ease both; }
+    .show-mini.lit .smini-ring { animation:sminiRing .6s ease both; }
+    .show-mini.lit .smini-ring::before { animation:ringGira .6s linear 1; }
+    .show-mini.lit .smini-body { box-shadow:inset 0 0 0 3px #010309, 0 30px 60px -20px rgba(0,0,0,.7), 0 0 40px -6px rgba(201,162,39,.3); }
+    @keyframes sminiBoot {
+      0%   { opacity:0; transform:scale(.55); filter:drop-shadow(0 0 0 rgba(240,216,150,0)); }
+      40%  { opacity:1; transform:scale(1); filter:drop-shadow(0 0 18px rgba(240,216,150,.95)); }
+      100% { opacity:0; transform:scale(1.05); filter:drop-shadow(0 0 6px rgba(201,162,39,.4)); }
+    }
+    @keyframes sminiRing { 0% { opacity:0; } 25% { opacity:1; } 100% { opacity:0; } }
+    @media (max-width:700px) {
+      .smini-lock { padding:15% 7% 8%; }
+      .smini-card-s { display:none; }
+      .smini-card-t { font-size:7.4cqw; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .show-mini .smini-lock { opacity:1; }
+      .show-mini .smini-lock > * { opacity:1 !important; animation:none !important; }
+      .show-mini .smini-shade { opacity:0; }
+      .smini-boot, .smini-ring { display:none !important; }
+    }
+
+    /* ===== QUIZ — "Qual iPhone combina com você?" ===== */
+    .quiz-intro { margin-top:22px; max-width:560px; color:var(--gray); line-height:1.8; }
+    .quiz-wrap { margin-top:48px; max-width:920px; }
+    .quiz-head { display:flex; align-items:center; justify-content:space-between; gap:18px; margin-bottom:16px; }
+    .quiz-step { font-size:.68rem; text-transform:uppercase; color:var(--gold); font-variant-numeric:lining-nums tabular-nums; }
+    .quiz-prog { flex:1; max-width:320px; height:2px; background:rgba(201,162,39,.18); border-radius:2px; overflow:hidden; }
+    .quiz-prog i { display:block; height:100%; width:100%; transform-origin:0 50%; transform:scaleX(0);
+      background:linear-gradient(90deg,#8a6a10,var(--gold) 55%,#f5d76e); box-shadow:0 0 10px rgba(240,216,150,.6);
+      transition:transform .6s var(--elc-ease-expo); }
+    /* deck: todas as cartas na mesma célula do grid (altura = a mais alta); as de trás espiam por cima */
+    .quiz-deck { display:grid; position:relative; isolation:isolate; padding-top:30px; transition:height .5s var(--elc-ease-expo); }
+    .quiz-card { grid-area:1 / 1; align-self:start; position:relative; border:1px solid rgba(201,162,39,.22); border-radius:20px; padding:36px 40px 40px;
+      background:linear-gradient(160deg,#0b1538 0%,#060c22 70%);
+      box-shadow:0 30px 70px -30px rgba(0,0,0,.85), 0 0 0 1px rgba(0,0,0,.5) inset;
+      transform-origin:50% 0; will-change:transform, opacity; backface-visibility:hidden;
+      transition:transform .6s var(--elc-ease-expo), opacity .45s var(--elc-ease-out); }
+    /* véu que escurece as cartas de trás (em vez de opacity: nada vaza pelo card durante a troca) */
+    .quiz-card::after { content:''; position:absolute; inset:0; border-radius:inherit; background:#050a1f; opacity:0; pointer-events:none; transition:opacity .45s var(--elc-ease-out); }
+    .quiz-card.is-cur { transform:none; opacity:1; z-index:4; }
+    .quiz-card.is-next { transform:translateY(-16px) scale(.955); opacity:1; z-index:3; pointer-events:none; }
+    .quiz-card.is-next::after { opacity:.55; }
+    .quiz-card.is-next2 { transform:translateY(-30px) scale(.91); opacity:1; z-index:2; pointer-events:none; }
+    .quiz-card.is-next2::after { opacity:.8; }
+    .quiz-card.is-far { transform:translateY(-30px) scale(.91); opacity:0; z-index:1; pointer-events:none; }
+    .quiz-card.is-done { transform:translateY(54px) scale(.96) rotate(-1.2deg); opacity:0; z-index:0; pointer-events:none; }
+    .quiz-q { font-family:'Cormorant Garamond',serif; font-size:clamp(1.7rem,3vw,2.4rem); font-weight:600; line-height:1.1; color:var(--cream); margin-bottom:26px; }
+    .quiz-q em { font-style:italic; color:var(--gold); }
+    .quiz-opts { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
+    .quiz-opts.n3 { grid-template-columns:repeat(3,1fr); }
+    .quiz-opt { display:flex; align-items:center; gap:14px; text-align:left; padding:16px 44px 16px 18px; border-radius:16px;
+      border:1px solid rgba(201,162,39,.22); background:rgba(255,255,255,.03); color:var(--cream); font-family:'DM Sans',sans-serif;
+      position:relative; overflow:hidden; -webkit-tap-highlight-color:transparent;
+      transition:border-color .25s, background .25s, transform .2s var(--ease-btn), box-shadow .3s; }
+    .quiz-opt:hover { border-color:rgba(201,162,39,.55); background:rgba(201,162,39,.07); transform:translateY(-2px); }
+    .quiz-opt:active { transform:scale(.97) !important; }
+    .quiz-opt[aria-checked="true"] { border-color:var(--gold); background:linear-gradient(160deg,rgba(201,162,39,.18),rgba(201,162,39,.06));
+      box-shadow:0 0 0 1px rgba(201,162,39,.35), 0 14px 30px -18px rgba(201,162,39,.7); }
+    .quiz-opt:focus-visible { outline:2px solid var(--gold-pale); outline-offset:3px; }
+    .quiz-opt-ic { width:42px; height:42px; flex:0 0 42px; border-radius:12px; border:1px solid rgba(201,162,39,.35); background:rgba(201,162,39,.07);
+      display:flex; align-items:center; justify-content:center; transition:background .25s, box-shadow .25s; }
+    .quiz-opt[aria-checked="true"] .quiz-opt-ic, .quiz-opt:hover .quiz-opt-ic { background:rgba(201,162,39,.16); box-shadow:0 0 18px -4px rgba(201,162,39,.55); }
+    .quiz-opt-ic svg { width:20px; height:20px; stroke:var(--gold); fill:none; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round; }
+    .quiz-opt-tx { display:flex; flex-direction:column; gap:3px; min-width:0; }
+    .quiz-opt-tx b { font-size:.92rem; font-weight:600; line-height:1.25; }
+    .quiz-opt-tx small { font-size:.74rem; color:var(--gray); line-height:1.4; }
+    .quiz-opt-ck { position:absolute; right:14px; top:50%; width:20px; height:20px; border-radius:50%; background:var(--gold-grad);
+      transform:translateY(-50%) scale(.3); opacity:0; display:flex; align-items:center; justify-content:center;
+      transition:transform .35s var(--elc-ease-expo), opacity .2s; }
+    .quiz-opt-ck svg { width:12px; height:12px; stroke:#0a0f24; fill:none; stroke-width:2.6; stroke-linecap:round; stroke-linejoin:round; }
+    .quiz-opt[aria-checked="true"] .quiz-opt-ck { transform:translateY(-50%) scale(1); opacity:1; }
+    /* voltar / avançar / refazer — mesma família pill do site */
+    .quiz-nav { display:flex; justify-content:space-between; gap:12px; margin-top:18px; }
+    .quiz-nav button, .quiz-refazer { border-radius:var(--r-pill); font-family:'DM Sans',sans-serif; font-weight:600; letter-spacing:.14em; text-transform:uppercase;
+      font-size:.74rem; padding:15px 30px; line-height:1; display:inline-flex; align-items:center; justify-content:center; gap:10px; white-space:nowrap;
+      -webkit-tap-highlight-color:transparent; position:relative; overflow:hidden;
+      transition:background .25s var(--ease-btn), color .25s, transform .25s var(--ease-btn), box-shadow .3s var(--ease-btn), border-color .25s, opacity .25s; }
+    .quiz-back, .quiz-refazer { background:rgba(201,162,39,.04); border:1px solid rgba(201,162,39,.55); color:var(--gold-pale); }
+    .quiz-back:hover, .quiz-refazer:hover { background:rgba(201,162,39,.12); border-color:var(--gold); color:#fff6d8; transform:translateY(-2px);
+      box-shadow:0 0 0 1px rgba(201,162,39,.2), 0 12px 28px -14px rgba(201,162,39,.6); }
+    .quiz-next { background:var(--gold-grad); color:#0a0f24; border:none;
+      box-shadow:0 10px 28px -10px rgba(201,162,39,.65), 0 2px 6px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.28); }
+    .quiz-next:hover { background:var(--gold-grad-hover); transform:translateY(-2px);
+      box-shadow:0 16px 36px -10px rgba(201,162,39,.8), 0 4px 10px rgba(0,0,0,.4), inset 0 1px 0 rgba(255,255,255,.36); }
+    .quiz-nav button:active, .quiz-refazer:active { transform:translateY(0) scale(.97) !important; }
+    .quiz-nav button:focus-visible, .quiz-refazer:focus-visible { outline:2px solid var(--gold-pale); outline-offset:4px; box-shadow:0 0 0 5px rgba(201,162,39,.22); }
+    /* resultado */
+    .quiz-result { padding:34px 36px 36px; }
+    .quiz-res { display:grid; grid-template-columns:auto 1fr; gap:44px; align-items:center; }
+    .quiz-res-fone { display:flex; justify-content:center; perspective:1300px; padding:8px 4px 30px; }
+    .quiz-iph { width:clamp(160px,15vw,196px); }
+    .quiz-res-ey { font-size:.68rem; font-weight:600; letter-spacing:.22em; text-transform:uppercase; color:var(--gold); }
+    .quiz-res-t { font-family:'Cormorant Garamond',serif; font-size:clamp(1.8rem,3.2vw,2.6rem); font-weight:600; line-height:1.08; color:var(--cream); margin-top:8px; outline:none; }
+    .quiz-res-t em { font-style:italic; color:var(--gold); }
+    .quiz-res-pq { margin-top:12px; font-size:.95rem; color:#c6d1e6; line-height:1.7; max-width:58ch; }
+    .quiz-res-tags { display:flex; flex-wrap:wrap; gap:10px; margin-top:18px; }
+    .quiz-tag { display:inline-flex; flex-direction:column; gap:4px; padding:10px 18px 11px; border-radius:14px; border:1px solid rgba(201,162,39,.4);
+      background:linear-gradient(160deg,rgba(201,162,39,.16),rgba(201,162,39,.05)); }
+    .quiz-tag small { font-size:.66rem; letter-spacing:.22em; text-transform:uppercase; color:var(--gray); font-weight:600; }
+    .quiz-tag b { font-family:'Cormorant Garamond',serif; font-size:1.45rem; font-weight:700; color:var(--gold); line-height:1; }
+    .quiz-chart { margin-top:22px; padding-top:20px; border-top:1px solid rgba(201,162,39,.16); }
+    .quiz-chart .elc { --elc-h:7.2rem; }
+    .quiz-chart .elc-xlab { font-size:.6rem; fill:rgba(247,243,232,.72); }
+    .quiz-chart .elc-vlab { font-family:'Cormorant Garamond',serif; font-size:1.05rem; font-weight:700; fill:var(--gold-pale); font-variant-numeric:lining-nums; }
+    .quiz-honesto { margin-top:18px; font-size:.76rem; font-weight:600; letter-spacing:.14em; text-transform:uppercase; color:var(--gold-pale);
+      border:1px dashed rgba(201,162,39,.4); border-radius:12px; padding:10px 14px; display:inline-block; line-height:1.6; }
+    .quiz-res-acts { display:flex; flex-wrap:wrap; gap:12px; margin-top:20px; align-items:center; }
+    .quiz-iph .iph-boot { transition:opacity .3s; }
+    @media (max-width:900px) {
+      .quiz-opts.n3 { grid-template-columns:repeat(2,1fr); }
+      .quiz-res { grid-template-columns:1fr; gap:14px; }
+      .quiz-res-fone { padding:0 0 22px; }
+    }
+    @media (max-width:700px) {
+      .quiz-wrap { margin-top:30px; }
+      .quiz-deck { padding-top:22px; }
+      .quiz-card { padding:22px 18px 24px; border-radius:16px; }
+      .quiz-card.is-next { transform:translateY(-12px) scale(.96); }
+      .quiz-card.is-next2, .quiz-card.is-far { transform:translateY(-22px) scale(.92); }
+      .quiz-result { padding:22px 18px 26px; }
+      .quiz-q { margin-bottom:18px; }
+      .quiz-opts, .quiz-opts.n3 { grid-template-columns:1fr; gap:8px; }
+      .quiz-opt { padding:13px 40px 13px 14px; }
+      .quiz-opt-ic { width:36px; height:36px; flex-basis:36px; }
+      .quiz-nav button { flex:1; padding:14px 16px; }
+      .quiz-res-acts .btn-claro, .quiz-refazer { width:100%; }
+      .quiz-honesto { font-size:.72rem; letter-spacing:.1em; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .quiz-card, .quiz-prog i, .quiz-opt, .quiz-opt-ck { transition:none !important; }
+    }
   </style>
 </head>
 <body>
@@ -2286,8 +2402,10 @@
       <h3 class="show-title st-3">A família <em>completa</em> espera você.</h3>
     </div>
     <div class="show-stage">
-      <div class="show-mini show-mini-l" aria-hidden="true"><div class="smini-body"><div class="smini-screen"></div><div class="smini-island"></div></div></div>
-      <div class="show-mini show-mini-r" aria-hidden="true"><div class="smini-body"><div class="smini-screen"></div><div class="smini-island"></div></div></div>
+      <!-- mini esquerdo — acende no estágio 4 com "NOTA FISCAL" (conteúdo dentro do aparelho: viaja com ele no CardSwap) -->
+      <div class="show-mini show-mini-l" aria-hidden="true"><div class="smini-body"><div class="smini-screen"><div class="smini-lock"><div class="smini-time">--:--</div><div class="smini-card"><span class="smini-card-ic"><svg viewBox="0 0 24 24"><path d="M4.5 8.5A2.5 2.5 0 0 1 7 6h10a2.5 2.5 0 0 1 2.5 2.5v9A2.5 2.5 0 0 1 17 20H7a2.5 2.5 0 0 1-2.5-2.5z"/><path d="M8 6V4.5A1.5 1.5 0 0 1 9.5 3h5A1.5 1.5 0 0 1 16 4.5V6"/><path d="M9 13.5l2 2 4-4.5"/></svg></span><span class="smini-card-t">NOTA FISCAL</span><span class="smini-card-s">em todos os aparelhos</span></div></div><div class="smini-shade"></div><div class="smini-boot"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div><div class="smini-reflex"></div></div><div class="smini-island"></div><div class="smini-ring"></div></div></div>
+      <!-- mini direito — acende no estágio 4 com "GARANTIA 1 ANO" (conteúdo dentro do aparelho: viaja com ele no CardSwap) -->
+      <div class="show-mini show-mini-r" aria-hidden="true"><div class="smini-body"><div class="smini-screen"><div class="smini-lock"><div class="smini-time">--:--</div><div class="smini-card"><span class="smini-card-ic"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></span><span class="smini-card-t">GARANTIA 1 ANO</span><span class="smini-card-s">da loja, lacrado ou seminovo</span></div></div><div class="smini-shade"></div><div class="smini-boot"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div><div class="smini-reflex"></div></div><div class="smini-island"></div><div class="smini-ring"></div></div></div>
       <div class="shp" id="shp" aria-hidden="true">
         <svg class="shp-trace" viewBox="0 0 306 646" preserveAspectRatio="none" aria-hidden="true">
           <rect id="shpTraceR" x="3" y="3" width="300" height="640" rx="44" pathLength="1000"/>
@@ -2490,45 +2608,94 @@
 
 </section>
 
-<!-- SIMULADOR DE PARCELAS — com os números do visitante (ilustrativo, sem juros) -->
-<section class="sec sim" id="simulador" aria-labelledby="simTitulo">
-  <p class="eyebrow rv"><span></span>Com os seus números</p>
-  <h2 class="heading rv" id="simTitulo">Quanto fica <em>por mês?</em></h2>
-  <p class="sim-intro rv">Mexa nos controles e veja a conta na hora. O seu iPhone atual entra como parte do pagamento — o valor exato a gente confirma no WhatsApp.</p>
-  <div class="sim-grid rv">
-    <div class="sim-ctl">
-      <label class="sim-campo">
-        <span class="sim-lbl">Valor do iPhone</span>
-        <output class="sim-out" id="simValorOut" for="simValor">R$ 6.000</output>
-        <input type="range" id="simValor" min="2000" max="12000" step="100" value="6000" aria-label="Valor do iPhone" aria-valuetext="R$ 6.000">
-      </label>
-      <label class="sim-campo">
-        <span class="sim-lbl">Seu iPhone atual como entrada</span>
-        <output class="sim-out" id="simEntradaOut" for="simEntrada">R$ 0</output>
-        <input type="range" id="simEntrada" min="0" max="6000" step="100" value="0" aria-label="Valor do seu iPhone atual como entrada" aria-valuetext="R$ 0">
-      </label>
-      <div class="sim-campo">
-        <span class="sim-lbl" id="simParcLbl">Parcelas no cartão</span>
-        <div class="sim-seg" id="simParcelas" role="radiogroup" aria-labelledby="simParcLbl">
-          <button type="button" role="radio" aria-checked="false" data-n="6">6x</button>
-          <button type="button" role="radio" aria-checked="false" data-n="12">12x</button>
-          <button type="button" role="radio" aria-checked="true" class="on" data-n="18">18x</button>
+<!-- QUIZ — "Qual iPhone combina com você?" (4 perguntas em cards com profundidade → perfil + linha + caminho; sem preço, sem promessa de estoque) -->
+<section class="sec quiz" id="quiz" aria-labelledby="quizTitulo">
+  <p class="eyebrow rv"><span></span>Com as suas respostas</p>
+  <h2 class="heading rv" id="quizTitulo">Qual iPhone <em>combina</em> com você?</h2>
+  <p class="quiz-intro rv">Quatro perguntas rápidas e a gente sugere a linha e o caminho — sem preço e sem promessa de estoque. Modelo e disponibilidade a gente confirma no WhatsApp.</p>
+  <div class="quiz-wrap rv" id="quizWrap">
+    <div class="quiz-head">
+      <p class="quiz-step" id="quizStep" aria-live="polite">Pergunta 1 de 4</p>
+      <div class="quiz-prog" id="quizProg" role="progressbar" aria-label="Progresso do quiz" aria-valuemin="0" aria-valuemax="4" aria-valuenow="0"><i id="quizProgFill"></i></div>
+    </div>
+    <div class="quiz-deck" id="quizDeck">
+      <div class="quiz-card" data-q="0" role="group" aria-labelledby="quizQ0">
+        <h3 class="quiz-q" id="quizQ0">Para que você <em>mais usa</em> o celular?</h3>
+        <div class="quiz-opts" role="radiogroup" aria-labelledby="quizQ0">
+          <button type="button" class="quiz-opt" role="radio" aria-checked="false" data-v="fotos"><span class="quiz-opt-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></span><span class="quiz-opt-tx"><b>Fotos e vídeos</b><small>a câmera vem primeiro</small></span><span class="quiz-opt-ck" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 7"/></svg></span></button>
+          <button type="button" class="quiz-opt" role="radio" aria-checked="false" data-v="trabalho"><span class="quiz-opt-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg></span><span class="quiz-opt-tx"><b>Trabalho e apps</b><small>agenda, mensagens, banco, reuniões</small></span><span class="quiz-opt-ck" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 7"/></svg></span></button>
+          <button type="button" class="quiz-opt" role="radio" aria-checked="false" data-v="jogos"><span class="quiz-opt-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></span><span class="quiz-opt-tx"><b>Jogos e desempenho</b><small>fluidez acima de tudo</small></span><span class="quiz-opt-ck" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 7"/></svg></span></button>
+          <button type="button" class="quiz-opt" role="radio" aria-checked="false" data-v="basico"><span class="quiz-opt-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.3 2.3 4.7-5"/></svg></span><span class="quiz-opt-tx"><b>O básico bem feito</b><small>ligações, WhatsApp e redes</small></span><span class="quiz-opt-ck" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 7"/></svg></span></button>
+        </div>
+      </div>
+      <div class="quiz-card" data-q="1" role="group" aria-labelledby="quizQ1">
+        <h3 class="quiz-q" id="quizQ1">Tamanho <em>na mão</em>?</h3>
+        <div class="quiz-opts n3" role="radiogroup" aria-labelledby="quizQ1">
+          <button type="button" class="quiz-opt" role="radio" aria-checked="false" data-v="compacto"><span class="quiz-opt-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7.5" y="5" width="9" height="14" rx="2"/><line x1="10.5" y1="16.5" x2="13.5" y2="16.5"/></svg></span><span class="quiz-opt-tx"><b>Compacto</b><small>cabe no bolso e opera com uma mão</small></span><span class="quiz-opt-ck" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 7"/></svg></span></button>
+          <button type="button" class="quiz-opt" role="radio" aria-checked="false" data-v="medio"><span class="quiz-opt-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="3.5" width="11" height="17" rx="2.2"/><line x1="10.5" y1="17.5" x2="13.5" y2="17.5"/></svg></span><span class="quiz-opt-tx"><b>Médio</b><small>o equilíbrio de sempre</small></span><span class="quiz-opt-ck" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 7"/></svg></span></button>
+          <button type="button" class="quiz-opt" role="radio" aria-checked="false" data-v="grande"><span class="quiz-opt-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5.5" y="2" width="13" height="20" rx="2.5"/><line x1="10.5" y1="18.5" x2="13.5" y2="18.5"/></svg></span><span class="quiz-opt-tx"><b>Grande</b><small>tela máxima para ver e fazer tudo</small></span><span class="quiz-opt-ck" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 7"/></svg></span></button>
+        </div>
+      </div>
+      <div class="quiz-card" data-q="2" role="group" aria-labelledby="quizQ2">
+        <h3 class="quiz-q" id="quizQ2">O que <em>pesa mais</em> na escolha?</h3>
+        <div class="quiz-opts" role="radiogroup" aria-labelledby="quizQ2">
+          <button type="button" class="quiz-opt" role="radio" aria-checked="false" data-v="camera"><span class="quiz-opt-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg></span><span class="quiz-opt-tx"><b>Câmera</b><small>foto e vídeo com o melhor resultado</small></span><span class="quiz-opt-ck" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 7"/></svg></span></button>
+          <button type="button" class="quiz-opt" role="radio" aria-checked="false" data-v="bateria"><span class="quiz-opt-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="7" width="17" height="10" rx="2"/><line x1="22" y1="11" x2="22" y2="13"/><rect x="5" y="10" width="7" height="4" rx="1"/></svg></span><span class="quiz-opt-tx"><b>Bateria</b><small>o dia inteiro longe da tomada</small></span><span class="quiz-opt-ck" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 7"/></svg></span></button>
+          <button type="button" class="quiz-opt" role="radio" aria-checked="false" data-v="tela"><span class="quiz-opt-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/></svg></span><span class="quiz-opt-tx"><b>Tela</b><small>grande e brilhante para conteúdo</small></span><span class="quiz-opt-ck" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 7"/></svg></span></button>
+          <button type="button" class="quiz-opt" role="radio" aria-checked="false" data-v="preco"><span class="quiz-opt-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 13.4l-7.2 7.2a2 2 0 0 1-2.8 0L2 12V2h10l8.6 8.6a2 2 0 0 1 0 2.8z"/><circle cx="7" cy="7" r="1.2"/></svg></span><span class="quiz-opt-tx"><b>Preço</b><small>o melhor iPhone que cabe no bolso</small></span><span class="quiz-opt-ck" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 7"/></svg></span></button>
+        </div>
+      </div>
+      <div class="quiz-card" data-q="3" role="group" aria-labelledby="quizQ3">
+        <h3 class="quiz-q" id="quizQ3">Você <em>prefere</em>?</h3>
+        <div class="quiz-opts n3" role="radiogroup" aria-labelledby="quizQ3">
+          <button type="button" class="quiz-opt" role="radio" aria-checked="false" data-v="lacrado"><span class="quiz-opt-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 8l-9-5-9 5v9l9 5 9-5z"/><path d="M3.3 8.2L12 13l8.7-4.8"/><line x1="12" y1="13" x2="12" y2="22"/></svg></span><span class="quiz-opt-tx"><b>Lacrado zero km</b><small>caixa selada, quem abre é você</small></span><span class="quiz-opt-ck" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 7"/></svg></span></button>
+          <button type="button" class="quiz-opt" role="radio" aria-checked="false" data-v="seminovo"><span class="quiz-opt-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></span><span class="quiz-opt-tx"><b>Seminovo revisado com garantia</b><small>conferido na sua frente, 1 ano de garantia</small></span><span class="quiz-opt-ck" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 7"/></svg></span></button>
+          <button type="button" class="quiz-opt" role="radio" aria-checked="false" data-v="custo"><span class="quiz-opt-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9 9.5l6 5"/><path d="M15 9h.01M9 15h.01"/></svg></span><span class="quiz-opt-tx"><b>Tanto faz, quero o melhor custo</b><small>o que valer mais pelo que custa</small></span><span class="quiz-opt-ck" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.2 4.2L19 7"/></svg></span></button>
+        </div>
+      </div>
+      <div class="quiz-card quiz-result" id="quizResult" data-q="4" role="group" aria-labelledby="quizResT">
+        <div class="quiz-res">
+          <div class="quiz-res-fone" aria-hidden="true">
+            <div class="iph quiz-iph" id="quizIph">
+              <div class="iph-body">
+                <div class="iph-screen">
+                  <div class="iph-lock">
+                    <div class="iph-time" id="quizIphTime">--:--</div>
+                    <div class="iph-date" id="quizIphDate"></div>
+                    <div class="iph-card"><div class="iph-card-ic" id="quizIphIc"></div><div class="iph-card-t" id="quizIphT"></div><div class="iph-card-s" id="quizIphS"></div></div>
+                    <div class="iph-batt"><span class="iph-batt-sh"><i style="width:100%"></i></span><span class="iph-batt-pc">100%</span></div>
+                  </div>
+                  <div class="iph-shade"></div>
+                  <div class="iph-boot"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+                  <div class="iph-reflex"></div>
+                  <div class="iph-island"></div>
+                </div>
+                <div class="iph-ring"></div>
+              </div>
+              <div class="iph-sombra"></div>
+            </div>
+          </div>
+          <div class="quiz-res-body">
+            <p class="quiz-res-ey">Seu perfil</p>
+            <h3 class="quiz-res-t" id="quizResT" tabindex="-1">Perfil: <em id="quizPerfil">—</em></h3>
+            <p class="quiz-res-pq" id="quizPorque"></p>
+            <div class="quiz-res-tags">
+              <span class="quiz-tag"><small>Linha sugerida</small><b id="quizLinha">—</b></span>
+              <span class="quiz-tag"><small>Caminho</small><b id="quizCaminho">—</b></span>
+            </div>
+            <div class="quiz-chart" id="quizChart"></div>
+            <p class="quiz-honesto">Sugestão a partir das suas respostas — a gente confirma modelo e disponibilidade no WhatsApp.</p>
+            <div class="quiz-res-acts">
+              <a class="btn-claro" id="quizCta" href="https://wa.me/5512997463135?text=Ol%C3%A1!%20Fiz%20o%20quiz%20no%20site." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.5 14.4c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.46-2.4-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.91-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.87 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.7.63.71.22 1.36.19 1.87.11.57-.08 1.76-.72 2-1.41.25-.7.25-1.29.18-1.41-.08-.13-.28-.2-.58-.35zM12 2C6.5 2 2 6.48 2 12c0 1.77.46 3.44 1.27 4.89L2 22l5.23-1.26A9.95 9.95 0 0 0 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm0 18.19a8.17 8.17 0 0 1-4.16-1.14l-.3-.18-3.1.75.77-3-.19-.3A8.15 8.15 0 0 1 3.84 12c0-4.5 3.67-8.17 8.16-8.17S20.16 7.5 20.16 12 16.5 20.19 12 20.19z"/></svg>Quero esse iPhone</a>
+              <button type="button" class="quiz-refazer" id="quizRefazer">Refazer</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-    <div class="sim-viz">
-      <div class="sim-big" aria-live="polite"><span class="sim-big-n"><b id="simN">18</b>x de</span><strong id="simParcela">R$ 333</strong></div>
-      <div class="sim-bars" id="simBars"></div>
-      <div class="sim-linha">
-        <div class="sim-anel" id="simAnel"></div>
-        <dl class="sim-res">
-          <div><dt>Entrada</dt><dd id="simEntradaRes">R$ 0</dd></div>
-          <div><dt>Financiado</dt><dd id="simFinanciado">R$ 6.000</dd></div>
-          <div><dt>Total</dt><dd id="simTotal">R$ 6.000</dd></div>
-        </dl>
-      </div>
-      <p class="sim-aviso">Simulação ilustrativa sem juros — condições confirmadas no WhatsApp</p>
-      <div><a class="btn-claro" id="simCta" href="https://wa.me/5512997463135?text=Ol%C3%A1!%20Simulei%20no%20site." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.5 14.4c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.46-2.4-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.91-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.87 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.7.63.71.22 1.36.19 1.87.11.57-.08 1.76-.72 2-1.41.25-.7.25-1.29.18-1.41-.08-.13-.28-.2-.58-.35zM12 2C6.5 2 2 6.48 2 12c0 1.77.46 3.44 1.27 4.89L2 22l5.23-1.26A9.95 9.95 0 0 0 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm0 18.19a8.17 8.17 0 0 1-4.16-1.14l-.3-.18-3.1.75.77-3-.19-.3A8.15 8.15 0 0 1 3.84 12c0-4.5 3.67-8.17 8.16-8.17S20.16 7.5 20.16 12 16.5 20.19 12 20.19z"/></svg>Confirmar condições no WhatsApp</a></div>
+    <div class="quiz-nav" id="quizNav">
+      <button type="button" class="quiz-back" id="quizBack" disabled>&larr; Voltar</button>
+      <button type="button" class="quiz-next" id="quizNext" disabled>Avançar &rarr;</button>
     </div>
   </div>
 </section>
@@ -3104,7 +3271,7 @@
     });
     document.addEventListener('mouseover',e=>{
       const t=e.target;
-      document.body.classList.toggle('hov',!!(t.closest&&t.closest('a,button,summary,.pcard,.cat-tab,.iph,.elc-clicavel,input[type=range]')));
+      document.body.classList.toggle('hov',!!(t.closest&&t.closest('a,button,summary,.pcard,.cat-tab,.iph,.elc-clicavel')));
       const noMapa=!!(t.closest&&t.closest('.cmap'));
       document.body.classList.toggle('curoff',noMapa);
       if(!noMapa) document.querySelectorAll('.cmap-veu').forEach(v=>{ v.style.pointerEvents=''; });
@@ -3829,11 +3996,6 @@ window.elcChart = (function () {
     this.render();
     this.atualizarTabela();
   };
-  /* barras "apagadas" a partir do índice n (parcelas não escolhidas) */
-  Bars.prototype.dimFrom = function (n) {
-    for (var k = 0; k < this.rects.length; k++)
-      for (var j = 0; j < this.rects[k].length; j++) this.rects[k][j].classList.toggle("is-dim", j >= n);
-  };
   Bars.prototype.atualizarTabela = function () {
     var s = this;
     if (!s.tabela) return;
@@ -4456,7 +4618,7 @@ window.elcChart = (function () {
 <script>
 'use strict';
 /* ============ GRÁFICOS DOURADOS — aplicações pelo site ============
-   Só dado real (nota, estoque), input do visitante (simuladores) ou
+   Só dado real (nota, estoque), resposta do visitante (quiz) ou
    estrutura factual (garantia, bilhetes). Nunca tendência inventada. */
 (function () {
   var C = window.elcChart;
@@ -4780,7 +4942,7 @@ window.elcChart = (function () {
   /* ---------- CLICK SPARK: fagulhas douradas no clique dos CTAs ---------- */
   (function () {
     if (REDUZ) return;
-    var SEL = '.btn-g, .btn-claro, .bc-cta-btn, .btn-wa, .cat-wa-link, .pcard-wa, .nav-btn, .tp-btn, .duelo-cta, .ig-follow, .dock-wa, .sim-seg button, .bcs-btns button';
+    var SEL = '.btn-g, .btn-claro, .bc-cta-btn, .btn-wa, .cat-wa-link, .pcard-wa, .nav-btn, .tp-btn, .duelo-cta, .ig-follow, .dock-wa, .quiz-opt, .quiz-nav button, .quiz-refazer, .bcs-btns button';
     document.addEventListener('pointerdown', function (e) {
       var alvo = e.target.closest ? e.target.closest(SEL) : null;
       if (!alvo) return;
@@ -4964,83 +5126,267 @@ window.elcChart = (function () {
     };
   })();
 
-  /* ---------- SIMULADOR DE PARCELAS: 18 barras + anel entrada vs financiado ---------- */
+  /* ---------- QUIZ "Qual iPhone combina com você?" — 4 respostas → perfil + linha + caminho + gráfico do perfil.
+     LÓGICA TRANSPARENTE (só das respostas; sem preço, sem estoque, sem nome de modelo):
+     · dimensões 1–5 (câmera/desempenho/bateria/tela), base 2:
+         fotos → câmera+3, tela+1 · trabalho → desempenho+2, bateria+2 · jogos → desempenho+3, tela+2 · básico → bateria+1
+         grande → tela+2, bateria+1 · médio → tela+1 · pesa: câmera+2 | bateria+2 | tela+2 | preço (só muda o caminho)
+     · linha Pro quando fotos, jogos ou "pesa câmera"; senão a linha padrão. Versão maior (Pro Max / Plus) quando
+       "grande" ou "médio + pesa tela/bateria"; "compacto" nunca vira Plus/Pro Max. "básico + preço" = padrão
+       sempre (mesmo na mão grande: o Plus custa mais, e o preço foi o que pesou — a gente só cita que ele existe).
+     · caminho: lacrado → Lacrado; seminovo ou "melhor custo" → Seminovo.
+     · estado salvo em localStorage (el_quiz_v1) para não perder ao recarregar; "refazer" apaga. ---------- */
   (function () {
-    var sec = document.getElementById('simulador');
-    if (!sec) return;
-    var elV = document.getElementById('simValor'), elE = document.getElementById('simEntrada');
-    var outV = document.getElementById('simValorOut'), outE = document.getElementById('simEntradaOut');
-    var seg = document.getElementById('simParcelas');
-    var elN = document.getElementById('simN'), elP = document.getElementById('simParcela');
-    var elER = document.getElementById('simEntradaRes'), elF = document.getElementById('simFinanciado'), elT = document.getElementById('simTotal');
-    var cta = document.getElementById('simCta');
-    var n = 18;
-    var fmt = function (v) { return 'R$ ' + C.fmtInt(v); };
-    var labels = [];
-    for (var i = 1; i <= 18; i++) labels.push(String(i));
-    var zeros = labels.map(function () { return 0; });
-    var bars = C.bars({
-      host: '#simBars', series: [{ name: 'Parcela', values: zeros }], labels: labels,
-      axes: false, xLabels: true, barFrac: 0.7, labelMin: 22, format: fmt,
-      label: 'Parcelas da simulação', table: true, xName: 'Parcela', yName: 'Valor',
-      tip: function (j, series) {
-        return j < n ? '<small>Parcela ' + (j + 1) + ' de ' + n + '</small><b>' + fmt(series[0].values[j]) + '</b>'
-                     : '<small>Parcela ' + (j + 1) + '</small><b>fora do plano ' + n + 'x</b>';
+    var wrap = document.getElementById('quizWrap');
+    var deck = document.getElementById('quizDeck');
+    if (!wrap || !deck) return;
+    var cards = Array.prototype.slice.call(deck.querySelectorAll('.quiz-card'));
+    var passo = document.getElementById('quizStep');
+    var prog = document.getElementById('quizProg');
+    var progFill = document.getElementById('quizProgFill');
+    var nav = document.getElementById('quizNav');
+    var bVoltar = document.getElementById('quizBack');
+    var bAvancar = document.getElementById('quizNext');
+    var bRefazer = document.getElementById('quizRefazer');
+    var cta = document.getElementById('quizCta');
+    var iph = document.getElementById('quizIph');
+    var N = 4, KEY = 'el_quiz_v1';
+    var resp = [null, null, null, null], cur = 0, chart = null, timerAvanca = 0, bootTok = 0;
+    var suportaInert = 'inert' in HTMLElement.prototype;
+
+    var TXT = {
+      fotos: 'fotos e vídeos', trabalho: 'trabalho e apps', jogos: 'jogos e desempenho', basico: 'o básico bem feito',
+      compacto: 'compacto', medio: 'médio', grande: 'grande',
+      camera: 'câmera', bateria: 'bateria', tela: 'tela', preco: 'preço',
+      lacrado: 'lacrado zero km', seminovo: 'seminovo revisado com garantia', custo: 'tanto faz, o melhor custo'
+    };
+    var ICO = {
+      camera: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>',
+      raio: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>',
+      pasta: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>',
+      check: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.3 2.3 4.7-5"/></svg>',
+      tag: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 13.4l-7.2 7.2a2 2 0 0 1-2.8 0L2 12V2h10l8.6 8.6a2 2 0 0 1 0 2.8z"/><circle cx="7" cy="7" r="1.2"/></svg>'
+    };
+    var DIAS = ['domingo', 'segunda-feira', 'terça-feira', 'quarta-feira', 'quinta-feira', 'sexta-feira', 'sábado'];
+    var MESES = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
+    function hora() { var d = new Date(); return (d.getHours() < 10 ? '0' : '') + d.getHours() + ':' + (d.getMinutes() < 10 ? '0' : '') + d.getMinutes(); }
+    function data() { var d = new Date(); return DIAS[d.getDay()] + ', ' + d.getDate() + ' de ' + MESES[d.getMonth()]; }
+    function clamp5(v) { return v < 1 ? 1 : v > 5 ? 5 : v; }
+
+    /* a regra em código — mesma coisa que o comentário acima diz */
+    function calcula(r) {
+      var uso = r[0], tam = r[1], pesa = r[2], pref = r[3];
+      var d = { camera: 2, desempenho: 2, bateria: 2, tela: 2 };
+      if (uso === 'fotos') { d.camera += 3; d.tela += 1; }
+      else if (uso === 'trabalho') { d.desempenho += 2; d.bateria += 2; }
+      else if (uso === 'jogos') { d.desempenho += 3; d.tela += 2; }
+      else if (uso === 'basico') { d.bateria += 1; }
+      if (tam === 'grande') { d.tela += 2; d.bateria += 1; }
+      else if (tam === 'medio') { d.tela += 1; }
+      if (pesa === 'camera') d.camera += 2;
+      else if (pesa === 'bateria') d.bateria += 2;
+      else if (pesa === 'tela') d.tela += 2;
+      var dims = [clamp5(d.camera), clamp5(d.desempenho), clamp5(d.bateria), clamp5(d.tela)];
+      var pro = uso === 'fotos' || uso === 'jogos' || pesa === 'camera';
+      var essencial = uso === 'basico' && pesa === 'preco';
+      if (essencial) pro = false;
+      var grande = !essencial && (tam === 'grande' || (tam === 'medio' && (pesa === 'tela' || pesa === 'bateria')));
+      var linha = pro ? (grande ? 'Pro Max' : 'Pro') : (grande ? 'Plus' : 'padrão');
+      var caminho = pref === 'lacrado' ? 'Lacrado' : 'Seminovo';
+      var perfil, ic;
+      if (essencial) { perfil = 'Custo inteligente'; ic = 'tag'; }
+      else if (uso === 'fotos') { perfil = 'Criador de conteúdo'; ic = 'camera'; }
+      else if (uso === 'jogos') { perfil = 'Desempenho máximo'; ic = 'raio'; }
+      else if (uso === 'trabalho') { perfil = 'Produtivo'; ic = 'pasta'; }
+      else { perfil = 'Essencial'; ic = 'check'; }
+      var pq = [];
+      if (pro) pq.push(pesa === 'camera' ? 'A câmera é o que mais pesa para você — por isso a linha Pro.'
+        : uso === 'fotos' ? 'Fotos e vídeos pedem a câmera mais completa — por isso a linha Pro.'
+        : 'Jogos e desempenho pedem o chip mais forte — por isso a linha Pro.');
+      else pq.push(essencial ? 'O básico bem feito com o preço pesando mais: o modelo padrão entrega tudo isso sem pagar pelo que você não usa.'
+        : 'Uso equilibrado fica muito bem no modelo padrão.');
+      if (grande) pq.push(tam === 'grande' ? 'Tamanho grande na mão leva à versão ' + (pro ? 'Pro Max' : 'Plus') + '.'
+        : 'Com ' + TXT[pesa] + ' pesando na escolha, vale a versão ' + (pro ? 'Pro Max' : 'Plus') + ' (mais tela e mais bateria).');
+      else if (tam === 'compacto') pq.push('Compacto na mão: sem Plus nem Pro Max.');
+      else if (essencial && tam === 'grande') pq.push('Mão grande? A versão Plus existe, mas custa mais — como o preço pesou, a sugestão fica no padrão e a gente compara os dois no WhatsApp.');
+      pq.push(pref === 'lacrado' ? 'Lacrado porque você quer estrear do zero.'
+        : pref === 'seminovo' ? 'Seminovo revisado, com a mesma nota fiscal e o mesmo 1 ano de garantia.'
+        : 'Melhor custo: seminovo revisado, com nota fiscal e 1 ano de garantia.');
+      return { dims: dims, linha: linha, caminho: caminho, perfil: perfil, ic: ic, porque: pq.join(' ') };
+    }
+
+    function salva() { try { localStorage.setItem(KEY, JSON.stringify({ r: resp, c: cur })); } catch (e) { /* modo privado */ } }
+    setInterval(function () { if (cur >= N && !document.hidden) document.getElementById('quizIphTime').textContent = hora(); }, 30000);
+    function limpa() { try { localStorage.removeItem(KEY); } catch (e) { /* ok */ } }
+
+    /* o deck tem a altura da carta da frente (as de trás só espiam por cima); acompanha conteúdo/resize */
+    function ajustaAltura() {
+      var c = cards[cur];
+      if (!c) return;
+      var pad = parseFloat(getComputedStyle(deck).paddingTop) || 0;
+      deck.style.height = Math.round(pad + c.offsetHeight) + 'px';
+    }
+    if ('ResizeObserver' in window) {
+      var ro = new ResizeObserver(function () { ajustaAltura(); });
+      for (var ci = 0; ci < cards.length; ci++) ro.observe(cards[ci]);
+    } else window.addEventListener('resize', ajustaAltura);
+    function pintaDeck() {
+      for (var i = 0; i < cards.length; i++) {
+        var c = cards[i];
+        var cls = i === cur ? 'is-cur' : i < cur ? 'is-done' : i === cur + 1 ? 'is-next' : i === cur + 2 ? 'is-next2' : 'is-far';
+        c.classList.remove('is-cur', 'is-done', 'is-next', 'is-next2', 'is-far');
+        c.classList.add(cls);
+        var fora = i !== cur;
+        c.setAttribute('aria-hidden', fora ? 'true' : 'false');
+        if (suportaInert) c.inert = fora; else if (fora) c.setAttribute('inert', ''); else c.removeAttribute('inert');
       }
-    });
-    var anel = C.donut({
-      host: '#simAnel', slices: [{ label: 'Financiado', value: 6000 }, { label: 'Entrada', value: 0 }],
-      thick: 0.26, gapless: true, centerLabel: 'financiado', centerScale: 0.44,
-      label: 'Entrada versus valor financiado', table: true, xName: 'Parte', yName: 'Valor',
-      legendFormat: function (f) { return fmt(f.value); },
-      tip: function (i, f) { return '<small>' + f.label + '</small><b>' + fmt(f.value) + '</b>'; }
-    });
-    window.elcInst.simBars = bars; window.elcInst.simAnel = anel;
-    function pct(el) { el.style.setProperty('--p', ((el.value - el.min) / (el.max - el.min) * 100).toFixed(1) + '%'); }
-    var pendente = 0;
-    function calcula() {
-      pendente = 0;
-      var valor = +elV.value;
-      elE.max = String(valor); /* a entrada (seu iPhone) nunca passa do valor do aparelho — o slider acompanha */
-      var entrada = Math.min(+elE.value, valor);
-      if (+elE.value > valor) { elE.value = valor; }
-      var fin = valor - entrada;
-      var parc = fin / n;
-      outV.textContent = fmt(valor); outE.textContent = fmt(entrada);
-      elV.setAttribute('aria-valuetext', fmt(valor)); elE.setAttribute('aria-valuetext', fmt(entrada));
-      pct(elV); pct(elE);
-      elN.textContent = String(n);
-      C.countUp(elP, parc, 520, fmt);
-      C.countUp(elER, entrada, 520, fmt);
-      C.countUp(elF, fin, 520, fmt);
-      C.countUp(elT, valor, 520, fmt);
-      var vals = labels.map(function (_, j) { return j < n ? parc : 0; });
-      bars.update([vals]);
-      bars.dimFrom(n);
-      anel.update([fin, entrada]);
+      ajustaAltura();
+      var fim = cur >= N;
+      passo.textContent = fim ? 'Seu resultado' : 'Pergunta ' + (cur + 1) + ' de ' + N;
+      prog.setAttribute('aria-valuenow', String(Math.min(N, cur)));
+      progFill.style.transform = 'scaleX(' + (Math.min(N, cur) / N).toFixed(3) + ')';
+      bAvancar.hidden = fim; /* no resultado sobra o Voltar: dá para ajustar a última resposta sem refazer tudo */
+      bVoltar.disabled = cur === 0;
+      bAvancar.disabled = fim || resp[cur] == null;
+      bAvancar.textContent = cur === N - 1 ? 'Ver resultado →' : 'Avançar →';
+    }
+    function pintaOpcoes(q) {
+      var card = cards[q];
+      if (!card) return;
+      var opts = card.querySelectorAll('.quiz-opt');
+      for (var i = 0; i < opts.length; i++) {
+        var on = opts[i].dataset.v === resp[q];
+        opts[i].setAttribute('aria-checked', on ? 'true' : 'false');
+        opts[i].tabIndex = (on || (resp[q] == null && i === 0)) ? 0 : -1;
+      }
+    }
+    function foca() {
+      var card = cards[cur];
+      var alvo = cur >= N ? document.getElementById('quizResT')
+        : (card.querySelector('.quiz-opt[aria-checked="true"]') || card.querySelector('.quiz-opt'));
+      if (alvo) { try { alvo.focus({ preventScroll: true }); } catch (e) { alvo.focus(); } }
+    }
+    function vaiPara(n) {
+      clearTimeout(timerAvanca); timerAvanca = 0;
+      cur = n < 0 ? 0 : n > N ? N : n;
+      pintaDeck();
+      salva();
+      if (cur >= N) mostraResultado();
+      setTimeout(foca, 60);
+    }
+    function marca(q, v) {
+      var mudou = resp[q] !== v;
+      resp[q] = v;
+      if (mudou) for (var k = q + 1; k < N; k++) resp[k] = null; /* TROCOU uma resposta: as seguintes voltam a valer (reconfirmar a mesma mantém) */
+      pintaOpcoes(q);
+      bAvancar.disabled = false;
+      salva();
+    }
+
+    function mostraResultado() {
+      var r = calcula(resp);
+      document.getElementById('quizPerfil').textContent = r.perfil;
+      document.getElementById('quizLinha').textContent = r.linha;
+      document.getElementById('quizCaminho').textContent = r.caminho;
+      document.getElementById('quizPorque').textContent = r.porque;
+      /* iPhone mock — mesma linguagem da vitrine: boot (raio + anel) e o lockscreen acende com o perfil */
+      document.getElementById('quizIphTime').textContent = hora();
+      document.getElementById('quizIphDate').textContent = data();
+      document.getElementById('quizIphIc').innerHTML = ICO[r.ic];
+      document.getElementById('quizIphT').textContent = r.perfil.toUpperCase();
+      document.getElementById('quizIphS').textContent = 'linha ' + r.linha + ' · ' + r.caminho.toLowerCase();
+      var tok = ++bootTok;
+      iph.classList.remove('on', 'boot', 'shut');
+      void iph.offsetWidth;
+      if (REDUZ) iph.classList.add('on');
+      else {
+        iph.classList.add('boot');
+        setTimeout(function () { if (tok !== bootTok) return; iph.classList.remove('boot'); iph.classList.add('on'); }, 1100);
+      }
+      /* gráfico dourado do perfil: 4 barras 1–5, só das respostas */
+      var fmt = function (v) { return Math.round(v) + '/5'; };
+      if (!chart) {
+        chart = C.bars({
+          host: '#quizChart', series: [{ name: 'Seu perfil', values: [0, 0, 0, 0] }],
+          labels: ['Câmera', 'Desempenho', 'Bateria', 'Tela'],
+          axes: false, xLabels: true, valueLabels: true, barFrac: 0.5, labelMin: 50, ymax: 5, immediate: true, format: fmt,
+          label: 'Seu perfil: câmera, desempenho, bateria e tela de 1 a 5, a partir das suas respostas',
+          table: true, xName: 'Dimensão', yName: 'Nota',
+          note: 'seu perfil · de 1 a 5, só a partir das suas respostas',
+          tip: function (j, series, lab) { return '<small>' + lab + '</small><b>' + fmt(series[0].values[j]) + '</b><span>seu perfil</span>'; }
+        });
+        window.elcInst.quiz = chart;
+      }
+      chart.update([r.dims]);
+      /* CTA com as respostas e o perfil no texto */
       var num = (cta.href.match(/wa\.me\/(\d+)/) || [])[1] || '5512997463135';
-      var msg = 'Olá! Simulei no site: iPhone de ' + fmt(valor) + ', meu iPhone atual como entrada de ' + fmt(entrada) +
-        ', financiando ' + fmt(fin) + ' em ' + n + 'x de ' + fmt(Math.round(parc)) + ' (simulação sem juros). Podem confirmar as condições?';
+      var msg = 'Olá! Fiz o quiz no site. Uso: ' + TXT[resp[0]] + ' · Tamanho: ' + TXT[resp[1]] + ' · O que pesa: ' + TXT[resp[2]] +
+        ' · Prefiro: ' + TXT[resp[3]] + '. Perfil: ' + r.perfil + ' → sugestão de linha ' + r.linha + ', ' + r.caminho.toLowerCase() +
+        '. Podem confirmar modelo e disponibilidade?';
       cta.href = 'https://wa.me/' + num + '?text=' + encodeURIComponent(msg);
     }
-    function pede() { if (!pendente) pendente = requestAnimationFrame(calcula); }
-    elV.addEventListener('input', pede);
-    elE.addEventListener('input', pede);
-    seg.addEventListener('click', function (e) {
-      var b = e.target.closest('button[data-n]');
+
+    /* clique/Enter/Espaço numa opção: marca e avança sozinho (dá tempo do press + fagulha) */
+    deck.addEventListener('click', function (e) {
+      var b = e.target.closest ? e.target.closest('.quiz-opt') : null;
       if (!b) return;
-      n = +b.dataset.n;
-      seg.querySelectorAll('button').forEach(function (x) { var on = x === b; x.classList.toggle('on', on); x.setAttribute('aria-checked', on ? 'true' : 'false'); });
-      pede();
+      var card = b.closest('.quiz-card');
+      var q = card ? +card.dataset.q : -1;
+      if (q !== cur || q >= N) return;
+      marca(q, b.dataset.v);
+      clearTimeout(timerAvanca);
+      timerAvanca = setTimeout(function () { vaiPara(cur + 1); }, REDUZ ? 120 : 460);
     });
-    seg.addEventListener('keydown', function (e) {
-      if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
-      var bs = Array.prototype.slice.call(seg.querySelectorAll('button'));
-      var i = bs.findIndex(function (x) { return x.classList.contains('on'); });
-      i = (i + (e.key === 'ArrowRight' ? 1 : -1) + bs.length) % bs.length;
-      bs[i].click(); bs[i].focus(); e.preventDefault();
+    /* teclado no grupo: setas movem e marcam (sem avançar); Enter/Espaço avançam (click nativo) */
+    deck.addEventListener('keydown', function (e) {
+      var b = e.target.closest ? e.target.closest('.quiz-opt') : null;
+      if (!b) return;
+      var k = e.key;
+      if (k !== 'ArrowLeft' && k !== 'ArrowRight' && k !== 'ArrowUp' && k !== 'ArrowDown' && k !== 'Home' && k !== 'End') return;
+      var opts = Array.prototype.slice.call(b.closest('.quiz-opts').querySelectorAll('.quiz-opt'));
+      var i = opts.indexOf(b);
+      if (k === 'ArrowLeft' || k === 'ArrowUp') i = (i - 1 + opts.length) % opts.length;
+      else if (k === 'ArrowRight' || k === 'ArrowDown') i = (i + 1) % opts.length;
+      else if (k === 'Home') i = 0;
+      else i = opts.length - 1;
+      e.preventDefault();
+      var card = b.closest('.quiz-card');
+      var q = card ? +card.dataset.q : -1;
+      if (q === cur && q < N) marca(q, opts[i].dataset.v);
+      opts[i].focus();
     });
-    calcula();
+    bVoltar.addEventListener('click', function () { if (cur > 0) vaiPara(cur - 1); });
+    bAvancar.addEventListener('click', function () { if (resp[cur] != null) vaiPara(cur + 1); });
+    bRefazer.addEventListener('click', function () {
+      resp = [null, null, null, null];
+      limpa();
+      for (var q = 0; q < N; q++) pintaOpcoes(q);
+      bootTok++;
+      iph.classList.remove('on', 'boot', 'shut');
+      vaiPara(0);
+      limpa(); /* vaiPara salva; refazer deixa o navegador limpo de verdade */
+    });
+
+    /* restaura o que o visitante já respondeu (inclusive o resultado) */
+    var salvo = null;
+    try { salvo = JSON.parse(localStorage.getItem(KEY) || 'null'); } catch (e) { salvo = null; }
+    if (salvo && Array.isArray(salvo.r) && salvo.r.length === N) {
+      var OK = [['fotos', 'trabalho', 'jogos', 'basico'], ['compacto', 'medio', 'grande'], ['camera', 'bateria', 'tela', 'preco'], ['lacrado', 'seminovo', 'custo']];
+      var valido = true;
+      for (var q0 = 0; q0 < N; q0++) if (salvo.r[q0] != null && OK[q0].indexOf(salvo.r[q0]) < 0) valido = false;
+      if (valido) {
+        resp = salvo.r.slice();
+        var c0 = typeof salvo.c === 'number' ? salvo.c : 0;
+        if (c0 < 0) c0 = 0;
+        if (c0 > N) c0 = N;
+        for (var q1 = 0; q1 < N; q1++) if (q1 < c0 && resp[q1] == null) { c0 = q1; break; } /* nunca pula pergunta em branco */
+        if (c0 === N && resp.some(function (v) { return v == null; })) c0 = 0;
+        cur = c0;
+      }
+    }
+    for (var q2 = 0; q2 < N; q2++) pintaOpcoes(q2);
+    pintaDeck();
+    if (cur >= N) mostraResultado();
   })();
 })();
 </script>
@@ -6568,7 +6914,28 @@ window.elcChart = (function () {
     var callsA = sec.querySelectorAll('.sc-a1, .sc-a2');
     var callsB = sec.querySelectorAll('.sc-b1, .sc-b2');
     if (!trace || !shp || !body) return;
-    if (REDUZ) return; /* CSS ja pinta a composicao final */
+
+    /* ---- minis ACESOS no estágio 4: NOTA FISCAL (esq.) e GARANTIA 1 ANO (dir.) com hora real.
+       Só uma troca de classe por estado (nada por frame) — o conteúdo vive dentro do aparelho
+       e viaja com ele no CardSwap. Relógio por minuto só enquanto acesos e com o palco rodando. ---- */
+    var miniHoras = sec.querySelectorAll('.smini-time');
+    var minisAcesos = false, relogioMinis = 0;
+    function horaMini() {
+      if (document.hidden) return;
+      var d = new Date(), h = (d.getHours() < 10 ? '0' : '') + d.getHours() + ':' + (d.getMinutes() < 10 ? '0' : '') + d.getMinutes();
+      for (var k = 0; k < miniHoras.length; k++) miniHoras[k].textContent = h;
+    }
+    function relogio(liga) {
+      clearInterval(relogioMinis); relogioMinis = 0;
+      if (liga) { horaMini(); relogioMinis = setInterval(horaMini, 30000); }
+    }
+    function acendeMinis(on) {
+      if (on === minisAcesos) return;
+      minisAcesos = on;
+      for (var k = 0; k < minis.length; k++) minis[k].classList.toggle('lit', on);
+      relogio(on);
+    }
+    if (REDUZ) { acendeMinis(true); return; } /* CSS ja pinta a composicao final (minis acesos, estaticos) */
 
     function clamp(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
     function seg(p, a, b) { return clamp((p - a) / (b - a)); }
@@ -6631,6 +6998,8 @@ window.elcChart = (function () {
         var desloca = (1 - fim) * (m.classList.contains('show-mini-l') ? 26 : -26);
         m.style.transform = 'translate(calc(' + dir + '% + ' + desloca.toFixed(1) + 'px), -46%) scale(.92)';
       }
+      /* minis acendem quando a fila se forma (p >= .84) e apagam ao sair (histerese: p < .80) */
+      acendeMinis(minisAcesos ? fim > 0.2 : fim > 0.5);
       if (cta) {
         var opCta = seg(p, .8, .9);
         cta.style.opacity = opCta.toFixed(3);
@@ -6767,6 +7136,7 @@ window.elcChart = (function () {
       var quer = visivel && !document.hidden;
       if (quer === rodando) return;
       rodando = quer;
+      relogio(rodando && minisAcesos); /* aba oculta / fora do viewport: o relógio dos minis dorme */
       if (rodando && !raf) { swap.pausa(performance.now()); raf = requestAnimationFrame(passo); }
     }
     pinta(0); /* estado inicial coerente mesmo antes de rolar */
