@@ -287,6 +287,13 @@
     .fc li a:hover { color:var(--gold); }
     .fdiv { height:1px;background:rgba(201,162,39,.1);margin-bottom:26px; }
     .fbot { display:flex;justify-content:space-between;font-size:.72rem;color:#8899bb; }
+    /* crédito discreto — raio dourado + "Feito por Nexus IA" (linha final, centralizada, brilho sutil no hover) */
+    .fcred { margin-top:26px; text-align:center; font-size:.66rem; font-weight:500; letter-spacing:.18em; text-transform:uppercase; }
+    .fcred a { display:inline-flex; align-items:center; gap:8px; color:#93a2c4; text-decoration:none; padding:6px 12px; border-radius:999px;
+      transition:color .25s, text-shadow .3s, background .25s; }
+    .fcred svg { width:11px; height:11px; fill:var(--gold); flex-shrink:0; opacity:.85; transition:filter .3s, opacity .25s; }
+    .fcred a:hover, .fcred a:focus-visible { color:var(--gold-pale); background:rgba(201,162,39,.06); text-shadow:0 0 14px rgba(240,216,150,.45); }
+    .fcred a:hover svg, .fcred a:focus-visible svg { opacity:1; filter:drop-shadow(0 0 6px rgba(240,216,150,.75)); }
 
     /* STAR SVG shorthand */
     .s5 { display:flex;gap:3px; }
@@ -1045,21 +1052,29 @@
       background:linear-gradient(118deg,transparent 34%,rgba(255,255,255,.05) 44%,rgba(255,255,255,.10) 48%,rgba(255,255,255,.03) 54%,transparent 62%); }
     .shp-glow { position:absolute; inset:-14%; z-index:-1; pointer-events:none; opacity:0;
       background:radial-gradient(50% 50% at 50% 50%, rgba(201,162,39,.28) 0%, transparent 70%); }
+    /* a tela do aparelho é o container: os textos das telas escalam em cqw — a MESMA folha
+       serve o iPhone grande, os 2 minis do estágio 4 e o mock do quiz (fallback em px/vh) */
+    .shp-screen, .smini-screen { container-type:size; }
     .shp-scr { position:absolute; inset:0; display:flex; flex-direction:column;
-      align-items:center; justify-content:center; gap:6px; opacity:0;
+      align-items:center; justify-content:center; gap:6px; gap:2.7cqw; opacity:0;
       background:
         radial-gradient(120% 60% at 50% 0%, rgba(201,162,39,.14) 0%, transparent 60%),
         radial-gradient(150% 70% at 50% 112%, rgba(15,32,96,.85) 0%, transparent 72%),
         linear-gradient(180deg,#060b1e,#03060f); }
     .shp-scr-raio svg { width:34%; height:auto; fill:var(--gold);
       filter:drop-shadow(0 0 22px rgba(240,216,150,.85)); }
-    .s18-ate, .s18-sub { font-size:clamp(.6rem,1.2vh,.8rem); font-weight:700; letter-spacing:.34em;
-      text-transform:uppercase; color:var(--gold-pale); }
-    .s18-big { font-family:'Cormorant Garamond',serif; font-weight:700; line-height:.9;
-      font-size:clamp(3rem,11vh,6rem); color:var(--gold);
+    /* TELA GRANDE (.shp-scr-big): rótulo pequeno / palavra-herói em Cormorant com glow / rótulo.
+       Palavra em 25cqw (cabe "FISCAL" e "1 ANO" numa linha). .sbig-num = o 18x do iPhone grande, que mantém as
+       medidas originais em vh (aprovadas): em cqw ele encolhia de 93px para 62px no celular. */
+    .sbig-top, .sbig-sub { font-size:.68rem; font-size:max(9px,5cqw); font-weight:700; letter-spacing:.34em;
+      text-transform:uppercase; color:var(--gold-pale); text-align:center; }
+    .sbig-main { font-family:'Cormorant Garamond',serif; font-weight:700; line-height:.9; white-space:nowrap;
+      font-size:2.6rem; font-size:25cqw; color:var(--gold);
       font-variant-numeric:lining-nums; font-feature-settings:'lnum' 1;
       text-shadow:0 0 34px rgba(201,162,39,.5); }
-    .s18-sub { color:#aab6cf; letter-spacing:.22em; }
+    .sbig-num .sbig-top, .sbig-num .sbig-sub { font-size:clamp(.6rem,1.2vh,.8rem); }
+    .sbig-num .sbig-main { font-size:clamp(3rem,11vh,6rem); }
+    .sbig-sub { color:#aab6cf; letter-spacing:.22em; max-width:88%; line-height:1.35; }
 
     /* fila da família — 2 iPhones menores atrás no estágio final */
     .show-mini { position:absolute; top:50%; height:min(42vh,380px); aspect-ratio:300/640;
@@ -1074,6 +1089,8 @@
       background:radial-gradient(120% 60% at 50% 0%, rgba(201,162,39,.10) 0%, transparent 60%), #04060f; }
     .smini-island { position:absolute; top:3.6%; left:50%; transform:translateX(-50%);
       width:32%; height:3.2%; border-radius:100px; background:#050507; }
+    /* o mesmo halo dourado do iPhone grande, atrás de cada mini (acende com a tela) */
+    .show-mini .shp-glow { transition:opacity .7s; }
 
     /* callouts com hairlines douradas */
     .sc-call { position:absolute; z-index:4; opacity:0; display:flex; align-items:center; gap:0;
@@ -1128,7 +1145,7 @@
       .show-title.st-0 { display:block; }
       .show-stage { min-height:520px; }
       .shp-trace { display:none; }
-      .shp-body, .shp-scr-18x, .show-mini, .show-cta, .sc-call, .shp-glow { opacity:1 !important; transform:none !important; }
+      .shp-body, #showcase .shp-scr-big, .show-mini, .show-cta, .sc-call, .shp-glow { opacity:1 !important; transform:none !important; }
       .show-mini { position:absolute; }
       .show-mini-l { transform:translate(-150%,-46%) scale(.92) !important; }
       .show-mini-r { transform:translate(50%,-46%) scale(.92) !important; }
@@ -2038,7 +2055,7 @@
     .ey { margin-bottom:28px; }
     .ey span, .eyebrow span, .show-eyebrow span { width:30px; }
     .tier-label span, .ci-lbl, .fc h4, .est-titulo, .bc-section-title, .bcs-lbl, .gtl-when, .quiz-step,
-    .troca-hint, .tp-sub, .bc-prize-label, .cat-linha-title, .s18-ate { letter-spacing:.22em; font-weight:600; }
+    .troca-hint, .tp-sub, .bc-prize-label, .cat-linha-title, .sbig-top { letter-spacing:.22em; font-weight:600; }
     .hero-sub { font-size:1.06rem; max-width:470px; }
     .gc-desc, .como-step p, .gtl-txt p { font-size:.9rem; }
     .g-grid.sstack .gc-desc { font-size:.95rem; }
@@ -2068,70 +2085,51 @@
     .wa-float { text-decoration:none; }
     /* ============================================================
        NONO PASSE — pedidos do dono
-       1. os 2 iPhones menores do showcase (estágio 4) ACENDEM:
-          NOTA FISCAL (esq.) e GARANTIA 1 ANO (dir.), mesma linguagem
-          do lockscreen da vitrine (hora real + card dourado em traço).
-          O conteúdo vive DENTRO do aparelho — viaja com ele no CardSwap.
-          Tamanhos em cqw (a tela do mini é o container) com fallback em px.
+       1. os 2 iPhones menores do showcase (estágio 4) ACENDEM com a MESMA tela do
+          iPhone grande (.shp-scr-big: rótulo / palavra-herói em Cormorant com glow /
+          rótulo, reflexo e halo iguais): NOTA · FISCAL · EM TODOS OS APARELHOS (esq.)
+          e GARANTIA · 1 ANO · DA LOJA (dir.). O conteúdo vive DENTRO do aparelho —
+          viaja com ele no CardSwap. Tamanhos em cqw: a tela é o container, então a
+          mesma folha do grande escala sozinha para o mini (ver .sbig-* no showcase).
        2. QUIZ "Qual iPhone combina com você?" no lugar da calculadora de parcelas:
           cards com profundidade (deck), barra dourada, resultado com
-          iPhone mock acendendo + gráfico de perfil (elcChart).
+          iPhone mock acendendo com o MODELO exato + gráfico de perfil (elcChart).
        ============================================================ */
-    .smini-screen { overflow:hidden; container-type:size; }
+    .smini-screen { overflow:hidden; }
     .smini-island { z-index:6; }
-    .smini-lock { position:absolute; inset:0; z-index:1; display:flex; flex-direction:column; align-items:center; text-align:center;
-      padding:18% 8% 9%; opacity:0; transition:opacity .3s;
-      background:
-        radial-gradient(120% 60% at 50% 0%, rgba(201,162,39,.14) 0%, transparent 60%),
-        radial-gradient(150% 70% at 50% 112%, rgba(15,32,96,.85) 0%, transparent 72%),
-        linear-gradient(180deg,#060b1e,#03060f); }
-    .smini-time { font-family:'Cormorant Garamond',serif; font-weight:600; color:var(--cream); line-height:1; letter-spacing:.02em;
-      font-variant-numeric:lining-nums; font-feature-settings:'lnum' 1; font-size:1.9rem; font-size:21cqw; }
-    .smini-card { margin-top:auto; width:100%; display:flex; flex-direction:column; align-items:center;
-      border:1px solid rgba(201,162,39,.42); border-radius:12px; border-radius:8cqw;
-      background:linear-gradient(160deg,rgba(201,162,39,.17),rgba(201,162,39,.05)); padding:9% 6% 8%; }
-    .smini-card-ic svg { display:block; width:22px; height:22px; width:15cqw; height:15cqw; stroke:var(--gold); fill:none; stroke-width:1.3;
-      stroke-linecap:round; stroke-linejoin:round; }
-    .smini-card-t { display:block; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--gold-pale); line-height:1.3;
-      margin-top:6%; font-size:.58rem; font-size:6cqw; }
-    .smini-card-s { display:block; color:#a9b4d0; line-height:1.4; margin-top:3%; font-size:.5rem; font-size:4.9cqw; }
     /* apagado = a tela escura de hoje (o shade É o visual antigo, então nada muda fora do estágio 4) */
     .smini-shade { position:absolute; inset:0; z-index:4; opacity:1; transition:opacity .4s;
       background:radial-gradient(120% 60% at 50% 0%, rgba(201,162,39,.10) 0%, transparent 60%), #04060f; }
     .smini-boot { position:absolute; inset:0; z-index:5; display:flex; align-items:center; justify-content:center; opacity:0; pointer-events:none; }
     .smini-boot svg { width:34px; height:34px; width:26cqw; height:26cqw; fill:var(--gold); }
-    .smini-reflex { position:absolute; inset:0; z-index:5; pointer-events:none;
-      background:linear-gradient(118deg,transparent 34%,rgba(255,255,255,.05) 44%,rgba(255,255,255,.10) 48%,rgba(255,255,255,.03) 54%,transparent 62%); }
     .smini-ring { position:absolute; inset:-2px; border-radius:14% / 6.6%; padding:2px; opacity:0; pointer-events:none; z-index:7;
       -webkit-mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); -webkit-mask-composite:xor;
       mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0); mask-composite:exclude; }
     .smini-ring::before { content:''; position:absolute; inset:-42%;
       background:conic-gradient(from 0deg, transparent 0 70%, rgba(201,162,39,.25) 82%, rgba(240,216,150,.95) 92%, transparent 100%); }
     .smini-body { transition:box-shadow .8s; }
-    /* aceso: boot rápido (raio + anel de luz, .5s) e o lockscreen entra em cascata */
-    .show-mini.lit .smini-lock { opacity:1; }
-    .show-mini.lit .smini-lock > * { animation:lockIn .55s cubic-bezier(.22,.9,.3,1) both; }
-    .show-mini.lit .smini-time { animation-delay:.24s; }
-    .show-mini.lit .smini-card { animation-delay:.36s; }
+    .show-mini .shp-scr-big { transition:opacity .3s; }
+    /* aceso: boot rápido (raio + anel de luz, .5s) e a tela entra em cascata — rótulo, palavra, rótulo — como no grande */
+    .show-mini.lit .shp-scr-big { opacity:1; }
+    .show-mini.lit .shp-scr-big > * { animation:lockIn .55s cubic-bezier(.22,.9,.3,1) both; }
+    .show-mini.lit .shp-scr-big > :nth-child(1) { animation-delay:.2s; }
+    .show-mini.lit .shp-scr-big > :nth-child(2) { animation-delay:.3s; }
+    .show-mini.lit .shp-scr-big > :nth-child(3) { animation-delay:.42s; }
     .show-mini.lit .smini-shade { opacity:0; transition:opacity .35s .12s; }
     .show-mini.lit .smini-boot { animation:sminiBoot .5s ease both; }
     .show-mini.lit .smini-ring { animation:sminiRing .6s ease both; }
     .show-mini.lit .smini-ring::before { animation:ringGira .6s linear 1; }
     .show-mini.lit .smini-body { box-shadow:inset 0 0 0 3px #010309, 0 30px 60px -20px rgba(0,0,0,.7), 0 0 40px -6px rgba(201,162,39,.3); }
+    .show-mini.lit .shp-glow { opacity:.6; }
     @keyframes sminiBoot {
       0%   { opacity:0; transform:scale(.55); filter:drop-shadow(0 0 0 rgba(240,216,150,0)); }
       40%  { opacity:1; transform:scale(1); filter:drop-shadow(0 0 18px rgba(240,216,150,.95)); }
       100% { opacity:0; transform:scale(1.05); filter:drop-shadow(0 0 6px rgba(201,162,39,.4)); }
     }
     @keyframes sminiRing { 0% { opacity:0; } 25% { opacity:1; } 100% { opacity:0; } }
-    @media (max-width:700px) {
-      .smini-lock { padding:15% 7% 8%; }
-      .smini-card-s { display:none; }
-      .smini-card-t { font-size:7.4cqw; }
-    }
     @media (prefers-reduced-motion: reduce) {
-      .show-mini .smini-lock { opacity:1; }
-      .show-mini .smini-lock > * { opacity:1 !important; animation:none !important; }
+      .show-mini .shp-scr-big { opacity:1; }
+      .show-mini .shp-scr-big > * { opacity:1 !important; animation:none !important; }
       .show-mini .smini-shade { opacity:0; }
       .smini-boot, .smini-ring { display:none !important; }
     }
@@ -2223,6 +2221,21 @@
       border:1px dashed rgba(201,162,39,.4); border-radius:12px; padding:10px 14px; display:inline-block; line-height:1.6; }
     .quiz-res-acts { display:flex; flex-wrap:wrap; gap:12px; margin-top:20px; align-items:center; }
     .quiz-iph .iph-boot { transition:opacity .3s; }
+    /* tela do iPhone mock do resultado = a mesma tela grande do showcase (.shp-scr-big):
+       SEU IPHONE / número-herói ("17", "Air", "16e") / variante ("PRO MAX") / caminho */
+    .quiz-iph .iph-screen { container-type:size; }
+    .quiz-iph .shp-scr-big { z-index:2; gap:2cqw; padding:12% 6% 10%; }
+    .quiz-iph .sbig-main { font-size:34cqw; }
+    .quiz-iph .sbig-mid { font-family:'Cormorant Garamond',serif; font-weight:700; font-size:1.4rem; font-size:15cqw; line-height:1;
+      letter-spacing:.04em; text-transform:uppercase; white-space:nowrap; color:var(--gold-pale); text-shadow:0 0 18px rgba(201,162,39,.35); }
+    .quiz-iph .sbig-mid:empty { display:none; }
+    .iph.on .shp-scr-big { opacity:1; transition:opacity .3s; }
+    .iph.on .shp-scr-big > * { animation:lockIn .65s cubic-bezier(.22,.9,.3,1) both; }
+    .iph.on .shp-scr-big > :nth-child(1) { animation-delay:.05s; }
+    .iph.on .shp-scr-big > :nth-child(2) { animation-delay:.16s; }
+    .iph.on .shp-scr-big > :nth-child(3) { animation-delay:.28s; }
+    .iph.on .shp-scr-big > :nth-child(4) { animation-delay:.4s; }
+    @media (prefers-reduced-motion: reduce) { .iph.on .shp-scr-big > * { opacity:1 !important; animation:none !important; } }
     @media (max-width:900px) {
       .quiz-opts.n3 { grid-template-columns:repeat(2,1fr); }
       .quiz-res { grid-template-columns:1fr; gap:14px; }
@@ -2402,10 +2415,10 @@
       <h3 class="show-title st-3">A família <em>completa</em> espera você.</h3>
     </div>
     <div class="show-stage">
-      <!-- mini esquerdo — acende no estágio 4 com "NOTA FISCAL" (conteúdo dentro do aparelho: viaja com ele no CardSwap) -->
-      <div class="show-mini show-mini-l" aria-hidden="true"><div class="smini-body"><div class="smini-screen"><div class="smini-lock"><div class="smini-time">--:--</div><div class="smini-card"><span class="smini-card-ic"><svg viewBox="0 0 24 24"><path d="M4.5 8.5A2.5 2.5 0 0 1 7 6h10a2.5 2.5 0 0 1 2.5 2.5v9A2.5 2.5 0 0 1 17 20H7a2.5 2.5 0 0 1-2.5-2.5z"/><path d="M8 6V4.5A1.5 1.5 0 0 1 9.5 3h5A1.5 1.5 0 0 1 16 4.5V6"/><path d="M9 13.5l2 2 4-4.5"/></svg></span><span class="smini-card-t">NOTA FISCAL</span><span class="smini-card-s">em todos os aparelhos</span></div></div><div class="smini-shade"></div><div class="smini-boot"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div><div class="smini-reflex"></div></div><div class="smini-island"></div><div class="smini-ring"></div></div></div>
-      <!-- mini direito — acende no estágio 4 com "GARANTIA 1 ANO" (conteúdo dentro do aparelho: viaja com ele no CardSwap) -->
-      <div class="show-mini show-mini-r" aria-hidden="true"><div class="smini-body"><div class="smini-screen"><div class="smini-lock"><div class="smini-time">--:--</div><div class="smini-card"><span class="smini-card-ic"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg></span><span class="smini-card-t">GARANTIA 1 ANO</span><span class="smini-card-s">da loja, lacrado ou seminovo</span></div></div><div class="smini-shade"></div><div class="smini-boot"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div><div class="smini-reflex"></div></div><div class="smini-island"></div><div class="smini-ring"></div></div></div>
+      <!-- mini esquerdo — acende no estágio 4 com a MESMA tela do iPhone grande: NOTA · FISCAL · EM TODOS OS APARELHOS (conteúdo dentro do aparelho: viaja com ele no CardSwap) -->
+      <div class="show-mini show-mini-l" aria-hidden="true"><div class="smini-body"><div class="smini-screen"><div class="shp-scr shp-scr-big"><span class="sbig-top">Nota</span><span class="sbig-main">FISCAL</span><span class="sbig-sub">em todos os aparelhos</span></div><div class="smini-shade"></div><div class="smini-boot"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div><div class="shp-reflex"></div></div><div class="smini-island"></div><div class="smini-ring"></div></div><div class="shp-glow"></div></div>
+      <!-- mini direito — acende no estágio 4 com a MESMA tela do iPhone grande: GARANTIA · 1 ANO · DA LOJA (conteúdo dentro do aparelho: viaja com ele no CardSwap) -->
+      <div class="show-mini show-mini-r" aria-hidden="true"><div class="smini-body"><div class="smini-screen"><div class="shp-scr shp-scr-big"><span class="sbig-top">Garantia</span><span class="sbig-main">1 ANO</span><span class="sbig-sub">da loja</span></div><div class="smini-shade"></div><div class="smini-boot"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div><div class="shp-reflex"></div></div><div class="smini-island"></div><div class="smini-ring"></div></div><div class="shp-glow"></div></div>
       <div class="shp" id="shp" aria-hidden="true">
         <svg class="shp-trace" viewBox="0 0 306 646" preserveAspectRatio="none" aria-hidden="true">
           <rect id="shpTraceR" x="3" y="3" width="300" height="640" rx="44" pathLength="1000"/>
@@ -2415,10 +2428,10 @@
             <div class="shp-scr shp-scr-raio" id="shpRaio">
               <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
             </div>
-            <div class="shp-scr shp-scr-18x" id="shp18">
-              <span class="s18-ate">Até</span>
-              <span class="s18-big">18x</span>
-              <span class="s18-sub">no cartão</span>
+            <div class="shp-scr shp-scr-big sbig-num" id="shp18">
+              <span class="sbig-top">Até</span>
+              <span class="sbig-main">18x</span>
+              <span class="sbig-sub">no cartão</span>
             </div>
             <div class="shp-reflex"></div>
             <div class="shp-island"></div>
@@ -2612,7 +2625,7 @@
 <section class="sec quiz" id="quiz" aria-labelledby="quizTitulo">
   <p class="eyebrow rv"><span></span>Com as suas respostas</p>
   <h2 class="heading rv" id="quizTitulo">Qual iPhone <em>combina</em> com você?</h2>
-  <p class="quiz-intro rv">Quatro perguntas rápidas e a gente sugere a linha e o caminho — sem preço e sem promessa de estoque. Modelo e disponibilidade a gente confirma no WhatsApp.</p>
+  <p class="quiz-intro rv">Quatro perguntas rápidas e a gente sugere o modelo exato e o caminho — sem preço e sem promessa de estoque. Modelo e disponibilidade a gente confirma no WhatsApp.</p>
   <div class="quiz-wrap rv" id="quizWrap">
     <div class="quiz-head">
       <p class="quiz-step" id="quizStep" aria-live="polite">Pergunta 1 de 4</p>
@@ -2659,11 +2672,11 @@
             <div class="iph quiz-iph" id="quizIph">
               <div class="iph-body">
                 <div class="iph-screen">
-                  <div class="iph-lock">
-                    <div class="iph-time" id="quizIphTime">--:--</div>
-                    <div class="iph-date" id="quizIphDate"></div>
-                    <div class="iph-card"><div class="iph-card-ic" id="quizIphIc"></div><div class="iph-card-t" id="quizIphT"></div><div class="iph-card-s" id="quizIphS"></div></div>
-                    <div class="iph-batt"><span class="iph-batt-sh"><i style="width:100%"></i></span><span class="iph-batt-pc">100%</span></div>
+                  <div class="shp-scr shp-scr-big">
+                    <span class="sbig-top">Seu iPhone</span>
+                    <span class="sbig-main" id="quizIphNum">—</span>
+                    <span class="sbig-mid" id="quizIphVar"></span>
+                    <span class="sbig-sub" id="quizIphS"></span>
                   </div>
                   <div class="iph-shade"></div>
                   <div class="iph-boot"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
@@ -2676,15 +2689,15 @@
             </div>
           </div>
           <div class="quiz-res-body">
-            <p class="quiz-res-ey">Seu perfil</p>
-            <h3 class="quiz-res-t" id="quizResT" tabindex="-1">Perfil: <em id="quizPerfil">—</em></h3>
+            <p class="quiz-res-ey">Perfil: <span id="quizPerfil">—</span></p>
+            <h3 class="quiz-res-t" id="quizResT" tabindex="-1">Seu iPhone: <em id="quizModelo">—</em></h3>
             <p class="quiz-res-pq" id="quizPorque"></p>
             <div class="quiz-res-tags">
-              <span class="quiz-tag"><small>Linha sugerida</small><b id="quizLinha">—</b></span>
+              <span class="quiz-tag"><small>Modelo</small><b id="quizModeloTag">—</b></span>
               <span class="quiz-tag"><small>Caminho</small><b id="quizCaminho">—</b></span>
             </div>
             <div class="quiz-chart" id="quizChart"></div>
-            <p class="quiz-honesto">Sugestão a partir das suas respostas — a gente confirma modelo e disponibilidade no WhatsApp.</p>
+            <p class="quiz-honesto">Sugestão a partir das suas respostas — modelo e disponibilidade a gente confirma no WhatsApp.</p>
             <div class="quiz-res-acts">
               <a class="btn-claro" id="quizCta" href="https://wa.me/5512997463135?text=Ol%C3%A1!%20Fiz%20o%20quiz%20no%20site." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.5 14.4c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.46-2.4-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.91-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.87 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.7.63.71.22 1.36.19 1.87.11.57-.08 1.76-.72 2-1.41.25-.7.25-1.29.18-1.41-.08-.13-.28-.2-.58-.35zM12 2C6.5 2 2 6.48 2 12c0 1.77.46 3.44 1.27 4.89L2 22l5.23-1.26A9.95 9.95 0 0 0 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm0 18.19a8.17 8.17 0 0 1-4.16-1.14l-.3-.18-3.1.75.77-3-.19-.3A8.15 8.15 0 0 1 3.84 12c0-4.5 3.67-8.17 8.16-8.17S20.16 7.5 20.16 12 16.5 20.19 12 20.19z"/></svg>Quero esse iPhone</a>
               <button type="button" class="quiz-refazer" id="quizRefazer">Refazer</button>
@@ -3140,6 +3153,7 @@
     <span>© 2026 Eletronic. Todos os direitos reservados.</span>
     <span>Taubaté — SP &nbsp;|&nbsp; 4,8 no Google</span>
   </div>
+  <p class="fcred"><a href="https://nexus-taubate.netlify.app" target="_blank" rel="noopener" aria-label="Feito por Nexus IA — site da Nexus, abre em nova aba"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>Feito por Nexus IA</a></p>
 </footer>
 
 <script>
@@ -5126,15 +5140,24 @@ window.elcChart = (function () {
     };
   })();
 
-  /* ---------- QUIZ "Qual iPhone combina com você?" — 4 respostas → perfil + linha + caminho + gráfico do perfil.
-     LÓGICA TRANSPARENTE (só das respostas; sem preço, sem estoque, sem nome de modelo):
+  /* ---------- QUIZ "Qual iPhone combina com você?" — 4 respostas → perfil + MODELO EXATO + caminho + gráfico do perfil.
+     LÓGICA TRANSPARENTE (só das respostas; sem preço, sem estoque — o modelo é sugestão, a loja confirma no WhatsApp):
      · dimensões 1–5 (câmera/desempenho/bateria/tela), base 2:
          fotos → câmera+3, tela+1 · trabalho → desempenho+2, bateria+2 · jogos → desempenho+3, tela+2 · básico → bateria+1
-         grande → tela+2, bateria+1 · médio → tela+1 · pesa: câmera+2 | bateria+2 | tela+2 | preço (só muda o caminho)
-     · linha Pro quando fotos, jogos ou "pesa câmera"; senão a linha padrão. Versão maior (Pro Max / Plus) quando
-       "grande" ou "médio + pesa tela/bateria"; "compacto" nunca vira Plus/Pro Max. "básico + preço" = padrão
-       sempre (mesmo na mão grande: o Plus custa mais, e o preço foi o que pesou — a gente só cita que ele existe).
-     · caminho: lacrado → Lacrado; seminovo ou "melhor custo" → Seminovo.
+         grande → tela+2, bateria+1 · médio → tela+1 · pesa: câmera+2 | bateria+2 | tela+2 | preço (muda o modelo de entrada e a geração)
+     · FAMÍLIA (set/2026) — lacrados: iPhone 17 · iPhone Air (fino, tela 6,5", câmera única) · iPhone 17 Pro · iPhone 17 Pro Max · iPhone 16e (entrada)
+                            seminovos: iPhone 16 Pro Max · iPhone 16 Pro · iPhone 16 · iPhone 15 Pro · iPhone 15
+     · MODELO LACRADO (uso × tamanho × o que pesa):
+         fotos, jogos ou "pesa câmera"     → linha Pro:  grande → iPhone 17 Pro Max · médio/compacto → iPhone 17 Pro
+         básico + pesa preço               → iPhone 16e (qualquer tamanho; na mão grande a gente só cita o Air como comparação)
+         trabalho/básico + grande          → iPhone Air (ou iPhone 17 Pro Max se a BATERIA pesa: o Air é fino e leve, não é o de mais fôlego)
+         trabalho/básico + médio/compacto  → iPhone 17
+       "compacto" nunca vira Pro Max nem Air.
+     · CAMINHO: lacrado → Lacrado; seminovo ou "melhor custo" → Seminovo, trocando pelo equivalente da geração anterior
+       (mesma família, preço menor, 1 ano de garantia da loja):
+         17 Pro Max → 16 Pro Max · 17 Pro → 16 Pro (15 Pro se o preço pesa) · iPhone 17 → iPhone 16 · 16e → iPhone 15
+         Air → 16 Pro Max (não existe Air seminovo; é o equivalente de tela grande)
+     · o nome do modelo vai no título, na tela do iPhone mock e na mensagem do WhatsApp — NUNCA preço.
      · estado salvo em localStorage (el_quiz_v1) para não perder ao recarregar; "refazer" apaga. ---------- */
   (function () {
     var wrap = document.getElementById('quizWrap');
@@ -5160,17 +5183,19 @@ window.elcChart = (function () {
       camera: 'câmera', bateria: 'bateria', tela: 'tela', preco: 'preço',
       lacrado: 'lacrado zero km', seminovo: 'seminovo revisado com garantia', custo: 'tanto faz, o melhor custo'
     };
-    var ICO = {
-      camera: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>',
-      raio: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>',
-      pasta: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>',
-      check: '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.5l2.3 2.3 4.7-5"/></svg>',
-      tag: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.6 13.4l-7.2 7.2a2 2 0 0 1-2.8 0L2 12V2h10l8.6 8.6a2 2 0 0 1 0 2.8z"/><circle cx="7" cy="7" r="1.2"/></svg>'
+    /* a família — nome completo, número-herói e variante para a tela do mock, e o seminovo equivalente */
+    var MODELOS = {
+      '17pm': { nome: 'iPhone 17 Pro Max', num: '17', variante: 'Pro Max', semi: '16pm' },
+      '17p':  { nome: 'iPhone 17 Pro',     num: '17', variante: 'Pro',     semi: '16p', semiPreco: '15p' },
+      'air':  { nome: 'iPhone Air',        num: 'Air', variante: '',       semi: '16pm' },
+      '17':   { nome: 'iPhone 17',         num: '17', variante: '',        semi: '16' },
+      '16e':  { nome: 'iPhone 16e',        num: '16e', variante: '',       semi: '15' },
+      '16pm': { nome: 'iPhone 16 Pro Max', num: '16', variante: 'Pro Max' },
+      '16p':  { nome: 'iPhone 16 Pro',     num: '16', variante: 'Pro' },
+      '16':   { nome: 'iPhone 16',         num: '16', variante: '' },
+      '15p':  { nome: 'iPhone 15 Pro',     num: '15', variante: 'Pro' },
+      '15':   { nome: 'iPhone 15',         num: '15', variante: '' }
     };
-    var DIAS = ['domingo', 'segunda-feira', 'terça-feira', 'quarta-feira', 'quinta-feira', 'sexta-feira', 'sábado'];
-    var MESES = ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'];
-    function hora() { var d = new Date(); return (d.getHours() < 10 ? '0' : '') + d.getHours() + ':' + (d.getMinutes() < 10 ? '0' : '') + d.getMinutes(); }
-    function data() { var d = new Date(); return DIAS[d.getDay()] + ', ' + d.getDate() + ' de ' + MESES[d.getMonth()]; }
     function clamp5(v) { return v < 1 ? 1 : v > 5 ? 5 : v; }
 
     /* a regra em código — mesma coisa que o comentário acima diz */
@@ -5190,33 +5215,49 @@ window.elcChart = (function () {
       var pro = uso === 'fotos' || uso === 'jogos' || pesa === 'camera';
       var essencial = uso === 'basico' && pesa === 'preco';
       if (essencial) pro = false;
-      var grande = !essencial && (tam === 'grande' || (tam === 'medio' && (pesa === 'tela' || pesa === 'bateria')));
-      var linha = pro ? (grande ? 'Pro Max' : 'Pro') : (grande ? 'Plus' : 'padrão');
+      var grande = tam === 'grande';
+      /* modelo lacrado (tabela do comentário) */
+      var lacrado = essencial ? '16e' : pro ? (grande ? '17pm' : '17p') : grande ? (pesa === 'bateria' ? '17pm' : 'air') : '17';
       var caminho = pref === 'lacrado' ? 'Lacrado' : 'Seminovo';
-      var perfil, ic;
-      if (essencial) { perfil = 'Custo inteligente'; ic = 'tag'; }
-      else if (uso === 'fotos') { perfil = 'Criador de conteúdo'; ic = 'camera'; }
-      else if (uso === 'jogos') { perfil = 'Desempenho máximo'; ic = 'raio'; }
-      else if (uso === 'trabalho') { perfil = 'Produtivo'; ic = 'pasta'; }
-      else { perfil = 'Essencial'; ic = 'check'; }
+      var chave = lacrado;
+      if (caminho === 'Seminovo') chave = (pesa === 'preco' && MODELOS[lacrado].semiPreco) || MODELOS[lacrado].semi;
+      var modelo = MODELOS[chave];
+      var perfil;
+      if (essencial) perfil = 'Custo inteligente';
+      else if (uso === 'fotos') perfil = 'Criador de conteúdo';
+      else if (uso === 'jogos') perfil = 'Desempenho máximo';
+      else if (uso === 'trabalho') perfil = 'Produtivo';
+      else perfil = 'Essencial';
+      /* o porquê cita as respostas */
       var pq = [];
-      if (pro) pq.push(pesa === 'camera' ? 'A câmera é o que mais pesa para você — por isso a linha Pro.'
-        : uso === 'fotos' ? 'Fotos e vídeos pedem a câmera mais completa — por isso a linha Pro.'
-        : 'Jogos e desempenho pedem o chip mais forte — por isso a linha Pro.');
-      else pq.push(essencial ? 'O básico bem feito com o preço pesando mais: o modelo padrão entrega tudo isso sem pagar pelo que você não usa.'
-        : 'Uso equilibrado fica muito bem no modelo padrão.');
-      if (grande) pq.push(tam === 'grande' ? 'Tamanho grande na mão leva à versão ' + (pro ? 'Pro Max' : 'Plus') + '.'
-        : 'Com ' + TXT[pesa] + ' pesando na escolha, vale a versão ' + (pro ? 'Pro Max' : 'Plus') + ' (mais tela e mais bateria).');
-      else if (tam === 'compacto') pq.push('Compacto na mão: sem Plus nem Pro Max.');
-      else if (essencial && tam === 'grande') pq.push('Mão grande? A versão Plus existe, mas custa mais — como o preço pesou, a sugestão fica no padrão e a gente compara os dois no WhatsApp.');
-      pq.push(pref === 'lacrado' ? 'Lacrado porque você quer estrear do zero.'
-        : pref === 'seminovo' ? 'Seminovo revisado, com a mesma nota fiscal e o mesmo 1 ano de garantia.'
-        : 'Melhor custo: seminovo revisado, com nota fiscal e 1 ano de garantia.');
-      return { dims: dims, linha: linha, caminho: caminho, perfil: perfil, ic: ic, porque: pq.join(' ') };
+      if (pro) {
+        pq.push(pesa === 'camera' ? 'A câmera é o que mais pesa para você — por isso a linha Pro.'
+          : uso === 'fotos' ? 'Fotos e vídeos pedem a câmera mais completa — por isso a linha Pro.'
+          : 'Jogos e desempenho pedem o chip mais forte — por isso a linha Pro.');
+        pq.push(grande ? 'Tamanho grande na mão: o iPhone 17 Pro Max, a maior tela e a maior bateria da família.'
+          : 'Tamanho ' + TXT[tam] + ' na mão: o iPhone 17 Pro — o mesmo chip e a mesma câmera em um corpo menor.');
+      } else if (essencial) {
+        pq.push('O básico bem feito com o preço pesando mais: o iPhone 16e é a porta de entrada da família e entrega tudo isso sem pagar pelo que você não usa.');
+        if (grande) pq.push('Mão grande? O Air tem a tela maior, mas custa mais — como o preço pesou, a sugestão fica no 16e e a gente compara os dois no WhatsApp.');
+      } else if (grande) {
+        pq.push(pesa === 'bateria' ? 'Tamanho grande com a bateria pesando: o iPhone 17 Pro Max é o de mais fôlego da família (o Air é fino e leve, mas não é o de maior bateria).'
+          : 'Tamanho grande para ' + TXT[uso] + ': o iPhone Air — fino, leve, tela grande de 6,5" e câmera única, feito para quem vive de apps, mensagens e conteúdo.');
+      } else {
+        pq.push(TXT[uso].charAt(0).toUpperCase() + TXT[uso].slice(1) + ' em tamanho ' + TXT[tam] + ' fica muito bem no iPhone 17 — o equilíbrio da família' +
+          (pesa === 'bateria' || pesa === 'tela' ? ', e com ' + TXT[pesa] + ' pesando ele já atende sem precisar ir para o Pro.' : '.'));
+      }
+      if (caminho === 'Lacrado') pq.push('Lacrado porque você quer estrear do zero.');
+      else {
+        var lac = MODELOS[lacrado];
+        pq.push((pref === 'seminovo' ? 'Seminovo revisado: ' : 'Melhor custo: ') + 'no lugar do ' + lac.nome + ' lacrado, o ' + modelo.nome + ' seminovo — ' +
+          (lacrado === 'air' ? 'o Air ainda não existe seminovo, e na tela grande ele é o equivalente revisado; '
+            : chave === '15p' ? 'linha Pro com uma geração a mais de desconto, já que o preço pesou; ' : '') +
+          'mesma família, preço menor, 1 ano de garantia da loja.');
+      }
+      return { dims: dims, modelo: modelo, chave: chave, caminho: caminho, perfil: perfil, porque: pq.join(' ') };
     }
 
     function salva() { try { localStorage.setItem(KEY, JSON.stringify({ r: resp, c: cur })); } catch (e) { /* modo privado */ } }
-    setInterval(function () { if (cur >= N && !document.hidden) document.getElementById('quizIphTime').textContent = hora(); }, 30000);
     function limpa() { try { localStorage.removeItem(KEY); } catch (e) { /* ok */ } }
 
     /* o deck tem a altura da carta da frente (as de trás só espiam por cima); acompanha conteúdo/resize */
@@ -5286,15 +5327,14 @@ window.elcChart = (function () {
     function mostraResultado() {
       var r = calcula(resp);
       document.getElementById('quizPerfil').textContent = r.perfil;
-      document.getElementById('quizLinha').textContent = r.linha;
+      document.getElementById('quizModelo').textContent = r.modelo.nome;
+      document.getElementById('quizModeloTag').textContent = r.modelo.nome.replace(/^iPhone /, '');
       document.getElementById('quizCaminho').textContent = r.caminho;
       document.getElementById('quizPorque').textContent = r.porque;
-      /* iPhone mock — mesma linguagem da vitrine: boot (raio + anel) e o lockscreen acende com o perfil */
-      document.getElementById('quizIphTime').textContent = hora();
-      document.getElementById('quizIphDate').textContent = data();
-      document.getElementById('quizIphIc').innerHTML = ICO[r.ic];
-      document.getElementById('quizIphT').textContent = r.perfil.toUpperCase();
-      document.getElementById('quizIphS').textContent = 'linha ' + r.linha + ' · ' + r.caminho.toLowerCase();
+      /* iPhone mock — a mesma tela grande do showcase: boot (raio + anel) e o MODELO acende em cascata */
+      document.getElementById('quizIphNum').textContent = r.modelo.num;
+      document.getElementById('quizIphVar').textContent = r.modelo.variante;
+      document.getElementById('quizIphS').textContent = r.caminho.toLowerCase();
       var tok = ++bootTok;
       iph.classList.remove('on', 'boot', 'shut');
       void iph.offsetWidth;
@@ -5318,11 +5358,10 @@ window.elcChart = (function () {
         window.elcInst.quiz = chart;
       }
       chart.update([r.dims]);
-      /* CTA com as respostas e o perfil no texto */
+      /* CTA com o modelo exato, o caminho e as respostas no texto (sem preço) */
       var num = (cta.href.match(/wa\.me\/(\d+)/) || [])[1] || '5512997463135';
-      var msg = 'Olá! Fiz o quiz no site. Uso: ' + TXT[resp[0]] + ' · Tamanho: ' + TXT[resp[1]] + ' · O que pesa: ' + TXT[resp[2]] +
-        ' · Prefiro: ' + TXT[resp[3]] + '. Perfil: ' + r.perfil + ' → sugestão de linha ' + r.linha + ', ' + r.caminho.toLowerCase() +
-        '. Podem confirmar modelo e disponibilidade?';
+      var msg = 'Olá! Quero o ' + r.modelo.nome + ' (' + r.caminho.toLowerCase() + ') — respondi: uso ' + TXT[resp[0]] + ' · tamanho ' + TXT[resp[1]] +
+        ' · pesa ' + TXT[resp[2]] + ' · prefiro ' + TXT[resp[3]] + '. Perfil: ' + r.perfil + '. Fiz o quiz no site — podem confirmar modelo e disponibilidade?';
       cta.href = 'https://wa.me/' + num + '?text=' + encodeURIComponent(msg);
     }
 
@@ -6915,25 +6954,14 @@ window.elcChart = (function () {
     var callsB = sec.querySelectorAll('.sc-b1, .sc-b2');
     if (!trace || !shp || !body) return;
 
-    /* ---- minis ACESOS no estágio 4: NOTA FISCAL (esq.) e GARANTIA 1 ANO (dir.) com hora real.
-       Só uma troca de classe por estado (nada por frame) — o conteúdo vive dentro do aparelho
-       e viaja com ele no CardSwap. Relógio por minuto só enquanto acesos e com o palco rodando. ---- */
-    var miniHoras = sec.querySelectorAll('.smini-time');
-    var minisAcesos = false, relogioMinis = 0;
-    function horaMini() {
-      if (document.hidden) return;
-      var d = new Date(), h = (d.getHours() < 10 ? '0' : '') + d.getHours() + ':' + (d.getMinutes() < 10 ? '0' : '') + d.getMinutes();
-      for (var k = 0; k < miniHoras.length; k++) miniHoras[k].textContent = h;
-    }
-    function relogio(liga) {
-      clearInterval(relogioMinis); relogioMinis = 0;
-      if (liga) { horaMini(); relogioMinis = setInterval(horaMini, 30000); }
-    }
+    /* ---- minis ACESOS no estágio 4: a mesma tela do iPhone grande com NOTA · FISCAL (esq.) e
+       GARANTIA · 1 ANO (dir.). Só uma troca de classe por estado (nada por frame) — o conteúdo
+       vive dentro do aparelho e viaja com ele no CardSwap; boot, cascata e halo são só CSS. ---- */
+    var minisAcesos = false;
     function acendeMinis(on) {
       if (on === minisAcesos) return;
       minisAcesos = on;
       for (var k = 0; k < minis.length; k++) minis[k].classList.toggle('lit', on);
-      relogio(on);
     }
     if (REDUZ) { acendeMinis(true); return; } /* CSS ja pinta a composicao final (minis acesos, estaticos) */
 
@@ -7136,7 +7164,6 @@ window.elcChart = (function () {
       var quer = visivel && !document.hidden;
       if (quer === rodando) return;
       rodando = quer;
-      relogio(rodando && minisAcesos); /* aba oculta / fora do viewport: o relógio dos minis dorme */
       if (rodando && !raf) { swap.pausa(performance.now()); raf = requestAnimationFrame(passo); }
     }
     pinta(0); /* estado inicial coerente mesmo antes de rolar */
