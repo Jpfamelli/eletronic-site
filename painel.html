@@ -183,6 +183,79 @@
     .toast.mostrar { opacity: 1; transform: translateX(-50%) translateY(0); }
     .toast.ruim { background: var(--erro); color: #fff; }
 
+    /* ===== seções do painel: Estoque | Pedidos ===== */
+    .secoes { display: flex; gap: 0; border-bottom: 1px solid rgba(201,162,39,.2); margin: -8px 0 24px; }
+    .secao { background: none; border: none; border-bottom: 2px solid transparent; margin-bottom: -1px;
+      color: var(--gray); font-size: .82rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase;
+      padding: 14px 22px; display: inline-flex; align-items: center; gap: 10px; transition: color .2s, border-color .2s; }
+    .secao:hover { color: var(--gold-pale); }
+    .secao.ativa { color: var(--gold); border-bottom-color: var(--gold); }
+    .secao-n { background: var(--erro); color: #fff; font-size: .66rem; letter-spacing: 0; min-width: 20px; height: 20px;
+      border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; padding: 0 6px; }
+
+    /* ===== pedidos ===== */
+    .ped-resumo { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 18px; }
+    .ped-card { text-align: left; background: rgba(255,255,255,.03); border: 1px solid rgba(201,162,39,.15);
+      padding: 16px 18px; color: var(--cream); transition: border-color .2s, background .2s; }
+    .ped-card:hover { border-color: rgba(201,162,39,.5); }
+    .ped-card.ativa { border-color: var(--gold); background: rgba(201,162,39,.08); }
+    .ped-card strong { font-family: 'Cormorant Garamond', serif; font-size: 2rem; color: var(--gold); line-height: 1; display: block; }
+    .ped-card span { font-size: .66rem; letter-spacing: .14em; text-transform: uppercase; color: var(--gray); display: block; margin-top: 4px; }
+    .ped-card small { font-size: .7rem; color: var(--gold-pale); display: block; margin-top: 6px; min-height: 1em; }
+    .ped-som { white-space: nowrap; }
+    .ped-som[aria-pressed="false"] { opacity: .6; }
+
+    .ped { background: rgba(255,255,255,.03); border: 1px solid rgba(201,162,39,.14); border-left: 3px solid var(--st, var(--gold));
+      padding: 16px 18px; display: grid; gap: 12px; transition: border-color .2s; }
+    .ped:hover { border-color: rgba(201,162,39,.38); border-left-color: var(--st, var(--gold)); }
+    .ped.chegou { animation: pedChegou 1.6s ease 2; }
+    @keyframes pedChegou { 0%, 100% { box-shadow: none; } 50% { box-shadow: 0 0 0 2px var(--gold), 0 0 28px rgba(201,162,39,.35); } }
+    .ped-topo { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+    .ped-num { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; font-weight: 700; color: var(--gold); line-height: 1; }
+    .ped-quando { font-size: .74rem; color: var(--gray); }
+    .st { font-size: .62rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; padding: 4px 9px; margin-left: 10px;
+      border: 1px solid var(--st); color: var(--st); vertical-align: 3px; }
+    .st-recebido { --st: #e8c252; }
+    .st-confirmado { --st: #7fb2f0; }
+    .st-a_caminho { --st: #c9a227; }
+    .st-entregue { --st: #2ecc8f; }
+    .st-cancelado { --st: #8a93a8; }
+    .ped.st-cancelado .ped-dados { opacity: .55; }
+    .ped-dados { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 26px; }
+    .ped-l { font-size: .88rem; line-height: 1.55; min-width: 0; overflow-wrap: anywhere; }
+    .ped-l b { display: block; font-size: .62rem; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); margin-bottom: 2px; }
+    .ped-l small { color: var(--gray); }
+    .ped-l a { font-size: .74rem; margin-left: 6px; }
+    .ped-l.largo { grid-column: 1 / -1; }
+    .ped-hoje { color: #fff; background: var(--erro); border: 1px solid var(--erro); font-size: .6rem; font-weight: 700; letter-spacing: .1em; padding: 2px 6px; margin-left: 6px; text-transform: uppercase; }
+    .ped-hoje.amanha { background: transparent; border-color: var(--gold); color: var(--gold-pale); }
+    /* Cormorant usa algarismos antigos ("#0007" com o 7 descendo): números do painel alinhados */
+    .ped-num, .ped-card strong, .resumo-card strong { font-variant-numeric: lining-nums; font-feature-settings: 'lnum' 1; }
+    .ped-cpf { background: none; border: none; color: var(--gold); font-size: .72rem; text-decoration: underline; margin-left: 6px; }
+    .ped-acoes { display: flex; gap: 8px; flex-wrap: wrap; align-items: flex-end; padding-top: 12px; border-top: 1px solid rgba(201,162,39,.12); }
+    .ped-acoes label { display: grid; gap: 4px; font-size: .62rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--gray); }
+    .ped-acoes select, .ped-acoes input { background: rgba(255,255,255,.05); border: 1px solid rgba(201,162,39,.25); color: var(--cream);
+      padding: 9px 10px; font-size: .86rem; border-radius: 0; outline: none; letter-spacing: 0; text-transform: none; font-weight: 400; }
+    .ped-acoes select option { background: var(--navy); }
+    .ped-acoes input { width: 170px; }
+    .ped-acoes .mini { padding: 10px 14px; }
+    .ped-acoes .mini.salvar { background: var(--gold); color: var(--navy); border-color: var(--gold); font-weight: 700; }
+    .ped-acoes .mini.salvar:disabled { opacity: .4; cursor: default; }
+    .ped-acoes .link-perigo { margin-left: auto; padding: 10px 4px; }
+    .ped-antigos { margin-top: 26px; text-align: center; }
+    a.mini { text-decoration: none; display: inline-flex; align-items: center; }
+
+    @media (max-width: 860px) {
+      .ped-resumo { grid-template-columns: 1fr 1fr; }
+      .ped-dados { grid-template-columns: 1fr; }
+      .ped-acoes label { flex: 1 1 140px; }
+      .ped-acoes input { width: 100%; }
+      .ped-acoes .mini { flex: 1 1 auto; text-align: center; justify-content: center; }
+      .ped-acoes .link-perigo { margin-left: 0; }
+      .secao { padding: 14px 16px; flex: 1; justify-content: center; }
+      #pedStatus { flex: 1; }
+    }
+
     @media (max-width: 860px) {
       .entrada { grid-template-columns: 1fr; gap: 36px; padding: 36px 20px; }
       .entrada-texto { text-align: left; }
@@ -274,7 +347,6 @@
     </div>
     <div class="topo-acoes">
       <a class="mini" href="index.html" target="_blank" rel="noopener">Ver o site</a>
-      <a class="mini" href="https://entregas-eletronic.replit.app/admin" target="_blank" rel="noopener" title="Pedidos de entrega por motoboy">Entregas ↗</a>
       <button class="mini" id="btnCategorias">Categorias</button>
       <button class="mini" id="btnEquipe">Equipe <span class="bolinha" id="pendentes" hidden></span></button>
       <button class="mini" id="btnConfig">Configurações</button>
@@ -282,6 +354,26 @@
     </div>
   </header>
 
+  <nav class="secoes" role="tablist" aria-label="Seções do painel">
+    <button class="secao ativa" id="secEstoque" role="tab" aria-selected="true" aria-controls="painelEstoque">Estoque</button>
+    <button class="secao" id="secPedidos" role="tab" aria-selected="false" aria-controls="painelPedidos">Pedidos <span class="secao-n" id="pedNovos" hidden></span></button>
+  </nav>
+
+  <!-- ============ PEDIDOS DE ENTREGA ============ -->
+  <section id="painelPedidos" role="tabpanel" aria-labelledby="secPedidos" hidden>
+    <div class="ped-resumo" id="pedResumo"></div>
+    <div class="barra">
+      <input type="search" id="pedBusca" placeholder="Buscar por nome, telefone ou endereço" aria-label="Buscar pedido">
+      <select id="pedStatus" aria-label="Filtrar por status"></select>
+      <button class="mini ped-som" id="pedSom" aria-pressed="true" title="Toca um aviso quando chega pedido novo">Som de aviso: ligado</button>
+    </div>
+    <div class="lista" id="pedLista"><p class="carregando">Carregando pedidos…</p></div>
+    <p class="dica ped-antigos">Pedidos feitos antes de 06/10/2026 pelo sistema antigo continuam em
+      <a href="https://entregas-eletronic.replit.app/admin" target="_blank" rel="noopener">entregas-eletronic.replit.app</a>.</p>
+  </section>
+
+  <!-- ============ ESTOQUE ============ -->
+  <section id="painelEstoque" role="tabpanel" aria-labelledby="secEstoque">
   <div class="resumo" id="resumo"></div>
 
   <div class="barra">
@@ -297,6 +389,7 @@
   </div>
 
   <div class="lista" id="lista"><p class="carregando">Carregando catálogo…</p></div>
+  </section>
 </div>
 
 <!-- ============ MODAL: PRODUTO ============ -->
@@ -491,6 +584,7 @@ function entrarNoApp(nome, email) {
   $('#quemSou').textContent = nome ? `${nome} · ${email}` : email;
   mostrar('app');
   carregarTudo();
+  iniciarPedidos();
 }
 
 /* ============ LOGIN / CADASTRO ============ */
@@ -992,6 +1086,363 @@ $('#btnTrocarSenha').addEventListener('click', async () => {
   $('#senAtual').value = ''; $('#senNova').value = '';
   toast('Senha trocada!');
 });
+
+/* ============ SEÇÕES: ESTOQUE | PEDIDOS ============ */
+function abrirSecao(qual) {
+  const ped = qual === 'pedidos';
+  $('#secEstoque').classList.toggle('ativa', !ped);
+  $('#secPedidos').classList.toggle('ativa', ped);
+  $('#secEstoque').setAttribute('aria-selected', !ped);
+  $('#secPedidos').setAttribute('aria-selected', ped);
+  $('#painelEstoque').hidden = ped;
+  $('#painelPedidos').hidden = !ped;
+  try { localStorage.setItem('el_secao', qual); } catch {}
+  if (ped) renderPedidos();
+}
+$('#secEstoque').addEventListener('click', () => abrirSecao('estoque'));
+$('#secPedidos').addEventListener('click', () => abrirSecao('pedidos'));
+
+/* ============ PEDIDOS DE ENTREGA ============ */
+const TZ = 'America/Sao_Paulo';
+const STATUS = [
+  ['recebido', 'Recebido'], ['confirmado', 'Confirmado'], ['a_caminho', 'A caminho'],
+  ['entregue', 'Entregue'], ['cancelado', 'Cancelado'],
+];
+const NOME_STATUS = Object.fromEntries(STATUS);
+const ped = {
+  lista: [], carregou: false, periodo: 'hoje', idsVistos: null,
+  som: (() => { try { return localStorage.getItem('el_ped_som') !== 'nao'; } catch { return true; } })(),
+};
+
+const diaSP = (d) => new Date(d).toLocaleDateString('en-CA', { timeZone: TZ });
+const hojeSP = () => diaSP(Date.now());
+function somaDias(iso, n) {
+  const [a, m, d] = iso.split('-').map(Number);
+  const x = new Date(Date.UTC(a, m - 1, d + n));
+  return x.toISOString().slice(0, 10);
+}
+function inicioSemana(iso) {
+  const [a, m, d] = iso.split('-').map(Number);
+  const dow = new Date(Date.UTC(a, m - 1, d)).getUTCDay(); // 0 = domingo
+  return somaDias(iso, -((dow + 6) % 7));                  // segunda-feira
+}
+const numero = (id) => '#' + String(id).padStart(4, '0');
+const dataBR = (iso) => { const [a, m, d] = iso.split('-'); return `${d}/${m}/${a}`; };
+const horaBR = (t) => new Date(t).toLocaleString('pt-BR', { timeZone: TZ, day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' });
+function telBR(t) {
+  const d = String(t || '').replace(/\D/g, '').replace(/^55(?=\d{10,11}$)/, '');
+  if (d.length === 11) return `(${d.slice(0, 2)}) ${d.slice(2, 7)}-${d.slice(7)}`;
+  if (d.length === 10) return `(${d.slice(0, 2)}) ${d.slice(2, 6)}-${d.slice(6)}`;
+  return t;
+}
+const cpfBR = (c) => c.replace(/^(\d{3})(\d{3})(\d{3})(\d{2})$/, '$1.$2.$3-$4');
+const cpfOculto = (c) => `${c.slice(0, 3)}.•••.•••-${c.slice(9)}`;
+function haQuanto(t) {
+  const min = Math.round((Date.now() - new Date(t)) / 60000);
+  if (min < 1) return 'agora';
+  if (min < 60) return `há ${min} min`;
+  const h = Math.round(min / 60);
+  if (h < 24) return `há ${h} h`;
+  const d = Math.round(h / 24);
+  return d === 1 ? 'ontem' : `há ${d} dias`;
+}
+function quandoEntrega(iso) {
+  const hoje = hojeSP();
+  if (iso === hoje) return 'hoje';
+  if (iso === somaDias(hoje, 1)) return 'amanhã';
+  return null;
+}
+
+function noPeriodo(p, periodo) {
+  const hoje = hojeSP();
+  const dia = diaSP(p.criado_em);
+  if (periodo === 'hoje') return dia === hoje;
+  if (periodo === 'semana') return dia >= inicioSemana(hoje);
+  if (periodo === 'mes') return dia.slice(0, 7) === hoje.slice(0, 7);
+  if (periodo === 'entregar') return p.data_entrega === hoje && p.status !== 'cancelado' && p.status !== 'entregue';
+  return true;
+}
+
+async function carregarPedidos() {
+  const { data, error } = await sb.from('el_pedidos').select('*')
+    .order('criado_em', { ascending: false }).limit(1000);
+  if (error) {
+    if (!ped.carregou) $('#pedLista').innerHTML = '<p class="vazio">Não consegui carregar os pedidos. Verifique a internet e recarregue a página.</p>';
+    return;
+  }
+  const novosAgora = ped.idsVistos ? data.filter((p) => !ped.idsVistos.has(p.id)) : [];
+  ped.idsVistos = new Set(data.map((p) => p.id));
+  ped.lista = data;
+  ped.carregou = true;
+  atualizarContadorNovos();
+  if (!$('#painelPedidos').hidden) renderPedidos(novosAgora.map((p) => p.id));
+  if (novosAgora.length) avisarPedidoNovo(novosAgora[0], novosAgora.length);
+}
+
+function atualizarContadorNovos() {
+  const n = ped.lista.filter((p) => p.status === 'recebido').length;
+  const b = $('#pedNovos');
+  b.hidden = !n;
+  b.textContent = n;
+  document.title = (n ? `(${n}) ` : '') + 'Painel Eletronic — Estoque e pedidos';
+}
+
+function renderPedidos(destacar = []) {
+  if (!ped.carregou) return;
+  // edições ainda não salvas sobrevivem ao re-render (pedido novo chegando, relógio do "há X min")
+  const rascunhos = {};
+  document.querySelectorAll('#pedLista .ped').forEach((card) => {
+    const salvar = card.querySelector('[data-acao="salvar"]');
+    if (salvar && !salvar.disabled) rascunhos[card.dataset.id] = {
+      status: card.querySelector('[data-campo="status"]').value,
+      motoboy: card.querySelector('[data-campo="motoboy"]').value,
+    };
+  });
+  const foco = document.activeElement && document.activeElement.closest('#pedLista .ped')
+    ? { id: document.activeElement.closest('.ped').dataset.id, campo: document.activeElement.dataset.campo } : null;
+  desenharPedidos(destacar);
+  Object.entries(rascunhos).forEach(([id, r]) => {
+    const card = document.querySelector(`#pedLista .ped[data-id="${id}"]`);
+    if (!card) return;
+    card.querySelector('[data-campo="status"]').value = r.status;
+    card.querySelector('[data-campo="motoboy"]').value = r.motoboy;
+    card.querySelector('[data-acao="salvar"]').disabled = false;
+  });
+  if (foco && foco.campo) {
+    const el = document.querySelector(`#pedLista .ped[data-id="${foco.id}"] [data-campo="${foco.campo}"]`);
+    if (el) el.focus({ preventScroll: true });
+  }
+}
+
+function desenharPedidos(destacar) {
+  const hoje = hojeSP();
+  const conta = (per) => ped.lista.filter((p) => noPeriodo(p, per)).length;
+  const cards = [
+    ['hoje', conta('hoje'), 'pedidos hoje', ''],
+    ['semana', conta('semana'), 'esta semana', `desde ${dataBR(inicioSemana(hoje)).slice(0, 5)}`],
+    ['mes', conta('mes'), 'este mês', ''],
+    ['entregar', conta('entregar'), 'entregar hoje', 'ainda não entregues'],
+  ];
+  $('#pedResumo').innerHTML = cards.map(([k, n, rotulo, sub]) =>
+    `<button class="ped-card ${ped.periodo === k ? 'ativa' : ''}" data-periodo="${k}" aria-pressed="${ped.periodo === k}">
+      <strong>${n}</strong><span>${rotulo}</span><small>${sub}</small></button>`).join('') ;
+
+  const doPeriodo = ped.lista.filter((p) => noPeriodo(p, ped.periodo));
+  const sel = $('#pedStatus');
+  const atual = sel.value;
+  sel.innerHTML = `<option value="">Todos os status (${doPeriodo.length})</option>` +
+    STATUS.map(([k, n]) => `<option value="${k}">${n} (${doPeriodo.filter((p) => p.status === k).length})</option>`).join('') +
+    `<option value="__todos_periodos">Ver pedidos de todos os períodos</option>`;
+  sel.value = atual;
+
+  const busca = $('#pedBusca').value.trim().toLowerCase();
+  const buscaDig = busca.replace(/\D/g, '');
+  const lista = doPeriodo.filter((p) => {
+    if (sel.value && p.status !== sel.value) return false;
+    if (!busca) return true;
+    if (`${p.nome} ${p.endereco} ${p.complemento || ''} ${p.produto || ''}`.toLowerCase().includes(busca)) return true;
+    return buscaDig.length >= 3 && (p.telefone.includes(buscaDig) || String(p.id) === buscaDig.replace(/^0+/, ''));
+  });
+
+  if (!ped.lista.length) {
+    $('#pedLista').innerHTML = `<p class="vazio">Nenhum pedido de entrega ainda.<br>
+      Quando um cliente agendar pelo site, ele aparece aqui na hora — com aviso sonoro.</p>`;
+    return;
+  }
+  if (!lista.length) {
+    const nomes = { hoje: 'hoje', semana: 'nesta semana', mes: 'neste mês', entregar: 'para entregar hoje', todos: '' };
+    $('#pedLista').innerHTML = `<p class="vazio">Nenhum pedido ${nomes[ped.periodo] || ''}${sel.value || busca ? ' com esses filtros' : ''}.<br>
+      <button class="mini" data-periodo="todos" style="margin-top:12px">Ver todos os pedidos</button></p>`;
+    return;
+  }
+  $('#pedLista').innerHTML = lista.map((p) => cardPedido(p, destacar.includes(p.id))).join('');
+}
+
+function cardPedido(p, chegou) {
+  const qd = quandoEntrega(p.data_entrega);
+  const tel = telBR(p.telefone);
+  const telWa = p.telefone.length <= 11 ? '55' + p.telefone : p.telefone;
+  const primeiro = p.nome.split(/\s+/)[0];
+  const msgCliente = `Olá, ${primeiro}! Aqui é da Eletronic, sobre o seu pedido de entrega ${numero(p.id)} para ${dataBR(p.data_entrega)} (${p.horario}).`;
+  const maps = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(p.endereco);
+  return `
+  <article class="ped st-${p.status}${chegou ? ' chegou' : ''}" data-id="${p.id}">
+    <div class="ped-topo">
+      <div><span class="ped-num">${numero(p.id)}</span><span class="st">${NOME_STATUS[p.status]}</span></div>
+      <span class="ped-quando">Recebido ${horaBR(p.criado_em)} · ${haQuanto(p.criado_em)}</span>
+    </div>
+    <div class="ped-dados">
+      <p class="ped-l"><b>Cliente</b>${esc(p.nome)}<br>${esc(tel)}
+        <a href="https://wa.me/${telWa}?text=${encodeURIComponent(msgCliente)}" target="_blank" rel="noopener">WhatsApp ↗</a></p>
+      <p class="ped-l"><b>Quando</b>${dataBR(p.data_entrega)}${qd ? `<span class="ped-hoje${qd === 'amanhã' ? ' amanha' : ''}">${qd}</span>` : ''}<br>${esc(p.horario)}</p>
+      <p class="ped-l"><b>Endereço</b>${esc(p.endereco)}${p.complemento ? `<br><small>${esc(p.complemento)}</small>` : ''}
+        <a href="${maps}" target="_blank" rel="noopener">Mapa ↗</a></p>
+      <p class="ped-l"><b>Produto</b>${p.produto ? esc(p.produto) : '<small>Não informado</small>'}</p>
+      <p class="ped-l largo"><b>Pagamento na entrega (combinado)</b>${esc(p.pagamento)}</p>
+      ${p.observacoes ? `<p class="ped-l largo"><b>Observações</b>${esc(p.observacoes)}</p>` : ''}
+      <p class="ped-l"><b>CPF</b><span class="cpf-txt">${cpfOculto(p.cpf)}</span><button class="ped-cpf" data-acao="cpf" type="button">mostrar</button></p>
+      ${p.motoboy ? `<p class="ped-l"><b>Motoboy</b>${esc(p.motoboy)}</p>` : ''}
+    </div>
+    <div class="ped-acoes">
+      <label>Status
+        <select data-campo="status">${STATUS.map(([k, n]) => `<option value="${k}" ${k === p.status ? 'selected' : ''}>${n}</option>`).join('')}</select></label>
+      <label>Motoboy
+        <input data-campo="motoboy" maxlength="120" placeholder="Nome do motoboy" value="${esc(p.motoboy || '')}"></label>
+      <button class="mini salvar" data-acao="salvar" disabled>Salvar</button>
+      <button class="mini" data-acao="copiar" type="button">Copiar para o motoboy</button>
+      <button class="link-perigo" data-acao="apagar" type="button">Apagar</button>
+    </div>
+  </article>`;
+}
+
+function textoMotoboy(p) {
+  const l = [`*Eletronic — ${numero(p.id)}*`, `*Endereço:* ${p.endereco}`];
+  if (p.complemento) l.push(`Complemento: ${p.complemento}`);
+  l.push(`Quando: ${dataBR(p.data_entrega)} · ${p.horario}`, `Cliente: ${p.nome} · ${telBR(p.telefone)}`, `CPF: ${cpfBR(p.cpf)}`);
+  if (p.produto) l.push(`Produto: ${p.produto}`);
+  l.push(`Pagamento só na entrega (combinado): ${p.pagamento}`);
+  if (p.observacoes) l.push(`Obs.: ${p.observacoes}`);
+  if (p.motoboy) l.push(`Motoboy: ${p.motoboy}`);
+  return l.join('\n');
+}
+
+async function copiar(texto) {
+  try { await navigator.clipboard.writeText(texto); return true; } catch {}
+  const ta = document.createElement('textarea');
+  ta.value = texto; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.opacity = '0';
+  document.body.appendChild(ta); ta.select();
+  let ok = false; try { ok = document.execCommand('copy'); } catch {}
+  ta.remove();
+  return ok;
+}
+
+$('#pedResumo').addEventListener('click', (e) => {
+  const b = e.target.closest('[data-periodo]');
+  if (!b) return;
+  ped.periodo = ped.periodo === b.dataset.periodo ? 'todos' : b.dataset.periodo;
+  renderPedidos();
+});
+$('#pedLista').addEventListener('click', async (e) => {
+  const todos = e.target.closest('[data-periodo="todos"]');
+  if (todos) { ped.periodo = 'todos'; $('#pedStatus').value = ''; $('#pedBusca').value = ''; return renderPedidos(); }
+  const btn = e.target.closest('[data-acao]');
+  if (!btn) return;
+  const card = btn.closest('.ped');
+  const p = ped.lista.find((x) => String(x.id) === card.dataset.id);
+  if (!p) return;
+  const acao = btn.dataset.acao;
+  if (acao === 'cpf') {
+    const span = card.querySelector('.cpf-txt');
+    const aberto = btn.textContent === 'ocultar';
+    span.textContent = aberto ? cpfOculto(p.cpf) : cpfBR(p.cpf);
+    btn.textContent = aberto ? 'mostrar' : 'ocultar';
+    return;
+  }
+  if (acao === 'copiar') {
+    const ok = await copiar(textoMotoboy(p));
+    return toast(ok ? 'Dados copiados — é só colar no WhatsApp do motoboy.' : 'Não consegui copiar neste navegador.', !ok);
+  }
+  if (acao === 'apagar') {
+    if (!confirm(`Apagar o pedido ${numero(p.id)} de ${p.nome}? Isso não pode ser desfeito.`)) return;
+    const { data, error } = await sb.from('el_pedidos').delete().eq('id', p.id).select('id');
+    if (error || !data?.length) return toast('Não consegui apagar. Entre de novo no painel e tente outra vez.', true);
+    toast(`Pedido ${numero(p.id)} apagado.`);
+    return carregarPedidos();
+  }
+  if (acao === 'salvar') {
+    const status = card.querySelector('[data-campo="status"]').value;
+    const motoboy = card.querySelector('[data-campo="motoboy"]').value.trim() || null;
+    btn.disabled = true;
+    const { data, error } = await sb.from('el_pedidos').update({ status, motoboy }).eq('id', p.id).select('id');
+    if (error || !data?.length) { btn.disabled = false; return toast('Não consegui salvar. Entre de novo no painel e tente outra vez.', true); }
+    toast(`Pedido ${numero(p.id)}: ${NOME_STATUS[status]}.`);
+    carregarPedidos();
+  }
+});
+$('#pedLista').addEventListener('input', (e) => {
+  const campo = e.target.closest('[data-campo]');
+  if (!campo) return;
+  const card = campo.closest('.ped');
+  const p = ped.lista.find((x) => String(x.id) === card.dataset.id);
+  const mudou = card.querySelector('[data-campo="status"]').value !== p.status ||
+    card.querySelector('[data-campo="motoboy"]').value.trim() !== (p.motoboy || '');
+  card.querySelector('[data-acao="salvar"]').disabled = !mudou;
+});
+$('#pedLista').addEventListener('change', (e) => {
+  if (e.target.matches('[data-campo="status"]')) e.target.dispatchEvent(new Event('input', { bubbles: true }));
+});
+$('#pedBusca').addEventListener('input', () => renderPedidos());
+$('#pedStatus').addEventListener('change', () => {
+  if ($('#pedStatus').value === '__todos_periodos') { ped.periodo = 'todos'; $('#pedStatus').value = ''; }
+  renderPedidos();
+});
+
+/* aviso de pedido novo: som curto (Web Audio), destaque no card e título da aba */
+let audioCtx = null;
+function bip() {
+  if (!ped.som) return;
+  try {
+    audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    const t0 = audioCtx.currentTime;
+    [[880, 0], [1320, 0.16]].forEach(([f, dt]) => {
+      const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+      o.type = 'sine'; o.frequency.value = f;
+      g.gain.setValueAtTime(0.0001, t0 + dt);
+      g.gain.exponentialRampToValueAtTime(0.25, t0 + dt + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.0001, t0 + dt + 0.32);
+      o.connect(g).connect(audioCtx.destination);
+      o.start(t0 + dt); o.stop(t0 + dt + 0.35);
+    });
+  } catch {}
+}
+// navegadores só liberam áudio depois de um toque na página
+document.addEventListener('pointerdown', () => {
+  try { audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)(); audioCtx.resume(); } catch {}
+}, { once: true });
+
+function avisarPedidoNovo(p, n) {
+  bip();
+  toast(n > 1 ? `${n} pedidos de entrega novos!` : `Novo pedido de entrega ${numero(p.id)} — ${p.nome.split(/\s+/)[0]}`);
+}
+
+function pintarBotaoSom() {
+  const b = $('#pedSom');
+  b.setAttribute('aria-pressed', ped.som);
+  b.textContent = `Som de aviso: ${ped.som ? 'ligado' : 'desligado'}`;
+}
+$('#pedSom').addEventListener('click', () => {
+  ped.som = !ped.som;
+  try { localStorage.setItem('el_ped_som', ped.som ? 'sim' : 'nao'); } catch {}
+  pintarBotaoSom();
+  if (ped.som) bip();
+});
+
+let pedIniciado = false;
+function iniciarPedidos() {
+  if (pedIniciado) return;
+  pedIniciado = true;
+  pintarBotaoSom();
+  carregarPedidos();
+  // o sinal público só diz "algo mudou"; os dados vêm pela consulta autenticada
+  let espera;
+  try {
+    sbAnon.channel('eletronic-pedidos')
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'el_pedidos_sinal' }, () => {
+        clearTimeout(espera);
+        espera = setTimeout(carregarPedidos, 300);
+      })
+      .subscribe();
+  } catch {}
+  // rede de segurança se o tempo real cair: confere a cada minuto e ao voltar para a aba
+  setInterval(() => { if (!document.hidden) carregarPedidos(); }, 60000);
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) carregarPedidos(); });
+  // atualiza os "há X min" sem recarregar
+  setInterval(() => { if (!$('#painelPedidos').hidden) renderPedidos(); }, 60000);
+  let secao = 'estoque';
+  try { secao = localStorage.getItem('el_secao') || 'estoque'; } catch {}
+  if (secao === 'pedidos') abrirSecao('pedidos');
+}
 
 /* ============ INÍCIO ============ */
 boot();

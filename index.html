@@ -7,14 +7,14 @@
   <meta name="description" content="iPhones originais com nota fiscal e 1 ano de garantia em Taubaté-SP. Lacrados e seminovos, acessórios e relógios Garmin. Até 18x no cartão e entrega para todo o Brasil."/>
   <meta property="og:title" content="Eletronic — Produtos Apple Originais"/>
   <meta property="og:description" content="iPhones originais com nota fiscal e 1 ano de garantia em Taubaté-SP. Até 18x no cartão e entrega para todo o Brasil."/>
-  <meta property="og:image" content="https://jpfamelli.github.io/eletronic-site/images/og.jpg"/>
+  <meta property="og:image" content="https://eletronic-taubate.netlify.app/images/og.jpg"/>
   <meta property="og:image:width" content="1200"/>
   <meta property="og:image:height" content="630"/>
   <meta property="og:locale" content="pt_BR"/>
-  <meta property="og:url" content="https://jpfamelli.github.io/eletronic-site/"/>
+  <meta property="og:url" content="https://eletronic-taubate.netlify.app/"/>
   <meta property="og:type" content="website"/>
   <meta name="twitter:card" content="summary_large_image"/>
-  <link rel="canonical" href="https://jpfamelli.github.io/eletronic-site/"/>
+  <link rel="canonical" href="https://eletronic-taubate.netlify.app/"/>
   <link rel="icon" type="image/svg+xml" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" fill="%2304091c"/><path d="M35 8L14 34h17l-3 22 22-28H33l2-20z" fill="%23c9a227"/></svg>'>
   <meta name="theme-color" content="#04091c"/>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -28,8 +28,8 @@
     "@type": "Store",
     "name": "Eletronic",
     "description": "Loja de iPhones originais com nota fiscal e 1 ano de garantia em Taubaté-SP. Lacrados e seminovos, acessórios e relógios Garmin. Até 18x no cartão e entrega para todo o Brasil.",
-    "url": "https://jpfamelli.github.io/eletronic-site/",
-    "image": "https://jpfamelli.github.io/eletronic-site/images/og.jpg",
+    "url": "https://eletronic-taubate.netlify.app/",
+    "image": "https://eletronic-taubate.netlify.app/images/og.jpg",
     "telephone": "+5512997463135",
     "address": {
       "@type": "PostalAddress",
@@ -2260,10 +2260,9 @@
       .quiz-card, .quiz-prog i, .quiz-opt, .quiz-opt-ck { transition:none !important; }
     }
 
-    /* ===== ENTREGA POR MOTOBOY — o sistema de agendamento roda dentro de um iPhone =====
-       Altura fixa com rolagem interna DE PROPÓSITO: ao enviar, o sistema troca o formulário
-       por um cartão curto ("Pedido enviado"); com rolagem interna o navegador reposiciona a
-       vista e o cliente vê a confirmação, em vez de um vão vazio abaixo dela. */
+    /* ===== ENTREGA POR MOTOBOY — agendamento nativo dentro de um iPhone =====
+       Grava em el_pedidos (RPC el_pedido_criar) e aparece na aba Pedidos do painel.
+       Desktop: rola dentro da tela do aparelho. ≤900px: flui com a página (sem rolagem dupla). */
     .ent-grid { display:grid; grid-template-columns:minmax(0,1fr) auto; gap:72px; align-items:start; margin-top:44px; }
     .ent-copy { padding-top:56px; }
     .ent-sub { max-width:500px; color:#c6d1e6; font-size:.95rem; line-height:1.8; }
@@ -2287,25 +2286,99 @@
     .ent-fone::after { content:''; position:absolute; right:-4px; top:150px; width:3px; height:74px; border-radius:2px;
       background:linear-gradient(180deg,#8a6a10,var(--gold),#8a6a10); opacity:.7; }
     .ent-tela { position:relative; height:min(760px,calc(100vh - 140px)); min-height:560px; border-radius:44px;
-      overflow:hidden; background:#050912; isolation:isolate; }
-    .ent-tela iframe { position:relative; z-index:1; display:block; width:100%; height:100%; border:0; background:transparent; }
-    .ent-carregando { position:absolute; inset:0; z-index:0; display:flex; flex-direction:column; align-items:center;
-      justify-content:center; gap:14px; color:var(--gray); font-size:.68rem; letter-spacing:.18em; text-transform:uppercase; }
-    .ent-carregando svg { width:30px; height:30px; fill:var(--gold); animation:pulse-gold 2s ease-in-out infinite; }
-    /* cursor da marca some sobre o iframe (mesmo véu do mapa) */
-    @media (pointer:fine) { .ent-tela, .ent-tela iframe, .ent-tela .cmap-veu { cursor:auto; } }
+      overflow-x:hidden; overflow-y:auto; overscroll-behavior:contain; scroll-behavior:smooth;
+      background:radial-gradient(120% 40% at 50% 0%, rgba(201,162,39,.12) 0%, transparent 60%), #050912;
+      scrollbar-width:thin; scrollbar-color:rgba(201,162,39,.45) transparent; }
+    .ent-tela::-webkit-scrollbar { width:4px; }
+    .ent-tela::-webkit-scrollbar-thumb { background:rgba(201,162,39,.45); border-radius:4px; }
+
+    /* "app" dentro do aparelho */
+    .ent-app-topo { position:sticky; top:0; z-index:2; display:flex; align-items:center; gap:12px; padding:18px 22px 14px;
+      background:linear-gradient(180deg,#050912 70%,rgba(5,9,18,0)); }
+    .ent-app-raio { width:38px; height:38px; border-radius:11px; border:1px solid rgba(201,162,39,.55); flex-shrink:0;
+      background:rgba(201,162,39,.08); display:flex; align-items:center; justify-content:center; }
+    .ent-app-raio svg { width:18px; height:18px; fill:var(--gold); }
+    .ent-app-topo strong { display:block; font-family:'Cormorant Garamond',serif; font-size:1.2rem; font-weight:600; color:var(--cream); line-height:1.1; }
+    .ent-app-topo small { display:block; font-size:.6rem; letter-spacing:.16em; text-transform:uppercase; color:var(--gold); margin-top:3px; }
+    .ent-form, .ent-ok { padding:6px 22px 26px; }
+    .ent-campo { display:block; margin-bottom:16px; }
+    .ent-rot { display:flex; justify-content:space-between; align-items:baseline; gap:8px; font-size:.68rem; font-weight:600;
+      letter-spacing:.12em; text-transform:uppercase; color:var(--gold-pale); margin-bottom:7px; }
+    .ent-rot i { font-style:normal; font-weight:400; letter-spacing:.04em; text-transform:none; color:var(--gray); font-size:.72rem; }
+    .ent-form input, .ent-form textarea { width:100%; background:rgba(255,255,255,.04); border:1px solid rgba(201,162,39,.25);
+      border-radius:12px; color:var(--cream); font:400 .95rem/1.4 'DM Sans',sans-serif; padding:12px 14px; outline:none;
+      transition:border-color .2s, box-shadow .2s, background .2s; -webkit-appearance:none; appearance:none; }
+    .ent-form textarea { resize:vertical; min-height:84px; }
+    .ent-form input::placeholder, .ent-form textarea::placeholder { color:rgba(136,153,187,.7); }
+    .ent-form input:focus, .ent-form textarea:focus { border-color:var(--gold); background:rgba(201,162,39,.05);
+      box-shadow:0 0 0 3px rgba(201,162,39,.18); }
+    .ent-form input[type=date] { color-scheme:dark; min-height:46px; }
+    .ent-form [aria-invalid="true"] { border-color:#e5533d; }
+    .ent-erro { display:block; font-style:normal; font-size:.76rem; color:#f0a094; margin-top:6px; }
+    .ent-erro:empty { display:none; }
+    .ent-janelas { border:0; padding:0; margin:0 0 16px; min-width:0; }
+    .ent-janelas legend { padding:0; width:100%; }
+    .ent-chips { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+    .ent-chip { position:relative; }
+    .ent-chip input { position:absolute; opacity:0; width:1px; height:1px; }
+    .ent-chip span { display:flex; flex-direction:column; align-items:center; gap:2px; text-align:center; padding:11px 4px;
+      border:1px solid rgba(201,162,39,.25); border-radius:12px; font-size:.82rem; color:var(--cream); transition:all .2s; }
+    .ent-chip span small { font-size:.66rem; color:var(--gray); }
+    .ent-chip input:checked + span { border-color:var(--gold); background:rgba(201,162,39,.14); box-shadow:inset 0 0 0 1px var(--gold); }
+    .ent-chip input:checked + span small { color:var(--gold-pale); }
+    .ent-chip input:focus-visible + span { outline:2px solid var(--gold-pale); outline-offset:2px; }
+    .ent-outro { margin-top:8px; }
+    .ent-aviso { font-size:.74rem; line-height:1.6; color:var(--gray); margin-top:8px; padding:10px 12px; border-radius:10px;
+      background:rgba(201,162,39,.05); border:1px solid rgba(201,162,39,.14); }
+    .ent-aviso strong { color:var(--gold-pale); font-weight:600; }
+    .ent-hp { position:absolute !important; left:-9999px !important; width:1px; height:1px; opacity:0; }
+    .ent-form-erro { font-size:.82rem; color:#f0a094; margin:4px 0 12px; line-height:1.5; }
+    .ent-form-erro:empty { display:none; }
+    .ent-enviar { width:100%; border:none; border-radius:var(--r-pill); background:var(--gold-grad); color:#0a0f24;
+      font:600 .8rem/1 'DM Sans',sans-serif; letter-spacing:.14em; text-transform:uppercase; padding:17px 20px;
+      box-shadow:0 10px 28px -10px rgba(201,162,39,.65), inset 0 1px 0 rgba(255,255,255,.28);
+      transition:transform .25s var(--ease-btn), box-shadow .3s, opacity .2s; display:flex; align-items:center; justify-content:center; gap:10px; }
+    .ent-enviar:hover { transform:translateY(-2px); box-shadow:0 16px 36px -10px rgba(201,162,39,.8), inset 0 1px 0 rgba(255,255,255,.36); }
+    .ent-enviar:active { transform:scale(.98); }
+    .ent-enviar:focus-visible { outline:2px solid var(--gold-pale); outline-offset:4px; }
+    .ent-enviar[aria-busy="true"] { opacity:.7; pointer-events:none; }
+    .ent-enviar[aria-busy="true"]::after { content:''; width:14px; height:14px; border-radius:50%;
+      border:2px solid rgba(10,15,36,.35); border-top-color:#0a0f24; animation:entGira .7s linear infinite; }
+    @keyframes entGira { to { transform:rotate(360deg); } }
+
+    .ent-ok { text-align:center; padding-top:40px; }
+    .ent-ok:focus { outline:none; } /* foco programático só para leitores de tela anunciarem a confirmação */
+    .ent-ok-ic { width:64px; height:64px; margin:0 auto; border-radius:50%; border:1px solid var(--gold);
+      display:flex; align-items:center; justify-content:center; background:rgba(201,162,39,.1);
+      box-shadow:0 0 40px -6px rgba(201,162,39,.45); animation:entPop .5s cubic-bezier(.22,.9,.3,1) both; }
+    .ent-ok-ic svg { width:30px; height:30px; stroke:var(--gold); fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    @keyframes entPop { from { transform:scale(.6); opacity:0; } to { transform:none; opacity:1; } }
+    .ent-ok h3 { font-family:'Cormorant Garamond',serif; font-size:2rem; font-weight:600; color:var(--cream); margin-top:18px; }
+    .ent-ok-num { display:inline-block; margin-top:12px; padding:8px 20px; border-radius:var(--r-pill);
+      background:var(--cream); color:#0a0f24; font:700 1.3rem/1 'DM Sans',sans-serif; letter-spacing:.06em; }
+    .ent-ok p { font-size:.88rem; line-height:1.7; color:#c6d1e6; margin:18px auto 0; max-width:300px; }
+    .ent-ok-resumo { text-align:left; margin:22px 0 0; padding:14px 16px; border-radius:12px; border:1px solid rgba(201,162,39,.2);
+      background:rgba(255,255,255,.03); font-size:.8rem; line-height:1.75; color:var(--gray); }
+    .ent-ok-resumo b { color:var(--gold-pale); font-weight:600; }
+    .ent-ok .cmap-btn { margin-top:22px; }
+    .ent-ok-outro { display:block; margin:16px auto 0; background:none; border:none; color:var(--gray); font:500 .78rem 'DM Sans',sans-serif;
+      text-decoration:underline; text-underline-offset:3px; }
+    .ent-ok-outro:hover { color:var(--gold-pale); }
+    @media (pointer:fine) { .ent-form input, .ent-form textarea { cursor:text; } .ent-chip span, .ent-enviar, .ent-ok-outro { cursor:none; } }
 
     @media (max-width:900px) {
       .ent-grid { grid-template-columns:1fr; gap:30px; margin-top:30px; }
       .ent-copy { padding-top:0; }
-      .ent-fone { width:100%; padding:0; border-radius:var(--r-card); background:none; box-shadow:none;
+      .ent-fone { width:100%; max-width:560px; padding:0; border-radius:22px; box-shadow:0 30px 60px -30px rgba(0,0,0,.8);
         border:1px solid rgba(201,162,39,.32); overflow:hidden; }
       .ent-fone::before, .ent-fone::after { display:none; }
-      .ent-tela { border-radius:0; height:82vh; height:82svh; min-height:520px; }
+      .ent-tela { border-radius:0; height:auto; min-height:0; overflow:visible; }
+      .ent-app-topo { position:static; }
       .ent-acts { margin-top:28px; }
     }
     @media (max-width:700px) { .ent-acts .cmap-btn { width:100%; } .ent-nota { max-width:none; } }
-    @media (prefers-reduced-motion: reduce) { .ent-carregando svg { animation:none !important; } }
+    @media (max-width:360px) { .ent-chips { grid-template-columns:1fr; } }
+    @media (prefers-reduced-motion: reduce) { .ent-ok-ic, .ent-enviar[aria-busy="true"]::after { animation:none !important; } .ent-tela { scroll-behavior:auto; } }
 
     /* NAV — 6 links (~476px de texto) não cabem entre a marca e o CTA abaixo de ~1240px:
        nessa faixa os links vão para o menu hambúrguer; acima, o espaçamento acompanha a tela */
@@ -2977,8 +3050,8 @@
   </div>
 </section>
 
-<!-- ENTREGA — o sistema de agendamento (entregas-eletronic.replit.app) embutido num iPhone.
-     Os pedidos caem no painel de entregas da loja; o painel da vitrine tem o atalho "Entregas". -->
+<!-- ENTREGA — agendamento por motoboy dentro de um iPhone. Grava em el_pedidos (RPC el_pedido_criar)
+     e o pedido aparece na hora na aba Pedidos do painel da loja. -->
 <section class="sec entrega" id="entrega" aria-labelledby="entregaTitulo">
   <p class="eyebrow rv"><span></span>Entrega por motoboy</p>
   <h2 class="heading rv" id="entregaTitulo">Fechou a compra? <em>A gente leva.</em></h2>
@@ -3001,17 +3074,68 @@
         </li>
       </ol>
       <div class="ent-acts rv">
-        <a class="cmap-btn" href="https://entregas-eletronic.replit.app/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 3h6v6"/><path d="M10 14L21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>Abrir em tela cheia</a>
+        <a class="cmap-btn" href="https://wa.me/5512997463135?text=Ol%C3%A1!%20Quero%20combinar%20uma%20entrega%20por%20motoboy." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.4A8.4 8.4 0 1 1 21 11.5z"/></svg>Prefiro combinar no WhatsApp</a>
         <span class="ent-nota">Nunca informe número de cartão, senha ou dados bancários no formulário.</span>
       </div>
     </div>
     <div class="ent-fone rv">
-      <div class="ent-tela">
-        <div class="ent-carregando" aria-hidden="true">
-          <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-          Abrindo o agendamento…
+      <div class="ent-tela" id="entTela">
+        <div class="ent-app-topo">
+          <span class="ent-app-raio" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></span>
+          <div><strong>Entrega Eletronic</strong><small>Agendamento por motoboy</small></div>
         </div>
-        <iframe src="https://entregas-eletronic.replit.app/" title="Agendar entrega por motoboy — Eletronic" loading="lazy"></iframe>
+
+        <form class="ent-form" id="entForm" novalidate aria-label="Agendar entrega por motoboy">
+          <label class="ent-campo"><span class="ent-rot">Nome completo</span>
+            <input name="nome" autocomplete="name" maxlength="120" placeholder="Marina Albuquerque" aria-describedby="entE-nome">
+            <em class="ent-erro" id="entE-nome"></em></label>
+          <label class="ent-campo"><span class="ent-rot">Telefone / WhatsApp</span>
+            <input name="telefone" type="tel" inputmode="tel" autocomplete="tel-national" maxlength="16" placeholder="(12) 99999-0000" aria-describedby="entE-telefone">
+            <em class="ent-erro" id="entE-telefone"></em></label>
+          <label class="ent-campo"><span class="ent-rot">CPF</span>
+            <input name="cpf" inputmode="numeric" maxlength="14" placeholder="000.000.000-00" aria-describedby="entE-cpf">
+            <em class="ent-erro" id="entE-cpf"></em></label>
+          <label class="ent-campo"><span class="ent-rot">Endereço de entrega</span>
+            <input name="endereco" autocomplete="street-address" maxlength="300" placeholder="Rua, número, bairro, cidade" aria-describedby="entE-endereco">
+            <em class="ent-erro" id="entE-endereco"></em></label>
+          <label class="ent-campo"><span class="ent-rot">Complemento <i>opcional</i></span>
+            <input name="complemento" maxlength="200" placeholder="Apto 42, bloco B, portaria"></label>
+          <label class="ent-campo"><span class="ent-rot">Data</span>
+            <input name="data_entrega" type="date" aria-describedby="entE-data_entrega">
+            <em class="ent-erro" id="entE-data_entrega"></em></label>
+          <fieldset class="ent-janelas" aria-describedby="entE-horario">
+            <legend class="ent-rot">Horário desejado</legend>
+            <div class="ent-chips">
+              <label class="ent-chip"><input type="radio" name="janela" value="Manhã (9h às 12h)"><span>Manhã<small>9h às 12h</small></span></label>
+              <label class="ent-chip"><input type="radio" name="janela" value="Tarde (12h às 18h)"><span>Tarde<small>12h às 18h</small></span></label>
+              <label class="ent-chip"><input type="radio" name="janela" value="Noite (18h às 21h)"><span>Noite<small>18h às 21h</small></span></label>
+            </div>
+            <input class="ent-outro" name="horario_outro" maxlength="60" placeholder="Ou um horário específico (ex.: 14h30)" aria-label="Horário específico">
+            <em class="ent-erro" id="entE-horario"></em>
+          </fieldset>
+          <label class="ent-campo"><span class="ent-rot">Produto / modelo <i>opcional</i></span>
+            <input name="produto" maxlength="160" placeholder="iPhone 15 Pro 256 GB"></label>
+          <label class="ent-campo"><span class="ent-rot">Forma de pagamento na entrega</span>
+            <textarea name="pagamento" maxlength="2000" rows="3" placeholder="Ex.: 12x de 320,00 + 1.000,00 no Pix + iPhone 14 128 GB na troca" aria-describedby="entE-pagamento entPagAviso"></textarea>
+            <em class="ent-erro" id="entE-pagamento"></em>
+            <span class="ent-aviso" id="entPagAviso">O pagamento é feito <strong>somente no ato da entrega</strong> — este campo serve só para registrar o combinado com a loja.
+              Não informe número de cartão, senha ou dados bancários.</span></label>
+          <label class="ent-campo"><span class="ent-rot">Observações <i>opcional</i></span>
+            <textarea name="observacoes" maxlength="1000" rows="2" placeholder="Ponto de referência, instruções para o motoboy"></textarea></label>
+          <input class="ent-hp" name="site" tabindex="-1" autocomplete="off" aria-hidden="true">
+          <p class="ent-form-erro" id="entFormErro" role="alert"></p>
+          <button class="ent-enviar" type="submit" id="entEnviar">Enviar pedido</button>
+        </form>
+
+        <div class="ent-ok" id="entOk" hidden tabindex="-1">
+          <div class="ent-ok-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <h3>Pedido enviado</h3>
+          <span class="ent-ok-num" id="entOkNum">#0000</span>
+          <p id="entOkTxt">A loja já recebeu e vai falar com você para confirmar o horário.</p>
+          <div class="ent-ok-resumo" id="entOkResumo"></div>
+          <a class="cmap-btn" id="entOkWa" href="https://wa.me/5512997463135" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.4A8.4 8.4 0 1 1 21 11.5z"/></svg>Falar com a loja</a>
+          <button class="ent-ok-outro" type="button" id="entOkOutro">Fazer outro pedido</button>
+        </div>
       </div>
     </div>
   </div>
@@ -3377,8 +3501,7 @@
     // mouseover ao entrar direto nele (o cursor da marca congelava na borda). Um véu invisível captura
     // a ENTRADA (esconde o cursor e se desliga para o mapa receber o mouse); a SAÍDA chega pelo
     // mouseover normal fora do .cmap, que também rearma o véu.
-    // O agendamento de entrega (.ent-tela) é outro iframe de outra origem: mesmo véu.
-    document.querySelectorAll('.cmap, .ent-tela').forEach(m=>{
+    document.querySelectorAll('.cmap').forEach(m=>{
       const veu=document.createElement('div'); veu.className='cmap-veu'; veu.setAttribute('aria-hidden','true');
       veu.addEventListener('mouseenter',()=>{ document.body.classList.add('curoff'); veu.style.pointerEvents='none'; });
       m.appendChild(veu);
@@ -3386,8 +3509,10 @@
     document.addEventListener('mouseover',e=>{
       const t=e.target;
       document.body.classList.toggle('hov',!!(t.closest&&t.closest('a,button,summary,.pcard,.cat-tab,.iph,.elc-clicavel')));
-      const noMapa=!!(t.closest&&t.closest('.cmap, .ent-tela'));
-      document.body.classList.toggle('curoff',noMapa);
+      const noMapa=!!(t.closest&&t.closest('.cmap'));
+      // nos campos de texto do agendamento vale o cursor de digitação do sistema
+      const noCampo=!!(t.matches&&t.matches('.ent-form input, .ent-form textarea'));
+      document.body.classList.toggle('curoff',noMapa||noCampo);
       if(!noMapa) document.querySelectorAll('.cmap-veu').forEach(v=>{ v.style.pointerEvents=''; });
     });
     // press físico no vocabulário do cursor
@@ -3395,7 +3520,7 @@
     document.addEventListener('pointerup',()=>document.body.classList.remove('cdown'));
     // cursor some quando o ponteiro sai da janela
     document.addEventListener('mouseout',e=>{ if(!e.relatedTarget) document.body.classList.add('curoff'); });
-    document.addEventListener('mousemove',()=>{ if(!document.querySelector('.cmap:hover, .ent-tela:hover')) document.body.classList.remove('curoff'); });
+    document.addEventListener('mousemove',()=>{ if(!document.querySelector('.cmap:hover, .ent-form input:hover, .ent-form textarea:hover')) document.body.classList.remove('curoff'); });
   }
 
   // Nav scroll
@@ -7417,6 +7542,184 @@ window.elcChart = (function () {
     flt.addEventListener('pointerenter', esconde);
     flt.addEventListener('click', esconde);
   })();
+})();
+</script>
+
+<script>
+'use strict';
+/* ============ AGENDAMENTO DE ENTREGA — grava em el_pedidos e cai na hora na aba Pedidos do painel ============ */
+(function () {
+  var form = document.getElementById('entForm');
+  if (!form) return;
+  var SB_URL = 'https://nppfqhavqahapmugnyng.supabase.co';
+  var SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5wcGZxaGF2cWFoYXBtdWdueW5nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU4NTAxMTIsImV4cCI6MjEwMTQyNjExMn0.Fb6mAvAuODy2mprKBc_w8tRaY5SYG9Nf9o2VKfuOXRA';
+  var TZ = 'America/Sao_Paulo';
+  var tela = document.getElementById('entTela');
+  var fone = tela.closest('.ent-fone');
+  var ok = document.getElementById('entOk');
+  var btn = document.getElementById('entEnviar');
+  var erroGeral = document.getElementById('entFormErro');
+  var el = form.elements;
+
+  function hojeSP() { return new Date().toLocaleDateString('en-CA', { timeZone: TZ }); }
+  function somaDias(iso, n) {
+    var p = iso.split('-').map(Number);
+    return new Date(Date.UTC(p[0], p[1] - 1, p[2] + n)).toISOString().slice(0, 10);
+  }
+  function dataBR(iso) { var p = iso.split('-'); return p[2] + '/' + p[1] + '/' + p[0]; }
+  function dig(v) { return String(v || '').replace(/\D/g, ''); }
+  function esc(t) {
+    return String(t == null ? '' : t).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  el.data_entrega.min = hojeSP();
+  el.data_entrega.max = somaDias(hojeSP(), 120);
+
+  /* máscaras */
+  function mascTel(d) {
+    d = d.slice(0, 11);
+    if (!d) return '';
+    if (d.length <= 2) return '(' + d;
+    var r = d.slice(2), corte = r.length === 9 ? 5 : 4;
+    return '(' + d.slice(0, 2) + ') ' + (r.length <= 4 ? r : r.slice(0, corte) + '-' + r.slice(corte));
+  }
+  function mascCpf(d) {
+    d = d.slice(0, 11);
+    return d.replace(/^(\d{3})(\d)/, '$1.$2').replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3').replace(/\.(\d{3})(\d{1,2})$/, '.$1-$2');
+  }
+  el.telefone.addEventListener('input', function () { this.value = mascTel(dig(this.value)); });
+  el.cpf.addEventListener('input', function () { this.value = mascCpf(dig(this.value)); });
+  /* escolher uma janela limpa o horário específico e vice-versa */
+  form.addEventListener('change', function (e) { if (e.target.name === 'janela') el.horario_outro.value = ''; });
+  el.horario_outro.addEventListener('input', function () {
+    if (this.value) Array.prototype.forEach.call(form.querySelectorAll('[name=janela]'), function (r) { r.checked = false; });
+  });
+
+  function cpfValido(c) {
+    if (!/^\d{11}$/.test(c) || /^(\d)\1{10}$/.test(c)) return false;
+    for (var t = 9; t < 11; t++) {
+      var s = 0;
+      for (var i = 0; i < t; i++) s += Number(c[i]) * (t + 1 - i);
+      var r = (s * 10) % 11;
+      if (r === 10) r = 0;
+      if (r !== Number(c[t])) return false;
+    }
+    return true;
+  }
+  function horario() {
+    var outro = el.horario_outro.value.trim();
+    if (outro) return outro;
+    var marcado = form.querySelector('[name=janela]:checked');
+    return marcado ? marcado.value : '';
+  }
+
+  function validar() {
+    var e = {};
+    if (el.nome.value.trim().length < 2) e.nome = 'Informe seu nome completo.';
+    var t = dig(el.telefone.value);
+    if (t.length < 10 || t.length > 13) e.telefone = 'Informe um telefone com DDD.';
+    if (!cpfValido(dig(el.cpf.value))) e.cpf = 'Informe um CPF válido com 11 dígitos.';
+    if (el.endereco.value.trim().length < 5) e.endereco = 'Informe rua, número e bairro.';
+    var d = el.data_entrega.value;
+    if (!d) e.data_entrega = 'Escolha a data.';
+    else if (d < hojeSP()) e.data_entrega = 'A data não pode ser no passado.';
+    else if (d > el.data_entrega.max) e.data_entrega = 'Escolha uma data dentro dos próximos 4 meses.';
+    if (horario().length < 2) e.horario = 'Escolha a janela ou informe o horário desejado.';
+    var pg = el.pagamento.value.trim();
+    if (pg.length < 3) e.pagamento = 'Descreva a forma de pagamento combinada com a loja.';
+    return e;
+  }
+  function mostrarErros(e) {
+    ['nome', 'telefone', 'cpf', 'endereco', 'data_entrega', 'horario', 'pagamento'].forEach(function (k) {
+      var alvo = document.getElementById('entE-' + k);
+      if (alvo) alvo.textContent = e[k] || '';
+      var campo = k === 'horario' ? el.horario_outro : el[k];
+      if (campo) { if (e[k]) campo.setAttribute('aria-invalid', 'true'); else campo.removeAttribute('aria-invalid'); }
+    });
+    var primeiro = Object.keys(e)[0];
+    if (primeiro) {
+      var f = primeiro === 'horario' ? form.querySelector('[name=janela]') : el[primeiro];
+      if (f) f.focus();
+    }
+  }
+  /* o erro some assim que a pessoa corrige o campo */
+  form.addEventListener('input', function (ev) {
+    var n = ev.target.name === 'horario_outro' || ev.target.name === 'janela' ? 'horario' : ev.target.name;
+    var alvo = document.getElementById('entE-' + n);
+    if (alvo && alvo.textContent) { alvo.textContent = ''; ev.target.removeAttribute('aria-invalid'); }
+  });
+  form.addEventListener('change', function (ev) {
+    if (ev.target.name === 'janela') document.getElementById('entE-horario').textContent = '';
+  });
+
+  function numeroLoja() {
+    var a = document.querySelector('.nav-btn[href*="wa.me/"]');
+    var m = a && a.href.match(/wa\.me\/(\d+)/);
+    return m ? m[1] : '5512997463135';
+  }
+  function irParaTopo() {
+    if (getComputedStyle(tela).overflowY === 'auto') tela.scrollTop = 0;
+    else window.scrollTo({ top: fone.getBoundingClientRect().top + window.scrollY - 100, behavior: 'smooth' });
+  }
+
+  form.addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    erroGeral.textContent = '';
+    if (el.site.value) return; /* campo-isca: só robô preenche */
+    var e = validar();
+    mostrarErros(e);
+    if (Object.keys(e).length) return;
+    var p = {
+      nome: el.nome.value.trim(), telefone: dig(el.telefone.value), cpf: dig(el.cpf.value),
+      endereco: el.endereco.value.trim(), complemento: el.complemento.value.trim(),
+      data_entrega: el.data_entrega.value, horario: horario(), produto: el.produto.value.trim(),
+      pagamento: el.pagamento.value.trim(), observacoes: el.observacoes.value.trim(),
+    };
+    btn.setAttribute('aria-busy', 'true');
+    btn.firstChild.nodeValue = 'Enviando ';
+    fetch(SB_URL + '/rest/v1/rpc/el_pedido_criar', {
+      method: 'POST',
+      headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ p: p }),
+    }).then(function (r) {
+      return r.json().catch(function () { return {}; }).then(function (j) { return { ok: r.ok, j: j }; });
+    }).then(function (res) {
+      if (!res.ok) {
+        erroGeral.textContent = (res.j && res.j.code === 'P0001' && res.j.message) ||
+          'Não conseguimos enviar agora. Tente de novo em instantes ou chame a loja no WhatsApp.';
+        return;
+      }
+      var num = res.j.numero || '';
+      document.getElementById('entOkNum').textContent = num;
+      document.getElementById('entOkTxt').textContent = 'A loja já recebeu e vai falar com você no ' +
+        mascTel(p.telefone) + ' para confirmar o horário.';
+      document.getElementById('entOkResumo').innerHTML =
+        '<b>Quando:</b> ' + dataBR(p.data_entrega) + ' · ' + esc(p.horario) + '<br>' +
+        '<b>Onde:</b> ' + esc(p.endereco) + (p.complemento ? ' — ' + esc(p.complemento) : '') + '<br>' +
+        '<b>Pagamento:</b> só no ato da entrega';
+      document.getElementById('entOkWa').href = 'https://wa.me/' + numeroLoja() + '?text=' +
+        encodeURIComponent('Olá! Acabei de agendar a entrega ' + num + ' pelo site para ' + dataBR(p.data_entrega) + ' (' + p.horario + ').');
+      form.hidden = true;
+      ok.hidden = false;
+      irParaTopo();
+      try { ok.focus({ preventScroll: true }); } catch (x) { ok.focus(); }
+    }).catch(function () {
+      erroGeral.textContent = 'Sem conexão no momento. Verifique a internet e tente de novo, ou chame a loja no WhatsApp.';
+    }).then(function () {
+      btn.removeAttribute('aria-busy');
+      btn.firstChild.nodeValue = 'Enviar pedido';
+    });
+  });
+
+  document.getElementById('entOkOutro').addEventListener('click', function () {
+    form.reset();
+    el.data_entrega.min = hojeSP();
+    ok.hidden = true;
+    form.hidden = false;
+    irParaTopo();
+    el.nome.focus({ preventScroll: true });
+  });
 })();
 </script>
 

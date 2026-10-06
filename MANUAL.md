@@ -9,9 +9,11 @@ sem tecniquês.
 
 | O quê | Endereço | Quem usa |
 |---|---|---|
-| **Site da loja** (vitrine) | `https://jpfamelli.github.io/eletronic-site/` | Clientes |
-| **Painel de controle** | `https://jpfamelli.github.io/eletronic-site/painel.html` | Só a equipe |
-| **Pedidos de entrega** | `https://entregas-eletronic.replit.app/admin` (botão **Entregas ↗** no painel) | Só a equipe |
+| **Site da loja** (vitrine) | `https://eletronic-taubate.netlify.app` | Clientes |
+| **Painel de controle** (estoque + pedidos) | `https://eletronic-taubate.netlify.app/painel.html` | Só a equipe |
+
+O mesmo site também fica no ar como espelho em `https://jpfamelli.github.io/eletronic-site/`
+(painel em `.../painel.html`). Os dois usam o mesmo banco: tanto faz qual abrir.
 
 O painel não aparece em lugar nenhum do site — só entra quem tem o endereço **e** uma conta
 aprovada. Guarde o link nos favoritos do celular.
@@ -103,19 +105,40 @@ Botão **Configurações**:
 
 ---
 
-## Entregas por motoboy
+## Pedidos de entrega (aba Pedidos)
 
-O site tem a seção **"Fechou a compra? A gente leva."** (link **Entrega** no menu).
-Nela, o cliente agenda a entrega sem sair do site: preenche endereço, dia, janela de
-horário (manhã, tarde ou noite) e como vai pagar na entrega.
+No site, a seção **"Fechou a compra? A gente leva."** (link **Entrega** no menu) tem o
+agendamento por motoboy: o cliente informa nome, telefone, CPF, endereço, dia, janela de
+horário (manhã, tarde, noite ou um horário específico), o produto e como vai pagar na entrega.
 
-- Os pedidos de entrega **não** aparecem neste painel: eles caem no sistema de entregas
-  da loja. No topo do painel, toque em **Entregas ↗** para abri-lo em outra aba e entrar
-  com o login da equipe de lá.
-- O cliente também pode abrir o agendamento em tela cheia pelo botão
-  **"Abrir em tela cheia"**: `https://entregas-eletronic.replit.app`
-- O formulário avisa que o pagamento é feito só na entrega e que o cliente nunca deve
-  informar número de cartão, senha ou dados bancários.
+Assim que ele toca em **Enviar pedido**, o pedido aparece **na hora** na aba **Pedidos** do
+painel — com um aviso sonoro e um número vermelho na aba mostrando quantos estão esperando.
+
+### Os cartões do topo
+- **Pedidos hoje / Esta semana / Este mês** — quantos pedidos chegaram em cada período
+  (a semana começa na segunda). Toque num cartão para ver só aqueles pedidos.
+- **Entregar hoje** — entregas marcadas para hoje que ainda não foram entregues.
+  É a lista do motoboy do dia.
+
+### Cada pedido
+- **WhatsApp ↗** abre a conversa com o cliente já com uma mensagem pronta.
+- **Mapa ↗** abre o endereço no Google Maps.
+- **CPF** aparece escondido; toque em **mostrar** para ver inteiro.
+- **Status** — siga o caminho: *Recebido → Confirmado → A caminho → Entregue*
+  (ou *Cancelado*). Mude e toque em **Salvar**.
+- **Motoboy** — escreva quem vai levar e toque em **Salvar**.
+- **Copiar para o motoboy** — copia endereço, horário, cliente, produto e pagamento num
+  texto pronto; é só colar no WhatsApp do motoboy.
+- **Apagar** — remove o pedido de vez (pede confirmação).
+
+Use a busca para achar um pedido pelo nome, telefone, endereço ou número.
+O botão **Som de aviso** liga ou desliga o apito de pedido novo.
+
+> Os pedidos são numerados em sequência (#0001, #0002…), e o cliente vê o número na tela
+> de confirmação. Se ele mandar mensagem citando o número, é só buscar.
+
+Pedidos feitos antes de 06/10/2026 pelo sistema antigo continuam em
+`https://entregas-eletronic.replit.app/admin`.
 
 ---
 
@@ -145,6 +168,14 @@ Centenas, sem custo. As fotos são comprimidas automaticamente para não estoura
 
 **O que os clientes veem quando uma categoria está vazia?**
 Uma mensagem simpática convidando a chamar no WhatsApp — a vitrine nunca fica "quebrada".
+
+**O aviso de pedido novo não tocou.**
+O navegador só libera som depois que você toca em qualquer lugar do painel. Deixe o painel
+aberto numa aba, toque nele uma vez, e confira se **Som de aviso** está ligado.
+
+**Os dados dos clientes estão seguros?**
+Sim. Nome, telefone, CPF e endereço só podem ser lidos por quem está logado no painel.
+O site consegue apenas *enviar* pedidos, nunca ler os de outras pessoas.
 
 **Quanto custa manter isso tudo?**
 R$ 0. Site e banco de dados rodam em planos gratuitos, com o vigia automático incluso.
