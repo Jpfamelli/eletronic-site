@@ -5,12 +5,13 @@ sem tecniquês.
 
 ---
 
-## Os dois endereços
+## Os endereços
 
 | O quê | Endereço | Quem usa |
 |---|---|---|
 | **Site da loja** (vitrine) | `https://jpfamelli.github.io/eletronic-site/` | Clientes |
 | **Painel de controle** | `https://jpfamelli.github.io/eletronic-site/painel.html` | Só a equipe |
+| **Pedidos de entrega** | `https://entregas-eletronic.replit.app/admin` (botão **Entregas ↗** no painel) | Só a equipe |
 
 O painel não aparece em lugar nenhum do site — só entra quem tem o endereço **e** uma conta
 aprovada. Guarde o link nos favoritos do celular.
@@ -99,6 +100,22 @@ Botão **Configurações**:
   (formato: só números, com 55 e DDD — ex.: `5512997463135`).
 - **Instagram** — atualiza os links do site.
 - **Trocar minha senha** — cada um troca a própria senha por aqui.
+
+---
+
+## Entregas por motoboy
+
+O site tem a seção **"Fechou a compra? A gente leva."** (link **Entrega** no menu).
+Nela, o cliente agenda a entrega sem sair do site: preenche endereço, dia, janela de
+horário (manhã, tarde ou noite) e como vai pagar na entrega.
+
+- Os pedidos de entrega **não** aparecem neste painel: eles caem no sistema de entregas
+  da loja. No topo do painel, toque em **Entregas ↗** para abri-lo em outra aba e entrar
+  com o login da equipe de lá.
+- O cliente também pode abrir o agendamento em tela cheia pelo botão
+  **"Abrir em tela cheia"**: `https://entregas-eletronic.replit.app`
+- O formulário avisa que o pagamento é feito só na entrega e que o cliente nunca deve
+  informar número de cartão, senha ou dados bancários.
 
 ---
 
