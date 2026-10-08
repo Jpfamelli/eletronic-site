@@ -2305,15 +2305,14 @@
     .ent-rot { display:flex; justify-content:space-between; align-items:baseline; gap:8px; font-size:.68rem; font-weight:600;
       letter-spacing:.12em; text-transform:uppercase; color:var(--gold-pale); margin-bottom:7px; }
     .ent-rot i { font-style:normal; font-weight:400; letter-spacing:.04em; text-transform:none; color:var(--gray); font-size:.72rem; }
-    .ent-form input, .ent-form textarea { width:100%; background:rgba(255,255,255,.04); border:1px solid rgba(201,162,39,.25);
+    .ent-form .ent-in, .ent-acomp .ent-in { width:100%; background:rgba(255,255,255,.04); border:1px solid rgba(201,162,39,.25);
       border-radius:12px; color:var(--cream); font:400 .95rem/1.4 'DM Sans',sans-serif; padding:12px 14px; outline:none;
       transition:border-color .2s, box-shadow .2s, background .2s; -webkit-appearance:none; appearance:none; }
-    .ent-form textarea { resize:vertical; min-height:84px; }
-    .ent-form input::placeholder, .ent-form textarea::placeholder { color:rgba(136,153,187,.7); }
-    .ent-form input:focus, .ent-form textarea:focus { border-color:var(--gold); background:rgba(201,162,39,.05);
-      box-shadow:0 0 0 3px rgba(201,162,39,.18); }
-    .ent-form input[type=date] { color-scheme:dark; min-height:46px; }
-    .ent-form [aria-invalid="true"] { border-color:#e5533d; }
+    .ent-form textarea.ent-in { resize:vertical; min-height:84px; }
+    .ent-in::placeholder { color:rgba(136,153,187,.7); }
+    .ent-in:focus { border-color:var(--gold); background:rgba(201,162,39,.05); box-shadow:0 0 0 3px rgba(201,162,39,.18); }
+    .ent-form input[type=date].ent-in { color-scheme:dark; min-height:46px; }
+    .ent-in[aria-invalid="true"] { border-color:#e5533d; }
     .ent-erro { display:block; font-style:normal; font-size:.76rem; color:#f0a094; margin-top:6px; }
     .ent-erro:empty { display:none; }
     .ent-janelas { border:0; padding:0; margin:0 0 16px; min-width:0; }
@@ -2332,8 +2331,9 @@
       background:rgba(201,162,39,.05); border:1px solid rgba(201,162,39,.14); }
     .ent-aviso strong { color:var(--gold-pale); font-weight:600; }
     .ent-hp { position:absolute !important; left:-9999px !important; width:1px; height:1px; opacity:0; }
-    .ent-form-erro { font-size:.82rem; color:#f0a094; margin:4px 0 12px; line-height:1.5; }
-    .ent-form-erro:empty { display:none; }
+    .ent-form-erro { font-size:.82rem; color:#f0a094; margin:4px 0 14px; line-height:1.5; padding:12px 14px; border-radius:12px;
+      border:1px solid rgba(229,83,61,.35); background:rgba(229,83,61,.07); }
+    .ent-form-erro p { margin:0; }
     .ent-enviar { width:100%; border:none; border-radius:var(--r-pill); background:var(--gold-grad); color:#0a0f24;
       font:600 .8rem/1 'DM Sans',sans-serif; letter-spacing:.14em; text-transform:uppercase; padding:17px 20px;
       box-shadow:0 10px 28px -10px rgba(201,162,39,.65), inset 0 1px 0 rgba(255,255,255,.28);
@@ -2364,7 +2364,7 @@
     .ent-ok-outro { display:block; margin:16px auto 0; background:none; border:none; color:var(--gray); font:500 .78rem 'DM Sans',sans-serif;
       text-decoration:underline; text-underline-offset:3px; }
     .ent-ok-outro:hover { color:var(--gold-pale); }
-    @media (pointer:fine) { .ent-form input, .ent-form textarea { cursor:text; } .ent-chip span, .ent-enviar, .ent-ok-outro { cursor:none; } }
+    @media (pointer:fine) { .ent-in { cursor:text; } .ent-chip span, .ent-enviar, .ent-ok-outro { cursor:none; } }
 
     @media (max-width:900px) {
       .ent-grid { grid-template-columns:1fr; gap:30px; margin-top:30px; }
@@ -2379,6 +2379,523 @@
     @media (max-width:700px) { .ent-acts .cmap-btn { width:100%; } .ent-nota { max-width:none; } }
     @media (max-width:360px) { .ent-chips { grid-template-columns:1fr; } }
     @media (prefers-reduced-motion: reduce) { .ent-ok-ic, .ent-enviar[aria-busy="true"]::after { animation:none !important; } .ent-tela { scroll-behavior:auto; } }
+
+    /* ============================================================
+       LOTE 1 — CATÁLOGO, FICHA DO PRODUTO E AGENDAMENTO EM ETAPAS
+       ============================================================ */
+
+    /* ---------- iPhone em DOM (placeholder sem foto) — tingido pela cor do aparelho ---------- */
+    .pdev { --tint:#1b2547; position:relative; height:80%; aspect-ratio:9/19.5; max-width:72%;
+      transition:transform .5s var(--ease-btn); }
+    .pdev-corpo { position:absolute; inset:0; border-radius:17% / 8%;
+      background:linear-gradient(150deg, color-mix(in srgb, var(--tint) 70%, #fff) 0%, var(--tint) 38%,
+        color-mix(in srgb, var(--tint) 62%, #000) 100%);
+      border:1px solid rgba(201,162,39,.55);
+      box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.18), inset 0 0 12px rgba(0,0,0,.45),
+        0 22px 40px -18px rgba(0,0,0,.85), 0 0 34px -12px rgba(201,162,39,.35); }
+    .pdev-btn { position:absolute; right:-2.5%; top:24%; width:2.4%; height:11%; border-radius:2px;
+      background:color-mix(in srgb, var(--tint) 75%, #000); box-shadow:inset 0 0 0 1px rgba(255,255,255,.12); }
+    .pdev-tela { position:absolute; inset:3.6%; border-radius:13.5% / 6.4%; overflow:hidden; container-type:size;
+      display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; gap:2.2cqh;
+      background:radial-gradient(120% 55% at 50% 0%, rgba(201,162,39,.2) 0%, transparent 62%),
+        radial-gradient(140% 60% at 50% 112%, rgba(15,32,96,.9) 0%, transparent 70%), linear-gradient(180deg,#071026,#02050d); }
+    .pdev-ilha { position:absolute; top:3.2cqh; left:50%; transform:translateX(-50%); width:34cqw; height:3.6cqh;
+      border-radius:99px; background:#000; box-shadow:inset 0 0 2px rgba(255,255,255,.08); }
+    .pdev-tela::after { content:''; position:absolute; inset:-20% -60%; pointer-events:none; opacity:.9;
+      background:linear-gradient(112deg, transparent 40%, rgba(255,255,255,.09) 48%, rgba(255,255,255,.02) 54%, transparent 60%);
+      transform:translateX(-30%); }
+    .pdev-raio svg { width:16cqw; height:auto; fill:var(--gold); filter:drop-shadow(0 0 2.4cqw rgba(240,216,150,.55)); }
+    .pdev-marca { font:600 7cqw/1 'DM Sans',sans-serif; letter-spacing:.32em; text-transform:uppercase; color:#9fb0d3; padding-left:.32em; }
+    .pdev-modelo { font-family:'Cormorant Garamond',serif; font-style:italic; font-weight:600; font-size:15cqw; line-height:.98;
+      color:var(--cream); padding:0 6cqw; text-wrap:balance; }
+    .pdev-spec { font:600 7cqw/1 'DM Sans',sans-serif; letter-spacing:.18em; text-transform:uppercase; color:var(--gold-pale);
+      border-top:1px solid rgba(201,162,39,.4); padding-top:2.4cqh; min-width:50cqw; }
+    @media (pointer:fine) and (prefers-reduced-motion:no-preference) {
+      .pcard:hover .pdev { transform:translateY(-4%) rotate(-2deg); }
+      .pcard:hover .pdev-tela::after { animation:pdevVarre 1.2s var(--ease-btn) both; }
+    }
+    @keyframes pdevVarre { from { transform:translateX(-60%); } to { transform:translateX(60%); } }
+
+    /* ---------- cards: estoque, condição, bateria, garantia ---------- */
+    .pcard-foto { position:relative; background:radial-gradient(90% 70% at 50% 30%, rgba(201,162,39,.09), transparent 70%), rgba(255,255,255,.035); }
+    .pcard-estq { position:absolute; left:12px; bottom:12px; z-index:2; display:inline-flex; align-items:center; gap:7px;
+      padding:6px 11px; border-radius:var(--r-pill); font:600 .58rem/1 'DM Sans',sans-serif; letter-spacing:.14em; text-transform:uppercase;
+      color:var(--cream); background:rgba(4,9,28,.78); border:1px solid rgba(240,216,150,.45); backdrop-filter:blur(6px); }
+    .pcard-estq i { width:6px; height:6px; border-radius:50%; background:var(--gold-pale); box-shadow:0 0 0 0 rgba(240,216,150,.7);
+      animation:estqPulso 2.2s ease-out infinite; }
+    @keyframes estqPulso { 0% { box-shadow:0 0 0 0 rgba(240,216,150,.65); } 70%,100% { box-shadow:0 0 0 7px rgba(240,216,150,0); } }
+    .pcard-nfotos { position:absolute; right:12px; bottom:12px; z-index:2; display:inline-flex; align-items:center; gap:6px;
+      padding:5px 10px; border-radius:var(--r-pill); font:600 .62rem/1 'DM Sans',sans-serif; letter-spacing:.08em; color:var(--cream);
+      background:rgba(4,9,28,.72); border:1px solid rgba(247,243,232,.2); }
+    .pcard-nfotos svg { width:12px; height:12px; stroke:currentColor; fill:none; stroke-width:1.8; }
+    .pcard.pesgotado .pcard-foto > img, .pcard.pesgotado .pcard-foto > .pdev { filter:grayscale(.85) brightness(.6); }
+    .pcard-esg { position:absolute; inset:auto 0 50% 0; transform:translateY(50%) rotate(-6deg); z-index:2; text-align:center;
+      font-family:'Cormorant Garamond',serif; font-style:italic; font-weight:600; font-size:1.7rem; color:var(--cream);
+      letter-spacing:.04em; text-shadow:0 2px 14px rgba(0,0,0,.8); pointer-events:none; }
+    .pcard-esg::before, .pcard-esg::after { content:''; display:inline-block; width:22px; height:1px; background:var(--gold-pale);
+      vertical-align:middle; margin:0 10px; opacity:.7; }
+    .pcard.pesgotado { border-color:rgba(136,153,187,.22); }
+    .pcard.pesgotado .pcard-preco strong { color:var(--gray); }
+    .pcard-cond { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1rem; line-height:1.2; color:var(--gold-pale); }
+    .pcard-nome { position:static; }
+    .pcard-ver { color:inherit; text-decoration:none; }
+    .pcard-ver::before { content:''; position:absolute; inset:0; z-index:1; border-radius:inherit; }
+    .pcard-ver:focus-visible { outline:none; }
+    .pcard:has(.pcard-ver:focus-visible) { outline:2px solid var(--gold-pale); outline-offset:3px; }
+    .pcard-wa { z-index:2; }
+    .pcard-specs { list-style:none; margin:4px 0 0; padding:0; display:flex; flex-wrap:wrap; gap:6px; }
+    .pcard-specs li { display:inline-flex; align-items:center; gap:6px; padding:5px 9px; border-radius:var(--r-pill);
+      border:1px solid rgba(201,162,39,.2); background:rgba(201,162,39,.05); font-size:.66rem; letter-spacing:.04em; color:#c6d1e6; }
+    .pcard-specs svg { width:12px; height:12px; stroke:var(--gold); fill:none; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
+    /* mini medidor de saúde da bateria */
+    .pbat { position:relative; display:inline-block; width:20px; height:10px; border:1px solid rgba(247,243,232,.6); border-radius:3px; padding:1.5px; }
+    .pbat::after { content:''; position:absolute; right:-3.5px; top:2.5px; width:2px; height:3px; border-radius:1px; background:rgba(247,243,232,.6); }
+    .pbat i { display:block; height:100%; width:calc(var(--b,0) * 1%); border-radius:1px;
+      background:linear-gradient(90deg,#b08d1c,var(--gold-pale)); }
+    .pbat.baixa i { background:linear-gradient(90deg,#a4552a,#e09a5b); }
+    .pcard-de { display:flex; flex-wrap:wrap; align-items:center; gap:4px 8px; }
+    .pcard-eco { display:inline-block; margin-left:0; white-space:nowrap; font-size:.64rem; font-weight:600; letter-spacing:.1em; text-transform:uppercase;
+      color:#0a0f24; background:var(--gold-pale); padding:3px 7px; border-radius:var(--r-pill); vertical-align:2px; }
+    .pcard-preco s { display:inline; }
+    .pcard-preco strong { display:block; }
+    .pcard-mais { display:inline-flex; align-items:center; gap:6px; margin-top:8px; font-size:.68rem; font-weight:600; letter-spacing:.14em;
+      text-transform:uppercase; color:var(--gold); }
+    .pcard-mais::after { content:'→'; transition:transform .3s var(--ease-btn); }
+    .pcard:hover .pcard-mais::after { transform:translateX(5px); }
+    .pcard-avise { background:transparent !important; color:var(--cream) !important; border:1px solid rgba(247,243,232,.5) !important; box-shadow:none !important; }
+    .pcard-avise:hover { background:rgba(247,243,232,.08) !important; }
+    .pcard-avise svg { fill:#25d366 !important; }
+    /* entrada escalonada a cada filtro/ordenação */
+    .pgrid.anima .pcard { animation:pcardIn .55s var(--ease-btn) backwards; animation-delay:calc(var(--i,0) * 60ms); }
+    @keyframes pcardIn { from { opacity:0; transform:translateY(16px) scale(.985); } to { opacity:1; transform:none; } }
+    @media (max-width:700px) {
+      .pcard-wa { white-space:normal; line-height:1.3; letter-spacing:.06em; padding:12px 8px; font-size:.64rem; gap:6px; text-align:center; }
+      .pcard-estq { left:8px; bottom:8px; padding:5px 8px; font-size:.5rem; letter-spacing:.1em; }
+      .pcard-selo { top:10px !important; left:10px !important; padding:5px 9px !important; font-size:.5rem !important; }
+      .pcard-specs li { font-size:.6rem; padding:4px 7px; }
+      .pcard-mais { font-size:.6rem; letter-spacing:.1em; }
+      .pcard-esg { font-size:1.3rem; }
+      .pcard-eco { font-size:.54rem; letter-spacing:.05em; padding:3px 6px; }
+    }
+
+    /* ---------- barra do catálogo: contagem, filtros derivados dos dados, ordenação ---------- */
+    .cat-barra { display:flex; flex-wrap:wrap; align-items:center; gap:14px 26px; margin-top:26px; padding:14px 0 16px;
+      border-bottom:1px solid rgba(201,162,39,.14); }
+    .cat-cont { font-family:'Cormorant Garamond',serif; font-size:1.35rem; font-style:italic; color:var(--cream); margin:0; white-space:nowrap; }
+    .cat-cont b { font-style:normal; font-weight:700; color:var(--gold-pale); }
+    .cat-filtros { display:flex; flex-wrap:wrap; gap:10px 20px; flex:1; min-width:0; }
+    .cat-fgrupo { display:flex; align-items:center; gap:6px; min-width:0; }
+    .cat-flbl { font-size:.6rem; font-weight:600; letter-spacing:.2em; text-transform:uppercase; color:var(--gray); margin-right:4px; white-space:nowrap; }
+    .cat-chips { display:flex; gap:6px; min-width:0; }
+    .cat-chip, .cat-ord button, .cat-limpar { font:600 .66rem/1 'DM Sans',sans-serif; letter-spacing:.1em; text-transform:uppercase;
+      border-radius:var(--r-pill); border:1px solid rgba(201,162,39,.3); background:rgba(201,162,39,.04); color:#c6d1e6;
+      padding:9px 13px; display:inline-flex; align-items:center; gap:7px; white-space:nowrap; transition:all .25s var(--ease-btn); }
+    .cat-chip small { font-size:.6rem; color:var(--gray); letter-spacing:.04em; }
+    .cat-chip:hover, .cat-ord button:hover { border-color:rgba(201,162,39,.7); color:var(--gold-pale); transform:translateY(-1px); }
+    .cat-chip[aria-pressed="true"], .cat-ord button[aria-pressed="true"] { background:var(--gold-grad); border-color:transparent; color:#0a0f24;
+      box-shadow:0 8px 18px -10px rgba(201,162,39,.8); }
+    .cat-chip[aria-pressed="true"] small { color:rgba(10,15,36,.7); }
+    .cat-dot { width:10px; height:10px; border-radius:50%; background:var(--tint,#888); box-shadow:inset 0 0 0 1px rgba(255,255,255,.35), 0 0 0 1px rgba(0,0,0,.4); }
+    .cat-ord { display:flex; align-items:center; gap:4px; margin-left:auto; padding:4px; border-radius:var(--r-pill);
+      border:1px solid rgba(201,162,39,.18); background:rgba(4,9,28,.5); }
+    .cat-ord .cat-flbl { margin:0 6px 0 10px; }
+    .cat-ord button { border-color:transparent; background:transparent; padding:8px 12px; }
+    .cat-limpar { border-style:dashed; color:var(--gold-pale); }
+    .cat-chip:focus-visible, .cat-ord button:focus-visible, .cat-limpar:focus-visible { outline:2px solid var(--gold-pale); outline-offset:3px; }
+    .cat-semres { text-align:center; padding:54px 20px 30px; }
+    .cat-semres h4 { font-family:'Cormorant Garamond',serif; font-size:1.7rem; font-weight:600; color:var(--cream); }
+    .cat-semres p { color:var(--gray); margin:10px auto 22px; max-width:46ch; line-height:1.7; font-size:.92rem; }
+    .cat-semres p b { color:var(--gold-pale); font-weight:600; }
+    .cat-semres-acts { display:flex; flex-wrap:wrap; gap:12px; justify-content:center; }
+    @media (pointer:fine) { .cat-chip, .cat-ord button, .cat-limpar { cursor:none; } }
+    @media (max-width:900px) {
+      .cat-barra { gap:12px; }
+      .cat-ord { margin-left:0; width:100%; justify-content:space-between; }
+      .cat-ord button { flex:1; justify-content:center; padding:9px 6px; }
+      .cat-ord .cat-flbl { display:none; }
+      .cat-filtros { flex:1 1 100%; width:100%; flex-direction:column; gap:10px; }
+      .cat-fgrupo { width:100%; }
+      .cat-chips { overflow-x:auto; scrollbar-width:none; padding:2px; margin:-2px; -webkit-overflow-scrolling:touch; }
+      .cat-chips::-webkit-scrollbar { display:none; }
+    }
+
+    /* ---------- FICHA DO PRODUTO (dialog) ---------- */
+    .ficha { position:fixed; inset:0; z-index:600; display:flex; align-items:center; justify-content:center; padding:3.5vh 4vw; }
+    .ficha-veu { position:absolute; inset:0; background:rgba(2,5,16,.74); -webkit-backdrop-filter:blur(10px) saturate(1.15);
+      backdrop-filter:blur(10px) saturate(1.15); opacity:0; transition:opacity .35s ease; }
+    .ficha.on .ficha-veu { opacity:1; }
+    .ficha-caixa { position:relative; width:min(1100px,100%); height:min(720px,93vh); display:grid; grid-template-columns:minmax(0,1.04fr) minmax(0,1fr);
+      border-radius:28px; overflow:hidden; border:1px solid rgba(201,162,39,.42);
+      background:linear-gradient(165deg,#0c1533 0%,#060b1d 55%,#050916 100%);
+      box-shadow:0 50px 120px -30px rgba(0,0,0,.9), 0 0 0 1px rgba(0,0,0,.4), 0 0 90px -30px rgba(201,162,39,.35);
+      opacity:0; transform:translateY(26px) scale(.985); transition:opacity .4s var(--ease-btn), transform .5s var(--ease-btn); }
+    .ficha.on .ficha-caixa { opacity:1; transform:none; }
+    .ficha-topo { position:absolute; top:0; right:0; z-index:5; width:0; height:0; }
+    .ficha-fechar { position:absolute; top:16px; right:16px; z-index:5; width:46px; height:46px; border-radius:50%;
+      border:1px solid rgba(201,162,39,.45); background:rgba(4,9,28,.8); color:var(--gold-pale); display:flex; align-items:center; justify-content:center;
+      transition:transform .3s var(--ease-btn), background .25s, border-color .25s; }
+    .ficha-fechar:hover { transform:rotate(90deg); background:rgba(201,162,39,.16); border-color:var(--gold); }
+    .ficha-fechar svg { width:18px; height:18px; stroke:currentColor; stroke-width:1.8; fill:none; stroke-linecap:round; }
+    .ficha-fechar:focus-visible, .fg-seta:focus-visible, .fg-mini:focus-visible, .fg-trilho:focus-visible, .ficha-nav button:focus-visible,
+    .ficha-share:focus-visible { outline:2px solid var(--gold-pale); outline-offset:3px; }
+    .ficha-alca { display:none; }
+    /* galeria */
+    .fg { position:relative; min-height:0; display:flex; flex-direction:column;
+      background:radial-gradient(80% 60% at 50% 42%, rgba(201,162,39,.16), transparent 70%),
+        radial-gradient(120% 90% at 50% 120%, rgba(15,32,96,.6), transparent 70%), #040814;
+      border-right:1px solid rgba(201,162,39,.16); }
+    .fg-trilho { flex:1; min-height:0; display:flex; overflow-x:auto; overflow-y:hidden; scroll-snap-type:x mandatory;
+      scrollbar-width:none; overscroll-behavior-x:contain; touch-action:pan-x pan-y; }
+    .fg-trilho::-webkit-scrollbar { display:none; }
+    .fg-trilho.arrastando { scroll-snap-type:none; scroll-behavior:auto; }
+    .fg-slide { flex:0 0 100%; min-width:0; scroll-snap-align:center; display:flex; align-items:center; justify-content:center;
+      padding:56px 40px 24px; margin:0; overflow:hidden; }
+    .fg-slide img { max-width:100%; max-height:100%; object-fit:contain; border-radius:14px; user-select:none; -webkit-user-drag:none;
+      transition:transform .25s ease-out; }
+    .fg-slide.lupa img { transform:scale(1.7); transition:transform .15s ease-out; }
+    .fg-palco { flex:1; min-height:0; display:flex; align-items:center; justify-content:center; padding:56px 30px 10px; perspective:900px; }
+    .fg-palco .pdev { height:86%; max-width:none; transform-style:preserve-3d; transition:transform .2s ease-out; }
+    .fg-sombra { width:46%; height:22px; margin:0 auto 6px; border-radius:50%;
+      background:radial-gradient(50% 50% at 50% 50%, rgba(201,162,39,.28), transparent 70%); filter:blur(4px); }
+    .fg-pedir { text-align:center; padding:4px 24px 26px; font-size:.8rem; color:var(--gray); }
+    .fg-pedir a { color:var(--gold-pale); text-decoration:none; border-bottom:1px solid rgba(201,162,39,.45); font-weight:600; }
+    .fg-pedir a:hover { color:#fff6d8; border-color:var(--gold); }
+    .fg-seta { position:absolute; top:50%; z-index:3; width:46px; height:46px; margin-top:-23px; border-radius:50%;
+      border:1px solid rgba(201,162,39,.5); background:rgba(4,9,28,.78); color:var(--gold-pale); display:flex; align-items:center; justify-content:center;
+      transition:transform .3s var(--ease-btn), background .25s, opacity .25s; }
+    .fg-seta svg { width:18px; height:18px; stroke:currentColor; fill:none; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
+    .fg-seta.ant { left:16px; } .fg-seta.prox { right:16px; }
+    .fg-seta:hover { background:rgba(201,162,39,.2); transform:scale(1.06); }
+    .fg-seta:disabled { opacity:.25; pointer-events:none; }
+    .fg-rodape { display:flex; align-items:center; justify-content:center; gap:14px; padding:0 20px 20px; }
+    .fg-minis { display:flex; gap:8px; overflow-x:auto; scrollbar-width:none; padding:3px; max-width:100%; }
+    .fg-mini { flex:0 0 auto; width:54px; height:54px; border-radius:10px; overflow:hidden; padding:0; border:1px solid rgba(201,162,39,.25);
+      background:#0a1028; opacity:.6; transition:opacity .25s, border-color .25s, transform .25s; }
+    .fg-mini img { width:100%; height:100%; object-fit:cover; display:block; }
+    .fg-mini:hover { opacity:1; }
+    .fg-mini[aria-current="true"] { opacity:1; border-color:var(--gold); box-shadow:0 0 0 1px var(--gold); }
+    .fg-cont { font:600 .66rem/1 'DM Sans',sans-serif; letter-spacing:.16em; color:var(--gray); white-space:nowrap; }
+    /* informações */
+    .ficha-info { min-height:0; overflow-y:auto; overscroll-behavior:contain; padding:48px 44px 30px;
+      scrollbar-width:thin; scrollbar-color:rgba(201,162,39,.45) transparent; }
+    .ficha-ey { font-size:.66rem; font-weight:600; letter-spacing:.24em; text-transform:uppercase; color:var(--gold); display:flex; align-items:center; gap:12px; }
+    .ficha-ey span { width:28px; height:1px; background:var(--gold); }
+    .ficha-nome { font-family:'Cormorant Garamond',serif; font-weight:600; font-size:clamp(2.2rem,3.4vw,3.1rem); line-height:1; color:var(--cream);
+      margin-top:14px; letter-spacing:-.01em; outline:none; padding-right:44px; }
+    .ficha-sub { margin-top:10px; font-size:.82rem; letter-spacing:.14em; text-transform:uppercase; color:var(--gray); }
+    .ficha-tags { display:flex; flex-wrap:wrap; gap:8px; margin-top:18px; }
+    .ficha-tag { display:inline-flex; align-items:center; gap:7px; padding:7px 12px; border-radius:var(--r-pill); font-size:.68rem;
+      font-weight:600; letter-spacing:.1em; text-transform:uppercase; border:1px solid rgba(201,162,39,.35); color:var(--gold-pale); background:rgba(201,162,39,.06); }
+    .ficha-tag.cond { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:.98rem; letter-spacing:.01em; text-transform:none; font-weight:600; }
+    .ficha-tag.ultima i { width:6px; height:6px; border-radius:50%; background:var(--gold-pale); animation:estqPulso 2.2s ease-out infinite; }
+    .ficha-tag.esg { color:#f0a094; border-color:rgba(229,83,61,.4); background:rgba(229,83,61,.07); }
+    .ficha-preco { margin-top:24px; padding:20px 22px; border-radius:18px; border:1px solid rgba(201,162,39,.22);
+      background:linear-gradient(140deg, rgba(201,162,39,.1), rgba(255,255,255,.015)); }
+    .ficha-preco s { color:var(--gray); font-size:.85rem; }
+    .ficha-preco strong { display:block; font-family:'Cormorant Garamond',serif; font-size:2.6rem; font-weight:700; line-height:1.05; color:var(--gold-pale);
+      letter-spacing:.01em; margin-top:2px; font-variant-numeric:lining-nums; }
+    .ficha-preco .consulte { font-size:1.9rem; }
+    .ficha-preco p { margin-top:6px; font-size:.82rem; color:#c6d1e6; }
+    .ficha-specs { margin-top:24px; display:grid; grid-template-columns:auto 1fr; border-top:1px solid rgba(201,162,39,.16); }
+    .ficha-specs dt, .ficha-specs dd { padding:12px 0; border-bottom:1px solid rgba(201,162,39,.12); font-size:.86rem; }
+    .ficha-specs dt { color:var(--gray); letter-spacing:.04em; padding-right:22px; }
+    .ficha-specs dd { color:var(--cream); text-align:right; display:flex; align-items:center; justify-content:flex-end; gap:10px; }
+    .ficha-bat { position:relative; width:84px; height:8px; border-radius:99px; background:rgba(255,255,255,.08); overflow:hidden; }
+    .ficha-bat i { position:absolute; inset:0 auto 0 0; width:calc(var(--b,0) * 1%); border-radius:inherit; background:linear-gradient(90deg,#b08d1c,var(--gold-pale)); }
+    .ficha-bat.baixa i { background:linear-gradient(90deg,#a4552a,#e09a5b); }
+    .ficha-bloco { margin-top:26px; }
+    .ficha-bloco h3 { font-size:.64rem; font-weight:600; letter-spacing:.24em; text-transform:uppercase; color:var(--gold); margin-bottom:10px; }
+    .ficha-desc { font-size:.92rem; line-height:1.75; color:#c6d1e6; white-space:pre-line; }
+    .ficha-acomp { list-style:none; padding:0; margin:0; display:flex; flex-wrap:wrap; gap:8px; }
+    .ficha-acomp li { display:inline-flex; align-items:center; gap:8px; font-size:.78rem; color:#c6d1e6; padding:8px 12px; border-radius:12px;
+      border:1px solid rgba(201,162,39,.16); background:rgba(255,255,255,.02); }
+    .ficha-acomp svg { width:15px; height:15px; stroke:var(--gold); fill:none; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round; }
+    .ficha-ctas { margin-top:28px; display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+    .ficha-ctas .btn-claro { grid-column:1 / -1; padding:18px 24px; font-size:.8rem; }
+    .ficha-ctas .cmap-btn { padding:15px 16px; font-size:.68rem; letter-spacing:.12em; white-space:normal; line-height:1.3; text-align:center; }
+    .ficha-ctas .cmap-btn svg { width:16px; height:16px; }
+    .ficha-ctas .ficha-solo { grid-column:1 / -1; }
+    .ficha-ctas .btn-claro svg { width:17px; height:17px; fill:#0e7a43; }
+    .ficha-specs dd .cat-dot { flex:0 0 auto; }
+    .ficha-nav { display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:28px; padding-top:18px;
+      border-top:1px solid rgba(201,162,39,.14); }
+    .ficha-nav button { background:none; border:none; color:var(--gray); font:600 .66rem/1 'DM Sans',sans-serif; letter-spacing:.16em; text-transform:uppercase;
+      display:inline-flex; align-items:center; gap:8px; padding:10px 4px; transition:color .2s; }
+    .ficha-nav button:hover { color:var(--gold-pale); }
+    .ficha-nav button:disabled { opacity:.3; pointer-events:none; }
+    .ficha-nav span { font-family:'Cormorant Garamond',serif; font-style:italic; color:var(--gray); font-size:1rem; }
+    .ficha-aviso { margin-top:18px; padding:12px 14px; border-radius:12px; font-size:.8rem; line-height:1.6; color:#f0d0a0;
+      border:1px solid rgba(201,162,39,.35); background:rgba(201,162,39,.08); }
+    @media (pointer:fine) { .ficha button, .fg-trilho { cursor:none; } .fg-trilho { cursor:none; } }
+    @media (max-width:860px) {
+      .ficha { align-items:flex-end; padding:0; }
+      .ficha-caixa { display:block; width:100%; height:auto; max-height:94vh; max-height:94dvh;
+        border-radius:26px 26px 0 0; overflow-y:auto; overscroll-behavior:contain; transform:translateY(100%); opacity:1;
+        transition:transform .45s var(--ease-btn); border-bottom:none; }
+      .ficha.on .ficha-caixa { transform:none; }
+      .ficha-topo { position:sticky; top:0; left:0; width:100%; height:0; }
+      .ficha-alca { display:block; position:absolute; top:9px; left:50%; width:44px; height:4px; margin-left:-22px; border-radius:4px;
+        background:rgba(247,243,232,.35); pointer-events:none; }
+      .ficha-fechar { top:14px; right:14px; width:42px; height:42px; }
+      .fg { border-right:none; border-bottom:1px solid rgba(201,162,39,.16); height:min(54vh,460px); flex:0 0 auto; }
+      .fg.fg-vazia { height:auto; }
+      .fg-palco { height:min(44vh,380px); flex:0 0 auto; padding:34px 20px 6px; }
+      .fg-slide { padding:34px 14px 14px; }
+      .fg-seta { width:40px; height:40px; margin-top:-20px; }
+      .fg-seta.ant { left:10px; } .fg-seta.prox { right:10px; }
+      .ficha-info { overflow:visible; padding:26px 20px calc(34px + env(safe-area-inset-bottom, 0px)); }
+      .ficha-nome { padding-right:0; }
+      .ficha-preco strong { font-size:2.2rem; }
+    }
+    @media (max-width:420px) { .ficha-ctas { grid-template-columns:1fr; } }
+    @media (prefers-reduced-motion: reduce) {
+      .ficha-caixa, .ficha-veu, .pdev, .fg-slide img { transition:none !important; }
+      .pcard-estq i, .ficha-tag.ultima i { animation:none !important; }
+    }
+
+    /* ---------- aviso flutuante (toast) ---------- */
+    .el-toast { position:fixed; left:50%; bottom:30px; z-index:650; max-width:min(440px,calc(100vw - 32px)); padding:14px 22px;
+      border-radius:var(--r-pill); background:rgba(6,11,30,.96); border:1px solid rgba(201,162,39,.5); color:var(--cream);
+      font-size:.86rem; line-height:1.4; text-align:center; box-shadow:0 18px 40px -14px rgba(0,0,0,.85), 0 0 30px -12px rgba(201,162,39,.45);
+      transform:translate(-50%,16px); opacity:0; pointer-events:none; transition:opacity .3s, transform .35s var(--ease-btn); }
+    .el-toast.on { opacity:1; transform:translate(-50%,0); }
+    @media (max-width:700px) { .el-toast { bottom:104px; border-radius:18px; } }
+
+    /* ---------- AGENDAMENTO EM ETAPAS + ACOMPANHAR (dentro do iPhone) ---------- */
+    /* cabeçalho do app (marca + Agendar|Acompanhar) fica preso no topo da tela do aparelho, opaco */
+    .ent-cabeca { position:sticky; top:0; z-index:3; padding-bottom:12px;
+      background:radial-gradient(130% 150% at 50% 0%, rgba(201,162,39,.12) 0%, transparent 62%), #050912; }
+    .ent-cabeca::after { content:''; position:absolute; left:0; right:0; top:100%; height:18px; pointer-events:none;
+      background:linear-gradient(180deg,#050912,rgba(5,9,18,0)); }
+    .ent-cabeca .ent-app-topo { position:static; background:none; }
+    .ent-modo { position:relative; z-index:2; margin:0 22px; display:grid; grid-template-columns:1fr 1fr; padding:4px;
+      border-radius:var(--r-pill); border:1px solid rgba(201,162,39,.28); background:rgba(5,9,18,.92); -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px); }
+    .ent-modo button { position:relative; z-index:1; border:none; background:transparent; border-radius:var(--r-pill); padding:11px 8px;
+      font:600 .68rem/1 'DM Sans',sans-serif; letter-spacing:.16em; text-transform:uppercase; color:var(--gray); transition:color .3s; }
+    .ent-modo button[aria-selected="true"] { color:#0a0f24; }
+    .ent-modo button:not([aria-selected="true"]):hover { color:var(--gold-pale); }
+    .ent-modo button:focus-visible { outline:2px solid var(--gold-pale); outline-offset:2px; }
+    .ent-modo-ind { position:absolute; z-index:0; top:4px; bottom:4px; left:4px; width:calc(50% - 4px); border-radius:var(--r-pill);
+      background:var(--gold-grad); box-shadow:0 6px 16px -8px rgba(201,162,39,.8); transition:transform .45s var(--ease-btn); }
+    .ent-modo.ac .ent-modo-ind { transform:translateX(100%); }
+    .ent-painel { outline:none; }
+    /* progresso */
+    .ent-prog { margin:2px 0 18px; }
+    .ent-prog-lista { list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(4,1fr); gap:6px; }
+    .ent-prog-btn { width:100%; background:none; border:none; padding:0 0 4px; text-align:left; color:var(--gray); display:flex; flex-direction:column; gap:7px; }
+    .ent-prog-btn i { display:block; height:3px; border-radius:3px; background:rgba(201,162,39,.16); position:relative; overflow:hidden; }
+    .ent-prog-btn i::after { content:''; position:absolute; inset:0; background:var(--gold-grad); transform:scaleX(0); transform-origin:left;
+      transition:transform .5s var(--ease-btn); }
+    .ent-prog-btn span { font:600 .56rem/1.2 'DM Sans',sans-serif; letter-spacing:.14em; text-transform:uppercase; }
+    .ent-prog-btn b { font-family:'Cormorant Garamond',serif; font-style:italic; font-weight:600; font-size:.9rem; margin-right:4px; letter-spacing:0; text-transform:none; }
+    .ent-prog-btn.feito i::after, .ent-prog-btn[aria-current="step"] i::after { transform:scaleX(1); }
+    .ent-prog-btn[aria-current="step"] { color:var(--gold-pale); }
+    .ent-prog-btn.feito { color:#c6d1e6; }
+    .ent-prog-btn:disabled { cursor:default; }
+    .ent-prog-btn:not(:disabled):hover span { color:var(--gold-pale); }
+    .ent-prog-btn:focus-visible { outline:2px solid var(--gold-pale); outline-offset:3px; border-radius:4px; }
+    .ent-etapa-tit { font-family:'Cormorant Garamond',serif; font-size:1.65rem; font-weight:600; color:var(--cream); line-height:1.1; margin:0 0 16px; outline:none; }
+    .ent-etapa-tit em { font-style:italic; color:var(--gold); }
+    .ent-etapa { animation:entEtapaIn .45s var(--ease-btn); }
+    .ent-etapa.volta { animation-name:entEtapaVolta; }
+    @keyframes entEtapaIn { from { opacity:0; transform:translateX(18px); } to { opacity:1; transform:none; } }
+    @keyframes entEtapaVolta { from { opacity:0; transform:translateX(-18px); } to { opacity:1; transform:none; } }
+    .ent-dica { display:block; font-size:.7rem; color:var(--gray); margin-top:6px; line-height:1.5; }
+    .ent-duo { display:grid; grid-template-columns:110px 1fr; gap:10px; }
+    .ent-cep-linha { display:flex; align-items:flex-end; gap:12px; }
+    .ent-cep-linha .ent-campo { flex:0 0 150px; margin-bottom:0; }
+    .ent-cep-link { font-size:.72rem; color:var(--gold-pale); text-decoration:none; border-bottom:1px solid rgba(201,162,39,.4); padding:14px 0 6px; white-space:nowrap; }
+    .ent-cep-link:hover { color:#fff6d8; }
+    .ent-cep-st { display:block; min-height:1.2em; font-size:.72rem; color:var(--gray); margin:6px 0 14px; }
+    .ent-cep-st.ok { color:var(--gold-pale); }
+    .ent-cep-st.busca::before { content:''; display:inline-block; width:10px; height:10px; margin-right:7px; vertical-align:-1px; border-radius:50%;
+      border:1.5px solid rgba(201,162,39,.35); border-top-color:var(--gold); animation:entGira .7s linear infinite; }
+    .ent-cont { float:right; font-size:.64rem; letter-spacing:.06em; color:rgba(136,153,187,.75); margin-top:5px; font-variant-numeric:tabular-nums; }
+    .ent-cont.quase { color:var(--gold-pale); }
+    .ent-cont.cheio { color:#f0a094; }
+    /* dias */
+    .ent-datas { border:0; padding:0; margin:0 0 6px; min-width:0; }
+    .ent-datas legend { padding:0; width:100%; }
+    .ent-dias { display:flex; gap:7px; overflow-x:auto; scrollbar-width:none; padding:2px 26px 4px 2px; margin:0 -2px; scroll-snap-type:x proximity;
+      -webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 18px),transparent); mask-image:linear-gradient(90deg,#000 calc(100% - 18px),transparent); }
+    .ent-dias::-webkit-scrollbar { display:none; }
+    .ent-dia { position:relative; flex:0 0 auto; scroll-snap-align:start; }
+    .ent-dia input { position:absolute; opacity:0; width:1px; height:1px; }
+    .ent-dia span { display:flex; flex-direction:column; align-items:center; gap:3px; min-width:62px; padding:10px 10px 9px; border-radius:14px;
+      border:1px solid rgba(201,162,39,.25); background:rgba(255,255,255,.02); transition:all .2s; }
+    .ent-dia b { font-size:.74rem; font-weight:600; color:var(--cream); }
+    .ent-dia small { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:.95rem; color:var(--gray); line-height:1; }
+    .ent-dia input:checked + span { border-color:var(--gold); background:rgba(201,162,39,.14); box-shadow:inset 0 0 0 1px var(--gold); }
+    .ent-dia input:checked + span small { color:var(--gold-pale); }
+    .ent-dia input:focus-visible + span { outline:2px solid var(--gold-pale); outline-offset:2px; }
+    .ent-dia span:hover { border-color:rgba(201,162,39,.6); }
+    .ent-data-nativa { margin:10px 0 0 !important; }
+    .ent-data-txt { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:1.08rem; color:var(--gold-pale); min-height:1.3em; margin:8px 0 14px; }
+    .ent-chip input:disabled + span { opacity:.35; text-decoration:line-through; pointer-events:none; }
+    /* formas de pagamento */
+    .ent-pag { border:0; padding:0; margin:0 0 16px; min-width:0; }
+    .ent-pag legend { padding:0; width:100%; }
+    .ent-formas { display:flex; flex-wrap:wrap; gap:7px; margin-bottom:10px; }
+    .ent-forma { border:1px solid rgba(201,162,39,.28); background:rgba(255,255,255,.02); color:#c6d1e6; border-radius:var(--r-pill);
+      padding:10px 14px; font:500 .8rem/1 'DM Sans',sans-serif; display:inline-flex; align-items:center; gap:7px; transition:all .2s; }
+    .ent-forma::before { content:''; width:12px; height:12px; border-radius:50%; border:1px solid rgba(201,162,39,.5); transition:all .2s; }
+    .ent-forma[aria-pressed="true"] { border-color:var(--gold); background:rgba(201,162,39,.14); color:var(--cream); }
+    .ent-forma[aria-pressed="true"]::before { background:var(--gold); box-shadow:inset 0 0 0 2px #0a0f24; }
+    .ent-forma:hover { border-color:rgba(201,162,39,.65); }
+    .ent-forma:focus-visible { outline:2px solid var(--gold-pale); outline-offset:2px; }
+    /* produto escolhido */
+    .ent-escolhido { display:flex; align-items:center; gap:12px; padding:10px 10px 10px 12px; margin:0 0 16px; border-radius:16px;
+      border:1px solid rgba(201,162,39,.4); background:linear-gradient(120deg, rgba(201,162,39,.12), rgba(255,255,255,.02)); }
+    .ent-escolhido-ic { flex:0 0 auto; width:26px; height:44px; border-radius:7px; border:1px solid rgba(201,162,39,.6);
+      background:linear-gradient(160deg,#16224a,#050a1a); position:relative; }
+    .ent-escolhido-ic::before { content:''; position:absolute; top:4px; left:50%; width:9px; height:3px; margin-left:-4.5px; border-radius:3px; background:#000; }
+    .ent-escolhido div { flex:1; min-width:0; }
+    .ent-escolhido small { display:block; font-size:.56rem; font-weight:600; letter-spacing:.18em; text-transform:uppercase; color:var(--gold); }
+    .ent-escolhido strong { display:block; font-family:'Cormorant Garamond',serif; font-size:1.08rem; font-weight:600; color:var(--cream); line-height:1.15;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .ent-escolhido button { flex:0 0 auto; width:34px; height:34px; border-radius:50%; border:1px solid rgba(201,162,39,.35); background:transparent;
+      color:var(--gray); display:flex; align-items:center; justify-content:center; }
+    .ent-escolhido button:hover { color:var(--gold-pale); border-color:var(--gold); }
+    .ent-escolhido button svg { width:14px; height:14px; stroke:currentColor; stroke-width:2; fill:none; stroke-linecap:round; }
+    .ent-lembrado { font-size:.74rem; color:var(--gray); margin:0 0 14px; line-height:1.5; }
+    .ent-lembrado button, .ent-link { background:none; border:none; padding:0; color:var(--gold-pale); font:600 .74rem 'DM Sans',sans-serif;
+      text-decoration:underline; text-underline-offset:3px; }
+    /* revisão */
+    .ent-rev { display:flex; flex-direction:column; gap:10px; }
+    .ent-rev-bloco { padding:14px 16px; border-radius:14px; border:1px solid rgba(201,162,39,.2); background:rgba(255,255,255,.025); }
+    .ent-rev-cab { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
+    .ent-rev-cab h4 { font-size:.6rem; font-weight:600; letter-spacing:.22em; text-transform:uppercase; color:var(--gold); }
+    .ent-rev-cab button { background:none; border:1px solid rgba(201,162,39,.35); color:var(--gold-pale); border-radius:var(--r-pill);
+      padding:6px 12px; font:600 .6rem/1 'DM Sans',sans-serif; letter-spacing:.14em; text-transform:uppercase; }
+    .ent-rev-cab button:hover { background:rgba(201,162,39,.12); }
+    .ent-rev-bloco p { font-size:.84rem; line-height:1.55; color:#c6d1e6; margin:0; overflow-wrap:anywhere; }
+    .ent-rev-bloco p + p { margin-top:4px; }
+    .ent-rev-bloco p b { color:var(--cream); font-weight:500; }
+    .ent-check { display:flex; gap:12px; align-items:flex-start; margin:18px 0 8px; font-size:.84rem; color:var(--cream); line-height:1.45; position:relative; }
+    .ent-check input { position:absolute; opacity:0; width:1px; height:1px; }
+    .ent-check-box { flex:0 0 auto; width:20px; height:20px; border-radius:6px; border:1px solid rgba(201,162,39,.6); margin-top:1px;
+      display:flex; align-items:center; justify-content:center; transition:all .2s; }
+    .ent-check-box::after { content:''; width:9px; height:5px; border-left:2px solid #0a0f24; border-bottom:2px solid #0a0f24; transform:rotate(-45deg) translate(1px,-1px); opacity:0; }
+    .ent-check input:checked + .ent-check-box { background:var(--gold-grad); border-color:transparent; }
+    .ent-check input:checked + .ent-check-box::after { opacity:1; }
+    .ent-check input:focus-visible + .ent-check-box { outline:2px solid var(--gold-pale); outline-offset:2px; }
+    .ent-check small { display:block; color:var(--gray); font-size:.72rem; margin-top:3px; }
+    .ent-rev-nota { font-size:.76rem; color:var(--gray); line-height:1.6; margin:6px 0 4px; }
+    .ent-rev-nota strong { color:var(--gold-pale); font-weight:600; }
+    /* navegação das etapas */
+    .ent-nav { display:flex; gap:10px; margin-top:6px; }
+    .ent-nav .ent-enviar { flex:1; }
+    .ent-voltar { flex:0 0 auto; border:1px solid rgba(201,162,39,.4); background:transparent; color:var(--gold-pale); border-radius:var(--r-pill);
+      padding:0 20px; font:600 .72rem/1 'DM Sans',sans-serif; letter-spacing:.14em; text-transform:uppercase; display:inline-flex; align-items:center; gap:8px;
+      transition:background .25s, border-color .25s; }
+    .ent-voltar:hover { background:rgba(201,162,39,.1); border-color:var(--gold); }
+    .ent-voltar:focus-visible { outline:2px solid var(--gold-pale); outline-offset:3px; }
+    .ent-voltar svg, .ent-enviar svg { width:14px; height:14px; stroke:currentColor; fill:none; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .ent-enviar[aria-disabled="true"] { opacity:.6; pointer-events:none; }
+    .ent-tentar { margin-top:10px; background:none; border:1px solid rgba(240,160,148,.5); color:#f6c2b9; border-radius:var(--r-pill);
+      padding:9px 16px; font:600 .66rem/1 'DM Sans',sans-serif; letter-spacing:.14em; text-transform:uppercase; }
+    .ent-tentar:hover { background:rgba(240,160,148,.1); }
+    /* sucesso */
+    .ent-ok-num-linha { display:flex; align-items:center; justify-content:center; gap:8px; margin-top:12px; }
+    .ent-ok-num-linha .ent-ok-num { margin-top:0; }
+    .ent-copiar { width:40px; height:40px; border-radius:50%; border:1px solid rgba(201,162,39,.45); background:rgba(201,162,39,.06); color:var(--gold-pale);
+      display:flex; align-items:center; justify-content:center; transition:background .2s, transform .2s; }
+    .ent-copiar:hover { background:rgba(201,162,39,.16); transform:scale(1.06); }
+    .ent-copiar svg { width:16px; height:16px; stroke:currentColor; fill:none; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
+    .ent-copiar.feito { background:var(--gold-grad); color:#0a0f24; border-color:transparent; }
+    .ent-ok-acts { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:20px; }
+    .ent-ok-acts button { border:1px solid rgba(201,162,39,.4); background:rgba(201,162,39,.05); color:var(--gold-pale); border-radius:14px; padding:13px 8px;
+      font:600 .64rem/1.3 'DM Sans',sans-serif; letter-spacing:.12em; text-transform:uppercase; display:flex; flex-direction:column; align-items:center; gap:7px;
+      transition:background .25s, border-color .25s, transform .25s var(--ease-btn); }
+    .ent-ok-acts button:hover { background:rgba(201,162,39,.14); border-color:var(--gold); transform:translateY(-2px); }
+    .ent-ok-acts svg { width:18px; height:18px; stroke:var(--gold); fill:none; stroke-width:1.6; stroke-linecap:round; stroke-linejoin:round; }
+    .ent-ok .btn-claro { margin-top:10px; width:100%; padding:15px 18px; font-size:.7rem; white-space:normal; line-height:1.3; }
+    .ent-ok .btn-claro svg { width:16px; height:16px; fill:#0e7a43; }
+    /* pausa */
+    .ent-pausa { text-align:center; padding:34px 22px 30px; }
+    .ent-pausa-ic { width:64px; height:64px; margin:0 auto; border-radius:50%; border:1px solid rgba(201,162,39,.55); display:flex; align-items:center; justify-content:center;
+      background:rgba(201,162,39,.08); box-shadow:0 0 40px -8px rgba(201,162,39,.4); }
+    .ent-pausa-ic svg { width:24px; height:24px; fill:var(--gold); }
+    .ent-pausa h3 { font-family:'Cormorant Garamond',serif; font-size:1.9rem; font-weight:600; color:var(--cream); margin-top:18px; line-height:1.1; }
+    .ent-pausa h3 em { color:var(--gold); }
+    .pcard-estq, .pcard-nfotos, .pcard-selo, .pcard-esg { pointer-events:none; }
+    .ent-pausa p { font-size:.88rem; line-height:1.7; color:#c6d1e6; margin:12px auto 22px; max-width:300px; }
+    .ent-pausa .btn-claro { width:100%; padding:16px 18px; font-size:.72rem; white-space:normal; line-height:1.3; }
+    .ent-pausa .btn-claro svg { width:16px; height:16px; fill:#0e7a43; }
+    .ent-pausa .ent-link { margin-top:16px; display:inline-block; }
+    /* acompanhar */
+    .ent-acomp { padding:16px 22px 8px; }
+    .ent-acomp-sub { font-size:.84rem; color:var(--gray); line-height:1.6; margin:-8px 0 18px; }
+    .ent-acres { padding:6px 22px 26px; outline:none; }
+    .ent-acres:empty { display:none; }
+    .ent-trk { border-radius:18px; border:1px solid rgba(201,162,39,.3); background:linear-gradient(160deg, rgba(201,162,39,.09), rgba(255,255,255,.015)); padding:20px 18px; }
+    .ent-trk-cab { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
+    .ent-trk-cab small { display:block; font-size:.58rem; font-weight:600; letter-spacing:.2em; text-transform:uppercase; color:var(--gold); }
+    .ent-trk-cab strong { display:block; font-family:'Cormorant Garamond',serif; font-size:1.7rem; font-weight:600; color:var(--cream); line-height:1.05; margin-top:4px; }
+    .ent-trk-num { font:700 .9rem/1 'DM Sans',sans-serif; letter-spacing:.06em; color:#0a0f24; background:var(--cream); padding:7px 12px; border-radius:var(--r-pill); white-space:nowrap; }
+    .ent-trk-info { margin:14px 0 4px; font-size:.8rem; line-height:1.65; color:#c6d1e6; }
+    .ent-trk-info b { color:var(--gold-pale); font-weight:600; }
+    .ent-trk-linha { list-style:none; margin:16px 0 0; padding:0; position:relative; }
+    .ent-trk-linha li { position:relative; padding:0 0 18px 30px; }
+    .ent-trk-linha li:last-child { padding-bottom:0; }
+    .ent-trk-linha li::before { content:''; position:absolute; left:6px; top:16px; bottom:-2px; width:1px; background:rgba(201,162,39,.2); }
+    .ent-trk-linha li:last-child::before { display:none; }
+    .ent-trk-linha li.feito::before { background:var(--gold); }
+    .ent-trk-linha i { position:absolute; left:0; top:2px; width:13px; height:13px; border-radius:50%; border:1px solid rgba(201,162,39,.4); background:#050912; }
+    .ent-trk-linha li.feito i { background:var(--gold); border-color:var(--gold); }
+    .ent-trk-linha li.atual i { background:var(--gold-pale); border-color:var(--gold-pale); box-shadow:0 0 0 0 rgba(240,216,150,.6); animation:estqPulso 2s ease-out infinite; }
+    .ent-trk-linha strong { display:block; font-size:.86rem; font-weight:600; color:var(--gray); }
+    .ent-trk-linha li.feito strong, .ent-trk-linha li.atual strong { color:var(--cream); }
+    .ent-trk-linha span { display:block; font-size:.72rem; color:var(--gray); margin-top:2px; }
+    .ent-trk-linha li.atual span { color:var(--gold-pale); }
+    .ent-trk-desc { margin-top:14px; font-size:.82rem; line-height:1.6; color:#c6d1e6; padding-top:12px; border-top:1px solid rgba(201,162,39,.16); }
+    .ent-trk.cancelado { border-color:rgba(229,83,61,.4); background:linear-gradient(160deg, rgba(229,83,61,.08), rgba(255,255,255,.015)); }
+    .ent-trk.cancelado .ent-trk-cab strong { color:#f6c2b9; }
+    .ent-trk-acts { display:flex; flex-wrap:wrap; gap:8px; margin-top:16px; }
+    .ent-trk-acts .ent-tentar, .ent-trk-acts a { flex:1; text-align:center; justify-content:center; display:inline-flex; align-items:center; gap:6px;
+      border:1px solid rgba(201,162,39,.4); color:var(--gold-pale); background:none; border-radius:var(--r-pill); padding:11px 12px;
+      font:600 .62rem/1.2 'DM Sans',sans-serif; letter-spacing:.12em; text-transform:uppercase; text-decoration:none; margin:0; }
+    .ent-trk-acts .ent-tentar:hover, .ent-trk-acts a:hover { background:rgba(201,162,39,.12); }
+    .ent-trk-nada { text-align:center; padding:22px 16px; border-radius:16px; border:1px dashed rgba(201,162,39,.35); }
+    .ent-trk-nada strong { display:block; font-family:'Cormorant Garamond',serif; font-size:1.4rem; font-weight:600; color:var(--cream); }
+    .ent-trk-nada p { font-size:.8rem; color:var(--gray); line-height:1.6; margin-top:8px; }
+    .ent-trk-nada a { color:var(--gold-pale); }
+    .ent-ja { margin-top:18px; font-size:.82rem; color:var(--gray); }
+    .ent-ja a { color:var(--gold-pale); text-decoration:none; border-bottom:1px solid rgba(201,162,39,.45); font-weight:600; }
+    .ent-ja a:hover { color:#fff6d8; border-color:var(--gold); }
+    @media (pointer:fine) {
+      .ent-modo button, .ent-prog-btn, .ent-dia span, .ent-forma, .ent-check, .ent-voltar, .ent-copiar, .ent-ok-acts button,
+      .ent-rev-cab button, .ent-escolhido button, .ent-lembrado button, .ent-link, .ent-tentar { cursor:none; }
+    }
+    /* barrinha "home" do iOS pregada no rodapé da tela do aparelho (só no desktop, onde a tela rola por dentro) */
+    .ent-home { display:none; }
+    @media (min-width:901px) {
+      .ent-tela { display:flex; flex-direction:column; }
+      .ent-tela > .ent-painel { flex:0 0 auto; }
+      .ent-home { display:block; position:sticky; bottom:0; margin-top:auto; flex:0 0 auto; height:30px; pointer-events:none;
+        background:linear-gradient(0deg,#050912 35%,rgba(5,9,18,0)); }
+      .ent-home::after { content:''; position:absolute; left:50%; bottom:9px; width:118px; height:4px; margin-left:-59px; border-radius:4px;
+        background:rgba(247,243,232,.32); }
+    }
+    @media (max-width:900px) {
+      .ent-cabeca { position:static; background:none; padding-bottom:6px; }
+      .ent-cabeca::after { display:none; }
+      .ent-modo { margin-top:4px; }
+    }
+    @media (max-width:440px) {
+      .ent-nav .ent-enviar { letter-spacing:.08em; font-size:.74rem; padding:16px 12px; }
+      .ent-voltar { padding:0 14px; letter-spacing:.08em; }
+    }
+    @media (max-width:380px) {
+      .ent-duo { grid-template-columns:88px 1fr; }
+      .ent-cep-linha { flex-wrap:wrap; gap:0 12px; }
+      .ent-ok-acts { grid-template-columns:1fr; }
+      .ent-prog-btn span { font-size:.5rem; letter-spacing:.08em; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .ent-etapa, .ent-modo-ind, .ent-prog-btn i::after { animation:none !important; transition:none !important; }
+      .ent-trk-linha li.atual i, .ent-cep-st.busca::before { animation:none !important; }
+    }
 
     /* NAV — 6 links (~476px de texto) não cabem entre a marca e o CTA abaixo de ~1240px:
        nessa faixa os links vão para o menu hambúrguer; acima, o espaçamento acompanha a tela */
@@ -2409,7 +2926,8 @@
   try {
     var el = document.getElementById('intro');
     if (!el) return;
-    if (matchMedia('(prefers-reduced-motion: reduce)').matches || sessionStorage.getItem('el_intro_v1')) {
+    /* link direto para um aparelho (#produto=) ou para acompanhar pedido (#acompanhar=) não espera a cortina */
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches || sessionStorage.getItem('el_intro_v1') || /^#(produto|acompanhar)=/.test(location.hash)) {
       el.setAttribute('hidden', '');
       return;
     }
@@ -3077,65 +3595,200 @@
         <a class="cmap-btn" href="https://wa.me/5512997463135?text=Ol%C3%A1!%20Quero%20combinar%20uma%20entrega%20por%20motoboy." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.4A8.4 8.4 0 1 1 21 11.5z"/></svg>Prefiro combinar no WhatsApp</a>
         <span class="ent-nota">Nunca informe número de cartão, senha ou dados bancários no formulário.</span>
       </div>
+      <p class="ent-ja rv">Já agendou? <a href="#acompanhar" id="entJaLink">Acompanhe o status do seu pedido</a></p>
     </div>
     <div class="ent-fone rv">
       <div class="ent-tela" id="entTela">
+        <div class="ent-cabeca">
         <div class="ent-app-topo">
           <span class="ent-app-raio" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></span>
           <div><strong>Entrega Eletronic</strong><small>Agendamento por motoboy</small></div>
         </div>
 
-        <form class="ent-form" id="entForm" novalidate aria-label="Agendar entrega por motoboy">
-          <label class="ent-campo"><span class="ent-rot">Nome completo</span>
-            <input name="nome" autocomplete="name" maxlength="120" placeholder="Marina Albuquerque" aria-describedby="entE-nome">
-            <em class="ent-erro" id="entE-nome"></em></label>
-          <label class="ent-campo"><span class="ent-rot">Telefone / WhatsApp</span>
-            <input name="telefone" type="tel" inputmode="tel" autocomplete="tel-national" maxlength="16" placeholder="(12) 99999-0000" aria-describedby="entE-telefone">
-            <em class="ent-erro" id="entE-telefone"></em></label>
-          <label class="ent-campo"><span class="ent-rot">CPF</span>
-            <input name="cpf" inputmode="numeric" maxlength="14" placeholder="000.000.000-00" aria-describedby="entE-cpf">
-            <em class="ent-erro" id="entE-cpf"></em></label>
-          <label class="ent-campo"><span class="ent-rot">Endereço de entrega</span>
-            <input name="endereco" autocomplete="street-address" maxlength="300" placeholder="Rua, número, bairro, cidade" aria-describedby="entE-endereco">
-            <em class="ent-erro" id="entE-endereco"></em></label>
-          <label class="ent-campo"><span class="ent-rot">Complemento <i>opcional</i></span>
-            <input name="complemento" maxlength="200" placeholder="Apto 42, bloco B, portaria"></label>
-          <label class="ent-campo"><span class="ent-rot">Data</span>
-            <input name="data_entrega" type="date" aria-describedby="entE-data_entrega">
-            <em class="ent-erro" id="entE-data_entrega"></em></label>
-          <fieldset class="ent-janelas" aria-describedby="entE-horario">
-            <legend class="ent-rot">Horário desejado</legend>
-            <div class="ent-chips">
-              <label class="ent-chip"><input type="radio" name="janela" value="Manhã (9h às 12h)"><span>Manhã<small>9h às 12h</small></span></label>
-              <label class="ent-chip"><input type="radio" name="janela" value="Tarde (12h às 18h)"><span>Tarde<small>12h às 18h</small></span></label>
-              <label class="ent-chip"><input type="radio" name="janela" value="Noite (18h às 21h)"><span>Noite<small>18h às 21h</small></span></label>
-            </div>
-            <input class="ent-outro" name="horario_outro" maxlength="60" placeholder="Ou um horário específico (ex.: 14h30)" aria-label="Horário específico">
-            <em class="ent-erro" id="entE-horario"></em>
-          </fieldset>
-          <label class="ent-campo"><span class="ent-rot">Produto / modelo <i>opcional</i></span>
-            <input name="produto" maxlength="160" placeholder="iPhone 15 Pro 256 GB"></label>
-          <label class="ent-campo"><span class="ent-rot">Forma de pagamento na entrega</span>
-            <textarea name="pagamento" maxlength="2000" rows="3" placeholder="Ex.: 12x de 320,00 + 1.000,00 no Pix + iPhone 14 128 GB na troca" aria-describedby="entE-pagamento entPagAviso"></textarea>
-            <em class="ent-erro" id="entE-pagamento"></em>
-            <span class="ent-aviso" id="entPagAviso">O pagamento é feito <strong>somente no ato da entrega</strong> — este campo serve só para registrar o combinado com a loja.
-              Não informe número de cartão, senha ou dados bancários.</span></label>
-          <label class="ent-campo"><span class="ent-rot">Observações <i>opcional</i></span>
-            <textarea name="observacoes" maxlength="1000" rows="2" placeholder="Ponto de referência, instruções para o motoboy"></textarea></label>
-          <input class="ent-hp" name="site" tabindex="-1" autocomplete="off" aria-hidden="true">
-          <p class="ent-form-erro" id="entFormErro" role="alert"></p>
-          <button class="ent-enviar" type="submit" id="entEnviar">Enviar pedido</button>
-        </form>
-
-        <div class="ent-ok" id="entOk" hidden tabindex="-1">
-          <div class="ent-ok-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
-          <h3>Pedido enviado</h3>
-          <span class="ent-ok-num" id="entOkNum">#0000</span>
-          <p id="entOkTxt">A loja já recebeu e vai falar com você para confirmar o horário.</p>
-          <div class="ent-ok-resumo" id="entOkResumo"></div>
-          <a class="cmap-btn" id="entOkWa" href="https://wa.me/5512997463135" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.4A8.4 8.4 0 1 1 21 11.5z"/></svg>Falar com a loja</a>
-          <button class="ent-ok-outro" type="button" id="entOkOutro">Fazer outro pedido</button>
+        <div class="ent-modo" id="entModo" role="tablist" aria-label="Agendar ou acompanhar uma entrega">
+          <span class="ent-modo-ind" aria-hidden="true"></span>
+          <button type="button" role="tab" id="entTabAg" aria-selected="true" aria-controls="entPainelAg" tabindex="0">Agendar</button>
+          <button type="button" role="tab" id="entTabAc" aria-selected="false" aria-controls="entPainelAc" tabindex="-1">Acompanhar</button>
         </div>
+        </div>
+
+        <!-- ===== AGENDAR ===== -->
+        <div class="ent-painel" id="entPainelAg" role="tabpanel" aria-labelledby="entTabAg">
+
+          <div class="ent-pausa" id="entPausa" hidden>
+            <div class="ent-pausa-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="6" y="5" width="4" height="14" rx="1.2"/><rect x="14" y="5" width="4" height="14" rx="1.2"/></svg></div>
+            <h3>Agendamento <em>pausado</em></h3>
+            <p>Neste momento a loja não está recebendo novos agendamentos pelo site. Chame no WhatsApp que a gente combina a entrega por lá.</p>
+            <a class="btn-claro" id="entPausaWa" href="https://wa.me/5512997463135?text=Ol%C3%A1!%20Quero%20combinar%20uma%20entrega%20por%20motoboy." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.5 14.4c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.46-2.4-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.91-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.87 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.7.63.71.22 1.36.19 1.87.11.57-.08 1.76-.72 2-1.41.25-.7.25-1.29.18-1.41-.08-.13-.28-.2-.58-.35zM12 2C6.5 2 2 6.48 2 12c0 1.77.46 3.44 1.27 4.89L2 22l5.23-1.26A9.95 9.95 0 0 0 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm0 18.19a8.17 8.17 0 0 1-4.16-1.14l-.3-.18-3.1.75.77-3-.19-.3A8.15 8.15 0 0 1 3.84 12c0-4.5 3.67-8.17 8.16-8.17S20.16 7.5 20.16 12 16.5 20.19 12 20.19z"/></svg>Combinar a entrega no WhatsApp</a>
+            <button type="button" class="ent-link" data-ir-acomp>Já agendei — acompanhar meu pedido</button>
+          </div>
+
+          <form class="ent-form" id="entForm" novalidate aria-label="Agendar entrega por motoboy">
+            <div class="ent-prog">
+              <ol class="ent-prog-lista" aria-label="Etapas do agendamento">
+                <li><button type="button" class="ent-prog-btn" data-ir="1" aria-current="step"><i aria-hidden="true"></i><span><b>01</b>Você</span></button></li>
+                <li><button type="button" class="ent-prog-btn" data-ir="2" disabled><i aria-hidden="true"></i><span><b>02</b>Entrega</span></button></li>
+                <li><button type="button" class="ent-prog-btn" data-ir="3" disabled><i aria-hidden="true"></i><span><b>03</b>Pagamento</span></button></li>
+                <li><button type="button" class="ent-prog-btn" data-ir="4" disabled><i aria-hidden="true"></i><span><b>04</b>Revisão</span></button></li>
+              </ol>
+              <p class="sr-only" id="entProgTxt" aria-live="polite"></p>
+            </div>
+
+            <div class="ent-escolhido" id="entEscolhido" hidden>
+              <span class="ent-escolhido-ic" aria-hidden="true"></span>
+              <div><small>Aparelho escolhido</small><strong id="entEscolhidoNome"></strong></div>
+              <button type="button" id="entEscolhidoTirar" aria-label="Tirar o aparelho escolhido"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+            </div>
+
+            <!-- 1 · VOCÊ -->
+            <div class="ent-etapa" data-etapa="1" role="group" aria-labelledby="entT1">
+              <h3 class="ent-etapa-tit" id="entT1" tabindex="-1">Quem vai <em>receber?</em></h3>
+              <p class="ent-lembrado" id="entLembrado" hidden>Preenchemos com os dados salvos neste aparelho. <button type="button" id="entEsquecer">Esquecer meus dados</button></p>
+              <label class="ent-campo"><span class="ent-rot">Nome completo</span>
+                <input class="ent-in" name="nome" autocomplete="name" maxlength="120" placeholder="Marina Albuquerque" aria-describedby="entE-nome">
+                <em class="ent-erro" id="entE-nome"></em></label>
+              <label class="ent-campo"><span class="ent-rot">Telefone / WhatsApp</span>
+                <input class="ent-in" name="telefone" type="tel" inputmode="tel" autocomplete="tel-national" maxlength="20" placeholder="(12) 99999-0000" aria-describedby="entE-telefone">
+                <em class="ent-erro" id="entE-telefone"></em></label>
+              <label class="ent-campo"><span class="ent-rot">CPF</span>
+                <input class="ent-in" name="cpf" inputmode="numeric" autocomplete="off" maxlength="14" placeholder="000.000.000-00" aria-describedby="entE-cpf entD-cpf">
+                <em class="ent-erro" id="entE-cpf"></em>
+                <span class="ent-dica" id="entD-cpf">O CPF nunca fica salvo neste aparelho.</span></label>
+            </div>
+
+            <!-- 2 · ENTREGA -->
+            <div class="ent-etapa" data-etapa="2" role="group" aria-labelledby="entT2" hidden>
+              <h3 class="ent-etapa-tit" id="entT2" tabindex="-1">Onde e <em>quando?</em></h3>
+              <div class="ent-cep-linha">
+                <label class="ent-campo"><span class="ent-rot">CEP <i>opcional</i></span>
+                  <input class="ent-in" name="cep" inputmode="numeric" autocomplete="postal-code" maxlength="9" placeholder="00000-000" aria-describedby="entCepSt entE-cep"></label>
+                <a class="ent-cep-link" href="https://buscacepinter.correios.com.br/app/endereco/index.php" target="_blank" rel="noopener">Não sei meu CEP</a>
+              </div>
+              <span class="ent-cep-st" id="entCepSt" aria-live="polite">Com o CEP, a gente preenche o endereço para você.</span>
+              <em class="ent-erro" id="entE-cep"></em>
+              <label class="ent-campo"><span class="ent-rot">Rua / avenida</span>
+                <input class="ent-in" name="rua" autocomplete="address-line1" maxlength="160" placeholder="Rua das Palmeiras" aria-describedby="entE-rua">
+                <em class="ent-erro" id="entE-rua"></em></label>
+              <div class="ent-duo">
+                <label class="ent-campo"><span class="ent-rot">Número</span>
+                  <input class="ent-in" name="numero" inputmode="text" autocomplete="off" maxlength="12" placeholder="123" aria-describedby="entE-numero">
+                  <em class="ent-erro" id="entE-numero"></em></label>
+                <label class="ent-campo"><span class="ent-rot">Bairro</span>
+                  <input class="ent-in" name="bairro" autocomplete="address-level3" maxlength="80" placeholder="Centro" aria-describedby="entE-bairro">
+                  <em class="ent-erro" id="entE-bairro"></em></label>
+              </div>
+              <label class="ent-campo"><span class="ent-rot">Cidade</span>
+                <input class="ent-in" name="cidade" autocomplete="address-level2" maxlength="60" placeholder="Taubaté/SP" aria-describedby="entE-cidade">
+                <em class="ent-erro" id="entE-cidade"></em></label>
+              <label class="ent-campo"><span class="ent-rot">Complemento <i>opcional</i></span>
+                <input class="ent-in" name="complemento" maxlength="200" placeholder="Apto 42, bloco B, portaria" data-cont>
+                <span class="ent-cont" aria-hidden="true"></span></label>
+
+              <fieldset class="ent-datas" aria-describedby="entE-data_entrega">
+                <legend class="ent-rot">Dia da entrega</legend>
+                <div class="ent-dias" id="entDias"></div>
+                <label class="ent-campo ent-data-nativa"><span class="ent-rot">Ou escolha no calendário</span>
+                  <input class="ent-in" name="data_entrega" type="date" aria-describedby="entE-data_entrega"></label>
+                <p class="ent-data-txt" id="entDataTxt" aria-live="polite"></p>
+                <em class="ent-erro" id="entE-data_entrega"></em>
+              </fieldset>
+
+              <fieldset class="ent-janelas" aria-describedby="entE-horario">
+                <legend class="ent-rot">Horário desejado</legend>
+                <div class="ent-chips">
+                  <label class="ent-chip"><input type="radio" name="janela" value="Manhã (9h às 12h)" data-ini="9" data-fim="12"><span>Manhã<small>9h às 12h</small></span></label>
+                  <label class="ent-chip"><input type="radio" name="janela" value="Tarde (12h às 18h)" data-ini="12" data-fim="18"><span>Tarde<small>12h às 18h</small></span></label>
+                  <label class="ent-chip"><input type="radio" name="janela" value="Noite (18h às 21h)" data-ini="18" data-fim="21"><span>Noite<small>18h às 21h</small></span></label>
+                </div>
+                <input class="ent-in ent-outro" name="horario_outro" maxlength="60" placeholder="Ou um horário específico (ex.: 14h30)" aria-label="Horário específico">
+                <span class="ent-dica" id="entJanDica" hidden></span>
+                <em class="ent-erro" id="entE-horario"></em>
+              </fieldset>
+            </div>
+
+            <!-- 3 · PAGAMENTO -->
+            <div class="ent-etapa" data-etapa="3" role="group" aria-labelledby="entT3" hidden>
+              <h3 class="ent-etapa-tit" id="entT3" tabindex="-1">Produto e <em>pagamento</em></h3>
+              <label class="ent-campo"><span class="ent-rot">Produto / modelo <i>opcional</i></span>
+                <input class="ent-in" name="produto" maxlength="160" placeholder="iPhone 15 Pro 256 GB" list="entProdLista" autocomplete="off">
+                <span class="ent-dica">Comece a digitar para ver os aparelhos da vitrine.</span></label>
+              <datalist id="entProdLista"></datalist>
+              <input type="hidden" name="produto_id">
+
+              <fieldset class="ent-pag" aria-describedby="entE-pagamento entPagAviso">
+                <legend class="ent-rot">Forma de pagamento na entrega</legend>
+                <div class="ent-formas" role="group" aria-label="Formas de pagamento">
+                  <button type="button" class="ent-forma" aria-pressed="false" data-forma="Pix">Pix</button>
+                  <button type="button" class="ent-forma" aria-pressed="false" data-forma="Cartão">Cartão</button>
+                  <button type="button" class="ent-forma" aria-pressed="false" data-forma="Dinheiro">Dinheiro</button>
+                  <button type="button" class="ent-forma" aria-pressed="false" data-forma="Aparelho na troca">Aparelho na troca</button>
+                </div>
+                <label class="ent-campo" style="margin-bottom:0"><span class="ent-rot">Como fica o combinado <i>valores, parcelas, troca</i></span>
+                  <textarea class="ent-in" name="pagamento" maxlength="1800" rows="3" placeholder="Ex.: 12x de 320,00 + 1.000,00 no Pix + iPhone 14 128 GB na troca" aria-describedby="entE-pagamento entPagAviso" data-cont></textarea>
+                  <span class="ent-cont" aria-hidden="true"></span></label>
+                <em class="ent-erro" id="entE-pagamento"></em>
+                <span class="ent-aviso" id="entPagAviso">O pagamento é feito <strong>somente no ato da entrega</strong> — este campo serve só para registrar o combinado com a loja.
+                  Não informe número de cartão, senha ou dados bancários.</span>
+              </fieldset>
+              <label class="ent-campo"><span class="ent-rot">Observações <i>opcional</i></span>
+                <textarea class="ent-in" name="observacoes" maxlength="1000" rows="2" placeholder="Ponto de referência, instruções para o motoboy" data-cont></textarea>
+                <span class="ent-cont" aria-hidden="true"></span></label>
+            </div>
+
+            <!-- 4 · REVISÃO -->
+            <div class="ent-etapa" data-etapa="4" role="group" aria-labelledby="entT4" hidden>
+              <h3 class="ent-etapa-tit" id="entT4" tabindex="-1">Confira e <em>confirme</em></h3>
+              <div class="ent-rev" id="entRev"></div>
+              <label class="ent-check"><input type="checkbox" name="lembrar"><span class="ent-check-box" aria-hidden="true"></span>
+                <span>Lembrar nome, telefone e endereço neste aparelho<small>Fica só neste navegador. O CPF nunca é salvo.</small></span></label>
+              <p class="ent-rev-nota"><strong>Nada é cobrado agora:</strong> o pagamento acontece só no ato da entrega.</p>
+            </div>
+
+            <input class="ent-hp" name="site" tabindex="-1" autocomplete="off" aria-hidden="true">
+            <div class="ent-form-erro" id="entFormErro" role="alert" hidden>
+              <p id="entFormErroTxt"></p>
+              <button type="button" class="ent-tentar" id="entTentar" hidden>Tentar de novo</button>
+            </div>
+            <div class="ent-nav">
+              <button type="button" class="ent-voltar" id="entVoltar" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>Voltar</button>
+              <button class="ent-enviar" type="submit" id="entEnviar" data-magnet><span id="entEnviarTxt">Continuar</span></button>
+            </div>
+          </form>
+
+          <div class="ent-ok" id="entOk" hidden tabindex="-1">
+            <div class="ent-ok-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+            <h3>Pedido enviado</h3>
+            <div class="ent-ok-num-linha">
+              <span class="ent-ok-num" id="entOkNum">#0000</span>
+              <button type="button" class="ent-copiar" id="entOkCopiar" aria-label="Copiar o número do pedido"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg></button>
+            </div>
+            <p id="entOkTxt">A loja já recebeu e vai falar com você para confirmar o horário.</p>
+            <div class="ent-ok-resumo" id="entOkResumo"></div>
+            <div class="ent-ok-acts">
+              <button type="button" id="entOkAgenda"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4.5" width="18" height="16.5" rx="2.5"/><path d="M3 9.5h18M8 2.5v4M16 2.5v4M12 13v5M9.5 15.5h5"/></svg>Adicionar à agenda</button>
+              <button type="button" id="entOkAcomp"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15.5 14"/></svg>Acompanhar pedido</button>
+            </div>
+            <a class="btn-claro" id="entOkWa" href="https://wa.me/5512997463135" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.5 14.4c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.46-2.4-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.91-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.87 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.7.63.71.22 1.36.19 1.87.11.57-.08 1.76-.72 2-1.41.25-.7.25-1.29.18-1.41-.08-.13-.28-.2-.58-.35zM12 2C6.5 2 2 6.48 2 12c0 1.77.46 3.44 1.27 4.89L2 22l5.23-1.26A9.95 9.95 0 0 0 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm0 18.19a8.17 8.17 0 0 1-4.16-1.14l-.3-.18-3.1.75.77-3-.19-.3A8.15 8.15 0 0 1 3.84 12c0-4.5 3.67-8.17 8.16-8.17S20.16 7.5 20.16 12 16.5 20.19 12 20.19z"/></svg>Avisar a loja no WhatsApp</a>
+            <button class="ent-ok-outro" type="button" id="entOkOutro">Fazer outro pedido</button>
+          </div>
+        </div>
+
+        <!-- ===== ACOMPANHAR ===== -->
+        <div class="ent-painel" id="entPainelAc" role="tabpanel" aria-labelledby="entTabAc" hidden>
+          <form class="ent-acomp" id="entAcForm" novalidate aria-label="Acompanhar um pedido de entrega">
+            <h3 class="ent-etapa-tit" id="entAcTit" tabindex="-1">Onde está o meu <em>pedido?</em></h3>
+            <p class="ent-acomp-sub">Use o número que apareceu na confirmação (ex.: #0002) e o telefone informado no agendamento.</p>
+            <label class="ent-campo"><span class="ent-rot">Número do pedido</span>
+              <input class="ent-in" name="numero" inputmode="numeric" autocomplete="off" maxlength="12" placeholder="#0002" aria-describedby="entAE-numero">
+              <em class="ent-erro" id="entAE-numero"></em></label>
+            <label class="ent-campo"><span class="ent-rot">Telefone / WhatsApp</span>
+              <input class="ent-in" name="telefone" type="tel" inputmode="tel" autocomplete="tel-national" maxlength="20" placeholder="(12) 99999-0000" aria-describedby="entAE-telefone">
+              <em class="ent-erro" id="entAE-telefone"></em></label>
+            <button class="ent-enviar" type="submit" id="entAcBtn" data-magnet><span>Consultar</span></button>
+          </form>
+          <div class="ent-acres" id="entAcRes" tabindex="-1"></div>
+        </div>
+        <div class="ent-home" aria-hidden="true"></div>
       </div>
     </div>
   </div>
@@ -3323,6 +3976,20 @@
 </section>
 </main>
 
+<!-- FICHA DO PRODUTO — dialog acessível (fora do <main> para o resto da página ficar inert enquanto aberta) -->
+<div class="ficha" id="ficha" role="dialog" aria-modal="true" aria-labelledby="fichaTitulo" hidden>
+  <div class="ficha-veu" data-fecha-ficha></div>
+  <div class="ficha-caixa" id="fichaCaixa">
+    <div class="ficha-topo">
+      <span class="ficha-alca" aria-hidden="true"></span>
+      <button type="button" class="ficha-fechar" data-fecha-ficha aria-label="Fechar a ficha do aparelho"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    </div>
+    <div class="fg" id="fichaGal"></div>
+    <div class="ficha-info" id="fichaInfo"></div>
+  </div>
+</div>
+<div class="el-toast" id="elToast" role="status" aria-live="polite"></div>
+
 <!-- FOOTER -->
 <footer>
   <div class="ft">
@@ -3508,10 +4175,10 @@
     });
     document.addEventListener('mouseover',e=>{
       const t=e.target;
-      document.body.classList.toggle('hov',!!(t.closest&&t.closest('a,button,summary,.pcard,.cat-tab,.iph,.elc-clicavel')));
+      document.body.classList.toggle('hov',!!(t.closest&&t.closest('a,button,summary,.pcard,.cat-tab,.iph,.elc-clicavel,.ent-chip,.ent-dia,.ent-check,.fg-trilho')));
       const noMapa=!!(t.closest&&t.closest('.cmap'));
-      // nos campos de texto do agendamento vale o cursor de digitação do sistema
-      const noCampo=!!(t.matches&&t.matches('.ent-form input, .ent-form textarea'));
+      // nos campos de texto do agendamento/acompanhar vale o cursor de digitação do sistema
+      const noCampo=!!(t.matches&&t.matches('.ent-in'));
       document.body.classList.toggle('curoff',noMapa||noCampo);
       if(!noMapa) document.querySelectorAll('.cmap-veu').forEach(v=>{ v.style.pointerEvents=''; });
     });
@@ -3520,7 +4187,7 @@
     document.addEventListener('pointerup',()=>document.body.classList.remove('cdown'));
     // cursor some quando o ponteiro sai da janela
     document.addEventListener('mouseout',e=>{ if(!e.relatedTarget) document.body.classList.add('curoff'); });
-    document.addEventListener('mousemove',()=>{ if(!document.querySelector('.cmap:hover, .ent-form input:hover, .ent-form textarea:hover')) document.body.classList.remove('curoff'); });
+    document.addEventListener('mousemove',()=>{ if(!document.querySelector('.cmap:hover, .ent-in:hover')) document.body.classList.remove('curoff'); });
   }
 
   // Nav scroll
@@ -5181,7 +5848,7 @@ window.elcChart = (function () {
   /* ---------- CLICK SPARK: fagulhas douradas no clique dos CTAs ---------- */
   (function () {
     if (REDUZ) return;
-    var SEL = '.btn-g, .btn-claro, .bc-cta-btn, .btn-wa, .cat-wa-link, .pcard-wa, .nav-btn, .tp-btn, .duelo-cta, .ig-follow, .dock-wa, .quiz-opt, .quiz-nav button, .quiz-refazer, .bcs-btns button';
+    var SEL = '.btn-g, .btn-claro, .bc-cta-btn, .btn-wa, .cat-wa-link, .pcard-wa, .nav-btn, .tp-btn, .duelo-cta, .ig-follow, .dock-wa, .quiz-opt, .quiz-nav button, .quiz-refazer, .bcs-btns button, .ent-enviar, .ficha-ctas .cmap-btn, .ent-ok-acts button, .cat-chip, .cat-ord button';
     document.addEventListener('pointerdown', function (e) {
       var alvo = e.target.closest ? e.target.closest(SEL) : null;
       if (!alvo) return;
@@ -5658,7 +6325,10 @@ window.elcChart = (function () {
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
 'use strict';
-/* ============ CATÁLOGO AO VIVO — controlado pelo painel da loja ============ */
+/* ============ CATÁLOGO AO VIVO — controlado pelo painel da loja ============
+   LOTE 1: cards com condição / saúde da bateria / garantia / estoque, iPhone desenhado em DOM quando não há foto,
+   barra de filtros (armazenamento, cor) + ordenação derivada dos dados, e a FICHA DO PRODUTO
+   (dialog acessível, galeria, histórico do navegador e link direto #produto=<id>). */
 (function () {
   var CFG = {
     URL: 'https://nppfqhavqahapmugnyng.supabase.co',
@@ -5666,6 +6336,35 @@ window.elcChart = (function () {
     WA_PADRAO: '5512997463135',
     IG_PADRAO: 'eletronic.oficial',
   };
+  var REDUZ = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var FINO = matchMedia('(pointer: fine)').matches;
+
+  /* ---------- aviso flutuante + copiar (compartilhados com o agendamento) ---------- */
+  var toastEl = document.getElementById('elToast'), toastT = 0;
+  window.elToast = function (msg, ms) {
+    if (!toastEl) return;
+    toastEl.textContent = msg;
+    toastEl.classList.add('on');
+    clearTimeout(toastT);
+    toastT = setTimeout(function () { toastEl.classList.remove('on'); }, ms || 3400);
+  };
+  window.elCopiar = function (txt) {
+    if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(txt).catch(function () { return copiaVelha(txt); });
+    return copiaVelha(txt);
+  };
+  function copiaVelha(txt) {
+    return new Promise(function (ok, falha) {
+      try {
+        var t = document.createElement('textarea');
+        t.value = txt; t.setAttribute('readonly', ''); t.style.position = 'fixed'; t.style.opacity = '0';
+        document.body.appendChild(t); t.select();
+        var deu = document.execCommand('copy');
+        t.remove();
+        if (deu) ok(); else falha(new Error('copy'));
+      } catch (e) { falha(e); }
+    });
+  }
+
   if (!window.supabase) {
     if (window.elcEstoque) { try { window.elcEstoque([], {}, CFG.WA_PADRAO); } catch (e0) { /* ok */ } }
     var semSb = document.getElementById('catPaineis');
@@ -5678,6 +6377,9 @@ window.elcChart = (function () {
   }
   var sbe = window.supabase.createClient(CFG.URL, CFG.KEY, { auth: { persistSession: false } });
   var abaAtual = null;
+  /* último retrato do banco (já filtrado pelas abas visíveis) — a ficha e o agendamento leem daqui */
+  var estado = { cats: [], prods: [], cfg: {}, wa: CFG.WA_PADRAO, porId: {}, catPorId: {} };
+  var jaRenderizou = false;
 
   function esc(t) {
     return String(t == null ? '' : t).replace(/[&<>"']/g, function (c) {
@@ -5685,35 +6387,252 @@ window.elcChart = (function () {
     });
   }
   function fmt(v) { return Number(v).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); }
+  function fmtEco(v) {
+    v = Math.round(Number(v) * 100) / 100;
+    return v % 1 ? fmt(v) : v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
+  }
+  function cssEsc(s) { return window.CSS && CSS.escape ? CSS.escape(s) : String(s).replace(/["\\]/g, '\\$&'); }
   var WA_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.5 14.4c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.46-2.4-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.91-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.87 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.7.63.71.22 1.36.19 1.87.11.57-.08 1.76-.72 2-1.41.25-.7.25-1.29.18-1.41-.08-.13-.28-.2-.58-.35zM12 2C6.5 2 2 6.48 2 12c0 1.77.46 3.44 1.27 4.89L2 22l5.23-1.26A9.95 9.95 0 0 0 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm0 18.19a8.17 8.17 0 0 1-4.16-1.14l-.3-.18-3.1.75.77-3-.19-.3A8.15 8.15 0 0 1 3.84 12c0-4.5 3.67-8.17 8.16-8.17S20.16 7.5 20.16 12 16.5 20.19 12 20.19z"/></svg>';
+  var RAIO = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>';
+  var IC_ESCUDO = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>';
+  var IC_FOTO = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="6" width="18" height="14" rx="2.5"/><circle cx="12" cy="13" r="3.5"/><path d="M8.5 6l1.5-2.5h4L15.5 6"/></svg>';
+  var IC_SHARE = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="19" r="2.6"/><path d="M8.3 10.8l7.4-4.3M8.3 13.2l7.4 4.3"/></svg>';
+  var IC_MOTO = '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5.5" cy="17" r="3"/><circle cx="18.5" cy="17" r="3"/><path d="M8.5 17h6l2-6h-4l-2.5 3.5H6.2M14 5h3l1.5 6"/></svg>';
+  var IC_NOTA = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="13" y2="17"/></svg>';
+  var IC_BRINDE = '<svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>';
+  var IC_DADOS = '<svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>';
+  var SETA_E = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>';
+  var SETA_D = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>';
 
   function linkWA(numero, msg) {
     return 'https://wa.me/' + numero + '?text=' + encodeURIComponent(msg);
   }
 
-  function cardProduto(p, cat, wa) {
+  /* ---------- leitura dos campos do produto ---------- */
+  /* "Iphone" digitado no painel vira "iPhone" (só a grafia da marca; o resto do nome fica como a loja escreveu) */
+  function marca(t) { return String(t || '').replace(/\biphone\b/gi, 'iPhone').trim(); }
+  function nomeCompleto(p) { return [marca(p.nome), p.armazenamento, p.cor].filter(Boolean).join(' '); }
+  function situacao(p) {
+    if (p.quantidade == null || p.quantidade === '') return 'ok';
+    var q = Number(p.quantidade);
+    if (!isFinite(q)) return 'ok';
+    return q <= 0 ? 'esgotado' : q === 1 ? 'ultima' : 'ok';
+  }
+  function bateria(p) {
+    if (p.bateria == null || p.bateria === '') return null;
+    var b = Number(p.bateria);
+    return isFinite(b) && b > 0 && b <= 100 ? Math.round(b) : null;
+  }
+  function garantiaTxt(p) {
+    var g = Number(p.garantia_meses);
+    if (!p.garantia_meses || !isFinite(g) || g <= 0) return '';
+    if (g % 12 === 0) return (g / 12) + (g === 12 ? ' ano' : ' anos');
+    return g + (g === 1 ? ' mês' : ' meses');
+  }
+  function fotosDe(p) {
+    return (Array.isArray(p.fotos) ? p.fotos : []).filter(function (u) {
+      return typeof u === 'string' && u.trim() && !/^\s*javascript:/i.test(u);
+    });
+  }
+  function economia(p) {
+    if (p.preco == null || p.preco_de == null) return 0;
+    var de = Number(p.preco_de), por = Number(p.preco);
+    return isFinite(de) && isFinite(por) && de > por ? de - por : 0;
+  }
+  /* a silhueta em DOM ganha a cor do aparelho (nomes em PT e EN; desconhecida = navy da marca) */
+  var CORES = [
+    [/pret|black|grafite|graphite|meia-noite|midnight|space/i, '#2b2d34'],
+    [/branc|white|prata|silver|estelar|starlight/i, '#e8e5dd'],
+    [/natural/i, '#b8b1a5'],
+    [/desert|desert|dourad|gold|areia|champagne/i, '#d6bf96'],
+    [/azul|blue|ultramar|sierra|teal/i, '#4b6b9e'],
+    [/rosa|pink/i, '#e7b8c3'],
+    [/verde|green|s[aá]lvia|alpin/i, '#93ad94'],
+    [/roxo|lil[aá]s|purple|lavanda|lavender/i, '#b3a3d4'],
+    [/vermelh|red/i, '#b5333b'],
+    [/amarel|yellow/i, '#ecd780'],
+    [/laranja|orange|c[oó]smic/i, '#df8a3d'],
+  ];
+  function tintDe(cor) {
+    var c = String(cor || '');
+    for (var i = 0; i < CORES.length; i++) if (CORES[i][0].test(c)) return CORES[i][1];
+    return '#1b2547';
+  }
+  function pdevHTML(p) {
+    var nome = marca(p.nome);
+    var ehIphone = /^iPhone\b/.test(nome);
+    var modelo = ehIphone ? nome.replace(/^iPhone\s*/, '') || 'iPhone' : nome;
+    return '<div class="pdev" style="--tint:' + tintDe(p.cor) + '" aria-hidden="true"><div class="pdev-corpo"></div><span class="pdev-btn"></span>' +
+      '<div class="pdev-tela"><span class="pdev-ilha"></span><span class="pdev-raio">' + RAIO + '</span>' +
+      (ehIphone ? '<span class="pdev-marca">iPhone</span>' : '') +
+      '<span class="pdev-modelo">' + esc(modelo) + '</span>' +
+      (p.armazenamento ? '<span class="pdev-spec">' + esc(p.armazenamento) + '</span>' : '') + '</div></div>';
+  }
+  function msgInteresse(p, cat) {
+    return 'Olá! Vi no site e tenho interesse no ' + nomeCompleto(p) + ' (' + cat.nome + ')' +
+      (p.preco != null ? ' — ' + fmt(p.preco) : '') + '.';
+  }
+  function msgAvise(p, cat) {
+    return 'Olá! Vi no site que o ' + nomeCompleto(p) + ' (' + cat.nome + ') está esgotado. Pode me avisar quando chegar outro?';
+  }
+  function linkProduto(p) { return location.origin + location.pathname + '#produto=' + encodeURIComponent(p.id); }
+
+  function cardProduto(p, cat, wa, i) {
+    var sit = situacao(p), fotos = fotosDe(p), bat = bateria(p), gar = garantiaTxt(p), eco = economia(p);
     var meta = [p.armazenamento, p.cor].filter(Boolean).join(' · ');
-    var msg = 'Olá! Vi no site e tenho interesse no ' + p.nome +
-      (p.armazenamento ? ' ' + p.armazenamento : '') +
-      (p.cor ? ' ' + p.cor : '') + ' (' + cat.nome + ').';
     var preco;
     if (p.preco == null) {
       preco = '<span class="consulte">Consultar preço</span>';
     } else {
-      preco = (p.preco_de ? '<s>' + fmt(p.preco_de) + '</s>' : '') + '<strong>' + fmt(p.preco) + '</strong>';
+      preco = (eco ? '<span class="pcard-de"><s>' + fmt(p.preco_de) + '</s><span class="pcard-eco">economize ' + fmtEco(eco) + '</span></span>' : '') + '<strong>' + fmt(p.preco) + '</strong>';
     }
-    var capa = (p.fotos || [])[0];
-    return '<article class="pcard' + (p.destaque ? ' pdestaque' : '') + '">' +
+    var specs = '';
+    if (bat != null) specs += '<li><span class="pbat' + (bat < 80 ? ' baixa' : '') + '" style="--b:' + bat + '" aria-hidden="true"><i></i></span>Bateria ' + bat + '%</li>';
+    if (gar) specs += '<li>' + IC_ESCUDO + 'Garantia ' + gar + '</li>';
+    var cta = sit === 'esgotado'
+      ? '<a class="pcard-wa pcard-avise" target="_blank" rel="noopener" href="' + linkWA(wa, msgAvise(p, cat)) + '">' + WA_SVG + ' Avise-me no WhatsApp</a>'
+      : '<a class="pcard-wa" target="_blank" rel="noopener" href="' + linkWA(wa, msgInteresse(p, cat)) + '">' + WA_SVG + ' Tenho interesse</a>';
+    var srSit = sit === 'esgotado' ? ', esgotado' : sit === 'ultima' ? ', última unidade' : '';
+    return '<article class="pcard' + (p.destaque ? ' pdestaque' : '') + (sit === 'esgotado' ? ' pesgotado' : '') + '" style="--i:' + (i || 0) + '" data-id="' + esc(p.id) + '">' +
       (p.destaque ? '<span class="pcard-selo">Destaque</span>' : '') +
-      '<div class="pcard-foto">' + (capa ? '<img src="' + esc(capa) + '" alt="' + esc(p.nome) + '" loading="lazy">' : '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>') + '</div>' +
+      '<div class="pcard-foto">' +
+        (fotos[0] ? '<img src="' + esc(fotos[0]) + '" alt="' + esc(nomeCompleto(p)) + '" loading="lazy" decoding="async">' : pdevHTML(p)) +
+        (sit === 'ultima' ? '<span class="pcard-estq" aria-hidden="true"><i></i>Última unidade</span>' : '') +
+        (sit === 'esgotado' ? '<span class="pcard-esg" aria-hidden="true">Esgotado</span>' : '') +
+        (fotos.length > 1 ? '<span class="pcard-nfotos" aria-hidden="true">' + IC_FOTO + fotos.length + '</span>' : '') +
+      '</div>' +
       '<div class="pcard-corpo">' +
-        '<h3 class="pcard-nome">' + esc(p.nome) + '</h3>' +
-        (meta ? '<p class="pcard-meta">' + esc(meta) + '</p>' : '') +
+        (p.condicao ? '<p class="pcard-cond">' + esc(p.condicao) + '</p>' : '') +
+        '<h3 class="pcard-nome"><a class="pcard-ver" href="#produto=' + encodeURIComponent(p.id) + '" data-ficha="' + esc(p.id) + '">' + esc(marca(p.nome)) +
+          '<span class="sr-only">' + (meta ? ' ' + esc(meta) : '') + srSit + ' — ver ficha completa</span></a></h3>' +
+        (meta ? '<p class="pcard-meta" aria-hidden="true">' + esc(meta) + '</p>' : '') +
+        (specs ? '<ul class="pcard-specs">' + specs + '</ul>' : '') +
         (p.descricao ? '<p class="pcard-desc">' + esc(p.descricao) + '</p>' : '') +
         '<div class="pcard-preco">' + preco + '</div>' +
         (p.parcelas && p.preco != null ? '<p class="pcard-parcelas">' + esc(p.parcelas) + '</p>' : '') +
-        '<a class="pcard-wa" target="_blank" rel="noopener" href="' + linkWA(wa, msg) + '">' + WA_SVG + ' Tenho interesse</a>' +
+        '<span class="pcard-mais" aria-hidden="true">Ver ficha completa</span>' +
+        cta +
       '</div></article>';
+  }
+
+  /* ---------- barra do catálogo: filtros derivados dos dados + ordenação ---------- */
+  var FILTROS_KEY = 'el_cat_filtros_v1';
+  var filtros = {};
+  try { filtros = JSON.parse(sessionStorage.getItem(FILTROS_KEY) || '{}') || {}; } catch (e) { filtros = {}; }
+  function salvaFiltros() { try { sessionStorage.setItem(FILTROS_KEY, JSON.stringify(filtros)); } catch (e) { /* aba anônima */ } }
+  function filtroDe(slug) {
+    var f = filtros[slug];
+    if (!f || typeof f !== 'object') f = filtros[slug] = {};
+    if (typeof f.arm !== 'string') f.arm = '';
+    if (typeof f.cor !== 'string') f.cor = '';
+    if (['destaque', 'menor', 'maior'].indexOf(f.ord) < 0) f.ord = 'destaque';
+    return f;
+  }
+  function igual(a, b) { return String(a || '').trim().toLowerCase() === String(b || '').trim().toLowerCase(); }
+  function gb(v) {
+    var m = String(v).match(/(\d+(?:[.,]\d+)?)\s*(tb|gb)?/i);
+    if (!m) return 1e9;
+    var n = parseFloat(m[1].replace(',', '.'));
+    return /tb/i.test(m[2] || '') ? n * 1024 : n;
+  }
+  function valoresDe(lista, campo) {
+    var m = {}, ordem = [];
+    lista.forEach(function (p) {
+      var v = String(p[campo] || '').trim();
+      if (!v) return;
+      var k = v.toLowerCase();
+      if (!m[k]) { m[k] = { v: v, n: 0 }; ordem.push(k); }
+      m[k].n++;
+    });
+    var arr = ordem.map(function (k) { return m[k]; });
+    if (campo === 'armazenamento') arr.sort(function (a, b) { return gb(a.v) - gb(b.v); });
+    return arr;
+  }
+  function aplicar(lista, f) {
+    var idx = {};
+    lista.forEach(function (p, i) { idx[p.id] = i; });
+    var r = lista.filter(function (p) {
+      return (!f.arm || igual(p.armazenamento, f.arm)) && (!f.cor || igual(p.cor, f.cor));
+    });
+    r.sort(function (a, b) {
+      var ea = situacao(a) === 'esgotado' ? 1 : 0, eb = situacao(b) === 'esgotado' ? 1 : 0;
+      if (ea !== eb) return ea - eb; /* esgotado sempre no fim */
+      if (f.ord === 'menor' || f.ord === 'maior') {
+        var pa = a.preco == null ? null : Number(a.preco), pb = b.preco == null ? null : Number(b.preco);
+        if (pa == null && pb != null) return 1; /* "Consultar preço" vai depois dos com preço */
+        if (pb == null && pa != null) return -1;
+        if (pa != null && pb != null && pa !== pb) return f.ord === 'menor' ? pa - pb : pb - pa;
+      }
+      return idx[a.id] - idx[b.id]; /* "Destaques" = ordem definida pela loja no painel */
+    });
+    return r;
+  }
+  function chipHTML(campo, x, ativo) {
+    var dot = campo === 'cor' ? '<span class="cat-dot" style="--tint:' + tintDe(x.v) + '" aria-hidden="true"></span>' : '';
+    return '<button type="button" class="cat-chip" data-f="' + campo + '" data-v="' + esc(x.v) + '" aria-pressed="' + (ativo ? 'true' : 'false') + '">' +
+      dot + esc(x.v) + ' <small aria-label="' + x.n + (x.n === 1 ? ' aparelho' : ' aparelhos') + '">' + x.n + '</small></button>';
+  }
+  function barraHTML(c, doCat, f, arms, cores, n) {
+    var gr = '';
+    if (arms.length > 1) gr += '<div class="cat-fgrupo" role="group" aria-label="Filtrar ' + esc(c.nome) + ' por armazenamento"><span class="cat-flbl" aria-hidden="true">Armazenamento</span><div class="cat-chips">' +
+      arms.map(function (x) { return chipHTML('arm', x, igual(x.v, f.arm)); }).join('') + '</div></div>';
+    if (cores.length > 1) gr += '<div class="cat-fgrupo" role="group" aria-label="Filtrar ' + esc(c.nome) + ' por cor"><span class="cat-flbl" aria-hidden="true">Cor</span><div class="cat-chips">' +
+      cores.map(function (x) { return chipHTML('cor', x, igual(x.v, f.cor)); }).join('') + '</div></div>';
+    var temFiltro = !!(f.arm || f.cor);
+    var ords = [['destaque', 'Destaques'], ['menor', 'Menor preço'], ['maior', 'Maior preço']];
+    var cont = temFiltro
+      ? '<b>' + n + '</b> de ' + doCat.length + ' ' + (doCat.length === 1 ? 'aparelho' : 'aparelhos')
+      : '<b>' + n + '</b> ' + (n === 1 ? 'aparelho na vitrine' : 'aparelhos na vitrine');
+    return '<div class="cat-barra" data-slug="' + esc(c.slug) + '">' +
+      '<p class="cat-cont" aria-live="polite">' + cont + '</p>' +
+      (gr ? '<div class="cat-filtros">' + gr + (temFiltro ? '<button type="button" class="cat-limpar">Limpar filtros</button>' : '') + '</div>' : '') +
+      (doCat.length > 1 ? '<div class="cat-ord" role="group" aria-label="Ordenar ' + esc(c.nome) + '"><span class="cat-flbl" aria-hidden="true">Ordenar</span>' +
+        ords.map(function (o) { return '<button type="button" data-ord="' + o[0] + '" aria-pressed="' + (f.ord === o[0] ? 'true' : 'false') + '">' + o[1] + '</button>'; }).join('') + '</div>' : '') +
+      '</div>';
+  }
+  function semResHTML(c, f) {
+    var desc = [f.arm, f.cor].filter(Boolean).join(' · ');
+    var pedido = 'Olá! Procuro um iPhone ' + [f.arm, f.cor].filter(Boolean).join(' ') + ' (' + c.nome + '). Tem ou vai chegar?';
+    return '<div class="cat-semres"><h4>Nada com esse filtro agora</h4>' +
+      '<p>Nenhum aparelho <b>' + esc(desc) + '</b> em ' + esc(c.nome) + ' neste momento. Chega novidade toda semana — peça o seu e a gente avisa.</p>' +
+      '<div class="cat-semres-acts"><button type="button" class="cat-limpar">Limpar filtros</button>' +
+      '<a class="cmap-btn" target="_blank" rel="noopener" href="' + linkWA(estado.wa, pedido) + '">Pedir esse no WhatsApp</a></div></div>';
+  }
+  function painelHTML(c) {
+    var doCat = estado.prods.filter(function (p) { return p.categoria_id === c.id; });
+    if (!doCat.length) {
+      return '<div class="cat-vazia">Estamos renovando o estoque de <strong>' + esc(c.nome) + '</strong>.<br>' +
+        'Chega novidade toda semana — <a target="_blank" rel="noopener" href="' +
+        linkWA(estado.wa, 'Olá! Queria saber as novidades de ' + c.nome + ' da Eletronic.') +
+        '">chame no WhatsApp</a> e reserve o seu antes de todo mundo.</div>';
+    }
+    var f = filtroDe(c.slug);
+    var arms = valoresDe(doCat, 'armazenamento'), cores = valoresDe(doCat, 'cor');
+    /* filtro que sumiu do estoque (realtime) é descartado em silêncio */
+    if (f.arm && (arms.length < 2 || !arms.some(function (x) { return igual(x.v, f.arm); }))) f.arm = '';
+    if (f.cor && (cores.length < 2 || !cores.some(function (x) { return igual(x.v, f.cor); }))) f.cor = '';
+    var lista = aplicar(doCat, f);
+    return (c.descricao ? '<p class="cat-desc">' + esc(c.descricao) + '</p>' : '') +
+      barraHTML(c, doCat, f, arms, cores, lista.length) +
+      (lista.length
+        ? '<div class="pgrid">' + lista.map(function (p, i) { return cardProduto(p, c, estado.wa, i); }).join('') + '</div>'
+        : semResHTML(c, f));
+  }
+  function pintarPainel(slug, focoSel) {
+    var c = estado.cats.filter(function (x) { return x.slug === slug; })[0];
+    var painel = document.getElementById('tab-' + slug);
+    if (!c || !painel) return;
+    painel.innerHTML = painelHTML(c);
+    var g = painel.querySelector('.pgrid');
+    if (g && !REDUZ) {
+      g.classList.add('anima');
+      setTimeout(function () { g.classList.remove('anima'); }, 700 + g.children.length * 60);
+    }
+    if (focoSel) {
+      var alvo = painel.querySelector(focoSel) || painel.querySelector('.cat-barra button');
+      if (alvo) { try { alvo.focus({ preventScroll: true }); } catch (e) { alvo.focus(); } }
+    }
+    salvaFiltros();
   }
 
   function render(cats, prods, cfg) {
@@ -5731,10 +6650,20 @@ window.elcChart = (function () {
     cats.forEach(function (c) { idsVis[c.id] = true; });
     prods = (prods || []).filter(function (p) { return idsVis[p.categoria_id]; });
 
+    var porId = {}, catPorId = {};
+    prods.forEach(function (p) { porId[p.id] = p; });
+    cats.forEach(function (c) { catPorId[c.id] = c; });
+    estado = { cats: cats, prods: prods, cfg: cfg, wa: wa, porId: porId, catPorId: catPorId };
+
     // foco de teclado não pode evaporar no re-render (realtime do painel da loja)
-    var focoSlug = null;
+    var focoSlug = null, focoSel = null;
     var ativo = document.activeElement;
     if (ativo && ativo.classList && ativo.classList.contains('cat-tab')) focoSlug = ativo.dataset.slug;
+    else if (ativo && ativo.closest && ativo.closest('#catPaineis')) {
+      if (ativo.dataset.ficha) focoSel = '.pcard-ver[data-ficha="' + cssEsc(ativo.dataset.ficha) + '"]';
+      else if (ativo.dataset.f) focoSel = '.cat-chip[data-f="' + ativo.dataset.f + '"][data-v="' + cssEsc(ativo.dataset.v || '') + '"]';
+      else if (ativo.dataset.ord) focoSel = '.cat-ord [data-ord="' + ativo.dataset.ord + '"]';
+    }
 
     var porCat = {};
     prods.forEach(function (p) { porCat[p.categoria_id] = (porCat[p.categoria_id] || 0) + 1; });
@@ -5751,20 +6680,10 @@ window.elcChart = (function () {
       '<button class="cat-tab black-club-tab" role="tab" aria-selected="false" tabindex="-1" id="tabbtn-blackclub" aria-controls="tab-blackclub" data-slug="blackclub" onclick="switchTab(' + "'blackclub'" + ',this)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>Black Club</button>';
 
     paineis.innerHTML = cats.map(function (c) {
-      var doCat = prods.filter(function (p) { return p.categoria_id === c.id; });
-      var corpo;
-      if (doCat.length) {
-        corpo = (c.descricao ? '<p class="cat-desc">' + esc(c.descricao) + '</p>' : '') +
-          '<div class="pgrid">' + doCat.map(function (p) { return cardProduto(p, c, wa); }).join('') + '</div>';
-      } else {
-        corpo = '<div class="cat-vazia">Estamos renovando o estoque de <strong>' + esc(c.nome) + '</strong>.<br>' +
-          'Chega novidade toda semana — <a target="_blank" rel="noopener" href="' +
-          linkWA(wa, 'Olá! Queria saber as novidades de ' + c.nome + ' da Eletronic.') +
-          '">chame no WhatsApp</a> e reserve o seu antes de todo mundo.</div>';
-      }
-      return '<div class="cat-panel" id="tab-' + esc(c.slug) + '" role="tabpanel" aria-labelledby="tabbtn-' + esc(c.slug) + '" tabindex="-1">' + corpo + '</div>';
+      return '<div class="cat-panel" id="tab-' + esc(c.slug) + '" role="tabpanel" aria-labelledby="tabbtn-' + esc(c.slug) + '" tabindex="-1">' + painelHTML(c) + '</div>';
     }).join('');
     paineis.setAttribute('aria-busy', 'false');
+    salvaFiltros();
 
     // reativa a aba que estava aberta; padrão = Lacrados se tiver estoque, senão Seminovos
     var padrao = 'blackclub';
@@ -5780,9 +6699,46 @@ window.elcChart = (function () {
     if (focoSlug) {
       var deVolta = tabs.querySelector('[data-slug="' + focoSlug + '"]');
       if (deVolta) { try { deVolta.focus({ preventScroll: true }); } catch (e) { deVolta.focus(); } }
+    } else if (focoSel) {
+      var f2 = paineis.querySelector(focoSel);
+      if (f2) { try { f2.focus({ preventScroll: true }); } catch (e) { f2.focus(); } }
     }
 
     aplicarConfig(wa, cfg.instagram || CFG.IG_PADRAO);
+    ldProdutos(cats, prods);
+
+    /* a ficha e o agendamento acompanham o catálogo (inclusive a pausa de entregas, via el_config) */
+    window.elCatalogo = { cats: cats, prods: prods, cfg: cfg, wa: wa, porId: porId, catPorId: catPorId, nome: nomeCompleto, situacao: situacao };
+    try { document.dispatchEvent(new CustomEvent('el:catalogo', { detail: window.elCatalogo })); } catch (e) { /* navegador antigo */ }
+    if (!jaRenderizou) { jaRenderizou = true; abrirPeloHash(); }
+    else if (fAberta) atualizarFichaAberta();
+  }
+
+  /* dados estruturados (schema.org) da vitrine: buscadores entendem modelo, preço e disponibilidade */
+  function ldProdutos(cats, prods) {
+    try {
+      var catPor = {};
+      cats.forEach(function (c) { catPor[c.id] = c; });
+      var base = location.origin + location.pathname;
+      var itens = prods.map(function (p, i) {
+        var c = catPor[p.categoria_id] || {}, fotos = fotosDe(p), sit = situacao(p);
+        var prod = { '@type': 'Product', name: nomeCompleto(p), sku: String(p.id), brand: { '@type': 'Brand', name: 'Apple' }, url: base + '#produto=' + encodeURIComponent(p.id) };
+        if (fotos[0]) prod.image = new URL(fotos[0], location.href).href;
+        if (p.descricao) prod.description = String(p.descricao).slice(0, 500);
+        if (p.cor) prod.color = String(p.cor);
+        if (p.preco != null) {
+          prod.offers = { '@type': 'Offer', price: Number(p.preco).toFixed(2), priceCurrency: 'BRL', url: prod.url,
+            availability: 'https://schema.org/' + (sit === 'esgotado' ? 'OutOfStock' : sit === 'ultima' ? 'LimitedAvailability' : 'InStock'),
+            itemCondition: 'https://schema.org/' + (c.slug === 'seminovos' ? 'UsedCondition' : 'NewCondition'),
+            seller: { '@type': 'Organization', name: 'Eletronic' } };
+        }
+        return { '@type': 'ListItem', position: i + 1, item: prod };
+      });
+      var el = document.getElementById('ldProdutos');
+      if (!itens.length) { if (el) el.remove(); return; }
+      if (!el) { el = document.createElement('script'); el.type = 'application/ld+json'; el.id = 'ldProdutos'; document.head.appendChild(el); }
+      el.textContent = JSON.stringify({ '@context': 'https://schema.org', '@type': 'ItemList', name: 'iPhones disponíveis na Eletronic', itemListElement: itens });
+    } catch (e) { /* SEO nunca derruba a vitrine */ }
   }
 
   function aplicarConfig(wa, ig) {
@@ -5809,9 +6765,456 @@ window.elcChart = (function () {
   window.switchTab = function (nome, btn) { abaAtual = nome; guarda(nome, btn); };
   window.elRenderCatalogo = render; /* smoke/depuração: render(cats, prods, cfg) com dados mock */
 
+  /* ---------- interações do catálogo (delegadas: sobrevivem ao re-render do realtime) ---------- */
+  var paineisEl = document.getElementById('catPaineis');
+  if (paineisEl) {
+    paineisEl.addEventListener('click', function (e) {
+      var alvo = e.target.closest ? e.target.closest('.cat-chip, .cat-ord button, .cat-limpar, .pcard-ver') : null;
+      if (!alvo) return;
+      if (alvo.classList.contains('pcard-ver')) {
+        /* clique comum abre a ficha aqui; Ctrl/Cmd/meio-clique abrem em outra aba pelo próprio link */
+        if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+        e.preventDefault();
+        abrirFicha(alvo.dataset.ficha, { push: true, origem: alvo });
+        return;
+      }
+      var barra = alvo.closest('.cat-panel');
+      var slug = barra && barra.id.replace(/^tab-/, '');
+      if (!slug) return;
+      var f = filtroDe(slug), foco = null;
+      if (alvo.classList.contains('cat-limpar')) {
+        f.arm = ''; f.cor = '';
+        foco = '.cat-ord [data-ord="' + f.ord + '"]';
+      } else if (alvo.dataset.ord) {
+        f.ord = alvo.dataset.ord;
+        foco = '.cat-ord [data-ord="' + f.ord + '"]';
+      } else {
+        var campo = alvo.dataset.f, v = alvo.dataset.v || '';
+        f[campo] = igual(f[campo], v) ? '' : v;
+        foco = '.cat-chip[data-f="' + campo + '"][data-v="' + cssEsc(v) + '"]';
+      }
+      pintarPainel(slug, foco);
+    });
+    /* foto quebrada vira o iPhone desenhado (nunca um quadrado vazio) */
+    paineisEl.addEventListener('error', function (e) {
+      var img = e.target;
+      if (!img || img.tagName !== 'IMG' || !img.closest('.pcard-foto')) return;
+      var card = img.closest('.pcard'), p = card && estado.porId[card.dataset.id];
+      if (!p) { img.remove(); return; }
+      var tmp = document.createElement('div');
+      tmp.innerHTML = pdevHTML(p);
+      img.replaceWith(tmp.firstChild);
+    }, true);
+  }
+
+  /* ======================= FICHA DO PRODUTO ======================= */
+  var ficha = document.getElementById('ficha');
+  var fGal = document.getElementById('fichaGal');
+  var fInfo = document.getElementById('fichaInfo');
+  var fCaixa = document.getElementById('fichaCaixa');
+  var tituloBase = document.title;
+  var fAberta = null, fEmpurrou = false, fOrigem = null, fAposFechar = null, fIdx = 0, fAssin = '', fFechandoT = 0, fRaf = 0;
+
+  function inertes(sim) {
+    var els = ['conteudo', 'nav', 'dock', 'waFloat', 'mmenu'].map(function (id) { return document.getElementById(id); })
+      .concat([document.querySelector('footer'), document.querySelector('.skip')]);
+    els.forEach(function (x) { if (!x) return; if (sim) x.setAttribute('inert', ''); else x.removeAttribute('inert'); });
+  }
+  function travaRolagem(sim) {
+    var h = document.documentElement;
+    if (sim) {
+      var sb = window.innerWidth - h.clientWidth;
+      h.style.overflow = 'hidden';
+      if (sb > 0) document.body.style.paddingRight = sb + 'px';
+    } else {
+      h.style.overflow = '';
+      document.body.style.paddingRight = '';
+    }
+  }
+  function assinatura(p) { try { return JSON.stringify(p); } catch (e) { return String(Math.random()); } }
+
+  function galeriaHTML(p, fotos, cat) {
+    var nome = nomeCompleto(p);
+    if (!fotos.length) {
+      return '<div class="fg-palco" id="fgPalco">' + pdevHTML(p) + '</div><div class="fg-sombra" aria-hidden="true"></div>' +
+        '<p class="fg-pedir">Quer ver fotos reais deste aparelho? <a target="_blank" rel="noopener" href="' +
+        linkWA(estado.wa, 'Olá! Pode me mandar fotos reais do ' + nome + ' (' + cat.nome + ') que está no site?') + '">Peça no WhatsApp</a></p>';
+    }
+    var multi = fotos.length > 1;
+    var slides = fotos.map(function (u, i) {
+      return '<figure class="fg-slide"' + (multi ? ' role="group" aria-roledescription="foto" aria-label="Foto ' + (i + 1) + ' de ' + fotos.length + '"' : '') + '>' +
+        '<img src="' + esc(u) + '" alt="' + esc(nome) + (multi ? ' — foto ' + (i + 1) : '') + '"' + (i ? ' loading="lazy"' : '') + ' draggable="false"></figure>';
+    }).join('');
+    return '<div class="fg-trilho" id="fgTrilho"' + (multi ? ' tabindex="0" aria-label="Fotos do aparelho. Use as setas do teclado para passar."' : '') + '>' + slides + '</div>' +
+      (multi
+        ? '<button type="button" class="fg-seta ant" data-fg="-1" aria-label="Foto anterior">' + SETA_E + '</button>' +
+          '<button type="button" class="fg-seta prox" data-fg="1" aria-label="Próxima foto">' + SETA_D + '</button>' +
+          '<div class="fg-rodape"><div class="fg-minis">' + fotos.map(function (u, i) {
+            return '<button type="button" class="fg-mini" data-fgi="' + i + '" aria-label="Ver foto ' + (i + 1) + '"' + (i === 0 ? ' aria-current="true"' : '') + '><img src="' + esc(u) + '" alt="" loading="lazy" draggable="false"></button>';
+          }).join('') + '</div><span class="fg-cont" id="fgCont" aria-hidden="true">1 / ' + fotos.length + '</span></div>'
+        : '');
+  }
+
+  function infoHTML(p, cat) {
+    var sit = situacao(p), bat = bateria(p), gar = garantiaTxt(p), eco = economia(p), wa = estado.wa;
+    var meta = [p.armazenamento, p.cor].filter(Boolean).join(' · ');
+    var tags = '';
+    if (p.condicao) tags += '<span class="ficha-tag cond">' + esc(p.condicao) + '</span>';
+    if (sit === 'ultima') tags += '<span class="ficha-tag ultima"><i aria-hidden="true"></i>Última unidade</span>';
+    if (sit === 'esgotado') tags += '<span class="ficha-tag esg">Esgotado</span>';
+    if (p.destaque) tags += '<span class="ficha-tag">Destaque da loja</span>';
+
+    var preco;
+    if (p.preco == null) {
+      preco = '<strong class="consulte">Consultar preço</strong><p>Chame no WhatsApp e a loja passa o valor deste aparelho.</p>';
+    } else {
+      preco = (eco ? '<s>' + fmt(p.preco_de) + '</s> <span class="pcard-eco">economize ' + fmtEco(eco) + '</span>' : '') +
+        '<strong>' + fmt(p.preco) + '</strong>' + (p.parcelas ? '<p>' + esc(p.parcelas) + '</p>' : '');
+    }
+
+    var specs = [['Modelo', esc(marca(p.nome))]];
+    if (p.armazenamento) specs.push(['Armazenamento', esc(p.armazenamento)]);
+    if (p.cor) specs.push(['Cor', '<span class="cat-dot" style="--tint:' + tintDe(p.cor) + '" aria-hidden="true"></span>' + esc(p.cor)]);
+    if (p.condicao) specs.push(['Condição', esc(p.condicao)]);
+    if (bat != null) specs.push(['Saúde da bateria', '<span class="ficha-bat' + (bat < 80 ? ' baixa' : '') + '" style="--b:' + bat + '" aria-hidden="true"><i></i></span>' + bat + '%']);
+    specs.push(['Garantia', gar ? gar : '1 ano <small style="color:var(--gray)">(padrão da loja)</small>']);
+    specs.push(['Disponibilidade', sit === 'esgotado' ? 'Esgotado' : sit === 'ultima' ? 'Última unidade' : 'Em estoque']);
+    if (cat.nome) specs.push(['Categoria', esc(cat.nome)]);
+
+    var pausado = estado.cfg && estado.cfg.entregas_ativas === 'nao';
+    var ctas;
+    if (sit === 'esgotado') {
+      ctas = '<a class="btn-claro" data-magnet target="_blank" rel="noopener" href="' + linkWA(wa, msgAvise(p, cat)) + '">' + WA_SVG + 'Avise-me quando chegar</a>' +
+        '<button type="button" class="cmap-btn ficha-share ficha-solo" data-share>' + IC_SHARE + 'Compartilhar</button>';
+    } else {
+      var quero = 'Olá! Vi no site e quero esse: ' + nomeCompleto(p) + ' (' + cat.nome + ')' + (p.preco != null ? ' — ' + fmt(p.preco) : '') + '.\n' + linkProduto(p);
+      ctas = '<a class="btn-claro" data-magnet target="_blank" rel="noopener" href="' + linkWA(wa, quero) + '">' + WA_SVG + 'Quero esse</a>' +
+        (pausado ? '' : '<button type="button" class="cmap-btn" data-receber>' + IC_MOTO + 'Receber em casa</button>') +
+        '<button type="button" class="cmap-btn ficha-share' + (pausado ? ' ficha-solo' : '') + '" data-share>' + IC_SHARE + 'Compartilhar</button>';
+    }
+
+    var ids = listaNavegacao(p, cat), pos = ids.indexOf(p.id);
+    var nav = ids.length > 1
+      ? '<div class="ficha-nav" role="group" aria-label="Outros aparelhos de ' + esc(cat.nome) + '">' +
+        '<button type="button" data-fnav="-1"' + (pos <= 0 ? ' disabled' : '') + '>' + SETA_E.replace('<svg', '<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"') + 'Anterior</button>' +
+        '<span>' + (pos + 1) + ' de ' + ids.length + '</span>' +
+        '<button type="button" data-fnav="1"' + (pos >= ids.length - 1 ? ' disabled' : '') + '>Próximo' + SETA_D.replace('<svg', '<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"') + '</button></div>'
+      : '';
+
+    return '<p class="ficha-ey"><span aria-hidden="true"></span>' + esc(cat.nome || 'Eletronic') + '</p>' +
+      '<h2 class="ficha-nome" id="fichaTitulo" tabindex="-1">' + esc(marca(p.nome)) + '</h2>' +
+      (meta ? '<p class="ficha-sub">' + esc(meta) + '</p>' : '') +
+      (tags ? '<div class="ficha-tags">' + tags + '</div>' : '') +
+      '<div class="ficha-preco">' + preco + '</div>' +
+      '<dl class="ficha-specs">' + specs.map(function (s) { return '<dt>' + s[0] + '</dt><dd>' + s[1] + '</dd>'; }).join('') + '</dl>' +
+      (p.descricao ? '<div class="ficha-bloco"><h3>Sobre este aparelho</h3><p class="ficha-desc">' + esc(p.descricao) + '</p></div>' : '') +
+      '<div class="ficha-bloco"><h3>Toda compra na Eletronic acompanha</h3><ul class="ficha-acomp">' +
+        '<li>' + IC_NOTA + 'Nota fiscal</li><li>' + IC_BRINDE + 'Capa + película + kit carregador Anatel</li><li>' + IC_DADOS + 'Transferência de dados na hora</li></ul></div>' +
+      '<div class="ficha-ctas">' + ctas + '</div>' + nav;
+  }
+
+  /* a navegação Anterior/Próximo segue a ordem que o cliente está vendo (filtros e ordenação da aba) */
+  function listaNavegacao(p, cat) {
+    var ids = Array.prototype.map.call(document.querySelectorAll('#tab-' + cssEsc(cat.slug || '') + ' .pcard'), function (x) { return x.dataset.id; });
+    if (ids.indexOf(p.id) < 0) ids = estado.prods.filter(function (x) { return x.categoria_id === p.categoria_id; }).map(function (x) { return x.id; });
+    return ids;
+  }
+
+  function montarFicha(p, manterIdx) {
+    var cat = estado.catPorId[p.categoria_id] || { nome: '', slug: '' };
+    var fotos = fotosDe(p);
+    if (!manterIdx || fIdx >= fotos.length) fIdx = 0;
+    fGal.className = 'fg' + (fotos.length ? '' : ' fg-vazia');
+    fGal.innerHTML = galeriaHTML(p, fotos, cat);
+    fInfo.innerHTML = infoHTML(p, cat);
+    ligarGaleria(fotos.length);
+    if (fIdx) irFoto(fIdx, true);
+    fAssin = assinatura(p);
+    document.title = nomeCompleto(p) + ' — Eletronic';
+  }
+
+  function ligarGaleria(n) {
+    var palco = document.getElementById('fgPalco');
+    if (palco && FINO && !REDUZ) {
+      var dev = palco.querySelector('.pdev');
+      palco.addEventListener('mousemove', function (e) {
+        var r = palco.getBoundingClientRect();
+        var rx = ((e.clientY - r.top) / r.height - .5) * -10, ry = ((e.clientX - r.left) / r.width - .5) * 14;
+        dev.style.transform = 'rotateX(' + rx.toFixed(2) + 'deg) rotateY(' + ry.toFixed(2) + 'deg)';
+      });
+      palco.addEventListener('mouseleave', function () { dev.style.transform = ''; });
+    }
+    var tr = document.getElementById('fgTrilho');
+    if (!tr) return;
+    var arr = { ativo: false, x: 0, sl: 0 };
+    /* lupa: no mouse a foto amplia seguindo o ponteiro */
+    if (FINO) {
+      tr.addEventListener('mousemove', function (e) {
+        if (arr.ativo) return;
+        var fig = e.target.closest ? e.target.closest('.fg-slide') : null, img = fig && fig.querySelector('img');
+        if (!img) return;
+        var r = img.getBoundingClientRect();
+        var dentro = e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom;
+        if (!dentro || REDUZ) { fig.classList.remove('lupa'); return; }
+        img.style.transformOrigin = ((e.clientX - r.left) / r.width * 100).toFixed(1) + '% ' + ((e.clientY - r.top) / r.height * 100).toFixed(1) + '%';
+        fig.classList.add('lupa');
+      });
+      tr.addEventListener('mouseleave', function () {
+        Array.prototype.forEach.call(tr.querySelectorAll('.lupa'), function (f) { f.classList.remove('lupa'); });
+      });
+    }
+    if (n < 2) return;
+    tr.addEventListener('scroll', function () {
+      if (fRaf || arr.ativo) return;
+      fRaf = requestAnimationFrame(function () {
+        fRaf = 0;
+        var i = Math.round(tr.scrollLeft / Math.max(1, tr.clientWidth));
+        if (i !== fIdx) { fIdx = i; marcarIdx(); }
+      });
+    }, { passive: true });
+    /* arrastar com o mouse (no toque o scroll-snap nativo já faz o swipe) */
+    tr.addEventListener('pointerdown', function (e) {
+      if (e.pointerType !== 'mouse' || e.button !== 0) return;
+      arr = { ativo: true, x: e.clientX, sl: tr.scrollLeft };
+      tr.classList.add('arrastando');
+      Array.prototype.forEach.call(tr.querySelectorAll('.lupa'), function (f) { f.classList.remove('lupa'); });
+      try { tr.setPointerCapture(e.pointerId); } catch (x) { /* ok */ }
+    });
+    tr.addEventListener('pointermove', function (e) {
+      if (!arr.ativo) return;
+      tr.scrollLeft = arr.sl - (e.clientX - arr.x);
+    });
+    function solta(e) {
+      if (!arr.ativo) return;
+      arr.ativo = false;
+      tr.classList.remove('arrastando');
+      var dx = e.clientX - arr.x, base = Math.round(arr.sl / Math.max(1, tr.clientWidth));
+      irFoto(dx < -50 ? base + 1 : dx > 50 ? base - 1 : base);
+    }
+    tr.addEventListener('pointerup', solta);
+    tr.addEventListener('pointercancel', solta);
+    tr.addEventListener('keydown', function (e) {
+      var k = e.key;
+      if (k === 'ArrowRight') { e.preventDefault(); irFoto(fIdx + 1); }
+      else if (k === 'ArrowLeft') { e.preventDefault(); irFoto(fIdx - 1); }
+      else if (k === 'Home') { e.preventDefault(); irFoto(0); }
+      else if (k === 'End') { e.preventDefault(); irFoto(n - 1); }
+    });
+    marcarIdx();
+  }
+  function irFoto(i, instantaneo) {
+    var tr = document.getElementById('fgTrilho');
+    if (!tr) return;
+    var n = tr.children.length;
+    i = Math.max(0, Math.min(n - 1, i));
+    fIdx = i;
+    tr.scrollTo({ left: i * tr.clientWidth, behavior: REDUZ || instantaneo ? 'auto' : 'smooth' });
+    marcarIdx();
+  }
+  function marcarIdx() {
+    var minis = fGal.querySelectorAll('.fg-mini');
+    Array.prototype.forEach.call(minis, function (m, i) {
+      if (i === fIdx) {
+        m.setAttribute('aria-current', 'true');
+        if (m.scrollIntoView && m.parentNode.scrollWidth > m.parentNode.clientWidth) m.parentNode.scrollLeft = m.offsetLeft - m.parentNode.clientWidth / 2 + m.offsetWidth / 2;
+      } else m.removeAttribute('aria-current');
+    });
+    var cont = document.getElementById('fgCont');
+    if (cont) cont.textContent = (fIdx + 1) + ' / ' + minis.length;
+    var ant = fGal.querySelector('.fg-seta.ant'), prox = fGal.querySelector('.fg-seta.prox');
+    if (ant) ant.disabled = fIdx <= 0;
+    if (prox) prox.disabled = fIdx >= minis.length - 1;
+  }
+
+  function irAoCatalogo(instantaneo) {
+    var alvo = document.getElementById('catTabs') || document.getElementById('produtos');
+    if (!alvo) return;
+    window.scrollTo({ top: alvo.getBoundingClientRect().top + window.scrollY - 110, behavior: instantaneo || REDUZ ? 'instant' : 'smooth' });
+  }
+
+  function abrirFicha(id, o) {
+    o = o || {};
+    var p = estado.porId[id];
+    if (!p) {
+      window.elToast('Esse aparelho não está mais na vitrine — veja os disponíveis.');
+      if (/^#produto=/.test(location.hash)) history.replaceState(null, '', location.pathname + location.search);
+      irAoCatalogo();
+      return;
+    }
+    clearTimeout(fFechandoT);
+    var jaAberta = !!fAberta;
+    if (!jaAberta) fOrigem = o.origem || document.activeElement;
+    fAberta = id;
+    montarFicha(p);
+    var h = '#produto=' + encodeURIComponent(id);
+    if (o.push) { history.pushState({ elFicha: id }, '', h); fEmpurrou = true; }
+    else if (o.replace) history.replaceState({ elFicha: id }, '', h);
+    if (!jaAberta) {
+      ficha.hidden = false;
+      inertes(true);
+      travaRolagem(true);
+      void ficha.offsetWidth; /* garante a transição de entrada */
+      ficha.classList.add('on');
+    }
+    fInfo.scrollTop = 0;
+    fCaixa.scrollTop = 0;
+    var t = document.getElementById('fichaTitulo');
+    if (t) { try { t.focus({ preventScroll: true }); } catch (e) { t.focus(); } }
+  }
+
+  function fecharAgora() {
+    if (!fAberta) return;
+    var id = fAberta;
+    fAberta = null;
+    document.title = tituloBase;
+    ficha.classList.remove('on');
+    inertes(false);
+    travaRolagem(false);
+    fFechandoT = setTimeout(function () {
+      if (fAberta) return;
+      ficha.hidden = true;
+      fGal.innerHTML = '';
+      fInfo.innerHTML = '';
+    }, REDUZ ? 0 : 450);
+    var volta = fOrigem && fOrigem !== document.body && document.contains(fOrigem) ? fOrigem
+      : document.querySelector('.pcard-ver[data-ficha="' + cssEsc(id) + '"]');
+    if (volta) { try { volta.focus({ preventScroll: true }); } catch (e) { /* ok */ } }
+    fOrigem = null;
+  }
+  function fecharFicha(depois) {
+    if (!fAberta) { if (depois) depois(); return; }
+    if (fEmpurrou) {
+      /* a ficha criou uma entrada no histórico: fechar = voltar (o popstate termina o serviço) */
+      fAposFechar = depois || null;
+      fEmpurrou = false;
+      history.back();
+      setTimeout(function () { /* rede de segurança se o popstate não vier */
+        if (!fAberta) return;
+        fecharAgora();
+        var cb = fAposFechar; fAposFechar = null;
+        if (cb) cb();
+      }, 500);
+      return;
+    }
+    if (/^#produto=/.test(location.hash)) history.replaceState(null, '', location.pathname + location.search);
+    fecharAgora();
+    if (depois) setTimeout(depois, 30);
+  }
+  window.elFecharFicha = fecharFicha;
+  window.elAbrirFicha = function (id) { abrirFicha(id, { push: true }); };
+
+  function idDoHash() {
+    var m = location.hash.match(/^#produto=([^&]+)/);
+    if (!m) return null;
+    try { return decodeURIComponent(m[1]); } catch (e) { return m[1]; }
+  }
+  function abrirPeloHash() {
+    var id = idDoHash();
+    if (!id) return;
+    var p = estado.porId[id];
+    if (p) {
+      var c = estado.catPorId[p.categoria_id];
+      var b = c && document.querySelector('#catTabs [data-slug="' + cssEsc(c.slug) + '"]');
+      if (b) window.switchTab(c.slug, b);
+    }
+    irAoCatalogo(true);
+    abrirFicha(id, { replace: true });
+  }
+  function atualizarFichaAberta() {
+    var p = estado.porId[fAberta];
+    if (!p) {
+      if (!fInfo.querySelector('.ficha-aviso')) {
+        fInfo.insertAdjacentHTML('afterbegin', '<p class="ficha-aviso" role="status">Este aparelho acabou de sair da vitrine. Chame no WhatsApp para saber se ainda dá tempo.</p>');
+      }
+      return;
+    }
+    if (assinatura(p) === fAssin) return;
+    var tinhaFoco = ficha.contains(document.activeElement);
+    montarFicha(p, true);
+    if (tinhaFoco) { var t = document.getElementById('fichaTitulo'); if (t) { try { t.focus({ preventScroll: true }); } catch (e) { /* ok */ } } }
+  }
+
+  function compartilhar(p) {
+    var url = linkProduto(p), nome = nomeCompleto(p);
+    var texto = 'Olha esse ' + nome + (p.preco != null ? ' por ' + fmt(p.preco) : '') + ' na Eletronic:';
+    function copia() {
+      window.elCopiar(url).then(function () { window.elToast('Link do aparelho copiado — é só colar e mandar.'); })
+        .catch(function () { window.elToast('Copie o link: ' + url, 6000); });
+    }
+    if (navigator.share) {
+      navigator.share({ title: nome + ' — Eletronic', text: texto, url: url }).catch(function (e) {
+        if (!e || e.name !== 'AbortError') copia();
+      });
+      return;
+    }
+    copia();
+  }
+
+  if (ficha && fGal && fInfo) {
+    ficha.addEventListener('click', function (e) {
+      if (e.target.closest && e.target.closest('[data-fecha-ficha]')) fecharFicha();
+    });
+    fGal.addEventListener('click', function (e) {
+      var b = e.target.closest ? e.target.closest('[data-fg], [data-fgi]') : null;
+      if (!b) return;
+      if (b.hasAttribute('data-fgi')) irFoto(Number(b.dataset.fgi));
+      else irFoto(fIdx + Number(b.dataset.fg));
+    });
+    fInfo.addEventListener('click', function (e) {
+      var b = e.target.closest ? e.target.closest('[data-share], [data-receber], [data-fnav]') : null;
+      if (!b || !fAberta) return;
+      var p = estado.porId[fAberta];
+      if (!p) return;
+      if (b.hasAttribute('data-share')) { compartilhar(p); return; }
+      if (b.hasAttribute('data-receber')) {
+        fecharFicha(function () {
+          if (window.elAgendarProduto) window.elAgendarProduto({ id: p.id, nome: nomeCompleto(p) });
+          else { var s = document.getElementById('entrega'); if (s) s.scrollIntoView({ behavior: REDUZ ? 'auto' : 'smooth' }); }
+        });
+        return;
+      }
+      var cat = estado.catPorId[p.categoria_id] || {};
+      var ids = listaNavegacao(p, cat), i = ids.indexOf(p.id) + Number(b.dataset.fnav);
+      if (i < 0 || i >= ids.length) return;
+      fAberta = ids[i];
+      montarFicha(estado.porId[ids[i]]);
+      history.replaceState({ elFicha: ids[i] }, '', '#produto=' + encodeURIComponent(ids[i]));
+      fInfo.scrollTop = 0; fCaixa.scrollTop = 0;
+      var nb = fInfo.querySelector('[data-fnav="' + b.dataset.fnav + '"]:not([disabled])') || document.getElementById('fichaTitulo');
+      if (nb) { try { nb.focus({ preventScroll: true }); } catch (x) { nb.focus(); } }
+    });
+    /* Esc fecha; Tab fica preso dentro da ficha */
+    ficha.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); fecharFicha(); return; }
+      if (e.key !== 'Tab') return;
+      var f = Array.prototype.filter.call(ficha.querySelectorAll('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'), function (x) {
+        return x.getClientRects().length > 0;
+      });
+      if (!f.length) return;
+      var pri = f[0], ult = f[f.length - 1], at = document.activeElement;
+      if (e.shiftKey && (at === pri || at === document.getElementById('fichaTitulo') || !ficha.contains(at))) { e.preventDefault(); ult.focus(); }
+      else if (!e.shiftKey && (at === ult || !ficha.contains(at))) { e.preventDefault(); pri.focus(); }
+    });
+    window.addEventListener('popstate', function () {
+      var id = idDoHash();
+      if (id) { if (estado.porId[id]) abrirFicha(id, {}); return; }
+      if (fAberta) {
+        fEmpurrou = false;
+        fecharAgora();
+        var cb = fAposFechar; fAposFechar = null;
+        if (cb) setTimeout(cb, 30);
+      }
+    });
+    /* link colado na barra de endereço com a página já aberta */
+    window.addEventListener('hashchange', function () {
+      var id = idDoHash();
+      if (id && id !== fAberta && estado.porId[id]) abrirFicha(id, {});
+    });
+  }
+
   function carregar() {
     var pn = document.getElementById('catPaineis');
-    if (pn) pn.setAttribute('aria-busy', 'true');
+    if (pn && !jaRenderizou) pn.setAttribute('aria-busy', 'true');
     Promise.all([
       sbe.from('el_categorias').select('*').eq('ativo', true).order('ordem'),
       sbe.from('el_produtos').select('*').eq('ativo', true)
@@ -5824,7 +7227,8 @@ window.elcChart = (function () {
       (cfgRows || []).forEach(function (l) { cfg[l.chave] = l.valor; });
       render(cats || [], prods || [], cfg);
     }).catch(function (e) {
-      console.error('catálogo:', e);
+      console.warn('catálogo:', e && e.message ? e.message : e);
+      if (jaRenderizou) return; /* já tem vitrine na tela: uma falha momentânea do realtime não apaga nada */
       if (window.elcEstoque) { try { window.elcEstoque([], {}, CFG.WA_PADRAO); } catch (e2) { /* ok */ } }
       var paineis = document.getElementById('catPaineis');
       if (paineis) {
@@ -5833,7 +7237,10 @@ window.elcChart = (function () {
           'Nosso catálogo ao vivo está fora do ar neste momento.<br>' +
           '<a target="_blank" rel="noopener" href="https://wa.me/' + CFG.WA_PADRAO +
           '?text=' + encodeURIComponent('Olá! Queria ver os iPhones disponíveis.') +
-          '">Chame no WhatsApp</a> que a gente manda a vitrine completa em segundos.</div></div>';
+          '">Chame no WhatsApp</a> que a gente manda a vitrine completa em segundos. ' +
+          '<button type="button" class="cat-limpar" id="catTentar">Tentar de novo</button></div></div>';
+        var bt = document.getElementById('catTentar');
+        if (bt) bt.addEventListener('click', function () { paineis.innerHTML = '<div class="cat-panel active"><p class="cat-carregando">Carregando catálogo…</p></div>'; carregar(); });
       }
     });
   }
@@ -5852,7 +7259,7 @@ window.elcChart = (function () {
       .subscribe();
   } catch (e) { /* sem tempo real, o site ainda recarrega ao voltar à aba */ }
   document.addEventListener('visibilitychange', function () {
-    if (!document.hidden) carregar();
+    if (!document.hidden) aoVivo();
   });
 
   carregar();
@@ -7547,36 +8954,60 @@ window.elcChart = (function () {
 
 <script>
 'use strict';
-/* ============ AGENDAMENTO DE ENTREGA — grava em el_pedidos e cai na hora na aba Pedidos do painel ============ */
+/* ============ AGENDAMENTO DE ENTREGA — 4 etapas dentro do iPhone + "Acompanhar meu pedido" ============
+   Grava em el_pedidos pela RPC el_pedido_criar (cai na hora na aba Pedidos do painel) e consulta
+   el_pedido_acompanhar. Rascunho automático em sessionStorage e "lembrar meus dados" em localStorage —
+   o CPF NUNCA é guardado em lugar nenhum do navegador. */
 (function () {
   var form = document.getElementById('entForm');
   if (!form) return;
   var SB_URL = 'https://nppfqhavqahapmugnyng.supabase.co';
   var SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5wcGZxaGF2cWFoYXBtdWdueW5nIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU4NTAxMTIsImV4cCI6MjEwMTQyNjExMn0.Fb6mAvAuODy2mprKBc_w8tRaY5SYG9Nf9o2VKfuOXRA';
   var TZ = 'America/Sao_Paulo';
-  var tela = document.getElementById('entTela');
-  var fone = tela.closest('.ent-fone');
-  var ok = document.getElementById('entOk');
-  var btn = document.getElementById('entEnviar');
-  var erroGeral = document.getElementById('entFormErro');
+  var REDUZ = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var FINO = matchMedia('(pointer: fine)').matches;
+  function $(id) { return document.getElementById(id); }
+  var tela = $('entTela'), fone = tela.closest('.ent-fone');
+  var ok = $('entOk'), btn = $('entEnviar'), btnTxt = $('entEnviarTxt'), voltar = $('entVoltar');
+  var erroBox = $('entFormErro'), erroTxt = $('entFormErroTxt'), tentar = $('entTentar');
+  var pausa = $('entPausa');
   var el = form.elements;
+  var TOTAL = 4, NOMES = ['', 'Você', 'Entrega', 'Pagamento', 'Revisão'];
+  var etapa = 1, maxEtapa = 1, revisando = false, enviando = false, pausado = false, ultimo = null;
+  var RASC = 'el_ent_rascunho_v1', LEMB = 'el_ent_lembrar_v1', ULT = 'el_ent_ultimo_v1';
+  /* o que pode ir para o rascunho/lembrar — CPF fica de fora de propósito */
+  var CAMPOS_RASC = ['nome', 'telefone', 'cep', 'rua', 'numero', 'bairro', 'cidade', 'complemento', 'data_entrega', 'horario_outro', 'produto', 'produto_id', 'pagamento', 'observacoes'];
+  var CAMPOS_LEMB = ['nome', 'telefone', 'cep', 'rua', 'numero', 'bairro', 'cidade', 'complemento'];
+  var CAMPOS_ETAPA = { 1: ['nome', 'telefone', 'cpf'], 2: ['cep', 'rua', 'numero', 'bairro', 'cidade', 'data_entrega', 'horario'], 3: ['pagamento'] };
 
+  /* ---------- utilitários ---------- */
   function hojeSP() { return new Date().toLocaleDateString('en-CA', { timeZone: TZ }); }
+  function horaSP() { return Number(new Intl.DateTimeFormat('en-US', { hour: 'numeric', hourCycle: 'h23', timeZone: TZ }).format(new Date())) % 24; }
   function somaDias(iso, n) {
     var p = iso.split('-').map(Number);
     return new Date(Date.UTC(p[0], p[1] - 1, p[2] + n)).toISOString().slice(0, 10);
   }
-  function dataBR(iso) { var p = iso.split('-'); return p[2] + '/' + p[1] + '/' + p[0]; }
+  function ehISO(v) { return /^\d{4}-\d{2}-\d{2}/.test(String(v || '')); }
+  function dataBR(iso) { var p = String(iso).slice(0, 10).split('-'); return p[2] + '/' + p[1] + '/' + p[0]; }
+  function dataLonga(iso) {
+    if (!ehISO(iso)) return String(iso || '');
+    var p = String(iso).slice(0, 10).split('-').map(Number);
+    var t = new Date(Date.UTC(p[0], p[1] - 1, p[2], 12)).toLocaleDateString('pt-BR', { weekday: 'long', day: 'numeric', month: 'long', timeZone: 'UTC' });
+    return t.charAt(0).toUpperCase() + t.slice(1);
+  }
   function dig(v) { return String(v || '').replace(/\D/g, ''); }
   function esc(t) {
     return String(t == null ? '' : t).replace(/[&<>"']/g, function (c) {
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
     });
   }
-  el.data_entrega.min = hojeSP();
-  el.data_entrega.max = somaDias(hojeSP(), 120);
-
-  /* máscaras */
+  function pad(n) { return (Number(n) < 10 ? '0' : '') + Number(n); }
+  /* "+55 (12) 98888-7777", "012 98888 7777" ou "12988887777" viram sempre 12988887777 */
+  function normTel(v) {
+    var d = dig(v).replace(/^0+/, '');
+    if (d.length > 11 && d.slice(0, 2) === '55') d = d.slice(2).replace(/^0+/, '');
+    return d.slice(0, 11);
+  }
   function mascTel(d) {
     d = d.slice(0, 11);
     if (!d) return '';
@@ -7588,14 +9019,7 @@ window.elcChart = (function () {
     d = d.slice(0, 11);
     return d.replace(/^(\d{3})(\d)/, '$1.$2').replace(/^(\d{3})\.(\d{3})(\d)/, '$1.$2.$3').replace(/\.(\d{3})(\d{1,2})$/, '.$1-$2');
   }
-  el.telefone.addEventListener('input', function () { this.value = mascTel(dig(this.value)); });
-  el.cpf.addEventListener('input', function () { this.value = mascCpf(dig(this.value)); });
-  /* escolher uma janela limpa o horário específico e vice-versa */
-  form.addEventListener('change', function (e) { if (e.target.name === 'janela') el.horario_outro.value = ''; });
-  el.horario_outro.addEventListener('input', function () {
-    if (this.value) Array.prototype.forEach.call(form.querySelectorAll('[name=janela]'), function (r) { r.checked = false; });
-  });
-
+  function mascCep(d) { d = d.slice(0, 8); return d.length > 5 ? d.slice(0, 5) + '-' + d.slice(5) : d; }
   function cpfValido(c) {
     if (!/^\d{11}$/.test(c) || /^(\d)\1{10}$/.test(c)) return false;
     for (var t = 9; t < 11; t++) {
@@ -7607,119 +9031,783 @@ window.elcChart = (function () {
     }
     return true;
   }
+  function lerJSON(store, k) { try { return JSON.parse(store.getItem(k) || 'null'); } catch (e) { return null; } }
+  function gravar(store, k, v) { try { if (v == null) store.removeItem(k); else store.setItem(k, JSON.stringify(v)); } catch (e) { /* modo anônimo */ } }
+  function numeroLoja() {
+    if (window.elCatalogo && window.elCatalogo.wa) return window.elCatalogo.wa;
+    var a = document.querySelector('.nav-btn[href*="wa.me/"]');
+    var m = a && a.href.match(/wa\.me\/(\d+)/);
+    return m ? m[1] : '5512997463135';
+  }
+  function linkWA(msg) { return 'https://wa.me/' + numeroLoja() + '?text=' + encodeURIComponent(msg); }
+  function focar(x) { if (!x) return; try { x.focus({ preventScroll: true }); } catch (e) { x.focus(); } }
+  function toast(m, ms) { if (window.elToast) window.elToast(m, ms); }
+  function copiar(t) {
+    if (window.elCopiar) return window.elCopiar(t);
+    return navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject(new Error('sem clipboard'));
+  }
+  function rpc(nome, corpo, ms) {
+    var ctl = 'AbortController' in window ? new AbortController() : null;
+    var timer = setTimeout(function () { if (ctl) ctl.abort(); }, ms || 20000);
+    return fetch(SB_URL + '/rest/v1/rpc/' + nome, {
+      method: 'POST',
+      headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY, 'Content-Type': 'application/json' },
+      body: JSON.stringify(corpo),
+      signal: ctl ? ctl.signal : undefined,
+    }).then(function (r) {
+      return r.json().catch(function () { return {}; }).then(function (j) { return { ok: r.ok, j: j }; });
+    }).then(function (res) { clearTimeout(timer); return res; }, function (e) { clearTimeout(timer); throw e; });
+  }
+
+  /* ---------- rolagem: no desktop rola a tela do aparelho; no celular, a página ---------- */
+  function rolaDentro() { return getComputedStyle(tela).overflowY === 'auto'; }
+  function irParaTopo(soDentro) {
+    if (rolaDentro()) { tela.scrollTo({ top: 0, behavior: REDUZ ? 'auto' : 'smooth' }); return; }
+    if (soDentro) return;
+    var ancora = !form.hidden ? form : !ok.hidden ? ok : !pausa.hidden ? pausa : $('entPainelAc');
+    var r = ancora.getBoundingClientRect();
+    if (r.top < 80 || r.top > window.innerHeight * 0.6) {
+      window.scrollTo({ top: r.top + window.scrollY - 92, behavior: REDUZ ? 'auto' : 'smooth' });
+    }
+  }
+  function rolarAteFone(depois) {
+    var r = fone.getBoundingClientRect();
+    var longe = r.top < 80 || r.top > window.innerHeight * 0.35;
+    if (longe) window.scrollTo({ top: r.top + window.scrollY - 96, behavior: REDUZ ? 'auto' : 'smooth' });
+    if (depois) setTimeout(depois, longe && !REDUZ ? 650 : 30);
+  }
+
+  /* ---------- máscaras ---------- */
+  function ligaTel(inp) { inp.addEventListener('input', function () { this.value = mascTel(normTel(this.value)); }); }
+  ligaTel(el.telefone);
+  el.cpf.addEventListener('input', function () { this.value = mascCpf(dig(this.value)); });
+  /* escolher uma janela limpa o horário específico e vice-versa */
+  form.addEventListener('change', function (e) { if (e.target.name === 'janela') el.horario_outro.value = ''; });
+  el.horario_outro.addEventListener('input', function () {
+    if (this.value) Array.prototype.forEach.call(form.querySelectorAll('[name=janela]'), function (r) { r.checked = false; });
+  });
+
+  /* contadores de caracteres nos campos longos */
+  function contador(inp) {
+    var c = inp.parentNode.querySelector('.ent-cont');
+    if (!c) return;
+    var n = inp.value.length, m = Number(inp.maxLength) || 0;
+    c.textContent = n + '/' + m;
+    c.className = 'ent-cont' + (m && n >= m ? ' cheio' : m && n >= m * 0.8 ? ' quase' : '');
+  }
+  var comContador = form.querySelectorAll('[data-cont]');
+  function contadores() { Array.prototype.forEach.call(comContador, contador); }
+  Array.prototype.forEach.call(comContador, function (i) { i.addEventListener('input', function () { contador(i); }); });
+
+  /* ---------- CEP → ViaCEP (tolerante a falha: nunca trava o agendamento) ---------- */
+  var cepUltimo = '', cepCtl = null, autoCampos = {};
+  function cepSt(t, cls) { var s = $('entCepSt'); s.textContent = t; s.className = 'ent-cep-st' + (cls ? ' ' + cls : ''); }
+  var CEP_DICA = 'Com o CEP, a gente preenche o endereço para você.';
+  function preencheAuto(k, v) {
+    if (!v) return;
+    var inp = el[k];
+    if (!inp.value.trim() || autoCampos[k] === inp.value) { inp.value = v; autoCampos[k] = v; limpaErro(k); }
+  }
+  function buscaCep(d) {
+    cepUltimo = d;
+    if (cepCtl) { try { cepCtl.abort(); } catch (e) { /* ok */ } }
+    var ctl = cepCtl = 'AbortController' in window ? new AbortController() : null;
+    var timer = setTimeout(function () { if (ctl) ctl.abort(); }, 7000);
+    cepSt('Buscando o endereço…', 'busca');
+    fetch('https://viacep.com.br/ws/' + d + '/json/', ctl ? { signal: ctl.signal } : {})
+      .then(function (r) { if (!r.ok) throw new Error('http ' + r.status); return r.json(); })
+      .then(function (j) {
+        if (d !== cepUltimo) return;
+        if (!j || j.erro) { cepSt('Não achamos esse CEP — preencha o endereço abaixo.', ''); return; }
+        var cidade = j.localidade ? j.localidade + (j.uf ? '/' + j.uf : '') : '';
+        preencheAuto('rua', j.logradouro);
+        preencheAuto('bairro', j.bairro);
+        preencheAuto('cidade', cidade);
+        cepSt('Endereço encontrado' + (cidade ? ' em ' + cidade : '') + '. Confira e informe o número.', 'ok');
+        salvarRascunho();
+        if (document.activeElement === el.cep) focar(!el.rua.value ? el.rua : !el.numero.value ? el.numero : el.complemento);
+      })
+      .catch(function () {
+        if (d !== cepUltimo) return;
+        cepSt('Não deu para consultar o CEP agora — preencha o endereço abaixo.', '');
+      })
+      .then(function () { clearTimeout(timer); });
+  }
+  el.cep.addEventListener('input', function () {
+    var d = dig(this.value).slice(0, 8);
+    this.value = mascCep(d);
+    if (d.length === 8) { if (d !== cepUltimo) buscaCep(d); }
+    else { cepUltimo = ''; cepSt(CEP_DICA, ''); }
+  });
+
+  /* ---------- dia: atalhos (Hoje, Amanhã, próximos dias) + seletor nativo sincronizados ---------- */
+  var DIAS_SEM = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+  var MESES = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+  function montaDias() {
+    var h = hojeSP(), html = '';
+    for (var i = 0; i < 7; i++) {
+      var iso = somaDias(h, i), p = iso.split('-').map(Number), dt = new Date(Date.UTC(p[0], p[1] - 1, p[2]));
+      var rot = i === 0 ? 'Hoje' : i === 1 ? 'Amanhã' : DIAS_SEM[dt.getUTCDay()];
+      html += '<label class="ent-dia"><input type="radio" name="dia" value="' + iso + '" aria-label="' + esc(rot + ', ' + dataLonga(iso)) + '">' +
+        '<span aria-hidden="true"><b>' + rot + '</b><small>' + p[2] + ' ' + MESES[p[1] - 1] + '</small></span></label>';
+    }
+    $('entDias').innerHTML = html;
+    el.data_entrega.min = h;
+    el.data_entrega.max = somaDias(h, 120);
+  }
+  function sincDia() {
+    var v = el.data_entrega.value;
+    Array.prototype.forEach.call(form.querySelectorAll('[name=dia]'), function (r) { r.checked = r.value === v; });
+  }
+  function aoMudarData() {
+    var v = el.data_entrega.value;
+    $('entDataTxt').textContent = v && v >= el.data_entrega.min && v <= el.data_entrega.max ? dataLonga(v) : '';
+    atualizaJanelas();
+  }
+  $('entDias').addEventListener('change', function (e) {
+    if (e.target.name !== 'dia') return;
+    el.data_entrega.value = e.target.value;
+    limpaErro('data_entrega');
+    aoMudarData();
+    salvarRascunho();
+  });
+  el.data_entrega.addEventListener('change', function () { sincDia(); aoMudarData(); });
+  /* janelas que já passaram hoje ficam indisponíveis (só as janelas que o site já oferece) */
+  function atualizaJanelas() {
+    var hoje = el.data_entrega.value === hojeSP(), h = horaSP(), passaram = 0, dica = $('entJanDica');
+    Array.prototype.forEach.call(form.querySelectorAll('[name=janela]'), function (r) {
+      var off = hoje && h >= Number(r.dataset.fim);
+      r.disabled = off;
+      if (off) { passaram++; if (r.checked) r.checked = false; }
+    });
+    dica.hidden = !passaram;
+    dica.textContent = passaram === 3 ? 'Para hoje as janelas já passaram — informe um horário específico ou escolha outro dia.'
+      : passaram ? 'A janela que já passou hoje fica indisponível.' : '';
+  }
+
+  /* ---------- formas de pagamento (atalhos) + detalhes ---------- */
+  var formasBox = form.querySelector('.ent-formas');
+  function formas() {
+    return Array.prototype.filter.call(formasBox.querySelectorAll('.ent-forma'), function (b) { return b.getAttribute('aria-pressed') === 'true'; })
+      .map(function (b) { return b.dataset.forma; });
+  }
+  function setFormas(arr) {
+    Array.prototype.forEach.call(formasBox.querySelectorAll('.ent-forma'), function (b) {
+      b.setAttribute('aria-pressed', (arr || []).indexOf(b.dataset.forma) >= 0 ? 'true' : 'false');
+    });
+  }
+  formasBox.addEventListener('click', function (e) {
+    var b = e.target.closest('.ent-forma');
+    if (!b) return;
+    b.setAttribute('aria-pressed', b.getAttribute('aria-pressed') === 'true' ? 'false' : 'true');
+    limpaErro('pagamento');
+    salvarRascunho();
+  });
+  function pagamento() {
+    var f = formas().join(' + '), d = el.pagamento.value.trim();
+    return f && d ? f + ' — ' + d : f || d;
+  }
+
+  /* ---------- produto: sugestões da vitrine + aparelho escolhido no catálogo ---------- */
+  var produtosVitrine = [], prodLista = $('entProdLista'), catCarregado = false;
+  function fmtR(v) { return Number(v).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }); }
+  function atualizaCatalogo(cat) {
+    if (!cat) return;
+    var nomeDe = typeof cat.nome === 'function' ? cat.nome : function (p) { return p.nome; };
+    produtosVitrine = (cat.prods || []).filter(function (p) { return !(cat.situacao && cat.situacao(p) === 'esgotado'); })
+      .map(function (p) { return { id: p.id, rotulo: nomeDe(p) + (p.preco != null ? ' — ' + fmtR(p.preco) : '') }; });
+    var vistos = {};
+    prodLista.innerHTML = produtosVitrine.filter(function (p) { if (vistos[p.rotulo]) return false; vistos[p.rotulo] = 1; return true; })
+      .map(function (p) { return '<option value="' + esc(p.rotulo) + '"></option>'; }).join('');
+    catCarregado = true;
+    sincProdutoId();
+    aplicarPausa((cat.cfg || {}).entregas_ativas === 'nao');
+  }
+  function sincProdutoId() {
+    if (!catCarregado) { mostraEscolhido(); return; } /* sem vitrine ainda: não descarta o aparelho do rascunho */
+    var v = el.produto.value.trim();
+    var achados = produtosVitrine.filter(function (p) { return p.rotulo === v; });
+    if (achados.length === 1) el.produto_id.value = achados[0].id;
+    else if (!achados.some(function (p) { return p.id === el.produto_id.value; })) el.produto_id.value = '';
+    mostraEscolhido();
+  }
+  function mostraEscolhido() {
+    var tem = !!(el.produto_id.value && el.produto.value.trim());
+    $('entEscolhido').hidden = !tem;
+    if (tem) $('entEscolhidoNome').textContent = el.produto.value.trim();
+  }
+  el.produto.addEventListener('input', sincProdutoId);
+  el.produto.addEventListener('change', sincProdutoId);
+  $('entEscolhidoTirar').addEventListener('click', function () {
+    el.produto.value = ''; el.produto_id.value = '';
+    mostraEscolhido(); salvarRascunho();
+    toast('Aparelho removido do agendamento.');
+    focar(etapa === 3 ? el.produto : $('entT' + etapa));
+  });
+  document.addEventListener('el:catalogo', function (e) { atualizaCatalogo(e.detail); });
+
+  /* chamado pela ficha do produto ("Receber em casa") */
+  window.elAgendarProduto = function (info) {
+    info = info || {};
+    if (!ok.hidden) novoPedido(true);
+    trocaModo('ag', false);
+    var achado = produtosVitrine.filter(function (p) { return p.id === info.id; })[0];
+    el.produto.value = achado ? achado.rotulo : (info.nome || '');
+    el.produto_id.value = info.id || '';
+    mostraEscolhido();
+    salvarRascunho();
+    rolarAteFone(function () {
+      if (pausado) { focar(pausa.querySelector('h3') || pausa); return; }
+      irParaTopo(true);
+      var e1 = validarEtapa(etapa);
+      var k = CAMPOS_ETAPA[etapa] && CAMPOS_ETAPA[etapa].filter(function (x) { return e1[x]; })[0];
+      focar(k && el[k] && el[k].focus ? el[k] : $('entT' + etapa));
+    });
+    toast(pausado ? 'O agendamento pelo site está pausado — combine a entrega no WhatsApp.' : 'Aparelho escolhido. Agora é só completar o agendamento.');
+  };
+
+  /* ---------- pausa (el_config.entregas_ativas = 'nao') ---------- */
+  function aplicarPausa(sim) {
+    pausado = !!sim;
+    var temOk = !ok.hidden;
+    pausa.hidden = !pausado || temOk;
+    form.hidden = pausado || temOk;
+  }
+
+  /* ---------- erros ---------- */
+  function limpaErro(k) {
+    var a = $('entE-' + k);
+    if (a && a.textContent) a.textContent = '';
+    var c = k === 'horario' ? el.horario_outro : el[k];
+    if (c && c.removeAttribute) c.removeAttribute('aria-invalid');
+  }
+  form.addEventListener('input', function (ev) {
+    var n = ev.target.name;
+    if (n === 'horario_outro' || n === 'janela') n = 'horario';
+    if (n === 'dia') n = 'data_entrega';
+    if (n) limpaErro(n);
+    salvarDepois();
+  });
+  form.addEventListener('change', function (ev) {
+    var n = ev.target.name;
+    if (n === 'janela') limpaErro('horario');
+    salvarDepois();
+  });
+  function escondeErro() { erroBox.hidden = true; erroTxt.textContent = ''; tentar.hidden = true; }
+  function mostraErro(msg, comRetry) {
+    erroTxt.textContent = msg;
+    tentar.hidden = !comRetry;
+    erroBox.hidden = false;
+    if (rolaDentro()) erroBox.scrollIntoView({ block: 'nearest', behavior: REDUZ ? 'auto' : 'smooth' });
+  }
+
+  /* ---------- validação por etapa (mesmas mensagens do servidor) ---------- */
   function horario() {
     var outro = el.horario_outro.value.trim();
     if (outro) return outro;
     var marcado = form.querySelector('[name=janela]:checked');
     return marcado ? marcado.value : '';
   }
-
-  function validar() {
+  function endereco() {
+    var cep = dig(el.cep.value);
+    var rua = el.rua.value.trim(), num = el.numero.value.trim(), bairro = el.bairro.value.trim(), cidade = el.cidade.value.trim();
+    return [rua + (num ? ', ' + num : ''), bairro, cidade].filter(Boolean).join(' — ') + (cep.length === 8 ? ' — CEP ' + mascCep(cep) : '');
+  }
+  function validarEtapa(n) {
     var e = {};
-    if (el.nome.value.trim().length < 2) e.nome = 'Informe seu nome completo.';
-    var t = dig(el.telefone.value);
-    if (t.length < 10 || t.length > 13) e.telefone = 'Informe um telefone com DDD.';
-    if (!cpfValido(dig(el.cpf.value))) e.cpf = 'Informe um CPF válido com 11 dígitos.';
-    if (el.endereco.value.trim().length < 5) e.endereco = 'Informe rua, número e bairro.';
-    var d = el.data_entrega.value;
-    if (!d) e.data_entrega = 'Escolha a data.';
-    else if (d < hojeSP()) e.data_entrega = 'A data não pode ser no passado.';
-    else if (d > el.data_entrega.max) e.data_entrega = 'Escolha uma data dentro dos próximos 4 meses.';
-    if (horario().length < 2) e.horario = 'Escolha a janela ou informe o horário desejado.';
-    var pg = el.pagamento.value.trim();
-    if (pg.length < 3) e.pagamento = 'Descreva a forma de pagamento combinada com a loja.';
+    if (n === 1) {
+      if (el.nome.value.trim().length < 2) e.nome = 'Informe seu nome completo.';
+      var t = normTel(el.telefone.value);
+      if (t.length < 10 || t.length > 11) e.telefone = 'Informe um telefone com DDD.';
+      if (!cpfValido(dig(el.cpf.value))) e.cpf = 'Informe um CPF válido com 11 dígitos.';
+    } else if (n === 2) {
+      var cep = dig(el.cep.value);
+      if (cep && cep.length !== 8) e.cep = 'O CEP tem 8 números — confira ou deixe em branco.';
+      if (el.rua.value.trim().length < 3) e.rua = 'Informe rua, número e bairro.';
+      if (!el.numero.value.trim()) e.numero = 'Informe o número (ou "s/n").';
+      if (el.bairro.value.trim().length < 2) e.bairro = 'Informe rua, número e bairro.';
+      if (el.cidade.value.trim().length < 2) e.cidade = 'Informe a cidade.';
+      var d = el.data_entrega.value;
+      if (!d) e.data_entrega = 'Escolha a data.';
+      else if (d < hojeSP()) e.data_entrega = 'A data não pode ser no passado.';
+      else if (d > el.data_entrega.max) e.data_entrega = 'Escolha uma data dentro dos próximos 4 meses.';
+      if (horario().length < 2) e.horario = 'Escolha a janela ou informe o horário desejado.';
+    } else if (n === 3) {
+      if (pagamento().length < 3) e.pagamento = 'Descreva a forma de pagamento combinada com a loja.';
+    }
     return e;
   }
-  function mostrarErros(e) {
-    ['nome', 'telefone', 'cpf', 'endereco', 'data_entrega', 'horario', 'pagamento'].forEach(function (k) {
-      var alvo = document.getElementById('entE-' + k);
+  function mostrarErros(n, e) {
+    (CAMPOS_ETAPA[n] || []).forEach(function (k) {
+      var alvo = $('entE-' + k);
       if (alvo) alvo.textContent = e[k] || '';
       var campo = k === 'horario' ? el.horario_outro : el[k];
-      if (campo) { if (e[k]) campo.setAttribute('aria-invalid', 'true'); else campo.removeAttribute('aria-invalid'); }
+      if (campo && campo.setAttribute) { if (e[k]) campo.setAttribute('aria-invalid', 'true'); else campo.removeAttribute('aria-invalid'); }
     });
-    var primeiro = Object.keys(e)[0];
-    if (primeiro) {
-      var f = primeiro === 'horario' ? form.querySelector('[name=janela]') : el[primeiro];
-      if (f) f.focus();
+    var primeiro = (CAMPOS_ETAPA[n] || []).filter(function (k) { return e[k]; })[0];
+    if (!primeiro) return;
+    var f = primeiro === 'horario' ? (form.querySelector('[name=janela]:not(:disabled)') || el.horario_outro)
+      : primeiro === 'data_entrega' ? (form.querySelector('[name=dia]') || el.data_entrega) : el[primeiro];
+    focar(f);
+    var visivel = f.closest('.ent-chip, .ent-dia, .ent-campo') || f;
+    visivel.scrollIntoView({ block: 'center', behavior: REDUZ ? 'auto' : 'smooth' });
+  }
+
+  /* ---------- etapas ---------- */
+  var etapas = form.querySelectorAll('.ent-etapa');
+  var progBtns = form.querySelectorAll('.ent-prog-btn');
+  function rotuloBotao() {
+    return etapa === TOTAL ? 'Confirmar agendamento' : revisando ? 'Salvar e revisar' : 'Continuar';
+  }
+  function irEtapa(n, o) {
+    o = o || {};
+    var anterior = etapa;
+    etapa = n;
+    if (n > maxEtapa) maxEtapa = n;
+    Array.prototype.forEach.call(etapas, function (d) {
+      var on = Number(d.dataset.etapa) === n;
+      d.hidden = !on;
+      if (on) d.classList.toggle('volta', n < anterior);
+    });
+    Array.prototype.forEach.call(progBtns, function (b) {
+      var k = Number(b.dataset.ir);
+      b.classList.toggle('feito', k !== n && k < maxEtapa);
+      b.disabled = k > maxEtapa;
+      if (k === n) b.setAttribute('aria-current', 'step'); else b.removeAttribute('aria-current');
+      b.setAttribute('aria-label', 'Etapa ' + k + ' de ' + TOTAL + ': ' + NOMES[k] + (k === n ? ' (atual)' : k < maxEtapa ? ' (preenchida)' : ''));
+    });
+    if (n === TOTAL) { montaRevisao(); revisando = false; }
+    voltar.hidden = n === 1;
+    btnTxt.textContent = rotuloBotao();
+    $('entProgTxt').textContent = 'Etapa ' + n + ' de ' + TOTAL + ': ' + NOMES[n];
+    escondeErro();
+    if (!o.semRolar) irParaTopo();
+    if (!o.semFoco) focar($('entT' + n));
+    salvarRascunho();
+  }
+  form.querySelector('.ent-prog-lista').addEventListener('click', function (e) {
+    var b = e.target.closest('.ent-prog-btn');
+    if (!b || b.disabled || enviando) return;
+    var alvo = Number(b.dataset.ir);
+    if (alvo === etapa) return;
+    if (alvo > etapa) {
+      /* pular para frente só passando pelas validações do caminho */
+      for (var n = etapa; n < alvo; n++) {
+        var er = validarEtapa(n);
+        if (Object.keys(er).length) { if (n !== etapa) irEtapa(n, { semFoco: true }); mostrarErros(n, er); return; }
+      }
+    }
+    irEtapa(alvo);
+  });
+  voltar.addEventListener('click', function () { if (etapa > 1 && !enviando) irEtapa(etapa - 1); });
+
+  /* ---------- revisão ---------- */
+  function montaRevisao() {
+    var cpf = dig(el.cpf.value);
+    var cpfMasc = cpf.length === 11 ? '•••.' + cpf.slice(3, 6) + '.' + cpf.slice(6, 9) + '-••' : '';
+    function bloco(n, tit, linhas) {
+      return '<div class="ent-rev-bloco" role="group" aria-label="' + tit + '"><div class="ent-rev-cab"><h4>' + tit + '</h4>' +
+        '<button type="button" data-editar="' + n + '" aria-label="Editar ' + tit.toLowerCase() + '">Editar</button></div>' +
+        linhas.filter(Boolean).map(function (l) { return '<p>' + l + '</p>'; }).join('') + '</div>';
+    }
+    var prod = el.produto.value.trim(), comp = el.complemento.value.trim(), obs = el.observacoes.value.trim();
+    $('entRev').innerHTML =
+      bloco(1, 'Você', ['<b>' + esc(el.nome.value.trim()) + '</b>', esc(mascTel(normTel(el.telefone.value))) + (cpfMasc ? ' · CPF ' + cpfMasc : '')]) +
+      bloco(2, 'Entrega', [esc(endereco()), comp ? esc(comp) : '', '<b>' + esc(dataLonga(el.data_entrega.value)) + '</b> · ' + esc(horario())]) +
+      bloco(3, 'Pagamento', [prod ? 'Aparelho: <b>' + esc(prod) + '</b>' : 'Aparelho: a combinar com a loja', 'Pagamento: ' + esc(pagamento()), obs ? 'Obs.: ' + esc(obs) : '']);
+  }
+  $('entRev').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-editar]');
+    if (!b || enviando) return;
+    revisando = true;
+    irEtapa(Number(b.dataset.editar));
+  });
+
+  /* ---------- rascunho (sessionStorage) e "lembrar meus dados" (localStorage) — sem CPF ---------- */
+  function coletar(lista) { var o = {}; lista.forEach(function (k) { if (el[k]) o[k] = el[k].value; }); return o; }
+  function salvarRascunho() {
+    if (!ok.hidden) return;
+    var o = coletar(CAMPOS_RASC);
+    var j = form.querySelector('[name=janela]:checked');
+    o.janela = j ? j.value : '';
+    o.formas = formas();
+    o.lembrar = el.lembrar.checked;
+    var temAlgo = Object.keys(o).some(function (k) { return k !== 'lembrar' && (Array.isArray(o[k]) ? o[k].length : o[k]); });
+    gravar(sessionStorage, RASC, temAlgo ? o : null);
+  }
+  var salvaT = 0;
+  function salvarDepois() { clearTimeout(salvaT); salvaT = setTimeout(salvarRascunho, 300); }
+  function restaurar(o) {
+    CAMPOS_RASC.forEach(function (k) { if (typeof o[k] === 'string' && el[k]) el[k].value = o[k]; });
+    if (o.janela) {
+      Array.prototype.forEach.call(form.querySelectorAll('[name=janela]'), function (r) { r.checked = r.value === o.janela; });
+    }
+    if (Array.isArray(o.formas)) setFormas(o.formas);
+    if (o.lembrar) el.lembrar.checked = true;
+  }
+  $('entEsquecer').addEventListener('click', function () {
+    gravar(localStorage, LEMB, null);
+    CAMPOS_LEMB.forEach(function (k) { el[k].value = ''; });
+    el.lembrar.checked = false;
+    $('entLembrado').hidden = true;
+    cepUltimo = ''; cepSt(CEP_DICA, '');
+    contadores(); salvarRascunho();
+    toast('Pronto: seus dados foram apagados deste aparelho.');
+    focar(el.nome);
+  });
+
+  /* ---------- envio ---------- */
+  function payload() {
+    var p = {
+      nome: el.nome.value.trim(), telefone: normTel(el.telefone.value), cpf: dig(el.cpf.value),
+      endereco: endereco(), complemento: el.complemento.value.trim(),
+      data_entrega: el.data_entrega.value, horario: horario(), produto: el.produto.value.trim(),
+      pagamento: pagamento(), observacoes: el.observacoes.value.trim(),
+    };
+    if (el.produto_id.value) p.produto_id = el.produto_id.value;
+    return p;
+  }
+  function travaBotao(sim) {
+    if (sim) {
+      btn.setAttribute('aria-busy', 'true'); btn.setAttribute('aria-disabled', 'true');
+      btnTxt.textContent = 'Enviando';
+      voltar.disabled = true;
+    } else {
+      btn.removeAttribute('aria-busy'); btn.removeAttribute('aria-disabled');
+      btnTxt.textContent = rotuloBotao();
+      voltar.disabled = false;
     }
   }
-  /* o erro some assim que a pessoa corrige o campo */
-  form.addEventListener('input', function (ev) {
-    var n = ev.target.name === 'horario_outro' || ev.target.name === 'janela' ? 'horario' : ev.target.name;
-    var alvo = document.getElementById('entE-' + n);
-    if (alvo && alvo.textContent) { alvo.textContent = ''; ev.target.removeAttribute('aria-invalid'); }
-  });
-  form.addEventListener('change', function (ev) {
-    if (ev.target.name === 'janela') document.getElementById('entE-horario').textContent = '';
-  });
-
-  function numeroLoja() {
-    var a = document.querySelector('.nav-btn[href*="wa.me/"]');
-    var m = a && a.href.match(/wa\.me\/(\d+)/);
-    return m ? m[1] : '5512997463135';
-  }
-  function irParaTopo() {
-    if (getComputedStyle(tela).overflowY === 'auto') tela.scrollTop = 0;
-    else window.scrollTo({ top: fone.getBoundingClientRect().top + window.scrollY - 100, behavior: 'smooth' });
-  }
-
-  form.addEventListener('submit', function (ev) {
-    ev.preventDefault();
-    erroGeral.textContent = '';
+  function enviar() {
+    if (enviando) return;
+    escondeErro();
     if (el.site.value) return; /* campo-isca: só robô preenche */
-    var e = validar();
-    mostrarErros(e);
-    if (Object.keys(e).length) return;
-    var p = {
-      nome: el.nome.value.trim(), telefone: dig(el.telefone.value), cpf: dig(el.cpf.value),
-      endereco: el.endereco.value.trim(), complemento: el.complemento.value.trim(),
-      data_entrega: el.data_entrega.value, horario: horario(), produto: el.produto.value.trim(),
-      pagamento: el.pagamento.value.trim(), observacoes: el.observacoes.value.trim(),
-    };
-    btn.setAttribute('aria-busy', 'true');
-    btn.firstChild.nodeValue = 'Enviando ';
-    fetch(SB_URL + '/rest/v1/rpc/el_pedido_criar', {
-      method: 'POST',
-      headers: { apikey: SB_KEY, Authorization: 'Bearer ' + SB_KEY, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ p: p }),
-    }).then(function (r) {
-      return r.json().catch(function () { return {}; }).then(function (j) { return { ok: r.ok, j: j }; });
-    }).then(function (res) {
+    for (var n = 1; n < TOTAL; n++) {
+      var e = validarEtapa(n);
+      if (Object.keys(e).length) { irEtapa(n, { semFoco: true }); mostrarErros(n, e); return; }
+    }
+    var p = payload();
+    enviando = true;
+    travaBotao(true);
+    rpc('el_pedido_criar', { p: p }).then(function (res) {
       if (!res.ok) {
-        erroGeral.textContent = (res.j && res.j.code === 'P0001' && res.j.message) ||
-          'Não conseguimos enviar agora. Tente de novo em instantes ou chame a loja no WhatsApp.';
+        var msg = res.j && res.j.code === 'P0001' && res.j.message;
+        mostraErro(msg || 'Não conseguimos enviar agora. Tente de novo em instantes ou chame a loja no WhatsApp.', !msg);
         return;
       }
-      var num = res.j.numero || '';
-      document.getElementById('entOkNum').textContent = num;
-      document.getElementById('entOkTxt').textContent = 'A loja já recebeu e vai falar com você no ' +
-        mascTel(p.telefone) + ' para confirmar o horário.';
-      document.getElementById('entOkResumo').innerHTML =
-        '<b>Quando:</b> ' + dataBR(p.data_entrega) + ' · ' + esc(p.horario) + '<br>' +
-        '<b>Onde:</b> ' + esc(p.endereco) + (p.complemento ? ' — ' + esc(p.complemento) : '') + '<br>' +
-        '<b>Pagamento:</b> só no ato da entrega';
-      document.getElementById('entOkWa').href = 'https://wa.me/' + numeroLoja() + '?text=' +
-        encodeURIComponent('Olá! Acabei de agendar a entrega ' + num + ' pelo site para ' + dataBR(p.data_entrega) + ' (' + p.horario + ').');
-      form.hidden = true;
-      ok.hidden = false;
-      irParaTopo();
-      try { ok.focus({ preventScroll: true }); } catch (x) { ok.focus(); }
+      sucesso(p, res.j || {});
     }).catch(function () {
-      erroGeral.textContent = 'Sem conexão no momento. Verifique a internet e tente de novo, ou chame a loja no WhatsApp.';
+      mostraErro('Sem conexão no momento. Verifique a internet e tente de novo, ou chame a loja no WhatsApp.', true);
     }).then(function () {
-      btn.removeAttribute('aria-busy');
-      btn.firstChild.nodeValue = 'Enviar pedido';
+      enviando = false;
+      travaBotao(false);
     });
+  }
+  tentar.addEventListener('click', enviar);
+  form.addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    if (enviando) return;
+    if (etapa < TOTAL) {
+      var e = validarEtapa(etapa);
+      mostrarErros(etapa, e);
+      if (Object.keys(e).length) return;
+      irEtapa(revisando ? TOTAL : etapa + 1);
+      return;
+    }
+    enviar();
   });
 
-  document.getElementById('entOkOutro').addEventListener('click', function () {
-    form.reset();
-    el.data_entrega.min = hojeSP();
-    ok.hidden = true;
-    form.hidden = false;
+  function sucesso(p, j) {
+    var num = j.numero ? String(j.numero) : '';
+    if (num && num.charAt(0) !== '#') num = '#' + (/^\d+$/.test(num) ? pad4(num) : num);
+    ultimo = { numero: num, telefone: p.telefone, data: p.data_entrega, horario: p.horario, endereco: p.endereco, complemento: p.complemento, produto: p.produto };
+    gravar(sessionStorage, ULT, ultimo);
+    if (el.lembrar.checked) gravar(localStorage, LEMB, coletar(CAMPOS_LEMB));
+    else gravar(localStorage, LEMB, null);
+    gravar(sessionStorage, RASC, null);
+    $('entOkNum').textContent = num || 'Recebido';
+    $('entOkCopiar').hidden = !num;
+    $('entOkAcomp').hidden = !num;
+    $('entOkTxt').textContent = 'A loja já recebeu e vai falar com você no ' + mascTel(p.telefone) + ' para confirmar o horário.';
+    $('entOkResumo').innerHTML =
+      '<b>Quando:</b> ' + esc(dataLonga(p.data_entrega)) + ' · ' + esc(p.horario) + '<br>' +
+      '<b>Onde:</b> ' + esc(p.endereco) + (p.complemento ? ' — ' + esc(p.complemento) : '') + '<br>' +
+      (p.produto ? '<b>Aparelho:</b> ' + esc(p.produto) + '<br>' : '') +
+      '<b>Pagamento:</b> só no ato da entrega';
+    $('entOkWa').href = linkWA('Olá! Acabei de agendar a entrega ' + num + ' pelo site para ' + dataBR(p.data_entrega) + ' (' + p.horario + ')' + (p.produto ? ' — ' + p.produto : '') + '.');
+    form.hidden = true;
+    pausa.hidden = true;
+    ok.hidden = false;
     irParaTopo();
-    el.nome.focus({ preventScroll: true });
+    focar(ok);
+  }
+  function pad4(n) { n = String(n); while (n.length < 4) n = '0' + n; return n; }
+
+  function novoPedido(silencioso) {
+    ['data_entrega', 'horario_outro', 'produto', 'produto_id', 'pagamento', 'observacoes'].forEach(function (k) { el[k].value = ''; });
+    Array.prototype.forEach.call(form.querySelectorAll('[name=janela], [name=dia]'), function (r) { r.checked = false; });
+    setFormas([]);
+    montaDias(); aoMudarData(); contadores(); mostraEscolhido();
+    ok.hidden = true;
+    aplicarPausa(pausado);
+    maxEtapa = 1; revisando = false;
+    irEtapa(1, silencioso ? { semRolar: true, semFoco: true } : {});
+  }
+  $('entOkOutro').addEventListener('click', function () { novoPedido(false); });
+  $('entOkCopiar').addEventListener('click', function () {
+    var b = this, n = $('entOkNum').textContent;
+    copiar(n).then(function () {
+      b.classList.add('feito');
+      b.setAttribute('aria-label', 'Número copiado');
+      toast('Número ' + n + ' copiado.');
+      setTimeout(function () { b.classList.remove('feito'); b.setAttribute('aria-label', 'Copiar o número do pedido'); }, 2200);
+    }).catch(function () { toast('Anote o número do seu pedido: ' + n, 6000); });
   });
+  $('entOkAcomp').addEventListener('click', function () {
+    if (!ultimo) return;
+    trocaModo('ac', false);
+    acEl.numero.value = ultimo.numero;
+    acEl.telefone.value = mascTel(ultimo.telefone);
+    consultar();
+  });
+
+  /* ---------- "Adicionar à agenda": arquivo .ics gerado no navegador ---------- */
+  function icsTxt(t) { return String(t || '').replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\r?\n/g, '\\n'); }
+  function dobra(l) { var out = []; while (l.length > 60) { out.push(l.slice(0, 60)); l = ' ' + l.slice(60); } out.push(l); return out.join('\r\n'); }
+  function gerarIcs(u) {
+    var d = u.data.replace(/-/g, ''), ini = null, fim = null;
+    var m = u.horario.match(/(\d{1,2})h(\d{2})?\s*(?:às|as|a|-)\s*(\d{1,2})h(\d{2})?/i);
+    if (m) { ini = pad(m[1]) + (m[2] || '00'); fim = pad(m[3]) + (m[4] || '00'); }
+    else {
+      var h = u.horario.match(/(\d{1,2})\s*(?:h|:)\s*(\d{2})?/i);
+      if (h && Number(h[1]) < 23) { ini = pad(h[1]) + (h[2] || '00'); fim = pad(Number(h[1]) + 1) + (h[2] || '00'); }
+    }
+    var agora = new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d+Z$/, 'Z');
+    var L = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Eletronic//Entrega por motoboy//PT-BR', 'CALSCALE:GREGORIAN', 'METHOD:PUBLISH',
+      'BEGIN:VTIMEZONE', 'TZID:America/Sao_Paulo', 'BEGIN:STANDARD', 'DTSTART:19700101T000000', 'TZOFFSETFROM:-0300', 'TZOFFSETTO:-0300', 'TZNAME:-03', 'END:STANDARD', 'END:VTIMEZONE',
+      'BEGIN:VEVENT', 'UID:entrega-' + (dig(u.numero) || Date.now()) + '-' + d + '@eletronic', 'DTSTAMP:' + agora];
+    if (ini) L.push('DTSTART;TZID=America/Sao_Paulo:' + d + 'T' + ini + '00', 'DTEND;TZID=America/Sao_Paulo:' + d + 'T' + fim + '00');
+    else L.push('DTSTART;VALUE=DATE:' + d, 'DTEND;VALUE=DATE:' + somaDias(u.data, 1).replace(/-/g, ''));
+    L.push('SUMMARY:' + icsTxt('Entrega Eletronic ' + u.numero + (u.produto ? ' — ' + u.produto : '')),
+      'DESCRIPTION:' + icsTxt('Entrega por motoboy agendada pelo site. Horário pedido: ' + u.horario + '. A loja fala com você para confirmar. Pagamento só no ato da entrega.'),
+      'LOCATION:' + icsTxt(u.endereco + (u.complemento ? ' — ' + u.complemento : '')),
+      'STATUS:TENTATIVE', 'END:VEVENT', 'END:VCALENDAR');
+    return L.map(dobra).join('\r\n') + '\r\n';
+  }
+  $('entOkAgenda').addEventListener('click', function () {
+    if (!ultimo) return;
+    try {
+      var blob = new Blob([gerarIcs(ultimo)], { type: 'text/calendar;charset=utf-8' });
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'entrega-eletronic-' + (dig(ultimo.numero) || 'pedido') + '.ics';
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 2000);
+      toast('Lembrete gerado — abra o arquivo para salvar na sua agenda.');
+    } catch (e) { toast('Não deu para gerar o lembrete neste navegador.'); }
+  });
+
+  /* ======================= ACOMPANHAR ======================= */
+  var tabAg = $('entTabAg'), tabAc = $('entTabAc'), painelAg = $('entPainelAg'), painelAc = $('entPainelAc'), modo = $('entModo');
+  var acForm = $('entAcForm'), acRes = $('entAcRes'), acBtn = $('entAcBtn'), acEl = acForm.elements, acOcupado = false, acUlt = 0;
+  function trocaModo(qual, foco) {
+    var ac = qual === 'ac';
+    tabAg.setAttribute('aria-selected', String(!ac));
+    tabAc.setAttribute('aria-selected', String(ac));
+    tabAg.tabIndex = ac ? -1 : 0;
+    tabAc.tabIndex = ac ? 0 : -1;
+    painelAg.hidden = ac;
+    painelAc.hidden = !ac;
+    modo.classList.toggle('ac', ac);
+    if (ac && !acEl.numero.value && !acEl.telefone.value) {
+      var u = ultimo || lerJSON(sessionStorage, ULT);
+      if (u && u.numero) { acEl.numero.value = u.numero; acEl.telefone.value = mascTel(String(u.telefone || '')); }
+      else if (el.telefone.value) acEl.telefone.value = el.telefone.value;
+    }
+    irParaTopo(true);
+    if (foco) focar(ac ? $('entAcTit') : (!ok.hidden ? ok : !pausa.hidden ? pausa.querySelector('h3') : $('entT' + etapa)));
+  }
+  [tabAg, tabAc].forEach(function (t) {
+    t.addEventListener('click', function () { trocaModo(t === tabAc ? 'ac' : 'ag', false); });
+  });
+  modo.addEventListener('keydown', function (e) {
+    if (['ArrowLeft', 'ArrowRight', 'Home', 'End'].indexOf(e.key) < 0) return;
+    e.preventDefault();
+    var irAc = e.key === 'End' || (e.key !== 'Home' && tabAg.getAttribute('aria-selected') === 'true');
+    trocaModo(irAc ? 'ac' : 'ag', false);
+    (irAc ? tabAc : tabAg).focus();
+  });
+  Array.prototype.forEach.call(document.querySelectorAll('[data-ir-acomp]'), function (b) {
+    b.addEventListener('click', function () { trocaModo('ac', true); });
+  });
+  var jaLink = $('entJaLink');
+  if (jaLink) jaLink.addEventListener('click', function (e) {
+    e.preventDefault();
+    trocaModo('ac', false);
+    rolarAteFone(function () { focar(acEl.numero.value ? acEl.telefone : acEl.numero); });
+  });
+
+  ligaTel(acEl.telefone);
+  acEl.numero.addEventListener('input', function () {
+    var d = dig(this.value).slice(0, 9);
+    this.value = d ? '#' + d : '';
+    $('entAE-numero').textContent = ''; this.removeAttribute('aria-invalid');
+  });
+  acEl.telefone.addEventListener('input', function () { $('entAE-telefone').textContent = ''; this.removeAttribute('aria-invalid'); });
+  acForm.addEventListener('submit', function (e) { e.preventDefault(); consultar(); });
+  acRes.addEventListener('click', function (e) {
+    if (e.target.closest && e.target.closest('[data-ac-atualizar]')) { acUlt = 0; consultar(); }
+  });
+
+  var ST = { recebido: 'Recebido', confirmado: 'Confirmado', a_caminho: 'A caminho', entregue: 'Entregue', cancelado: 'Cancelado' };
+  var ST_DESC = {
+    recebido: 'A loja recebeu o seu agendamento e vai falar com você para confirmar o horário.',
+    confirmado: 'Horário confirmado com a loja. Agora é só aguardar o dia da entrega.',
+    a_caminho: 'O motoboy está a caminho do endereço combinado. Deixe o telefone por perto.',
+    entregue: 'Pedido entregue. Aproveite o seu novo aparelho!',
+    cancelado: 'Este agendamento foi cancelado. Se quiser remarcar, fale com a loja no WhatsApp.',
+  };
+  var ORDEM = ['recebido', 'confirmado', 'a_caminho', 'entregue'];
+  function quando(iso) {
+    var d = new Date(iso);
+    if (isNaN(d.getTime())) return '';
+    var g = {};
+    new Intl.DateTimeFormat('pt-BR', { timeZone: TZ, day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' })
+      .formatToParts(d).forEach(function (x) { g[x.type] = x.value; });
+    return g.day + '/' + g.month + ' às ' + g.hour + ':' + g.minute;
+  }
+  function consultar() {
+    if (acOcupado) return;
+    var num = dig(acEl.numero.value), tel = normTel(acEl.telefone.value), er = {};
+    if (!num || Number(num) <= 0) er.numero = 'Informe o número do pedido (ex.: #0002).';
+    if (tel.length < 10) er.telefone = 'Informe o telefone com DDD usado no agendamento.';
+    ['numero', 'telefone'].forEach(function (k) {
+      $('entAE-' + k).textContent = er[k] || '';
+      if (er[k]) acEl[k].setAttribute('aria-invalid', 'true'); else acEl[k].removeAttribute('aria-invalid');
+    });
+    if (er.numero) { focar(acEl.numero); return; }
+    if (er.telefone) { focar(acEl.telefone); return; }
+    var agora = Date.now();
+    if (agora - acUlt < 1500) return; /* sem metralhar a consulta */
+    acUlt = agora;
+    acOcupado = true;
+    acBtn.setAttribute('aria-busy', 'true');
+    rpc('el_pedido_acompanhar', { p_numero: Number(num), p_telefone: tel }, 15000).then(function (res) {
+      if (!res.ok) throw new Error('rpc');
+      pintaAcomp(res.j, num);
+    }).catch(function () {
+      acRes.innerHTML = '<div class="ent-trk-nada"><strong>Sem conexão agora</strong><p>Não conseguimos consultar o pedido. Verifique a internet e tente de novo.</p>' +
+        '<div class="ent-trk-acts"><button type="button" class="ent-tentar" data-ac-atualizar>Tentar de novo</button></div></div>';
+      mostraResultado();
+    }).then(function () {
+      acOcupado = false;
+      acBtn.removeAttribute('aria-busy');
+    });
+  }
+  /* o resultado aparece logo abaixo do formulário: leva a vista até ele (dentro do aparelho no desktop) */
+  function mostraResultado() {
+    focar(acRes);
+    if (rolaDentro()) { var cab = tela.querySelector('.ent-cabeca'); tela.scrollTo({ top: Math.max(0, acRes.offsetTop - (cab ? cab.offsetHeight : 120) - 8), behavior: REDUZ ? 'auto' : 'smooth' }); return; }
+    var r = acRes.getBoundingClientRect();
+    if (r.top > window.innerHeight * 0.55 || r.top < 70) window.scrollTo({ top: r.top + window.scrollY - 96, behavior: REDUZ ? 'auto' : 'smooth' });
+  }
+  function pintaAcomp(j, num) {
+    var waNum = '#' + pad4(num);
+    if (!j || !j.ok) {
+      acRes.innerHTML = '<div class="ent-trk-nada"><strong>Não encontramos esse pedido</strong>' +
+        '<p>Confira o número (ele aparece na confirmação, ex.: #0002) e use o mesmo telefone do agendamento. Se preferir, ' +
+        '<a target="_blank" rel="noopener" href="' + esc(linkWA('Olá! Quero saber do meu pedido de entrega ' + waNum + '.')) + '">fale com a loja no WhatsApp</a>.</p></div>';
+      mostraResultado();
+      return;
+    }
+    var hist = Array.isArray(j.hist) ? j.hist : [];
+    var em = {};
+    hist.forEach(function (h) { if (h && h.s && h.em) em[h.s] = h.em; }); /* vale o registro mais recente de cada status */
+    var st = ST[j.status] ? j.status : 'recebido', cancel = st === 'cancelado', iAtual = ORDEM.indexOf(st);
+    var itens;
+    if (cancel) {
+      itens = ORDEM.filter(function (s) { return em[s] || s === 'recebido'; }).map(function (s) {
+        return '<li class="feito"><i aria-hidden="true"></i><strong>' + ST[s] + '</strong>' + (em[s] ? '<span>' + quando(em[s]) + '</span>' : '') + '</li>';
+      });
+      itens.push('<li class="atual"><i aria-hidden="true"></i><strong>Cancelado<span class="sr-only"> (situação atual)</span></strong>' + (em.cancelado ? '<span>' + quando(em.cancelado) + '</span>' : '') + '</li>');
+    } else {
+      itens = ORDEM.map(function (s, i) {
+        var cls = i < iAtual || (i === iAtual && s === 'entregue') ? 'feito' : i === iAtual ? 'atual' : '';
+        return '<li class="' + cls + '"><i aria-hidden="true"></i><strong>' + ST[s] + (i === iAtual ? '<span class="sr-only"> (situação atual)</span>' : '') + '</strong>' +
+          (em[s] && i <= iAtual ? '<span>' + quando(em[s]) + '</span>' : !cls ? '<span>Ainda não</span>' : '') + '</li>';
+      });
+    }
+    var numero = j.numero != null ? String(j.numero) : waNum;
+    if (numero.charAt(0) !== '#') numero = '#' + pad4(dig(numero) || num);
+    var info = [];
+    if (j.primeiro_nome) info.push('Olá, <b>' + esc(j.primeiro_nome) + '</b>.');
+    if (j.data_entrega) info.push('Entrega: <b>' + esc(dataLonga(j.data_entrega)) + '</b>' + (j.horario ? ' · ' + esc(j.horario) : ''));
+    if (j.produto) info.push('Aparelho: ' + esc(j.produto));
+    var agora = new Intl.DateTimeFormat('pt-BR', { timeZone: TZ, hour: '2-digit', minute: '2-digit', hourCycle: 'h23' }).format(new Date());
+    acRes.innerHTML = '<div class="ent-trk' + (cancel ? ' cancelado' : '') + '">' +
+      '<div class="ent-trk-cab"><div><small>Situação do pedido</small><strong>' + ST[st] + '</strong></div><span class="ent-trk-num">' + esc(numero) + '</span></div>' +
+      (info.length ? '<p class="ent-trk-info">' + info.join('<br>') + '</p>' : '') +
+      '<ol class="ent-trk-linha" aria-label="Linha do tempo do pedido">' + itens.join('') + '</ol>' +
+      '<p class="ent-trk-desc">' + ST_DESC[st] + '</p>' +
+      '<div class="ent-trk-acts"><button type="button" class="ent-tentar" data-ac-atualizar>Atualizar</button>' +
+      '<a target="_blank" rel="noopener" href="' + esc(linkWA('Olá! Quero falar sobre o meu pedido de entrega ' + numero + '.')) + '">Falar com a loja</a></div>' +
+      '<p class="ent-dica">Consultado às ' + agora + ' (horário de Brasília).</p></div>';
+    mostraResultado();
+  }
+
+  /* link direto: #acompanhar=0002 abre já no Acompanhar com o número */
+  function pelaHash() {
+    var m = location.hash.match(/^#acompanhar(?:=#?(\d{1,9}))?$/i);
+    if (!m) return false;
+    trocaModo('ac', false);
+    if (m[1]) acEl.numero.value = '#' + m[1];
+    rolarAteFone(function () { focar(m[1] ? acEl.telefone : acEl.numero); });
+    return true;
+  }
+  window.addEventListener('hashchange', pelaHash);
+
+  /* ---------- botões magnéticos (mouse) ---------- */
+  if (FINO && !REDUZ) {
+    var mag = null;
+    document.addEventListener('mousemove', function (e) {
+      var b = e.target.closest ? e.target.closest('[data-magnet]') : null;
+      if (mag && mag !== b) { mag.style.transform = ''; mag = null; }
+      if (!b || b.getAttribute('aria-disabled') === 'true') return;
+      mag = b;
+      var r = b.getBoundingClientRect();
+      var dx = (e.clientX - r.left) / r.width - 0.5, dy = (e.clientY - r.top) / r.height - 0.5;
+      b.style.transform = 'translate(' + (dx * 8).toFixed(1) + 'px,' + (dy * 6 - 1.5).toFixed(1) + 'px)';
+    }, { passive: true });
+  }
+
+  /* ---------- início ---------- */
+  montaDias();
+  var rasc = lerJSON(sessionStorage, RASC), lemb = lerJSON(localStorage, LEMB);
+  if (rasc && typeof rasc === 'object') restaurar(rasc);
+  else if (lemb && typeof lemb === 'object') {
+    restaurar(lemb);
+    el.lembrar.checked = true;
+    $('entLembrado').hidden = false;
+  }
+  if (el.telefone.value) el.telefone.value = mascTel(normTel(el.telefone.value));
+  if (dig(el.cep.value).length === 8) { cepUltimo = dig(el.cep.value); el.cep.value = mascCep(cepUltimo); }
+  if (el.data_entrega.value && el.data_entrega.value < el.data_entrega.min) el.data_entrega.value = '';
+  sincDia(); aoMudarData(); contadores();
+  if (window.elCatalogo) atualizaCatalogo(window.elCatalogo);
+  sincProdutoId();
+  irEtapa(1, { semRolar: true, semFoco: true });
+  function pelaHashNoLoad() {
+    if (document.readyState === 'complete') return pelaHash();
+    if (!/^#acompanhar/i.test(location.hash)) return false;
+    pelaHash();
+    window.addEventListener('load', function () { setTimeout(function () { rolarAteFone(); }, 250); }, { once: true });
+    return true;
+  }
+  if (!pelaHashNoLoad()) {
+    var ultSalvo = lerJSON(sessionStorage, ULT);
+    if (ultSalvo && ultSalvo.numero) ultimo = ultSalvo;
+  }
 })();
 </script>
 
