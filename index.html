@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Eletronic — iPhones Originais em Taubaté · Seminovos e Lacrados</title>
-  <meta name="description" content="iPhones originais com nota fiscal e 1 ano de garantia em Taubaté-SP. Lacrados e seminovos, acessórios e relógios Garmin. Até 18x no cartão e entrega para todo o Brasil."/>
-  <meta property="og:title" content="Eletronic — Produtos Apple Originais"/>
-  <meta property="og:description" content="iPhones originais com nota fiscal e 1 ano de garantia em Taubaté-SP. Até 18x no cartão e entrega para todo o Brasil."/>
+  <title>Eletronic — iPhones Originais em Taubaté e Mogi das Cruzes · Seminovos e Lacrados</title>
+  <meta name="description" content="iPhones originais com nota fiscal e 1 ano de garantia em Taubaté e Mogi das Cruzes (SP). Lacrados e seminovos, acessórios e relógios Garmin. Até 18x no cartão, entrega por motoboy e para todo o Brasil."/>
+  <meta property="og:title" content="Eletronic — iPhones originais em Taubaté e Mogi das Cruzes"/>
+  <meta property="og:description" content="Duas lojas, a mesma Eletronic: iPhones originais com nota fiscal e 1 ano de garantia em Taubaté e Mogi das Cruzes. Até 18x no cartão."/>
   <meta property="og:image" content="https://eletronic-taubate.netlify.app/images/og.jpg"/>
   <meta property="og:image:width" content="1200"/>
   <meta property="og:image:height" content="630"/>
@@ -25,21 +25,63 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "Store",
-    "name": "Eletronic",
-    "description": "Loja de iPhones originais com nota fiscal e 1 ano de garantia em Taubaté-SP. Lacrados e seminovos, acessórios e relógios Garmin. Até 18x no cartão e entrega para todo o Brasil.",
-    "url": "https://eletronic-taubate.netlify.app/",
-    "image": "https://eletronic-taubate.netlify.app/images/og.jpg",
-    "telephone": "+5512997463135",
-    "address": {
-      "@type": "PostalAddress",
-      "streetAddress": "R. Dr. Souza Alves, 384 - Centro",
-      "addressLocality": "Taubaté",
-      "addressRegion": "SP",
-      "postalCode": "12020-030",
-      "addressCountry": "BR"
-    },
-    "sameAs": ["https://www.instagram.com/eletronic.oficial"]
+    "@graph": [
+      {
+        "@type": "Organization",
+        "@id": "https://eletronic-taubate.netlify.app/#marca",
+        "name": "Eletronic",
+        "url": "https://eletronic-taubate.netlify.app/",
+        "logo": "https://eletronic-taubate.netlify.app/images/og.jpg",
+        "sameAs": [
+          "https://www.instagram.com/eletronic.oficial",
+          "https://www.instagram.com/eletronic.oficial.mogi"
+        ]
+      },
+      {
+        "@type": "Store",
+        "@id": "https://eletronic-taubate.netlify.app/#taubate",
+        "name": "Eletronic Taubaté",
+        "parentOrganization": {
+          "@id": "https://eletronic-taubate.netlify.app/#marca"
+        },
+        "description": "Loja de iPhones originais com nota fiscal e 1 ano de garantia em Taubaté-SP. Lacrados e seminovos, acessórios e relógios Garmin.",
+        "url": "https://eletronic-taubate.netlify.app/",
+        "image": "https://eletronic-taubate.netlify.app/images/og.jpg",
+        "telephone": "+5512997463135",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "R. Dr. Souza Alves, 384 - Centro",
+          "addressLocality": "Taubaté",
+          "addressRegion": "SP",
+          "postalCode": "12020-030",
+          "addressCountry": "BR"
+        },
+        "sameAs": [
+          "https://www.instagram.com/eletronic.oficial"
+        ]
+      },
+      {
+        "@type": "Store",
+        "@id": "https://eletronic-taubate.netlify.app/#mogi",
+        "name": "Eletronic Mogi das Cruzes",
+        "parentOrganization": {
+          "@id": "https://eletronic-taubate.netlify.app/#marca"
+        },
+        "description": "Nova unidade da Eletronic em Mogi das Cruzes-SP: iPhones lacrados e seminovos com nota fiscal, garantia e suporte.",
+        "url": "https://eletronic-taubate.netlify.app/#contato",
+        "image": "https://eletronic-taubate.netlify.app/images/og.jpg",
+        "telephone": "+5511994122171",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Mogi das Cruzes",
+          "addressRegion": "SP",
+          "addressCountry": "BR"
+        },
+        "sameAs": [
+          "https://www.instagram.com/eletronic.oficial.mogi"
+        ]
+      }
+    ]
   }
   </script>
   <script type="application/ld+json">
@@ -2900,10 +2942,208 @@
     /* NAV — 6 links (~476px de texto) não cabem entre a marca e o CTA abaixo de ~1240px:
        nessa faixa os links vão para o menu hambúrguer; acima, o espaçamento acompanha a tela */
     .nav-links { gap:clamp(26px,2.5vw,42px); }
-    @media (max-width:1240px) {
+    /* com a pílula de loja, os 6 links só cabem a partir de ~1360px (topo compacto até 1600px) */
+    @media (max-width:1600px) { .nav-btn-l { display:none; } .nav-uni i { display:none; } }
+    @media (max-width:1360px) {
       .nav-links { display:none !important; }
       .nav-burger { display:flex; }
     }
+  
+    /* ================= DUAS UNIDADES — Taubaté (matriz) + Mogi das Cruzes (nova) ================= */
+    .un-intro { max-width:560px; margin-top:18px; color:#c6d1e6; font-size:.98rem; line-height:1.8; }
+    .un-grid { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:clamp(18px, 2.4vw, 32px); margin-top:clamp(36px, 5vw, 56px); }
+    .un-card { position:relative; padding:clamp(26px, 3vw, 40px); border:1px solid rgba(201,162,39,.22);
+      border-radius:var(--r-card, 16px); background:linear-gradient(160deg, rgba(13,23,56,.72), rgba(4,9,28,.88));
+      overflow:hidden; cursor:default; transition:border-color .35s, transform .35s var(--ease-btn, ease), box-shadow .35s; }
+    .un-card::before { content:''; position:absolute; inset:0; pointer-events:none; opacity:.55;
+      background:radial-gradient(420px circle at 85% -10%, rgba(201,162,39,.16), transparent 60%); }
+    .un-card > * { position:relative; }
+    .un-card:hover, .un-card.un-card-foco { border-color:rgba(201,162,39,.6); }
+    .un-card.un-card-foco { box-shadow:0 0 0 1px rgba(201,162,39,.35), 0 26px 60px -30px rgba(201,162,39,.45); }
+    @media (pointer:fine) { .un-card:hover { transform:translateY(-3px); } }
+    .un-card-topo { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+    .un-tag { display:inline-flex; align-items:center; gap:8px; font-size:.64rem; font-weight:700; letter-spacing:.2em;
+      text-transform:uppercase; color:var(--gold-pale); padding:6px 12px; border:1px solid rgba(201,162,39,.4); border-radius:999px; }
+    .un-tag-nova { color:#0a0f24; background:var(--gold-grad, #c9a227); border-color:transparent; }
+    .un-tag-nova i { width:7px; height:7px; border-radius:50%; background:#0a0f24; animation:unPulso 1.8s ease-in-out infinite; }
+    @keyframes unPulso { 0%, 100% { opacity:1; transform:scale(1); } 50% { opacity:.35; transform:scale(.7); } }
+    .un-num { font-family:'Cormorant Garamond', serif; font-size:2.6rem; line-height:1; color:rgba(201,162,39,.28);
+      font-variant-numeric:lining-nums; font-feature-settings:'lnum' 1; }
+    .un-cidade { font-family:'Cormorant Garamond', serif; font-weight:600; font-size:clamp(2.3rem, 4.4vw, 3.6rem);
+      line-height:1; letter-spacing:-.01em; color:var(--cream); margin-top:22px; text-wrap:balance; }
+    .un-card-nova .un-cidade { font-style:italic; color:var(--gold); }
+    .un-uf { font-size:.72rem; letter-spacing:.22em; text-transform:uppercase; color:var(--gray); margin-top:10px; }
+    .un-dados { margin:26px 0 0; display:grid; gap:0; border-top:1px solid rgba(201,162,39,.16); }
+    .un-dados > div { display:grid; grid-template-columns:110px minmax(0, 1fr); gap:14px; padding:14px 0; border-bottom:1px solid rgba(201,162,39,.12); }
+    .un-dados dt { font-size:.62rem; font-weight:700; letter-spacing:.24em; text-transform:uppercase; color:var(--gold); padding-top:3px; }
+    .un-dados dd { margin:0; font-size:.94rem; line-height:1.6; color:var(--cream); overflow-wrap:anywhere; }
+    .un-dados dd a { color:var(--cream); text-decoration:none; border-bottom:1px solid rgba(201,162,39,.35); transition:color .2s, border-color .2s; }
+    .un-dados dd a:hover { color:var(--gold-pale); border-color:var(--gold); }
+    .un-obs { display:block; font-size:.78rem; color:var(--gray); margin-top:4px; }
+    .un-selo { margin-top:20px; }
+    .un-selo .ci-val { margin:0; }
+    .un-chegou { margin:22px 0 0; padding:16px 18px; border-left:2px solid var(--gold); background:rgba(201,162,39,.06);
+      font-family:'Cormorant Garamond', serif; font-style:italic; font-size:1.12rem; line-height:1.5; color:#e8dfc6; }
+    .un-chegou span { display:block; margin-top:8px; font-family:'DM Sans', sans-serif; font-style:normal; font-size:.7rem; letter-spacing:.14em; text-transform:uppercase; color:var(--gold); }
+    .un-acoes { display:flex; flex-wrap:wrap; gap:12px; margin-top:28px; }
+    .un-acoes .btn-claro svg { width:17px; height:17px; fill:#0e7a43; }
+    .un-acoes .cmap-btn svg { width:15px; height:15px; }
+    .un-mapa { margin-top:clamp(28px, 4vw, 44px); }
+    .un-mapa .cmap-head { align-items:center; }
+    .un-mapa-abas { display:inline-flex; gap:4px; padding:4px; border-radius:999px; border:1px solid rgba(201,162,39,.3); background:rgba(4,9,28,.5); }
+    .un-mapa-aba { border:0; background:transparent; color:var(--gray); font:600 .72rem/1 'DM Sans', sans-serif; letter-spacing:.14em;
+      text-transform:uppercase; padding:11px 18px; border-radius:999px; cursor:pointer; min-height:40px; transition:color .2s, background .2s; }
+    .un-mapa-aba:hover { color:var(--gold-pale); }
+    .un-mapa-aba[aria-selected="true"] { background:var(--gold-grad, #c9a227); color:#0a0f24; }
+    .un-mapa-aba:focus-visible { outline:2px solid var(--gold-pale); outline-offset:3px; }
+    @media (max-width:900px) {
+      .un-grid { grid-template-columns:1fr; }
+      .un-dados > div { grid-template-columns:96px minmax(0, 1fr); }
+    }
+    @media (max-width:520px) {
+      .un-acoes > a { flex:1 1 100%; justify-content:center; }
+      .un-mapa .cmap-head { flex-direction:column; align-items:flex-start; }
+      .un-mapa-abas { width:100%; }
+      .un-mapa-aba { flex:1; padding:11px 8px; letter-spacing:.08em; }
+    }
+
+    /* ----- pílula "Loja" no topo ----- */
+    .nav-uni { display:inline-flex; align-items:center; gap:8px; min-height:40px; padding:9px 14px; border-radius:999px;
+      border:1px solid rgba(201,162,39,.4); background:rgba(4,9,28,.45); color:var(--gold-pale); cursor:pointer;
+      font:600 .7rem/1 'DM Sans', sans-serif; letter-spacing:.12em; text-transform:uppercase; white-space:nowrap;
+      transition:border-color .2s, background .2s, color .2s; }
+    .nav-uni svg { width:14px; height:14px; color:var(--gold); }
+    .nav-uni i { width:6px; height:6px; border-right:1.5px solid currentColor; border-bottom:1.5px solid currentColor; transform:rotate(45deg) translateY(-2px); }
+    .nav-uni:hover { border-color:var(--gold); background:rgba(201,162,39,.1); color:#fff6d8; }
+    .nav-uni:focus-visible { outline:2px solid var(--gold-pale); outline-offset:3px; }
+    @media (max-width:560px) { .nav-uni { padding:9px 11px; } .nav-uni i { display:none; } .nav-uni-txt { max-width:96px; overflow:hidden; text-overflow:ellipsis; } }
+    @media (max-width:380px) { .nav-uni-txt { display:none; } }
+    .mmenu-uni { margin-top:6px; border:1px solid rgba(201,162,39,.4); background:transparent; color:var(--gold-pale); cursor:pointer;
+      font:500 .82rem 'DM Sans', sans-serif; letter-spacing:.06em; padding:12px 22px; border-radius:999px; }
+    .mmenu-uni b { color:var(--gold); font-weight:700; }
+
+    /* ----- folha "Com qual loja você quer falar?" ----- */
+    .uni-sheet { position:fixed; inset:0; z-index:1200; display:flex; align-items:center; justify-content:center; padding:20px; }
+    .uni-sheet[hidden] { display:none !important; }
+    .uni-veu { position:absolute; inset:0; background:rgba(2,5,16,.72); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+      opacity:0; transition:opacity .22s; }
+    .uni-caixa { position:relative; width:min(640px, 100%); max-height:calc(100vh - 40px); overflow:auto; padding:clamp(26px, 4vw, 40px);
+      border-radius:22px; border:1px solid rgba(201,162,39,.45); background:linear-gradient(165deg, #0d1738 0%, #050a1d 70%);
+      box-shadow:0 40px 100px -30px rgba(0,0,0,.85), 0 0 80px -30px rgba(201,162,39,.35);
+      transform:translateY(16px) scale(.98); opacity:0; transition:transform .3s var(--ease-btn, ease), opacity .22s; }
+    .uni-sheet.on .uni-veu { opacity:1; }
+    .uni-sheet.on .uni-caixa { transform:none; opacity:1; }
+    .uni-fechar { position:absolute; top:14px; right:14px; width:44px; height:44px; border-radius:50%; border:1px solid rgba(201,162,39,.4);
+      background:transparent; color:var(--gold-pale); cursor:pointer; display:flex; align-items:center; justify-content:center; }
+    .uni-fechar svg { width:18px; height:18px; stroke:currentColor; stroke-width:1.8; fill:none; stroke-linecap:round; }
+    .uni-fechar:hover { border-color:var(--gold); color:#fff; }
+    .uni-ey { font-size:.66rem; font-weight:700; letter-spacing:.26em; text-transform:uppercase; color:var(--gold); }
+    .uni-tit { font-family:'Cormorant Garamond', serif; font-weight:600; font-size:clamp(1.9rem, 4.5vw, 2.6rem); line-height:1.08;
+      color:var(--cream); margin:10px 0 8px; outline:none; padding-right:40px; }
+    .uni-tit em { font-style:italic; color:var(--gold); }
+    .uni-sub { color:var(--gray); font-size:.9rem; line-height:1.6; }
+    .uni-ops { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:24px; }
+    .uni-op { position:relative; display:flex; flex-direction:column; align-items:flex-start; gap:6px; text-align:left; text-decoration:none;
+      padding:20px 18px; border-radius:16px; border:1px solid rgba(201,162,39,.25); background:rgba(255,255,255,.03); color:var(--cream);
+      cursor:pointer; font:inherit; transition:border-color .2s, background .2s, transform .25s var(--ease-btn, ease); }
+    .uni-op:hover, .uni-op:focus-visible { border-color:var(--gold); background:rgba(201,162,39,.08); outline:none; }
+    @media (pointer:fine) { .uni-op:hover { transform:translateY(-2px); } }
+    .uni-op:focus-visible { box-shadow:0 0 0 3px rgba(201,162,39,.35); }
+    .uni-op-pref { border-color:rgba(201,162,39,.7); background:rgba(201,162,39,.07); }
+    .uni-op-tag { font-size:.6rem; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:var(--gold-pale); }
+    .uni-op-nova { color:var(--gold); }
+    .uni-op-cid { font-family:'Cormorant Garamond', serif; font-size:1.75rem; font-weight:600; line-height:1.05; }
+    .uni-op-reg { font-size:.78rem; color:var(--gray); }
+    .uni-op-tel { display:inline-flex; align-items:center; gap:7px; margin-top:8px; font-size:.92rem; color:var(--cream); font-variant-numeric:tabular-nums; }
+    .uni-op-tel svg { width:16px; height:16px; fill:#25d366; }
+    .uni-op-ir { margin-top:10px; font-size:.68rem; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--gold); }
+    .uni-lembrar { display:flex; align-items:center; gap:10px; margin-top:20px; font-size:.84rem; color:#c6d1e6; cursor:pointer; }
+    .uni-lembrar input { width:18px; height:18px; accent-color:var(--gold); }
+    html.uni-aberta { overflow:hidden; }
+    @media (max-width:560px) {
+      .uni-sheet { align-items:flex-end; padding:0; }
+      .uni-caixa { border-radius:22px 22px 0 0; max-height:88vh; padding-bottom:calc(26px + env(safe-area-inset-bottom)); transform:translateY(40px); }
+      .uni-ops { grid-template-columns:1fr; }
+    }
+
+    /* ----- Instagram por unidade ----- */
+    .ig-unabas { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:12px; margin-top:clamp(28px, 4vw, 40px); max-width:720px; }
+    .ig-unaba { display:flex; flex-direction:column; align-items:flex-start; gap:6px; text-align:left; padding:18px 20px; cursor:pointer;
+      border-radius:16px; border:1px solid rgba(201,162,39,.22); background:rgba(255,255,255,.025); color:var(--gray);
+      transition:border-color .25s, background .25s, color .25s; font:inherit; }
+    .ig-unaba:hover { border-color:rgba(201,162,39,.5); color:var(--cream); }
+    .ig-unaba[aria-selected="true"] { border-color:var(--gold); background:rgba(201,162,39,.09); color:var(--cream); box-shadow:inset 0 -2px 0 var(--gold); }
+    .ig-unaba:focus-visible { outline:2px solid var(--gold-pale); outline-offset:3px; }
+    .ig-unaba-cid { display:flex; align-items:center; gap:10px; font-family:'Cormorant Garamond', serif; font-size:1.45rem; font-weight:600; line-height:1.1; }
+    .ig-unaba-novo { font-style:normal; font-family:'DM Sans', sans-serif; font-size:.56rem; font-weight:700; letter-spacing:.16em; text-transform:uppercase;
+      color:#0a0f24; background:var(--gold-grad, #c9a227); padding:4px 8px; border-radius:999px; }
+    .ig-unaba-at { font-size:.78rem; letter-spacing:.04em; color:var(--gold-pale); }
+    .ig-painel { animation:igPainelIn .45s var(--ease-btn, ease); }
+    .ig-painel[hidden] { display:none !important; }
+    @keyframes igPainelIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:none; } }
+    .ig-chegada { margin:22px 0 0; padding:22px 26px; border-left:2px solid var(--gold); background:rgba(201,162,39,.06); border-radius:0 14px 14px 0; }
+    .ig-chegada p { font-family:'Cormorant Garamond', serif; font-style:italic; font-size:clamp(1.15rem, 2vw, 1.4rem); line-height:1.5; color:#efe6cc; margin:0; }
+    .ig-chegada cite { display:block; margin-top:10px; font-style:normal; font-size:.68rem; letter-spacing:.16em; text-transform:uppercase; color:var(--gold); }
+    .ig-mogi-cta { display:flex; justify-content:center; margin-top:26px; }
+    .ig-mogi-cta .btn-claro svg { width:17px; height:17px; fill:#0e7a43; }
+    @media (max-width:560px) { .ig-unabas { grid-template-columns:1fr; } }
+
+    /* ----- agendamento: qual loja entrega ----- */
+    .ent-unis { border:0; padding:0; margin:0 0 18px; min-width:0; }
+    .ent-unis legend { padding:0; width:100%; }
+    .ent-unis-ops { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+    .ent-uni { position:relative; cursor:pointer; }
+    .ent-uni input { position:absolute; opacity:0; width:1px; height:1px; }
+    .ent-uni span { display:flex; flex-direction:column; gap:3px; padding:12px 12px; border-radius:12px; border:1px solid rgba(201,162,39,.25);
+      color:var(--cream); font-size:.86rem; transition:border-color .2s, background .2s, box-shadow .2s; min-height:58px; justify-content:center; }
+    .ent-uni b { font-weight:600; }
+    .ent-uni small { font-size:.68rem; color:var(--gray); }
+    .ent-uni input:checked + span { border-color:var(--gold); background:rgba(201,162,39,.14); box-shadow:inset 0 0 0 1px var(--gold); }
+    .ent-uni input:checked + span small { color:var(--gold-pale); }
+    .ent-uni input:focus-visible + span { outline:2px solid var(--gold-pale); outline-offset:2px; }
+    .ent-uni-st { display:block; font-size:.74rem; color:var(--gold-pale); margin-top:8px; line-height:1.5; }
+    .ent-uni-st:empty { display:none; }
+
+    /* ----- rodapé com as duas lojas ----- */
+    .fc-un h4 small { display:block; margin-top:4px; font-size:.56rem; letter-spacing:.2em; color:var(--gray); font-weight:600; }
+    .fc-un li a { display:inline-flex; align-items:flex-start; gap:8px; }
+    .f-ic { width:14px; height:14px; flex-shrink:0; margin-top:3px; color:var(--gold); fill:currentColor; }
+    .fc-un .f-ic use { fill:currentColor; }
+    .il-par { display:flex; flex-wrap:wrap; gap:8px; margin-top:16px; }
+    .il-par .il { margin-top:0; }
+    @media (prefers-reduced-motion: reduce) {
+      .un-tag-nova i, .ig-painel { animation:none !important; }
+      .uni-caixa, .uni-veu, .un-card { transition:none !important; }
+    }
+  
+    /* ----- Instagram de Mogi: capas reais dos posts (sem embed: carrega na hora) ----- */
+    .ig-capas { display:grid; grid-template-columns:repeat(3, minmax(0, 1fr)); gap:clamp(12px, 1.6vw, 20px); margin-top:22px; }
+    .ig-capa { position:relative; display:flex; flex-direction:column; justify-content:flex-end; aspect-ratio:4 / 5; overflow:hidden;
+      border-radius:16px; border:1px solid rgba(201,162,39,.25); text-decoration:none; color:var(--cream); background:#060c22;
+      transition:border-color .3s, transform .35s var(--ease-btn, ease), box-shadow .35s; }
+    .ig-capa-foto { position:absolute; inset:0; }
+    .ig-capa-foto img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .8s var(--ease-btn, ease); }
+    .ig-capa::after { content:""; position:absolute; inset:0; pointer-events:none;
+      background:linear-gradient(180deg, rgba(4,9,28,0) 35%, rgba(4,9,28,.72) 68%, rgba(4,9,28,.96) 100%); }
+    .ig-capa > span:not(.ig-capa-foto) { position:relative; z-index:1; }
+    .ig-capa-tipo { position:absolute !important; top:12px; left:12px; display:inline-flex; align-items:center; gap:6px;
+      padding:6px 11px; border-radius:999px; background:rgba(4,9,28,.72); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+      font-size:.6rem; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--gold-pale); border:1px solid rgba(201,162,39,.35); }
+    .ig-capa-tipo svg { width:11px; height:11px; fill:var(--gold); }
+    .ig-capa-txt { padding:0 18px; font-size:.86rem; line-height:1.5; color:#e6e9f2;
+      display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+    .ig-capa-txt b { display:block; font-size:.62rem; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--gold); margin-bottom:6px; }
+    .ig-capa-ir { padding:12px 18px 18px; font-size:.66rem; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--gold-pale); }
+    .ig-capa:hover, .ig-capa:focus-visible { border-color:var(--gold); box-shadow:0 26px 50px -28px rgba(201,162,39,.55); outline:none; }
+    .ig-capa:focus-visible { box-shadow:0 0 0 3px rgba(201,162,39,.4); }
+    @media (pointer:fine) { .ig-capa:hover { transform:translateY(-4px); } .ig-capa:hover .ig-capa-foto img { transform:scale(1.05); } }
+    @media (max-width:760px) {
+      .ig-capas { grid-template-columns:none; grid-auto-flow:column; grid-auto-columns:76%; overflow-x:auto; scroll-snap-type:x mandatory;
+        padding-bottom:8px; margin-inline:-16px; padding-inline:16px; scrollbar-width:none; }
+      .ig-capas::-webkit-scrollbar { display:none; }
+      .ig-capa { scroll-snap-align:start; }
+    }
+    @media (prefers-reduced-motion: reduce) { .ig-capa, .ig-capa-foto img { transition:none !important; } }
   </style>
 </head>
 <body>
@@ -2971,7 +3211,8 @@
     <li><a href="#contato">Contato</a></li>
   </ul>
   <div class="nav-right">
-    <a href="https://wa.me/5512997463135" target="_blank" rel="noopener" class="nav-btn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.5 14.4c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.46-2.4-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.91-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.87 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.7.63.71.22 1.36.19 1.87.11.57-.08 1.76-.72 2-1.41.25-.7.25-1.29.18-1.41-.08-.13-.28-.2-.58-.35zM12 2C6.5 2 2 6.48 2 12c0 1.77.46 3.44 1.27 4.89L2 22l5.23-1.26A9.95 9.95 0 0 0 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm0 18.19a8.17 8.17 0 0 1-4.16-1.14l-.3-.18-3.1.75.77-3-.19-.3A8.15 8.15 0 0 1 3.84 12c0-4.5 3.67-8.17 8.16-8.17S20.16 7.5 20.16 12 16.5 20.19 12 20.19z"/></svg>Chamar no WhatsApp</a>
+    <button type="button" class="nav-uni" id="navUni" aria-haspopup="dialog" aria-controls="uniSheet"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-pin"/></svg><span class="nav-uni-txt" id="navUniTxt">2 lojas</span><i aria-hidden="true"></i></button>
+    <a href="https://wa.me/5512997463135" target="_blank" rel="noopener" class="nav-btn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.5 14.4c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.46-2.4-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.91-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.87 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.7.63.71.22 1.36.19 1.87.11.57-.08 1.76-.72 2-1.41.25-.7.25-1.29.18-1.41-.08-.13-.28-.2-.58-.35zM12 2C6.5 2 2 6.48 2 12c0 1.77.46 3.44 1.27 4.89L2 22l5.23-1.26A9.95 9.95 0 0 0 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm0 18.19a8.17 8.17 0 0 1-4.16-1.14l-.3-.18-3.1.75.77-3-.19-.3A8.15 8.15 0 0 1 3.84 12c0-4.5 3.67-8.17 8.16-8.17S20.16 7.5 20.16 12 16.5 20.19 12 20.19z"/></svg><span class="nav-btn-l">Chamar no </span>WhatsApp</a>
     <button class="nav-burger" id="navBurger" aria-label="Abrir menu" aria-expanded="false" aria-controls="mmenu">
       <span></span><span></span>
     </button>
@@ -2987,6 +3228,7 @@
   <a href="#entrega">Entrega</a>
   <a href="#instagram">Instagram</a>
   <a href="#contato">Contato</a>
+  <button type="button" class="mmenu-uni" id="mmenuUni" aria-haspopup="dialog" aria-controls="uniSheet">Loja: <b id="mmenuUniTxt">escolher</b></button>
   <a class="mmenu-wa" href="https://wa.me/5512997463135" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.5 14.4c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.46-2.4-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.91-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.87 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.7.63.71.22 1.36.19 1.87.11.57-.08 1.76-.72 2-1.41.25-.7.25-1.29.18-1.41-.08-.13-.28-.2-.58-.35zM12 2C6.5 2 2 6.48 2 12c0 1.77.46 3.44 1.27 4.89L2 22l5.23-1.26A9.95 9.95 0 0 0 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm0 18.19a8.17 8.17 0 0 1-4.16-1.14l-.3-.18-3.1.75.77-3-.19-.3A8.15 8.15 0 0 1 3.84 12c0-4.5 3.67-8.17 8.16-8.17S20.16 7.5 20.16 12 16.5 20.19 12 20.19z"/></svg>Chamar no WhatsApp</a>
 </div>
 
@@ -3019,7 +3261,7 @@
     <span class="badge">Nota Fiscal</span>
     <span class="badge">Até 18x no Cartão</span>
     <span class="badge">Entrega Nacional</span>
-    <span class="badge">Taubaté — SP</span>
+    <span class="badge">Taubaté · Mogi das Cruzes</span>
   </div>
   <div class="hero-rating">
     <div class="stars" role="img" aria-label="4,8 de 5 estrelas">
@@ -3043,11 +3285,11 @@
   <div class="mq-t">
     <span class="mq-i">iPhone 16 Pro Max</span><span class="mq-d" aria-hidden="true">&#9670;</span><span class="mq-i">iPhone 16 Pro</span><span class="mq-d" aria-hidden="true">&#9670;</span><span class="mq-i">iPhone 16</span><span class="mq-d" aria-hidden="true">&#9670;</span>
     <span class="mq-i">1 Ano de Garantia</span><span class="mq-d" aria-hidden="true">&#9670;</span><span class="mq-i">Nota Fiscal</span><span class="mq-d" aria-hidden="true">&#9670;</span><span class="mq-i">Entrega Brasil</span><span class="mq-d" aria-hidden="true">&#9670;</span>
-    <span class="mq-i">18x no Cartão</span><span class="mq-d" aria-hidden="true">&#9670;</span><span class="mq-i">Taubaté — SP</span><span class="mq-d" aria-hidden="true">&#9670;</span><span class="mq-i">4,8 no Google</span><span class="mq-d" aria-hidden="true">&#9670;</span><span class="mq-i">Relógios Garmin</span><span class="mq-d" aria-hidden="true">&#9670;</span><span class="mq-i">Acessórios</span><span class="mq-d" aria-hidden="true">&#9670;</span>
+    <span class="mq-i">18x no Cartão</span><span class="mq-d" aria-hidden="true">&#9670;</span><span class="mq-i">Taubaté — SP</span><span class="mq-d" aria-hidden="true">&#9670;</span><span class="mq-i">Nova loja em Mogi das Cruzes</span><span class="mq-d" aria-hidden="true">&#9670;</span><span class="mq-i">4,8 no Google</span><span class="mq-d" aria-hidden="true">&#9670;</span><span class="mq-i">Relógios Garmin</span><span class="mq-d" aria-hidden="true">&#9670;</span><span class="mq-i">Acessórios</span><span class="mq-d" aria-hidden="true">&#9670;</span>
     <span class="mq-r" aria-hidden="true">
       <span class="mq-i">iPhone 16 Pro Max</span><span class="mq-d">&#9670;</span><span class="mq-i">iPhone 16 Pro</span><span class="mq-d">&#9670;</span><span class="mq-i">iPhone 16</span><span class="mq-d">&#9670;</span>
       <span class="mq-i">1 Ano de Garantia</span><span class="mq-d">&#9670;</span><span class="mq-i">Nota Fiscal</span><span class="mq-d">&#9670;</span><span class="mq-i">Entrega Brasil</span><span class="mq-d">&#9670;</span>
-      <span class="mq-i">18x no Cartão</span><span class="mq-d">&#9670;</span><span class="mq-i">Taubaté — SP</span><span class="mq-d">&#9670;</span><span class="mq-i">4,8 no Google</span><span class="mq-d">&#9670;</span><span class="mq-i">Relógios Garmin</span><span class="mq-d">&#9670;</span><span class="mq-i">Acessórios</span><span class="mq-d">&#9670;</span>
+      <span class="mq-i">18x no Cartão</span><span class="mq-d">&#9670;</span><span class="mq-i">Taubaté — SP</span><span class="mq-d">&#9670;</span><span class="mq-i">Nova loja em Mogi das Cruzes</span><span class="mq-d">&#9670;</span><span class="mq-i">4,8 no Google</span><span class="mq-d">&#9670;</span><span class="mq-i">Relógios Garmin</span><span class="mq-d">&#9670;</span><span class="mq-i">Acessórios</span><span class="mq-d">&#9670;</span>
     </span>
   </div>
 </div>
@@ -3659,6 +3901,14 @@
             <!-- 2 · ENTREGA -->
             <div class="ent-etapa" data-etapa="2" role="group" aria-labelledby="entT2" hidden>
               <h3 class="ent-etapa-tit" id="entT2" tabindex="-1">Onde e <em>quando?</em></h3>
+              <fieldset class="ent-unis">
+                <legend class="ent-rot">Qual loja vai entregar?</legend>
+                <div class="ent-unis-ops">
+                  <label class="ent-uni"><input type="radio" name="unidade" value="taubate" checked><span><b>Taubaté</b><small>e região do Vale</small></span></label>
+                  <label class="ent-uni"><input type="radio" name="unidade" value="mogi"><span><b>Mogi das Cruzes</b><small>e Alto Tietê · nova</small></span></label>
+                </div>
+                <span class="ent-uni-st" id="entUniSt" aria-live="polite"></span>
+              </fieldset>
               <div class="ent-cep-linha">
                 <label class="ent-campo"><span class="ent-rot">CEP <i>opcional</i></span>
                   <input class="ent-in" name="cep" inputmode="numeric" autocomplete="postal-code" maxlength="9" placeholder="00000-000" aria-describedby="entCepSt entE-cep"></label>
@@ -3797,7 +4047,16 @@
 <!-- INSTAGRAM — A LOJA NA VIDA REAL -->
 <section class="sec igsec" id="instagram">
   <p class="eyebrow rv"><span></span>Instagram</p>
-  <h2 class="heading rv">A loja na <em>vida real</em></h2>
+  <h2 class="heading rv">As lojas na <em>vida real</em></h2>
+  <div class="ig-unabas rv" role="tablist" aria-label="Instagram de cada unidade">
+    <button type="button" role="tab" class="ig-unaba" id="igAbaTau" aria-selected="true" aria-controls="igPainelTau" data-ig-aba="taubate">
+      <span class="ig-unaba-cid">Taubaté</span><span class="ig-unaba-at">@eletronic.oficial</span>
+    </button>
+    <button type="button" role="tab" class="ig-unaba" id="igAbaMogi" aria-selected="false" aria-controls="igPainelMogi" data-ig-aba="mogi" tabindex="-1">
+      <span class="ig-unaba-cid">Mogi das Cruzes <i class="ig-unaba-novo">Nova</i></span><span class="ig-unaba-at">@eletronic.oficial.mogi</span>
+    </button>
+  </div>
+  <div class="ig-painel" id="igPainelTau" role="tabpanel" aria-labelledby="igAbaTau">
   <div class="ig-head rv">
     <div class="ig-id">
       <span class="ig-handle">@eletronic.oficial
@@ -3805,7 +4064,7 @@
       </span>
       <span class="ig-stats"><b>8.477 seguidores</b> · <b>257 posts</b> · 5+ anos realizando sonhos com segurança</span>
     </div>
-    <a class="ig-follow" href="https://www.instagram.com/eletronic.oficial" target="_blank" rel="noopener">
+    <a class="ig-follow" data-un="taubate" href="https://www.instagram.com/eletronic.oficial" target="_blank" rel="noopener">
       <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="1.1" fill="#b0356d" stroke="none"/></svg>
       Seguir no Instagram
     </a>
@@ -3875,6 +4134,46 @@
       <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/eletronic.oficial/p/DcylgPAgFyR/" data-instgrm-version="14"><a data-ig-keep href="https://www.instagram.com/eletronic.oficial/p/DcylgPAgFyR/" target="_blank" rel="noopener">Ver esta publicação no Instagram</a></blockquote>
     </div>
   </div>
+  </div>
+  <div class="ig-painel" id="igPainelMogi" role="tabpanel" aria-labelledby="igAbaMogi" hidden>
+    <div class="ig-head">
+      <div class="ig-id">
+        <span class="ig-handle">@eletronic.oficial.mogi</span>
+        <span class="ig-stats"><b>543 seguidores</b> · <b>42 posts</b> · a nova unidade da Eletronic no Alto Tietê</span>
+      </div>
+      <a class="ig-follow" data-un="mogi" href="https://www.instagram.com/eletronic.oficial.mogi" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="1.1" fill="#b0356d" stroke="none"/></svg>
+        Seguir a unidade de Mogi
+      </a>
+    </div>
+    <blockquote class="ig-chegada">
+      <p>"Há 5 anos cuidando do que te conecta ao mundo. E agora, a Eletronic está chegando em Mogi das Cruzes — uma nova unidade, trazendo a confiança, a qualidade e a experiência que você já conhece."</p>
+      <cite>@eletronic.oficial.mogi · 1º de outubro</cite>
+    </blockquote>
+    <div class="ig-capas rv" id="igGridMogi">
+      <a class="ig-capa" data-ig-keep href="https://www.instagram.com/eletronic.oficial.mogi/reel/DeHgkpbB0_U/" target="_blank" rel="noopener" style="transition-delay:0.00s">
+        <span class="ig-capa-foto"><img src="images/ig/mogi-3.webp" alt="Reel da Eletronic Mogi mostrando o caminho até a nova loja em Mogi das Cruzes" width="360" height="640" loading="lazy" decoding="async"></span>
+        <span class="ig-capa-tipo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg>Reel</span>
+        <span class="ig-capa-txt"><b>5 de outubro</b>Vem com a gente conhecer o caminho até a nova Eletronic em Mogi das Cruzes! Esse é só o começo…</span>
+        <span class="ig-capa-ir">Ver no Instagram →</span>
+      </a>
+      <a class="ig-capa" data-ig-keep href="https://www.instagram.com/eletronic.oficial.mogi/p/Dd81MBhA8c3/" target="_blank" rel="noopener" style="transition-delay:0.08s">
+        <span class="ig-capa-foto"><img src="images/ig/mogi-1.webp" alt="Arte "+5 anos realizando sonhos — agora em Mogi das Cruzes"" width="640" height="640" loading="lazy" decoding="async"></span>
+        <span class="ig-capa-tipo">Post</span>
+        <span class="ig-capa-txt"><b>1º de outubro</b>Há 5 anos cuidando do que te conecta ao mundo. E agora, a Eletronic está chegando em Mogi das Cruzes!</span>
+        <span class="ig-capa-ir">Ver no Instagram →</span>
+      </a>
+      <a class="ig-capa" data-ig-keep href="https://www.instagram.com/eletronic.oficial.mogi/reel/Dd2SWK-gNrC/" target="_blank" rel="noopener" style="transition-delay:0.16s">
+        <span class="ig-capa-foto"><img src="images/ig/mogi-2.webp" alt="Reel "Chegamos Mogi das Cruzes — especializada em produtos Apple"" width="360" height="640" loading="lazy" decoding="async"></span>
+        <span class="ig-capa-tipo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg>Reel</span>
+        <span class="ig-capa-txt"><b>28 de setembro</b>Mogi das Cruzes, chegamos! A Eletronic agora também é daqui.</span>
+        <span class="ig-capa-ir">Ver no Instagram →</span>
+      </a>
+    </div>
+    <div class="ig-mogi-cta">
+      <a class="btn-claro" data-un="mogi" href="https://wa.me/5511994122171?text=Ol%C3%A1!%20Vi%20o%20Instagram%20da%20unidade%20de%20Mogi%20e%20quero%20saber%20mais." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-wa"/></svg>Falar com a loja de Mogi</a>
+    </div>
+  </div>
   <p class="ig-nota rv">Além dos iPhones, no perfil e na loja você também encontra <b>acessórios e relógios Garmin</b> — valores sob consulta no WhatsApp.</p>
 </section>
 
@@ -3913,43 +4212,48 @@
     <details class="faq-item">
       <summary>Vocês entregam na minha cidade?<span class="faq-mais" aria-hidden="true">+</span></summary>
       <div class="faq-a"><p>Entregamos para todo o Brasil, com envio rastreado e embalagem reforçada.
-        Em Taubaté e região, você também pode retirar na loja: R. Dr. Souza Alves, 384 — Centro.
-        Prefere receber por motoboy? <a href="#entrega">Agende a entrega aqui no site</a> — você paga só quando o aparelho chegar.</p></div>
+        Em Taubaté e região, você também pode retirar na loja: R. Dr. Souza Alves, 384 — Centro. Em Mogi das Cruzes
+        e no Alto Tietê, fale com a <a href="#contato">nova unidade de Mogi</a>.
+        Prefere receber por motoboy? <a href="#entrega">Agende a entrega aqui no site</a> e escolha a loja — você paga só quando o aparelho chegar.</p></div>
+    </details>
+    <details class="faq-item">
+      <summary>Onde ficam as lojas da Eletronic?<span class="faq-mais" aria-hidden="true">+</span></summary>
+      <div class="faq-a"><p>Temos duas: a matriz em <b>Taubaté</b> (R. Dr. Souza Alves, 384 — Centro, WhatsApp
+        <a data-un="taubate" href="https://wa.me/5512997463135" target="_blank" rel="noopener">(12) 99746-3135</a>) e a nova unidade em
+        <b>Mogi das Cruzes</b> (WhatsApp <a data-un="mogi" href="https://wa.me/5511994122171" target="_blank" rel="noopener">(11) 99412-2171</a>).
+        As duas trabalham com a mesma garantia, nota fiscal e atendimento. <a href="#contato">Veja as duas lojas</a>.</p></div>
     </details>
   </div>
   <p class="faq-mao rv">Ficou com outra dúvida? <a href="https://wa.me/5512997463135?text=Ol%C3%A1!%20Tenho%20uma%20d%C3%BAvida." target="_blank" rel="noopener">Chama no WhatsApp</a> — a gente responde rapidinho.</p>
 </section>
 
-<!-- CONTACT -->
-<section class="contact" id="contato">
-  <p class="eyebrow rv"><span></span>Onde Estamos</p>
-  <h2 class="heading rv">Visite nossa <em>loja</em> em Taubaté</h2>
-  <div class="cg">
-    <div class="cmap-frame rv">
-      <div class="cmap-head">
-        <div><p class="cmap-head-t">Como chegar</p><p class="cmap-head-a">R. Dr. Souza Alves, 384 — Centro, Taubaté · SP</p></div>
-        <a class="cmap-btn" href="https://www.google.com/maps/search/?api=1&amp;query=Eletronic+R.+Dr.+Souza+Alves+384+Centro+Taubat%C3%A9+SP" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>Abrir no Google Maps</a>
+<!-- CONTATO — DUAS UNIDADES. Links com data-un são da loja específica: o seletor de unidade
+     e o aplicarConfig respeitam esse atributo (Taubaté = matriz/el_config.whatsapp; Mogi = el_config.mogi_*). -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="ico-wa" viewBox="0 0 24 24"><path d="M17.5 14.4c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.46-2.4-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.91-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.87 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.7.63.71.22 1.36.19 1.87.11.57-.08 1.76-.72 2-1.41.25-.7.25-1.29.18-1.41-.08-.13-.28-.2-.58-.35zM12 2C6.5 2 2 6.48 2 12c0 1.77.46 3.44 1.27 4.89L2 22l5.23-1.26A9.95 9.95 0 0 0 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm0 18.19a8.17 8.17 0 0 1-4.16-1.14l-.3-.18-3.1.75.77-3-.19-.3A8.15 8.15 0 0 1 3.84 12c0-4.5 3.67-8.17 8.16-8.17S20.16 7.5 20.16 12 16.5 20.19 12 20.19z"/></symbol>
+  <symbol id="ico-ig" viewBox="0 0 24 24"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="17.6" cy="6.4" r="1.1" fill="currentColor"/></symbol>
+  <symbol id="ico-pin" viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><circle cx="12" cy="10" r="3" fill="none" stroke="currentColor" stroke-width="1.8"/></symbol>
+</svg>
+<section class="contact un-sec" id="contato" aria-labelledby="contatoTitulo">
+  <p class="eyebrow rv"><span></span>Nossas lojas</p>
+  <h2 class="heading rv" id="contatoTitulo">Duas lojas, <em>a mesma</em> Eletronic</h2>
+  <p class="un-intro rv">Mesma garantia, mesma nota fiscal, o mesmo atendimento olho no olho. Escolha a loja mais perto de você — ou chame qualquer uma no WhatsApp.</p>
+
+  <div class="un-grid">
+    <article class="un-card rv" data-unidade="taubate" aria-labelledby="unTauNome">
+      <div class="un-card-topo">
+        <span class="un-tag">Matriz · 5+ anos</span>
+        <span class="un-num" aria-hidden="true">01</span>
       </div>
-      <div class="cmap">
-        <iframe title="Mapa — Eletronic, R. Dr. Souza Alves 384, Taubaté" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3664.5!2d-45.5562!3d-23.0265!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94cc4a4b5a5a5a5b%3A0x1!2sR.+Dr.+Souza+Alves%2C+384+-+Centro%2C+Taubat%C3%A9!5e0!3m2!1spt-BR!2sbr!4v1620000000000" allowfullscreen loading="lazy"></iframe>
-      </div>
-    </div>
-    <div class="cinfo rv">
-      <div class="ci">
-        <p class="ci-lbl">Endereço</p>
-        <p class="ci-val">R. Dr. Souza Alves, 384<br/>Centro — Taubaté, SP<br/>CEP 12020-030</p>
-      </div>
-      <div class="ci">
-        <p class="ci-lbl">WhatsApp</p>
-        <p class="ci-val"><a href="https://wa.me/5512997463135" target="_blank" rel="noopener">(12) 99746-3135</a></p>
-      </div>
-      <div class="ci">
-        <p class="ci-lbl">Instagram</p>
-        <p class="ci-val"><a href="https://www.instagram.com/eletronic.oficial" target="_blank" rel="noopener">@eletronic.oficial</a></p>
-      </div>
-      <div class="ci">
-        <p class="ci-lbl">Avaliação Google</p>
-        <p class="ci-val" style="display:flex;align-items:center;gap:12px;">
+      <h3 class="un-cidade" id="unTauNome">Taubaté</h3>
+      <p class="un-uf">São Paulo · Vale do Paraíba</p>
+      <dl class="un-dados">
+        <div><dt>Endereço</dt><dd>R. Dr. Souza Alves, 384<br/>Centro — Taubaté, SP · CEP 12020-030</dd></div>
+        <div><dt>WhatsApp</dt><dd><a data-un="taubate" class="un-tel" href="https://wa.me/5512997463135" target="_blank" rel="noopener">(12) 99746-3135</a></dd></div>
+        <div><dt>Instagram</dt><dd><a data-un="taubate" href="https://www.instagram.com/eletronic.oficial" target="_blank" rel="noopener">@eletronic.oficial</a></dd></div>
+      </dl>
+      <div class="un-selo">
+        <p class="ci-val un-nota" style="display:flex;align-items:center;gap:12px;">
           <span style="font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:700;color:var(--gold);line-height:1;">4,8</span>
           <span style="display:flex;flex-direction:column;gap:5px;">
             <span style="display:flex;gap:3px;">
@@ -3963,7 +4267,42 @@
           </span>
         </p>
       </div>
-      <a href="https://wa.me/5512997463135" target="_blank" rel="noopener" class="btn-g">Chamar no WhatsApp</a>
+      <div class="un-acoes">
+        <a data-un="taubate" class="btn-claro un-wa" href="https://wa.me/5512997463135?text=Ol%C3%A1!%20Vim%20pelo%20site%20e%20quero%20falar%20com%20a%20loja%20de%20Taubat%C3%A9." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-wa"/></svg>WhatsApp Taubaté</a>
+        <a class="cmap-btn" href="https://www.google.com/maps/search/?api=1&amp;query=Eletronic+R.+Dr.+Souza+Alves+384+Centro+Taubat%C3%A9+SP" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-pin"/></svg>Como chegar</a>
+      </div>
+    </article>
+
+    <article class="un-card un-card-nova rv" data-unidade="mogi" aria-labelledby="unMogiNome" style="transition-delay:.1s">
+      <div class="un-card-topo">
+        <span class="un-tag un-tag-nova"><i aria-hidden="true"></i>Nova unidade</span>
+        <span class="un-num" aria-hidden="true">02</span>
+      </div>
+      <h3 class="un-cidade" id="unMogiNome">Mogi das Cruzes</h3>
+      <p class="un-uf">São Paulo · Alto Tietê</p>
+      <dl class="un-dados">
+        <div><dt>Endereço</dt><dd>Mogi das Cruzes, SP<br/><span class="un-obs">Confirme o endereço e o horário pelo WhatsApp da unidade</span></dd></div>
+        <div><dt>WhatsApp</dt><dd><a data-un="mogi" class="un-tel" href="https://wa.me/5511994122171" target="_blank" rel="noopener">(11) 99412-2171</a></dd></div>
+        <div><dt>Instagram</dt><dd><a data-un="mogi" href="https://www.instagram.com/eletronic.oficial.mogi" target="_blank" rel="noopener">@eletronic.oficial.mogi</a></dd></div>
+      </dl>
+      <p class="un-chegou">"A Eletronic está chegando em Mogi das Cruzes — trazendo a confiança, a qualidade e a experiência que você já conhece."<span>— @eletronic.oficial.mogi</span></p>
+      <div class="un-acoes">
+        <a data-un="mogi" class="btn-claro un-wa" href="https://wa.me/5511994122171?text=Ol%C3%A1!%20Vim%20pelo%20site%20e%20quero%20falar%20com%20a%20loja%20de%20Mogi%20das%20Cruzes." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-wa"/></svg>WhatsApp Mogi</a>
+        <a class="cmap-btn" href="https://www.google.com/maps/search/?api=1&amp;query=Eletronic+iPhone+Mogi+das+Cruzes+SP" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-pin"/></svg>Ver no mapa</a>
+      </div>
+    </article>
+  </div>
+
+  <div class="cmap-frame un-mapa rv">
+    <div class="cmap-head">
+      <div class="un-mapa-abas" role="tablist" aria-label="Mapa da unidade">
+        <button type="button" role="tab" class="un-mapa-aba" aria-selected="true" data-mapa="taubate" id="unAbaTau" aria-controls="unMapa">Taubaté</button>
+        <button type="button" role="tab" class="un-mapa-aba" aria-selected="false" data-mapa="mogi" id="unAbaMogi" aria-controls="unMapa" tabindex="-1">Mogi das Cruzes</button>
+      </div>
+      <p class="cmap-head-a" id="unMapaEnd">R. Dr. Souza Alves, 384 — Centro, Taubaté · SP</p>
+    </div>
+    <div class="cmap" id="unMapa" role="tabpanel" aria-labelledby="unAbaTau">
+      <iframe id="unMapaFrame" title="Mapa — Eletronic Taubaté, R. Dr. Souza Alves 384" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3664.5!2d-45.5562!3d-23.0265!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94cc4a4b5a5a5a5b%3A0x1!2sR.+Dr.+Souza+Alves%2C+384+-+Centro%2C+Taubat%C3%A9!5e0!3m2!1spt-BR!2sbr!4v1620000000000" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
     </div>
   </div>
 </section>
@@ -3988,6 +4327,18 @@
     <div class="ficha-info" id="fichaInfo"></div>
   </div>
 </div>
+<!-- SELETOR DE UNIDADE — abre ao tocar num WhatsApp geral (sem data-un) ou na pílula "Loja" do topo -->
+<div class="uni-sheet" id="uniSheet" role="dialog" aria-modal="true" aria-labelledby="uniTit" aria-describedby="uniSub" hidden>
+  <div class="uni-veu" data-fecha-uni></div>
+  <div class="uni-caixa" id="uniCaixa">
+    <button type="button" class="uni-fechar" data-fecha-uni aria-label="Fechar"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <p class="uni-ey">Duas lojas · a mesma Eletronic</p>
+    <h2 class="uni-tit" id="uniTit" tabindex="-1">Com qual loja você quer <em>falar?</em></h2>
+    <p class="uni-sub" id="uniSub">Mesma garantia, nota fiscal e atendimento nas duas. Escolha a mais perto de você.</p>
+    <div class="uni-ops" id="uniOps"></div>
+    <label class="uni-lembrar"><input type="checkbox" id="uniLembrar" checked> Lembrar minha escolha neste aparelho</label>
+  </div>
+</div>
 <div class="el-toast" id="elToast" role="status" aria-live="polite"></div>
 
 <!-- FOOTER -->
@@ -3995,8 +4346,8 @@
   <div class="ft">
     <div class="fb">
       <a href="#" class="logo"><div class="logo-mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div><span class="logo-name">Eletronic</span></a>
-      <p>Sua loja especializada em iPhones lacrados e seminovos, acessórios e relógios Garmin. Garantia, nota fiscal e entrega nacional. 4,8 estrelas no Google.</p>
-      <a href="https://www.instagram.com/eletronic.oficial" target="_blank" rel="noopener" class="il">Instagram — @eletronic.oficial</a>
+      <p>Especialista em iPhones lacrados e seminovos, acessórios e relógios Garmin — em Taubaté e agora também em Mogi das Cruzes. Garantia, nota fiscal e entrega nacional. 4,8 estrelas no Google.</p>
+      <div class="il-par"><a data-un="taubate" href="https://www.instagram.com/eletronic.oficial" target="_blank" rel="noopener" class="il">@eletronic.oficial</a><a data-un="mogi" href="https://www.instagram.com/eletronic.oficial.mogi" target="_blank" rel="noopener" class="il">@eletronic.oficial.mogi</a></div>
     </div>
     <div class="fc">
       <h4>Catálogo</h4>
@@ -4018,30 +4369,27 @@
         <li><a href="https://wa.me/5512997463135?text=Ol%C3%A1!%20Quero%20saber%20sobre%20trocas%20e%20devolu%C3%A7%C3%B5es." target="_blank" rel="noopener">Trocas e Devoluções</a></li>
       </ul>
     </div>
-    <div class="fc">
-      <h4>Instagram</h4>
+    <div class="fc fc-un">
+      <h4>Taubaté <small>Matriz</small></h4>
       <ul>
-        <li><a href="https://www.instagram.com/eletronic.oficial" target="_blank" rel="noopener">Seguro</a></li>
-        <li><a href="https://www.instagram.com/eletronic.oficial" target="_blank" rel="noopener">Indicações</a></li>
-        <li><a href="https://www.instagram.com/eletronic.oficial" target="_blank" rel="noopener">Entregas</a></li>
-        <li><a href="https://www.instagram.com/eletronic.oficial" target="_blank" rel="noopener">Clientes</a></li>
-        <li><a href="https://www.instagram.com/eletronic.oficial" target="_blank" rel="noopener">Ofertas</a></li>
-        <li><a href="https://www.instagram.com/eletronic.oficial" target="_blank" rel="noopener">Equipe</a></li>
+        <li><a data-un="taubate" href="https://wa.me/5512997463135" target="_blank" rel="noopener"><svg class="f-ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-wa"/></svg>(12) 99746-3135</a></li>
+        <li><a data-un="taubate" href="https://www.instagram.com/eletronic.oficial" target="_blank" rel="noopener"><svg class="f-ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-ig"/></svg>@eletronic.oficial</a></li>
+        <li><a href="https://www.google.com/maps/search/?api=1&amp;query=R.+Dr.+Souza+Alves+384+Centro+Taubat%C3%A9+SP" target="_blank" rel="noopener"><svg class="f-ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-pin"/></svg>R. Dr. Souza Alves, 384<br/>Centro — Taubaté, SP</a></li>
       </ul>
     </div>
-    <div class="fc">
-      <h4>Contato</h4>
+    <div class="fc fc-un">
+      <h4>Mogi das Cruzes <small>Nova unidade</small></h4>
       <ul>
-        <li><a href="https://wa.me/5512997463135" target="_blank" rel="noopener">WhatsApp: (12) 99746-3135</a></li>
-        <li><a href="https://www.instagram.com/eletronic.oficial" target="_blank" rel="noopener">@eletronic.oficial</a></li>
-        <li><a href="https://www.google.com/maps/search/?api=1&amp;query=R.+Dr.+Souza+Alves+384+Centro+Taubat%C3%A9+SP" target="_blank" rel="noopener">R. Dr. Souza Alves, 384<br/>Centro — Taubaté, SP</a></li>
+        <li><a data-un="mogi" href="https://wa.me/5511994122171" target="_blank" rel="noopener"><svg class="f-ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-wa"/></svg>(11) 99412-2171</a></li>
+        <li><a data-un="mogi" href="https://www.instagram.com/eletronic.oficial.mogi" target="_blank" rel="noopener"><svg class="f-ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-ig"/></svg>@eletronic.oficial.mogi</a></li>
+        <li><a href="#contato"><svg class="f-ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-pin"/></svg>Mogi das Cruzes, SP</a></li>
       </ul>
     </div>
   </div>
   <div class="fdiv"></div>
   <div class="fbot">
     <span>© 2026 Eletronic. Todos os direitos reservados.</span>
-    <span>Taubaté — SP &nbsp;|&nbsp; 4,8 no Google</span>
+    <span>Taubaté · Mogi das Cruzes — SP &nbsp;|&nbsp; 4,8 no Google</span>
   </div>
   <p class="fcred"><a href="https://nexus-taubate.netlify.app" target="_blank" rel="noopener" aria-label="Feito por Nexus IA — site da Nexus, abre em nova aba"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>Feito por Nexus IA</a></p>
 </footer>
@@ -6322,6 +6670,193 @@ window.elcChart = (function () {
 })();
 </script>
 
+<script>
+'use strict';
+/* ============ UNIDADES — Taubaté (matriz) e Mogi das Cruzes (nova) ============
+   Links de WhatsApp SEM data-un são "gerais": na primeira vez abrem a folha de escolha;
+   depois da escolha lembrada (localStorage el_unidade) vão direto para a loja preferida,
+   mantendo a mensagem pronta (?text=). Links COM data-un já são de uma loja e não mudam. */
+(function () {
+  var UN = window.EL_UNIDADES = {
+    taubate: { id: 'taubate', cidade: 'Taubaté', curto: 'Taubaté', rotulo: 'Matriz', regiao: 'Taubaté e Vale do Paraíba',
+      wa: '5512997463135', ig: 'eletronic.oficial', endereco: 'R. Dr. Souza Alves, 384 — Centro, Taubaté · SP',
+      mapa: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3664.5!2d-45.5562!3d-23.0265!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94cc4a4b5a5a5a5b%3A0x1!2sR.+Dr.+Souza+Alves%2C+384+-+Centro%2C+Taubat%C3%A9!5e0!3m2!1spt-BR!2sbr!4v1620000000000' },
+    mogi: { id: 'mogi', cidade: 'Mogi das Cruzes', curto: 'Mogi', rotulo: 'Nova unidade', regiao: 'Mogi das Cruzes e Alto Tietê',
+      wa: '5511994122171', ig: 'eletronic.oficial.mogi', endereco: 'Mogi das Cruzes · SP — confirme o endereço pelo WhatsApp',
+      mapa: 'https://www.google.com/maps?q=Mogi+das+Cruzes,+SP&z=13&output=embed' }
+  };
+  var CHAVE = 'el_unidade';
+  function ler() { try { var v = localStorage.getItem(CHAVE); return UN[v] ? v : null; } catch (e) { return null; } }
+  function gravar(v) { try { if (v) localStorage.setItem(CHAVE, v); else localStorage.removeItem(CHAVE); } catch (e) { /* modo anônimo */ } }
+  window.elTelBonito = function (n) {
+    var d = String(n || '').replace(/\D/g, '').replace(/^55(?=\d{10,11}$)/, '');
+    if (d.length === 11) return '(' + d.slice(0, 2) + ') ' + d.slice(2, 7) + '-' + d.slice(7);
+    if (d.length === 10) return '(' + d.slice(0, 2) + ') ' + d.slice(2, 6) + '-' + d.slice(6);
+    return n;
+  };
+  function waLink(u, texto) { return 'https://wa.me/' + UN[u].wa + (texto ? '?text=' + texto : ''); }
+
+  /* ---------- pílula do topo ---------- */
+  function pintaPilula() {
+    var u = ler();
+    var t1 = document.getElementById('navUniTxt'), t2 = document.getElementById('mmenuUniTxt'), b = document.getElementById('navUni');
+    if (t1) t1.textContent = u ? UN[u].curto : '2 lojas';
+    if (t2) t2.textContent = u ? UN[u].cidade : 'escolher';
+    if (b) b.setAttribute('aria-label', u ? 'Loja escolhida: ' + UN[u].cidade + '. Trocar de loja' : 'Escolher a loja');
+  }
+
+  /* ---------- folha de escolha ---------- */
+  var sheet = document.getElementById('uniSheet');
+  var ops = document.getElementById('uniOps');
+  var lembrar = document.getElementById('uniLembrar');
+  var origem = null, textoPendente = '', modo = 'falar';
+
+  function cartao(u) {
+    var x = UN[u], pref = ler() === u;
+    var abre = modo === 'falar'
+      ? '<a class="uni-op' + (pref ? ' uni-op-pref' : '') + '" data-un="' + u + '" data-escolhe="' + u + '" href="' + waLink(u, textoPendente) + '" target="_blank" rel="noopener">'
+      : '<button type="button" class="uni-op' + (pref ? ' uni-op-pref' : '') + '" data-escolhe="' + u + '" aria-pressed="' + pref + '">';
+    var fecha = modo === 'falar' ? '</a>' : '</button>';
+    return abre +
+      '<span class="uni-op-tag' + (u === 'mogi' ? ' uni-op-nova' : '') + '">' + x.rotulo + (pref ? ' · sua loja' : '') + '</span>' +
+      '<span class="uni-op-cid">' + x.cidade + '</span>' +
+      '<span class="uni-op-reg">' + x.regiao + '</span>' +
+      '<span class="uni-op-tel"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-wa"/></svg>' + window.elTelBonito(x.wa) + '</span>' +
+      '<span class="uni-op-ir" aria-hidden="true">' + (modo === 'falar' ? 'Abrir WhatsApp →' : (pref ? 'Escolhida ✓' : 'Escolher →')) + '</span>' +
+      fecha;
+  }
+  function abrir(m, texto, de) {
+    modo = m; textoPendente = texto || ''; origem = de || document.activeElement;
+    ops.innerHTML = cartao('taubate') + cartao('mogi');
+    document.getElementById('uniTit').innerHTML = m === 'falar' ? 'Com qual loja você quer <em>falar?</em>' : 'Qual é a <em>sua</em> loja?';
+    lembrar.parentNode.hidden = m !== 'falar';
+    sheet.hidden = false;
+    document.documentElement.classList.add('uni-aberta');
+    requestAnimationFrame(function () { sheet.classList.add('on'); });
+    var foco = ops.querySelector('.uni-op-pref') || ops.querySelector('.uni-op');
+    setTimeout(function () { try { foco.focus({ preventScroll: true }); } catch (e) { foco.focus(); } }, 60);
+  }
+  function fechar() {
+    if (sheet.hidden) return;
+    sheet.classList.remove('on');
+    document.documentElement.classList.remove('uni-aberta');
+    setTimeout(function () { sheet.hidden = true; }, 220);
+    if (origem && origem.focus) { try { origem.focus({ preventScroll: true }); } catch (e) { origem.focus(); } }
+  }
+  function escolher(u, avisar) {
+    gravar(u);
+    pintaPilula();
+    document.dispatchEvent(new CustomEvent('el:unidade', { detail: u }));
+    if (avisar && window.elToast) window.elToast('Pronto: os botões de WhatsApp agora chamam a loja de ' + UN[u].cidade + '.');
+  }
+  window.elEscolherUnidade = function (de) { abrir('escolher', '', de); };
+
+  if (sheet) {
+    sheet.addEventListener('click', function (e) {
+      if (e.target.closest('[data-fecha-uni]')) { fechar(); return; }
+      var op = e.target.closest('[data-escolhe]');
+      if (!op) return;
+      var u = op.getAttribute('data-escolhe');
+      if (modo === 'falar') { if (lembrar.checked) escolher(u, false); setTimeout(fechar, 50); }
+      else { escolher(u, true); fechar(); }
+    });
+    sheet.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') { e.preventDefault(); fechar(); return; }
+      if (e.key !== 'Tab') return;
+      var f = sheet.querySelectorAll('a[href], button, input');
+      var vis = Array.prototype.filter.call(f, function (x) { return x.offsetParent !== null; });
+      if (!vis.length) return;
+      var a = vis[0], z = vis[vis.length - 1];
+      if (e.shiftKey && document.activeElement === a) { e.preventDefault(); z.focus(); }
+      else if (!e.shiftKey && document.activeElement === z) { e.preventDefault(); a.focus(); }
+    });
+  }
+  ['navUni', 'mmenuUni'].forEach(function (id) {
+    var b = document.getElementById(id);
+    if (b) b.addEventListener('click', function () { abrir('escolher', '', b); });
+  });
+
+  /* ---------- todo WhatsApp "geral" passa pela unidade ---------- */
+  document.addEventListener('click', function (e) {
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    var a = e.target.closest && e.target.closest('a[href*="wa.me/"]');
+    if (!a || a.hasAttribute('data-un') || (sheet && sheet.contains(a))) return;
+    var partes = a.href.split('?text=');
+    var texto = partes[1] || '';
+    var u = ler();
+    if (u) { a.href = waLink(u, texto); return; } /* segue o clique normal, já com o número da loja preferida */
+    e.preventDefault();
+    abrir('falar', texto, a);
+  }, true);
+
+  /* ---------- abas acessíveis (mapa do contato e Instagram) ---------- */
+  function ligaAbas(abas, aoTrocar) {
+    abas = Array.prototype.slice.call(abas);
+    function ativa(aba, focar) {
+      abas.forEach(function (x) {
+        var sel = x === aba;
+        x.setAttribute('aria-selected', sel); x.tabIndex = sel ? 0 : -1;
+        x.classList.toggle('ativa', sel);
+      });
+      if (focar) aba.focus();
+      aoTrocar(aba);
+    }
+    abas.forEach(function (aba, i) {
+      aba.addEventListener('click', function () { ativa(aba, false); });
+      aba.addEventListener('keydown', function (e) {
+        var n = e.key === 'ArrowRight' ? i + 1 : e.key === 'ArrowLeft' ? i - 1 : e.key === 'Home' ? 0 : e.key === 'End' ? abas.length - 1 : null;
+        if (n === null) return;
+        e.preventDefault();
+        ativa(abas[(n + abas.length) % abas.length], true);
+      });
+    });
+    return function (u) { var a = abas.filter(function (x) { return x.dataset.mapa === u || x.dataset.igAba === u; })[0]; if (a) ativa(a, false); };
+  }
+
+  var frame = document.getElementById('unMapaFrame'), endMapa = document.getElementById('unMapaEnd'), painelMapa = document.getElementById('unMapa');
+  var abasMapa = document.querySelectorAll('.un-mapa-aba');
+  var mapaPara = abasMapa.length ? ligaAbas(abasMapa, function (aba) {
+    var u = aba.dataset.mapa;
+    if (frame && frame.getAttribute('src') !== UN[u].mapa) {
+      frame.setAttribute('src', UN[u].mapa);
+      frame.title = 'Mapa — Eletronic ' + UN[u].cidade;
+    }
+    if (endMapa) endMapa.textContent = UN[u].endereco;
+    if (painelMapa) painelMapa.setAttribute('aria-labelledby', aba.id);
+    document.querySelectorAll('.un-card').forEach(function (c) { c.classList.toggle('un-card-foco', c.dataset.unidade === u); });
+  }) : null;
+
+  var abasIg = document.querySelectorAll('.ig-unaba');
+  var igPara = abasIg.length ? ligaAbas(abasIg, function (aba) {
+    var u = aba.dataset.igAba;
+    ['igPainelTau', 'igPainelMogi'].forEach(function (id) {
+      var p = document.getElementById(id);
+      if (!p) return;
+      var mostra = (id === 'igPainelMogi') === (u === 'mogi');
+      p.hidden = !mostra;
+      if (mostra && window.elIgAtivar) window.elIgAtivar(p);
+    });
+  }) : null;
+
+  /* clicar num cartão de unidade destaca a loja no mapa */
+  document.querySelectorAll('.un-card').forEach(function (c) {
+    c.addEventListener('click', function (e) {
+      if (e.target.closest('a')) return;
+      if (mapaPara) mapaPara(c.dataset.unidade);
+    });
+  });
+
+  /* a loja preferida já abre o mapa e o Instagram dela */
+  function aplicaPreferida(u) {
+    if (!u) return;
+    if (mapaPara) mapaPara(u);
+    if (igPara) igPara(u);
+  }
+  document.addEventListener('el:unidade', function (e) { aplicaPreferida(e.detail); });
+  pintaPilula();
+  aplicaPreferida(ler());
+})();
+</script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
 'use strict';
@@ -6704,7 +7239,7 @@ window.elcChart = (function () {
       if (f2) { try { f2.focus({ preventScroll: true }); } catch (e) { f2.focus(); } }
     }
 
-    aplicarConfig(wa, cfg.instagram || CFG.IG_PADRAO);
+    aplicarConfig(wa, cfg.instagram || CFG.IG_PADRAO, cfg);
     ldProdutos(cats, prods);
 
     /* a ficha e o agendamento acompanham o catálogo (inclusive a pausa de entregas, via el_config) */
@@ -6741,23 +7276,35 @@ window.elcChart = (function () {
     } catch (e) { /* SEO nunca derruba a vitrine */ }
   }
 
-  function aplicarConfig(wa, ig) {
+  function aplicarConfig(wa, ig, cfgAtual) {
+    cfgAtual = cfgAtual || {};
     var telaBonito = wa;
     if (/^55\d{10,11}$/.test(wa)) {
       var ddd = wa.slice(2, 4), resto = wa.slice(4);
       telaBonito = '(' + ddd + ') ' + resto.slice(0, resto.length - 4) + '-' + resto.slice(-4);
     }
+    /* el_config.whatsapp/instagram são da MATRIZ (Taubaté); links da unidade de Mogi (data-un="mogi")
+       usam mogi_whatsapp/mogi_instagram e nunca recebem o número da matriz */
+    var un = window.EL_UNIDADES;
+    if (un) {
+      un.taubate.wa = wa; un.taubate.ig = ig;
+      if (cfgAtual.mogi_whatsapp) un.mogi.wa = String(cfgAtual.mogi_whatsapp).replace(/\D/g, '') || un.mogi.wa;
+      if (cfgAtual.mogi_instagram) un.mogi.ig = String(cfgAtual.mogi_instagram).replace(/^@/, '').trim() || un.mogi.ig;
+    }
     document.querySelectorAll('a[href*="wa.me/"]').forEach(function (a) {
       if (a.classList.contains('pcard-wa')) return;
+      var dono = a.getAttribute('data-un') === 'mogi' && un ? un.mogi : null;
+      var numero = dono ? dono.wa : wa;
       var m = a.href.split('?text=');
-      a.href = 'https://wa.me/' + wa + (m[1] ? '?text=' + m[1] : '');
-      if (/\(\d{2}\)\s?\d{4,5}-\d{4}/.test(a.textContent)) a.textContent = telaBonito;
+      a.href = 'https://wa.me/' + numero + (m[1] ? '?text=' + m[1] : '');
+      if (/\(\d{2}\)\s?\d{4,5}-\d{4}/.test(a.textContent)) a.textContent = dono && window.elTelBonito ? window.elTelBonito(numero) : telaBonito;
     });
     document.querySelectorAll('a[href*="instagram.com"]').forEach(function (a) {
       /* links de POSTS especificos (embeds/fallbacks da secao Instagram) nao viram o perfil */
       if (a.hasAttribute('data-ig-keep')) return;
-      a.href = 'https://www.instagram.com/' + ig;
-      if (/@/.test(a.textContent)) a.textContent = a.textContent.replace(/@[\w.]+/, '@' + ig);
+      var perfil = a.getAttribute('data-un') === 'mogi' && un ? un.mogi.ig : ig;
+      a.href = 'https://www.instagram.com/' + perfil;
+      if (/@/.test(a.textContent)) a.textContent = a.textContent.replace(/@[\w.]+/, '@' + perfil);
     });
   }
 
@@ -8831,50 +9378,62 @@ window.elcChart = (function () {
     window.addEventListener('resize', pede);
   })();
 
-  /* ============ INSTAGRAM — embeds oficiais LAZY + fallback ============
-     O embed.js so e injetado (uma vez) quando a secao chega a 600px do
-     viewport. Enquanto isso, placeholders navy/ouro com shimmer. Se o
-     embed nao materializar um iframe em 6s, o placeholder vira card
-     clicavel "Ver no Instagram" (link do proprio post). */
+  /* ============ INSTAGRAM — embeds oficiais LAZY + fallback, um painel por unidade ============
+     O embed.js só é injetado (uma vez) quando a seção chega a 600px do viewport. Cada post
+     conta suas tentativas SÓ enquanto está visível: o painel de Mogi fica escondido na aba e
+     seus blockquotes nascem "adiados" (sem a classe do Instagram) até a aba abrir — um iframe
+     montado dentro de display:none nasce com altura 0 e cairia no fallback por engano. */
   (function () {
-    var grid = document.getElementById('igGrid');
-    if (!grid) return;
-    var itens = grid.querySelectorAll('.ig-item');
-    var pediu = false;
+    var secao = document.getElementById('instagram');
+    if (!secao || !secao.querySelector('.ig-grid')) return;
+    var pediu = false, carregado = false, vigia = 0;
+    var tentativas = new WeakMap();
 
-    /* um item so esconde o placeholder quando o iframe tem altura REAL
-       (iframe raso = embed ainda carregando; o shimmer segue por tras) */
-    function checa(tentativas) {
+    function checa(desistir) {
       var pendentes = 0;
-      for (var i = 0; i < itens.length; i++) {
-        var it = itens[i];
-        if (it.classList.contains('ig-ok') || it.classList.contains('ig-fallback')) continue;
+      secao.querySelectorAll('.ig-grid .ig-item').forEach(function (it) {
+        if (it.classList.contains('ig-ok') || it.classList.contains('ig-fallback')) return;
+        if (it.offsetParent === null || it.querySelector('blockquote.ig-adiado')) return;
+        var n = (tentativas.get(it) || 0) + 1;
+        tentativas.set(it, n);
         var frame = it.querySelector('iframe');
-        if (frame && frame.offsetHeight > 150) { it.classList.add('ig-ok'); continue; }
+        if (frame && frame.offsetHeight > 150) { it.classList.add('ig-ok'); return; }
         /* 6s sem nem um iframe -> card "Ver no Instagram"; 15s raso -> idem */
-        if ((!frame && tentativas >= 12) || tentativas >= 30) it.classList.add('ig-fallback');
+        if (desistir || (!frame && n >= 12) || n >= 30) it.classList.add('ig-fallback');
         else pendentes++;
-      }
+      });
       return pendentes;
     }
-
+    function vigiar() {
+      clearInterval(vigia);
+      vigia = setInterval(function () { if (!checa(false)) clearInterval(vigia); }, 500);
+    }
+    function processar() {
+      try { if (window.instgrm && window.instgrm.Embeds) window.instgrm.Embeds.process(); } catch (e) { /* fallback cobre */ }
+    }
     function injeta() {
       if (pediu) return;
       pediu = true;
       var s = document.createElement('script');
       s.async = true;
       s.src = 'https://www.instagram.com/embed.js';
-      s.onload = function () {
-        try { if (window.instgrm && window.instgrm.Embeds) window.instgrm.Embeds.process(); } catch (e) { /* fallback cobre */ }
-      };
-      s.onerror = function () { checa(99); };
+      s.onload = function () { carregado = true; processar(); };
+      s.onerror = function () { checa(true); };
       document.body.appendChild(s);
-      var tentativas = 0;
-      var vigia = setInterval(function () {
-        tentativas++;
-        if (!checa(tentativas)) clearInterval(vigia);
-      }, 500);
+      vigiar();
     }
+    /* chamado pela aba quando um painel aparece */
+    window.elIgAtivar = function (painel) {
+      painel.querySelectorAll('blockquote.ig-adiado').forEach(function (b) {
+        b.classList.remove('ig-adiado');
+        b.classList.add('instagram-media');
+      });
+      if (!pediu) return; /* injeta() processa tudo quando a seção chegar perto */
+      if (carregado) processar();
+      vigiar();
+    };
+    /* a aba da loja preferida pode ter aberto antes deste script existir */
+    secao.querySelectorAll('.ig-painel').forEach(function (p) { if (!p.hidden) window.elIgAtivar(p); });
 
     if ('IntersectionObserver' in window) {
       var io = new IntersectionObserver(function (es) {
@@ -8882,7 +9441,7 @@ window.elcChart = (function () {
         io.disconnect();
         injeta();
       }, { rootMargin: '600px 0px' });
-      io.observe(grid);
+      io.observe(secao);
     } else injeta();
   })();
 
@@ -9040,6 +9599,21 @@ window.elcChart = (function () {
     return m ? m[1] : '5512997463135';
   }
   function linkWA(msg) { return 'https://wa.me/' + numeroLoja() + '?text=' + encodeURIComponent(msg); }
+  /* ---------- unidade que entrega (Taubaté = matriz, Mogi das Cruzes = nova) ---------- */
+  var UNI_MOGI = /^(mogi das cruzes|suzano|aruj[aá]|itaquaquecetuba|po[aá]|ferraz de vasconcelos|biritiba[- ]mirim|guararema|sales[oó]polis|santa isabel)$/i;
+  var uniManual = false;
+  function unidadeAtual() { var r = form.querySelector('[name=unidade]:checked'); return r && r.value === 'mogi' ? 'mogi' : 'taubate'; }
+  function nomeUnidade(u) { return u === 'mogi' ? 'Mogi das Cruzes' : 'Taubaté'; }
+  function numeroUnidade(u) { var un = window.EL_UNIDADES; return un && un[u] ? un[u].wa : numeroLoja(); }
+  function marcaUnidade(u) { Array.prototype.forEach.call(form.querySelectorAll('[name=unidade]'), function (r) { r.checked = r.value === u; }); }
+  function sugereUnidade(cidade) {
+    if (uniManual || !cidade) return;
+    var c = String(cidade).trim();
+    var u = UNI_MOGI.test(c) ? 'mogi' : (/taubat/i.test(c) ? 'taubate' : null);
+    if (!u || u === unidadeAtual()) return;
+    marcaUnidade(u);
+    $('entUniSt').textContent = 'Pelo CEP, quem entrega é a loja de ' + nomeUnidade(u) + '. Pode trocar se preferir.';
+  }
   function focar(x) { if (!x) return; try { x.focus({ preventScroll: true }); } catch (e) { x.focus(); } }
   function toast(m, ms) { if (window.elToast) window.elToast(m, ms); }
   function copiar(t) {
@@ -9082,7 +9656,11 @@ window.elcChart = (function () {
   ligaTel(el.telefone);
   el.cpf.addEventListener('input', function () { this.value = mascCpf(dig(this.value)); });
   /* escolher uma janela limpa o horário específico e vice-versa */
-  form.addEventListener('change', function (e) { if (e.target.name === 'janela') el.horario_outro.value = ''; });
+  form.addEventListener('change', function (e) {
+    if (e.target.name === 'janela') el.horario_outro.value = '';
+    if (e.target.name === 'unidade') { uniManual = true; $('entUniSt').textContent = ''; salvarDepois(); }
+  });
+  try { if (localStorage.getItem('el_unidade') === 'mogi') marcaUnidade('mogi'); } catch (e) { /* modo anônimo */ }
   el.horario_outro.addEventListener('input', function () {
     if (this.value) Array.prototype.forEach.call(form.querySelectorAll('[name=janela]'), function (r) { r.checked = false; });
   });
@@ -9123,6 +9701,7 @@ window.elcChart = (function () {
         preencheAuto('rua', j.logradouro);
         preencheAuto('bairro', j.bairro);
         preencheAuto('cidade', cidade);
+        sugereUnidade(j.localidade);
         cepSt('Endereço encontrado' + (cidade ? ' em ' + cidade : '') + '. Confira e informe o número.', 'ok');
         salvarRascunho();
         if (document.activeElement === el.cep) focar(!el.rua.value ? el.rua : !el.numero.value ? el.numero : el.complemento);
@@ -9413,7 +9992,7 @@ window.elcChart = (function () {
     var prod = el.produto.value.trim(), comp = el.complemento.value.trim(), obs = el.observacoes.value.trim();
     $('entRev').innerHTML =
       bloco(1, 'Você', ['<b>' + esc(el.nome.value.trim()) + '</b>', esc(mascTel(normTel(el.telefone.value))) + (cpfMasc ? ' · CPF ' + cpfMasc : '')]) +
-      bloco(2, 'Entrega', [esc(endereco()), comp ? esc(comp) : '', '<b>' + esc(dataLonga(el.data_entrega.value)) + '</b> · ' + esc(horario())]) +
+      bloco(2, 'Entrega', ['Loja: <b>' + nomeUnidade(unidadeAtual()) + '</b>', esc(endereco()), comp ? esc(comp) : '', '<b>' + esc(dataLonga(el.data_entrega.value)) + '</b> · ' + esc(horario())]) +
       bloco(3, 'Pagamento', [prod ? 'Aparelho: <b>' + esc(prod) + '</b>' : 'Aparelho: a combinar com a loja', 'Pagamento: ' + esc(pagamento()), obs ? 'Obs.: ' + esc(obs) : '']);
   }
   $('entRev').addEventListener('click', function (e) {
@@ -9432,6 +10011,8 @@ window.elcChart = (function () {
     o.janela = j ? j.value : '';
     o.formas = formas();
     o.lembrar = el.lembrar.checked;
+    o.unidade = unidadeAtual();
+    o.uniManual = uniManual;
     var temAlgo = Object.keys(o).some(function (k) { return k !== 'lembrar' && (Array.isArray(o[k]) ? o[k].length : o[k]); });
     gravar(sessionStorage, RASC, temAlgo ? o : null);
   }
@@ -9444,6 +10025,7 @@ window.elcChart = (function () {
     }
     if (Array.isArray(o.formas)) setFormas(o.formas);
     if (o.lembrar) el.lembrar.checked = true;
+    if (o.unidade) { marcaUnidade(o.unidade); uniManual = !!o.uniManual; }
   }
   $('entEsquecer').addEventListener('click', function () {
     gravar(localStorage, LEMB, null);
@@ -9465,6 +10047,7 @@ window.elcChart = (function () {
       pagamento: pagamento(), observacoes: el.observacoes.value.trim(),
     };
     if (el.produto_id.value) p.produto_id = el.produto_id.value;
+    p.unidade = unidadeAtual();
     return p;
   }
   function travaBotao(sim) {
@@ -9528,13 +10111,14 @@ window.elcChart = (function () {
     $('entOkNum').textContent = num || 'Recebido';
     $('entOkCopiar').hidden = !num;
     $('entOkAcomp').hidden = !num;
-    $('entOkTxt').textContent = 'A loja já recebeu e vai falar com você no ' + mascTel(p.telefone) + ' para confirmar o horário.';
+    $('entOkTxt').textContent = 'A loja de ' + nomeUnidade(p.unidade) + ' já recebeu e vai falar com você no ' + mascTel(p.telefone) + ' para confirmar o horário.';
     $('entOkResumo').innerHTML =
       '<b>Quando:</b> ' + esc(dataLonga(p.data_entrega)) + ' · ' + esc(p.horario) + '<br>' +
       '<b>Onde:</b> ' + esc(p.endereco) + (p.complemento ? ' — ' + esc(p.complemento) : '') + '<br>' +
       (p.produto ? '<b>Aparelho:</b> ' + esc(p.produto) + '<br>' : '') +
       '<b>Pagamento:</b> só no ato da entrega';
-    $('entOkWa').href = linkWA('Olá! Acabei de agendar a entrega ' + num + ' pelo site para ' + dataBR(p.data_entrega) + ' (' + p.horario + ')' + (p.produto ? ' — ' + p.produto : '') + '.');
+    $('entOkWa').setAttribute('data-un', p.unidade);
+    $('entOkWa').href = 'https://wa.me/' + numeroUnidade(p.unidade) + '?text=' + encodeURIComponent('Olá! Acabei de agendar a entrega ' + num + ' pelo site para ' + dataBR(p.data_entrega) + ' (' + p.horario + ')' + (p.produto ? ' — ' + p.produto : '') + '.');
     form.hidden = true;
     pausa.hidden = true;
     ok.hidden = false;

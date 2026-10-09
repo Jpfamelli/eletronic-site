@@ -621,6 +621,12 @@
       .esq i { animation: none; }
       .ped-vivo.on i { animation: none; box-shadow: 0 0 0 3px rgba(46,204,143,.25); }
     }
+  
+    /* ----- loja do pedido (Taubaté = matriz, Mogi das Cruzes = nova unidade) ----- */
+    .ped-loja { display:inline-flex; align-items:center; font-size:.6rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase;
+      padding:4px 8px; margin-left:8px; vertical-align:3px; border:1px solid rgba(201,162,39,.35); color:var(--gold-pale); }
+    .ped-loja-mogi { border-color:#7fb2f0; color:#a9cdf7; }
+    #pedUnidade.filtro-on { border-color:var(--gold); color:var(--gold-pale); }
   </style>
 </head>
 <body>
@@ -752,6 +758,11 @@
 
     <div class="barra ped-barra">
       <input type="search" id="pedBusca" placeholder="Nome, telefone, endereço ou nº" aria-label="Buscar pedido" enterkeyhint="search" autocomplete="off">
+      <select id="pedUnidade" aria-label="Filtrar por loja">
+        <option value="">Todas as lojas</option>
+        <option value="taubate">Taubaté</option>
+        <option value="mogi">Mogi das Cruzes</option>
+      </select>
       <select id="pedStatus" aria-label="Filtrar por status"></select>
       <select id="pedOrdem" aria-label="Ordenar pedidos">
         <option value="recentes">Mais recentes</option>
@@ -1713,6 +1724,7 @@ const ped = {
   lista: [], carregou: false, erro: false, idsVistos: null,
   periodo: 'hoje', dia: null, alerta: null,
   ordem: ORDENS.includes(lerPref('el_ped_ordem', '')) ? lerPref('el_ped_ordem', '') : 'recentes',
+  unidade: ['taubate', 'mogi'].includes(lerPref('el_ped_unidade', '')) ? lerPref('el_ped_unidade', '') : '',
   som: lerPref('el_ped_som', 'sim') !== 'nao',
   notif: lerPref('el_ped_notif', 'nao') === 'sim',
   apagando: new Map(),     // id -> { timer, p }: some da tela e só apaga no banco se ninguém desfizer
@@ -1818,7 +1830,10 @@ function estoqueProd(x) {
 }
 const achar = (id) => ped.lista.find((x) => String(x.id) === String(id));
 const cardDe = (id) => document.querySelector(`#pedLista .ped[data-id="${id}"]`);
-const visiveis = () => ped.lista.filter((p) => !ped.apagando.has(p.id));
+const UNIDADES = { taubate: 'Taubaté', mogi: 'Mogi das Cruzes' };
+const unidadeDe = (p) => (p.unidade === 'mogi' ? 'mogi' : 'taubate');
+/* a loja escolhida vale para a aba inteira: cartões, agenda, alertas, rota e lista */
+const visiveis = () => ped.lista.filter((p) => !ped.apagando.has(p.id) && (!ped.unidade || unidadeDe(p) === ped.unidade));
 
 /* ---------- filtros ---------- */
 function noPeriodo(p, periodo) {
@@ -2145,7 +2160,7 @@ function cardPedido(p, chegou, nTel) {
   <article class="ped st-${esc(p.status)}${chegou ? ' chegou' : ''}${atr ? ' atrasado' : ''}" data-id="${p.id}" tabindex="-1"
     aria-label="Pedido ${numero(p.id)} de ${esc(p.nome)}, ${NOME_STATUS[p.status] || esc(p.status)}">
     <header class="ped-topo">
-      <div class="ped-id"><span class="ped-num">${numero(p.id)}</span><span class="st">${NOME_STATUS[p.status] || esc(p.status)}</span>${flags.join('')}</div>
+      <div class="ped-id"><span class="ped-num">${numero(p.id)}</span><span class="st">${NOME_STATUS[p.status] || esc(p.status)}</span><span class="ped-loja ped-loja-${unidadeDe(p)}" title="Loja que entrega">${unidadeDe(p) === 'mogi' ? 'Mogi' : 'Taubaté'}</span>${flags.join('')}</div>
       <div class="ped-direita">
         ${v != null ? `<span class="ped-valor" title="Valor da venda">${fmt(v)}</span>` : '<button type="button" class="ped-sem-valor" data-acao="editar" data-foco="valor">+ informar valor</button>'}
         <span class="ped-quando">Recebido ${quandoCurto(p.criado_em)} · ${haQuanto(p.criado_em)}</span>
@@ -2351,14 +2366,14 @@ function exportarCSV() {
     if (/^[=+\-@\t\r]/.test(s)) s = "'" + s;              // planilha não executa fórmula vinda do site
     return /[";\r\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
   };
-  const cab = ['Pedido', 'Recebido em', 'Status', 'Cliente', 'Telefone', 'CPF', 'Endereço', 'Complemento', 'Data da entrega', 'Horário',
+  const cab = ['Pedido', 'Recebido em', 'Status', 'Loja', 'Cliente', 'Telefone', 'CPF', 'Endereço', 'Complemento', 'Data da entrega', 'Horário',
     'Produto', 'Valor (R$)', 'Pagamento combinado', 'Observações', 'Motoboy', 'Nota interna', 'Origem', 'Última atualização'];
-  const linhas = lista.map((p) => [numero(p.id), dataHoraSP(p.criado_em), NOME_STATUS[p.status] || p.status, p.nome, telBR(p.telefone), cpfBR(p.cpf),
+  const linhas = lista.map((p) => [numero(p.id), dataHoraSP(p.criado_em), NOME_STATUS[p.status] || p.status, UNIDADES[unidadeDe(p)], p.nome, telBR(p.telefone), cpfBR(p.cpf),
     p.endereco, p.complemento, dataBR(p.data_entrega), p.horario, p.produto,
     valorNum(p.valor) == null ? '' : valorNum(p.valor).toFixed(2).replace('.', ','),
     p.pagamento, p.observacoes, p.motoboy, p.nota_interna, p.origem, dataHoraSP(p.atualizado_em)].map(cel).join(';'));
   const csv = '﻿' + [cab.map(cel).join(';'), ...linhas].join('\r\n');
-  const sufixo = ped.dia ? `entrega-${ped.dia}` : ped.alerta || ped.periodo;
+  const sufixo = (ped.unidade ? ped.unidade + '-' : '') + (ped.dia ? `entrega-${ped.dia}` : ped.alerta || ped.periodo);
   const a = document.createElement('a');
   a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
   a.download = `pedidos-eletronic-${hojeSP()}-${sufixo}.csv`;
@@ -3152,6 +3167,14 @@ $('#pedAtualizar').addEventListener('click', async () => {
 });
 $('#pedOrdem').value = ped.ordem;
 $('#pedOrdem').addEventListener('change', () => { ped.ordem = $('#pedOrdem').value; gravarPref('el_ped_ordem', ped.ordem); renderPedidos(); });
+$('#pedUnidade').value = ped.unidade;
+$('#pedUnidade').addEventListener('change', () => {
+  ped.unidade = $('#pedUnidade').value;
+  gravarPref('el_ped_unidade', ped.unidade);
+  $('#pedUnidade').classList.toggle('filtro-on', !!ped.unidade);
+  renderPedidos();
+});
+$('#pedUnidade').classList.toggle('filtro-on', !!ped.unidade);
 
 $('#pedLista').addEventListener('click', async (e) => {
   const todos = e.target.closest('[data-periodo="todos"]');
