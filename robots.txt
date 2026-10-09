@@ -1,5 +1,8 @@
+# Eletronic — iPhones em Taubaté e Mogi das Cruzes
 User-agent: *
 Allow: /
+# painel interno da loja (login) e o service worker dele não entram na busca
 Disallow: /painel.html
+Disallow: /painel-sw.js
 
 Sitemap: https://eletronic-taubate.netlify.app/sitemap.xml

@@ -3,18 +3,27 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
-  <title>Eletronic — iPhones Originais em Taubaté e Mogi das Cruzes · Seminovos e Lacrados</title>
-  <meta name="description" content="iPhones originais com nota fiscal e 1 ano de garantia em Taubaté e Mogi das Cruzes (SP). Lacrados e seminovos, acessórios e relógios Garmin. Até 18x no cartão, entrega por motoboy e para todo o Brasil."/>
+  <title>iPhones lacrados e seminovos em Taubaté e Mogi das Cruzes | Eletronic</title>
+  <meta name="description" content="iPhones originais, lacrados e seminovos, com nota fiscal e 1 ano de garantia. Lojas em Taubaté e Mogi das Cruzes (SP), até 18x no cartão e entrega para todo o Brasil."/>
+  <meta name="robots" content="index, follow, max-image-preview:large"/>
+  <meta property="og:site_name" content="Eletronic"/>
   <meta property="og:title" content="Eletronic — iPhones originais em Taubaté e Mogi das Cruzes"/>
   <meta property="og:description" content="Duas lojas, a mesma Eletronic: iPhones originais com nota fiscal e 1 ano de garantia em Taubaté e Mogi das Cruzes. Até 18x no cartão."/>
   <meta property="og:image" content="https://eletronic-taubate.netlify.app/images/og.jpg"/>
   <meta property="og:image:width" content="1200"/>
   <meta property="og:image:height" content="630"/>
+  <meta property="og:image:alt" content="Eletronic — iPhones originais com nota fiscal e 1 ano de garantia"/>
   <meta property="og:locale" content="pt_BR"/>
   <meta property="og:url" content="https://eletronic-taubate.netlify.app/"/>
   <meta property="og:type" content="website"/>
   <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:title" content="Eletronic — iPhones originais em Taubaté e Mogi das Cruzes"/>
+  <meta name="twitter:description" content="Duas lojas, a mesma Eletronic: lacrados e seminovos com nota fiscal, 1 ano de garantia e até 18x no cartão."/>
+  <meta name="twitter:image" content="https://eletronic-taubate.netlify.app/images/og.jpg"/>
+  <meta name="twitter:image:alt" content="Eletronic — iPhones originais com nota fiscal e 1 ano de garantia"/>
   <link rel="canonical" href="https://eletronic-taubate.netlify.app/"/>
+  <link rel="alternate" hreflang="pt-BR" href="https://eletronic-taubate.netlify.app/"/>
+  <link rel="alternate" hreflang="x-default" href="https://eletronic-taubate.netlify.app/"/>
   <link rel="icon" type="image/svg+xml" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" fill="%2304091c"/><path d="M35 8L14 34h17l-3 22 22-28H33l2-20z" fill="%23c9a227"/></svg>'>
   <meta name="theme-color" content="#04091c"/>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -32,10 +41,28 @@
         "name": "Eletronic",
         "url": "https://eletronic-taubate.netlify.app/",
         "logo": "https://eletronic-taubate.netlify.app/images/og.jpg",
+        "description": "Loja de iPhones originais, lacrados e seminovos, com nota fiscal e 1 ano de garantia. Duas unidades: Taubaté (matriz) e Mogi das Cruzes.",
+        "areaServed": "BR",
+        "contactPoint": [
+          { "@type": "ContactPoint", "telephone": "+55-12-99746-3135", "contactType": "customer service", "areaServed": "BR", "availableLanguage": "Portuguese", "name": "WhatsApp Eletronic Taubaté" },
+          { "@type": "ContactPoint", "telephone": "+55-11-99412-2171", "contactType": "customer service", "areaServed": "BR", "availableLanguage": "Portuguese", "name": "WhatsApp Eletronic Mogi das Cruzes" }
+        ],
+        "subOrganization": [
+          { "@id": "https://eletronic-taubate.netlify.app/#taubate" },
+          { "@id": "https://eletronic-taubate.netlify.app/#mogi" }
+        ],
         "sameAs": [
           "https://www.instagram.com/eletronic.oficial",
           "https://www.instagram.com/eletronic.oficial.mogi"
         ]
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://eletronic-taubate.netlify.app/#site",
+        "url": "https://eletronic-taubate.netlify.app/",
+        "name": "Eletronic",
+        "inLanguage": "pt-BR",
+        "publisher": { "@id": "https://eletronic-taubate.netlify.app/#marca" }
       },
       {
         "@type": "Store",
@@ -56,6 +83,11 @@
           "postalCode": "12020-030",
           "addressCountry": "BR"
         },
+        "hasMap": "https://www.google.com/maps/search/?api=1&query=Eletronic+R.+Dr.+Souza+Alves+384+Centro+Taubat%C3%A9+SP",
+        "areaServed": ["Taubaté", "Vale do Paraíba", "BR"],
+        "currenciesAccepted": "BRL",
+        "paymentAccepted": "Pix, cartão de crédito, dinheiro",
+        "brand": { "@type": "Brand", "name": "Apple" },
         "sameAs": [
           "https://www.instagram.com/eletronic.oficial"
         ]
@@ -77,6 +109,9 @@
           "addressRegion": "SP",
           "addressCountry": "BR"
         },
+        "areaServed": ["Mogi das Cruzes", "Alto Tietê"],
+        "currenciesAccepted": "BRL",
+        "brand": { "@type": "Brand", "name": "Apple" },
         "sameAs": [
           "https://www.instagram.com/eletronic.oficial.mogi"
         ]
@@ -89,18 +124,118 @@
     "@context": "https://schema.org",
     "@type": "FAQPage",
     "mainEntity": [
-      { "@type": "Question", "name": "Os iPhones da Eletronic são originais?",
-        "acceptedAnswer": { "@type": "Answer", "text": "Sim. Trabalhamos somente com aparelhos 100% originais Apple, com nota fiscal em todos os pedidos. Você confere o aparelho funcionando antes de fechar a compra." } },
-      { "@type": "Question", "name": "Como funciona a garantia de 1 ano?",
-        "acceptedAnswer": { "@type": "Answer", "text": "Todo aparelho — lacrado ou seminovo — sai com 12 meses de garantia da loja. Precisou de qualquer coisa, é só chamar no WhatsApp: você fala direto com a gente, sem central de atendimento." } },
-      { "@type": "Question", "name": "Seminovo é confiável?",
-        "acceptedAnswer": { "@type": "Answer", "text": "Aqui, é. Cada seminovo passa por revisão completa, tem a saúde da bateria informada e sai com a mesma nota fiscal e o mesmo 1 ano de garantia do lacrado. A diferença fica só no preço." } },
-      { "@type": "Question", "name": "Meu iPhone atual vale como entrada?",
-        "acceptedAnswer": { "@type": "Answer", "text": "Vale. Avaliamos o seu usado na hora e o valor vira desconto direto no próximo aparelho. Mande o modelo e o estado dele no WhatsApp e receba a avaliação em minutos." } },
-      { "@type": "Question", "name": "Posso parcelar? Em quantas vezes?",
-        "acceptedAnswer": { "@type": "Answer", "text": "Sim, em até 18x no cartão. Chame no WhatsApp com o modelo que você quer e a gente simula o parcelamento exato, sem compromisso." } },
-      { "@type": "Question", "name": "Vocês entregam na minha cidade?",
-        "acceptedAnswer": { "@type": "Answer", "text": "Entregamos para todo o Brasil, com envio rastreado e embalagem reforçada. Em Taubaté e região, você também pode retirar na loja: R. Dr. Souza Alves, 384 — Centro. Prefere receber por motoboy? Agende a entrega pelo site — você paga só quando o aparelho chegar." } }
+      {
+        "@type": "Question",
+        "name": "Os iPhones da Eletronic são originais?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Sim. Só trabalhamos com aparelhos originais Apple, com nota fiscal em todos os pedidos. Você confere o aparelho funcionando antes de fechar a compra."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Como funciona a garantia de 1 ano?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Todo aparelho, lacrado ou seminovo, sai com 12 meses de garantia da loja, em Taubaté ou em Mogi das Cruzes. Precisou de alguma coisa, é só chamar no WhatsApp: você fala direto com a gente, sem central de atendimento."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Seminovo é confiável?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Aqui, é. Cada seminovo passa por revisão completa, tem a saúde da bateria informada antes da compra e sai com a mesma nota fiscal e o mesmo 1 ano de garantia do lacrado. A diferença fica no preço."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "O que vem junto com o iPhone?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Nota fiscal, 1 ano de garantia da loja e os brindes: capa, película e kit carregador com selo Anatel. Na compra, a gente também transfere seus dados, fotos, contatos e apps, para o aparelho novo. Você sai com tudo funcionando."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Posso parcelar? Em quantas vezes?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Sim, em até 18x no cartão. Chame no WhatsApp com o modelo que você quer e a gente simula as parcelas, sem compromisso."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Meu iPhone atual vale como entrada?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Vale. Mande o modelo e o estado dele no WhatsApp e receba a avaliação em minutos: o valor vira desconto direto no próximo aparelho. Na entrega por motoboy, “aparelho na troca” também aparece como forma de pagamento."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Onde ficam as lojas da Eletronic?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "São duas: a matriz em Taubaté (R. Dr. Souza Alves, 384 — Centro, WhatsApp (12) 99746-3135) e a nova unidade em Mogi das Cruzes (WhatsApp (11) 99412-2171). Garantia, nota fiscal e atendimento são os mesmos nas duas. Veja as duas lojas."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "A loja de Mogi das Cruzes já está aberta?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "A unidade de Mogi já atende pelo WhatsApp (11) 99412-2171, e o espaço da loja está sendo preparado — o perfil @eletronic.oficial.mogi mostra os bastidores. Antes de ir, confirme endereço e horário com a unidade."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Como escolho com qual loja falar no WhatsApp?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Na primeira vez que você toca num botão de WhatsApp do site, aparece a pergunta “Com qual loja você quer falar?”. Marcando “Lembrar minha escolha”, os próximos botões já chamam a loja escolhida. Para trocar, toque em “2 lojas” (ou no nome da sua loja) no topo da página."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Vocês entregam na minha cidade?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Entregamos para todo o Brasil, com envio rastreado e embalagem reforçada. Em Taubaté você também pode retirar na loja (R. Dr. Souza Alves, 384 — Centro). Perto de Taubaté ou de Mogi das Cruzes, dá para agendar a entrega por motoboy aqui no site."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Como funciona a entrega por motoboy?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Você agenda aqui no site em quatro etapas: seus dados, endereço com o dia e a janela de horário (manhã, tarde ou noite), a forma de pagamento e a revisão. Também escolhe qual loja vai entregar: Taubaté e região do Vale, ou Mogi das Cruzes e Alto Tietê. A loja recebe o pedido na hora e chama você para confirmar o horário. O pagamento é feito só na entrega."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Como acompanho o meu pedido?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Na área de entrega, toque em Acompanhar e informe o número do pedido (ele aparece na confirmação, por exemplo #0002) e o telefone usado no agendamento. Você vê a situação e pode falar com a loja dali mesmo."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "O agendamento aparece como pausado. E agora?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "De vez em quando a loja pausa os agendamentos pelo site. Nesse caso, chame no WhatsApp que a entrega é combinada por lá. Quem já agendou continua acompanhando o pedido normalmente."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Que dados eu informo no agendamento? É seguro?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Nome, telefone, CPF e endereço. O CPF nunca fica salvo no seu aparelho, e o formulário não pede número de cartão, senha nem dados bancários: o pagamento acontece só no ato da entrega. Preencher não cobra nada."
+        }
+      }
     ]
   }
   </script>
@@ -1306,7 +1441,6 @@
       stroke-linecap:round; stroke-linejoin:round; }
     .ig-follow:hover { background:#fffdf6; transform:translateY(-2px); }
     .ig-follow:active { transform:scale(.97); }
-    .ig-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:22px; }
     .ig-item { position:relative; min-height:420px; border:1px solid rgba(201,162,39,.16);
       background:rgba(255,255,255,.02); overflow:hidden; }
     .ig-item .instagram-media { position:relative; z-index:2; margin:0 !important;
@@ -1317,10 +1451,8 @@
       font-size:.7rem; letter-spacing:.08em; text-decoration:none; }
     /* enquanto o embed nao materializa, o blockquote fica invisivel (layout preservado:
        o vigia ainda mede offsetHeight do iframe) — so o placeholder aparece */
-    .ig-item:not(.ig-ok) .instagram-media { visibility:hidden; }
     /* o embed.js renomeia o blockquote para -registered enquanto processa: a ancora
        crua dele escaparia do estilo e pintaria por cima do placeholder — some */
-    .ig-item blockquote.instagram-media-registered { display:none !important; }
     /* placeholder elegante navy/ouro com shimmer — vira card "Ver no Instagram" no fallback */
     .ig-ph { position:absolute; inset:0; z-index:1; display:flex; flex-direction:column;
       align-items:center; justify-content:center; gap:14px; text-decoration:none;
@@ -1330,14 +1462,9 @@
       transform:translateX(-100%); animation:skelSweep 1.6s ease infinite; }
     .ig-ph svg { width:38px; height:38px; stroke:rgba(201,162,39,.6); fill:none; stroke-width:1.4;
       stroke-linecap:round; stroke-linejoin:round; }
-    .ig-ph span { font-size:.72rem; letter-spacing:.16em; text-transform:uppercase; color:var(--gray); }
     .ig-ph .ig-ph-cta { display:none; border:1px solid var(--gold); color:var(--gold);
       padding:10px 22px; font-size:.7rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; }
-    .ig-item.ig-ok .ig-ph { display:none; }
-    .ig-item.ig-fallback .ig-ph::after { display:none; }
-    .ig-item.ig-fallback .ig-ph .ig-ph-cta { display:inline-block; }
     /* no fallback some TUDO que o embed.js tenha deixado — só o card clicável fica */
-    .ig-item.ig-fallback > :not(.ig-ph) { display:none !important; }
     .ig-chips { display:flex; flex-wrap:wrap; gap:10px; margin-top:26px; }
     .ig-chip { border:1px solid rgba(201,162,39,.28); background:rgba(201,162,39,.06);
       color:var(--gold-pale); font-size:.68rem; font-weight:600; letter-spacing:.16em;
@@ -1898,7 +2025,6 @@
     }
     .cat-wa-link { padding:16px 34px; font-size:.76rem; letter-spacing:.1em; color:var(--cream); }
     .il { padding:11px 18px; font-size:.68rem; letter-spacing:.12em; }
-    .ig-ph .ig-ph-cta { padding:12px 24px; font-size:.68rem; }
     .duelo-cta { padding:14px 28px; }
     /* link-texto "Ver modelos" — fantasma discreto da mesma família (seta preservada) */
     .btn-t { border-radius:var(--r-pill); border:1px solid rgba(201,162,39,.3); background:rgba(201,162,39,.03);
@@ -1942,8 +2068,8 @@
 
     /* cards e molduras — raios consistentes (14–20px) */
     .g-rat { border-radius:14px; }
-    .tprova, .estoque, .ig-head, .duelo-card, .bc-cta-wrap, .about-team-wrap, .bcs-total, .bc-prize-box { border-radius:20px; }
-    .bc-step, .bc-card-natal, .bc-card-regular, .bcs-step, .skel, .ig-item, .duelo-comum { border-radius:16px; }
+    .tprova, .estoque, .duelo-card, .bc-cta-wrap, .about-team-wrap, .bcs-total, .bc-prize-box { border-radius:20px; }
+    .bc-step, .bc-card-natal, .bc-card-regular, .bcs-step, .skel, .duelo-comum { border-radius:16px; }
     .bcs-bilhete { border-radius:10px; }
     .bcs-vazio { border-radius:14px; }
     .elc-tip { border-radius:8px; }
@@ -2086,9 +2212,6 @@
     @media (max-width:420px) { .enq-btns { width:100%; } .enq-btn { flex:1; padding:13px 10px; } }
 
     /* ---------- INSTAGRAM — 6 embeds (3×2), header com números reais ---------- */
-    .ig-head { border-radius:20px; }
-    .ig-item { border-radius:18px; }
-    .ig-grid { gap:16px; }
     .ig-stats { line-height:1.7; }
     .ig-stats b { font-variant-numeric:lining-nums tabular-nums; }
     .ig-nota { margin-top:22px; font-size:.9rem; color:var(--gray); line-height:1.7; max-width:62ch; }
@@ -3071,25 +3194,14 @@
     }
 
     /* ----- Instagram por unidade ----- */
-    .ig-unabas { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:12px; margin-top:clamp(28px, 4vw, 40px); max-width:720px; }
     .ig-unaba { display:flex; flex-direction:column; align-items:flex-start; gap:6px; text-align:left; padding:18px 20px; cursor:pointer;
       border-radius:16px; border:1px solid rgba(201,162,39,.22); background:rgba(255,255,255,.025); color:var(--gray);
       transition:border-color .25s, background .25s, color .25s; font:inherit; }
-    .ig-unaba:hover { border-color:rgba(201,162,39,.5); color:var(--cream); }
-    .ig-unaba[aria-selected="true"] { border-color:var(--gold); background:rgba(201,162,39,.09); color:var(--cream); box-shadow:inset 0 -2px 0 var(--gold); }
-    .ig-unaba:focus-visible { outline:2px solid var(--gold-pale); outline-offset:3px; }
     .ig-unaba-cid { display:flex; align-items:center; gap:10px; font-family:'Cormorant Garamond', serif; font-size:1.45rem; font-weight:600; line-height:1.1; }
     .ig-unaba-novo { font-style:normal; font-family:'DM Sans', sans-serif; font-size:.56rem; font-weight:700; letter-spacing:.16em; text-transform:uppercase;
       color:#0a0f24; background:var(--gold-grad, #c9a227); padding:4px 8px; border-radius:999px; }
     .ig-unaba-at { font-size:.78rem; letter-spacing:.04em; color:var(--gold-pale); }
-    .ig-painel { animation:igPainelIn .45s var(--ease-btn, ease); }
-    .ig-painel[hidden] { display:none !important; }
     @keyframes igPainelIn { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:none; } }
-    .ig-chegada { margin:22px 0 0; padding:22px 26px; border-left:2px solid var(--gold); background:rgba(201,162,39,.06); border-radius:0 14px 14px 0; }
-    .ig-chegada p { font-family:'Cormorant Garamond', serif; font-style:italic; font-size:clamp(1.15rem, 2vw, 1.4rem); line-height:1.5; color:#efe6cc; margin:0; }
-    .ig-chegada cite { display:block; margin-top:10px; font-style:normal; font-size:.68rem; letter-spacing:.16em; text-transform:uppercase; color:var(--gold); }
-    .ig-mogi-cta { display:flex; justify-content:center; margin-top:26px; }
-    .ig-mogi-cta .btn-claro svg { width:17px; height:17px; fill:#0e7a43; }
     @media (max-width:560px) { .ig-unabas { grid-template-columns:1fr; } }
 
     /* ----- agendamento: qual loja entrega ----- */
@@ -3116,7 +3228,7 @@
     .il-par { display:flex; flex-wrap:wrap; gap:8px; margin-top:16px; }
     .il-par .il { margin-top:0; }
     @media (prefers-reduced-motion: reduce) {
-      .un-tag-nova i, .ig-painel { animation:none !important; }
+      .un-tag-nova i { animation:none !important; }
       .uni-caixa, .uni-veu, .un-card { transition:none !important; }
     }
   
@@ -3178,7 +3290,7 @@
     body { font-variant-numeric:lining-nums; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; text-rendering:optimizeLegibility; }
     .heading, .hero h1, .cta h2, .troca-titulo, .quality h2, .quiz-q, .quiz-res-t, .show-title, .uni-tit, .ficha-nome,
     .ent-etapa-tit, .duelo-nome, .bc-title, .faq-item summary, .gtl-txt strong, .un-cidade, .enq-q, .cat-semres h3,
-    .ig-chegada p, .gc-title, .benef-card strong, .como-step h3, .ent-pausa h3, .ent-ok h3, .pcard-nome { text-wrap:balance; }
+    .gc-title, .benef-card strong, .como-step h3, .ent-pausa h3, .ent-ok h3, .pcard-nome { text-wrap:balance; }
     p, li, dd, .faq-a, .bc-subtitle, .ent-dica, .ig-capa-txt { text-wrap:pretty; }
     /* títulos de seção: escala fluida contínua no celular (antes caía em degraus de 2rem → 1,7 → 1,5) */
     @media (max-width:700px) {
@@ -3216,13 +3328,12 @@
     }
 
     /* ---------- 3. CONSISTÊNCIA: raios, fios e sombras de UM sistema ---------- */
-    .pcard, .gc, .un-card, .ig-capa, .ig-unaba, .uni-op, .ig-item, .benef-card, .bc-step, .skel, .quiz-opt { border-radius:var(--r-card); }
+    .pcard, .gc, .un-card, .ig-capa, .uni-op, .benef-card, .bc-step, .skel, .quiz-opt { border-radius:var(--r-card); }
     .g-grid.sstack .gc { border-radius:var(--r-card); }
-    .pcard, .un-card, .ig-capa, .ig-unaba, .uni-op, .benef-card, .duelo-card, .quiz-opt, .estoque, .ig-head, .enq, .tprova { border-color:var(--line); }
-    .pcard:hover, .un-card:hover, .ig-capa:hover, .ig-unaba:hover, .uni-op:hover, .benef-card:hover, .duelo-card:hover, .quiz-opt:hover { border-color:var(--line-forte); }
+    .pcard, .un-card, .ig-capa, .uni-op, .benef-card, .duelo-card, .quiz-opt, .estoque, .enq, .tprova { border-color:var(--line); }
+    .pcard:hover, .un-card:hover, .ig-capa:hover, .uni-op:hover, .benef-card:hover, .duelo-card:hover, .quiz-opt:hover { border-color:var(--line-forte); }
     .un-card, .ig-capa, .uni-op { box-shadow:var(--sombra-card); }
     .ig-capa:hover, .un-card:hover { box-shadow:var(--sombra-card-hover); }
-    .ig-unaba { transition:border-color .25s, background .25s, color .25s, box-shadow .35s var(--ease-out); }
     /* o cartão da loja alinha as ações no pé (os dois cartões têm a mesma altura na grade) */
     .un-card { display:flex; flex-direction:column; }
     .un-card .un-acoes { margin-top:auto; padding-top:28px; }
@@ -3377,7 +3488,7 @@
     @media (max-width:380px) { .ft { grid-template-columns:1fr !important; } }
     @media (prefers-reduced-motion: reduce) {
       .cmap iframe, .un-card::after, .ig-capa-foto::after, .cur-lbl { transition:none !important; }
-      .ig-unaba:hover, .ig-capa:focus-visible { transform:none !important; }
+      .ig-capa:focus-visible { transform:none !important; }
     }
     .about-team-wrap picture { display:block; }
     /* ---------- 12. DETALHES DE DIREÇÃO DE ARTE ---------- */
@@ -3391,7 +3502,6 @@
     .un-card .un-acoes { border-top:1px solid rgba(201,162,39,.12); margin-top:auto; padding-top:24px; }
     .un-card .un-selo, .un-card .un-chegou { margin-bottom:24px; }
     /* aba do Instagram: a ativa sobe um fio e ganha brilho na borda inferior */
-    .ig-unaba[aria-selected="true"] { box-shadow:inset 0 -2px 0 var(--gold), 0 18px 34px -24px rgba(201,162,39,.6); }
     @media (pointer:fine) { .ig-unaba:hover { transform:translateY(-2px); } .ig-unaba { transition:border-color .25s, background .25s, color .25s, box-shadow .35s var(--ease-out), transform .3s var(--ease-out); } }
     /* toque: cartões respondem ao dedo (press físico, como os botões) */
     @media (pointer:coarse) {
@@ -3421,7 +3531,7 @@
     /* cartões com texto ganham base navy (eram vidro claro a 3–5%: o mar aparecia por trás das letras) */
     .benef-card { background:linear-gradient(160deg, rgba(255,255,255,.05), rgba(255,255,255,.015)), linear-gradient(160deg, rgba(10,19,48,.82), rgba(4,9,26,.9)); }
     .duelo-card { background:linear-gradient(160deg, rgba(255,255,255,.04), rgba(255,255,255,.01)), linear-gradient(160deg, rgba(10,19,48,.8), rgba(4,9,26,.88)); }
-    .ig-head, .estoque, .tprova { background:linear-gradient(160deg, rgba(255,255,255,.035), rgba(255,255,255,.01)), rgba(6,12,32,.78); }
+    .estoque, .tprova { background:linear-gradient(160deg, rgba(255,255,255,.035), rgba(255,255,255,.01)), rgba(6,12,32,.78); }
     .enq { background:linear-gradient(120deg, rgba(201,162,39,.09), rgba(255,255,255,.02)), rgba(6,12,32,.8); }
     .troca-hint { color:var(--texto-2); }
     .benef-card small, .duelo-lista li { color:#a9b7d3; }
@@ -3435,14 +3545,155 @@
     .cat-tab.active .cat-tab-n { color:rgba(10,15,36,.86); }
     /* Instagram no celular: 3 primeiro, o resto sob demanda */
     @media (max-width:700px) {
-      .ig-grid.ig-recolhido .ig-item:nth-child(n+4) { display:none; }
-      .ig-item { min-height:340px; }
     }
     .ig-mais { display:flex; align-items:center; justify-content:center; gap:12px; width:100%; min-height:48px; margin-top:14px;
       border:1px dashed rgba(201,162,39,.45); border-radius:var(--r-card); background:rgba(201,162,39,.04); color:var(--gold-pale);
       font:600 .7rem/1 'DM Sans',sans-serif; letter-spacing:.16em; text-transform:uppercase; }
-    .ig-mais i { width:8px; height:8px; border-right:1.5px solid currentColor; border-bottom:1.5px solid currentColor; transform:rotate(45deg) translateY(-2px); }
-    .ig-mais:active { transform:scale(.985); }
+    /* ============================================================
+       LOTE 3 — mural "Na vitrine do Instagram", FAQ em duas colunas,
+       CTA final com as duas lojas e acertos de texto/SEO
+       ============================================================ */
+    /* ---------- Instagram: perfis das duas lojas ---------- */
+    .ig-intro { margin-top:22px; max-width:62ch; font-size:1rem; line-height:1.75; color:var(--texto-2);
+      text-shadow:0 0 2px rgba(2,5,16,.55), 0 1px 12px rgba(2,5,16,.85); }
+    .ig-perfis { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:14px; margin-top:clamp(28px, 4vw, 40px); }
+    .ig-perfil { display:flex; align-items:center; gap:16px; padding:18px 20px; border:1px solid var(--line); border-radius:var(--r-card);
+      background:linear-gradient(160deg, rgba(255,255,255,.035), rgba(255,255,255,.01)), rgba(6,12,32,.8); box-shadow:var(--sombra-card);
+      transition:border-color .3s; }
+    .ig-perfil.ig-perfil-pref { border-color:var(--line-forte); }
+    .ig-perfil-av { flex:0 0 auto; width:52px; height:52px; border-radius:50%; display:grid; place-items:center;
+      background:radial-gradient(circle at 32% 28%, #172656, #04091c 70%); box-shadow:0 0 0 2px #050b20, 0 0 0 3.5px var(--gold), 0 8px 22px -10px rgba(201,162,39,.7); }
+    .ig-perfil-av svg { width:22px; height:22px; fill:var(--gold); }
+    .ig-perfil-mogi .ig-perfil-av { box-shadow:0 0 0 2px #050b20, 0 0 0 3.5px var(--gold-pale), 0 8px 22px -10px rgba(240,216,150,.6); }
+    .ig-perfil .ig-id { flex:1 1 auto; min-width:0; gap:5px; }
+    .ig-perfil-cid { display:flex; flex-wrap:wrap; align-items:center; gap:8px; font-size:.6rem; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:var(--gold); }
+    .ig-perfil-sua { font-style:normal; padding:3px 8px; border-radius:999px; background:var(--gold-grad); color:#0a0f24; font-size:.52rem; letter-spacing:.14em; }
+    .ig-perfil .ig-handle { font-size:1.4rem; line-height:1.1; overflow-wrap:anywhere; }
+    .ig-perfil .ig-verif { width:17px; height:17px; }
+    .ig-perfil .ig-stats { font-size:.74rem; letter-spacing:.04em; }
+    .ig-perfil .ig-follow { flex:0 0 auto; padding:11px 18px; font-size:.64rem; border-radius:999px; }
+    @media (max-width:900px) { .ig-perfis { grid-template-columns:1fr; } }
+    @media (max-width:480px) {
+      .ig-perfil { padding:14px 14px 14px 16px; gap:10px; }
+      .ig-perfil-av { display:none; }
+      .ig-perfil .ig-handle { font-size:1.14rem; }
+      .ig-perfil .ig-stats { font-size:.7rem; letter-spacing:.02em; }
+      .ig-perfil .ig-follow { width:auto !important; padding:0 14px !important; min-height:44px; font-size:.6rem !important; letter-spacing:.12em; gap:7px; }
+      .ig-perfil .ig-follow svg { width:14px; height:14px; }
+    }
+
+    /* ---------- Instagram: abas por tema + trilho com encaixe ---------- */
+    .ig-vitrine { margin-top:clamp(26px, 3.4vw, 40px); }
+    .ig-vitrine-topo { display:flex; flex-direction:column; gap:14px; }
+    .ig-filtros { display:flex; flex-wrap:wrap; gap:8px; }
+    .ig-filtro { display:inline-flex; align-items:center; gap:8px; min-height:42px; padding:0 14px 0 16px; border-radius:999px; cursor:pointer;
+      border:1px solid var(--line); background:rgba(6,12,32,.78); color:var(--texto-2); font:500 .8rem/1 'DM Sans', sans-serif; letter-spacing:.01em;
+      white-space:nowrap; transition:background .25s, border-color .25s, color .25s, transform .2s; }
+    .ig-filtro:hover { border-color:var(--line-forte); color:var(--cream); }
+    .ig-filtro:active { transform:scale(.97); }
+    .ig-filtro[aria-selected="true"] { background:var(--gold-grad); color:#0a0f24; border-color:transparent; font-weight:600;
+      box-shadow:0 10px 26px -14px rgba(201,162,39,.75); }
+    .ig-filtro:focus-visible { outline:2px solid var(--gold-pale); outline-offset:3px; }
+    .ig-filtro-n { display:inline-grid; place-items:center; min-width:22px; height:22px; padding:0 6px; border-radius:999px;
+      background:rgba(201,162,39,.14); color:var(--gold-pale); font-size:.68rem; font-weight:700; }
+    .ig-filtro[aria-selected="true"] .ig-filtro-n { background:rgba(10,15,36,.16); color:#0a0f24; }
+    .ig-filtro-pin { width:7px; height:7px; border-radius:50%; background:var(--gold); box-shadow:0 0 0 3px rgba(201,162,39,.22); }
+    .ig-filtro[aria-selected="true"] .ig-filtro-pin { background:#0a0f24; box-shadow:none; }
+    .ig-vitrine-linha { display:flex; align-items:center; justify-content:space-between; gap:16px; min-height:44px; }
+    .ig-mural-st { font-size:.8rem; color:var(--gray); line-height:1.5; text-shadow:0 0 2px rgba(2,5,16,.55), 0 1px 12px rgba(2,5,16,.85); }
+    .ig-mural-st b { color:var(--gold-pale); font-weight:600; }
+    .ig-setas { display:flex; gap:8px; flex:0 0 auto; }
+    .ig-seta { width:44px; height:44px; border-radius:50%; display:grid; place-items:center; cursor:pointer; color:var(--gold-pale);
+      border:1px solid var(--line-forte); background:rgba(6,12,32,.85); transition:background .25s, color .25s, border-color .25s, opacity .25s; }
+    .ig-seta svg { width:18px; height:18px; fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-linejoin:round; }
+    .ig-seta:hover:not(:disabled) { background:var(--gold-grad); color:#0a0f24; border-color:transparent; }
+    .ig-seta:disabled { opacity:.3; cursor:default; }
+    .ig-seta:focus-visible { outline:2px solid var(--gold-pale); outline-offset:3px; }
+
+    .ig-capas.ig-mural { --gap:clamp(12px, 1.4vw, 18px); display:grid; grid-template-columns:none; grid-auto-flow:column;
+      grid-auto-columns:calc((100% - 3 * var(--gap)) / 3.55); gap:var(--gap); margin-top:16px; padding:8px 2px 16px;
+      overflow-x:auto; overscroll-behavior-x:contain; scroll-snap-type:x mandatory; scroll-padding-inline:2px; scrollbar-width:none;
+      -webkit-mask-image:linear-gradient(90deg, #000 calc(100% - 56px), transparent); mask-image:linear-gradient(90deg, #000 calc(100% - 56px), transparent); }
+    .ig-capas.ig-mural.no-fim { -webkit-mask-image:none; mask-image:none; }
+    .ig-mural::-webkit-scrollbar { display:none; }
+    .ig-mural > * { scroll-snap-align:start; }
+    .ig-mural .ig-capa-txt b { display:flex; flex-wrap:wrap; gap:0 6px; }
+    .ig-mural .ig-capa-ir { display:flex; align-items:center; justify-content:space-between; gap:10px; }
+    .ig-capa-perfil { text-transform:none; letter-spacing:.02em; font-weight:500; font-size:.74rem; color:var(--texto-2); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .ig-post-mogi .ig-capa-perfil { color:var(--gold-pale); }
+    .ig-capa-fim { position:absolute !important; top:12px; right:12px; max-width:calc(100% - 100px); padding:6px 10px; border-radius:999px;
+      background:rgba(4,9,28,.86); border:1px dashed rgba(240,216,150,.55); color:#f0e2b4; font-size:.56rem; font-weight:700; letter-spacing:.12em;
+      text-transform:uppercase; line-height:1.3; text-align:center; }
+    .ig-post:has(.ig-capa-fim) .ig-capa-foto img { filter:saturate(.7) brightness(.92); }
+    /* cartões-ponte: o próximo passo dentro do site, um por tema */
+    .ig-ponte { display:flex; flex-direction:column; justify-content:flex-end; gap:12px; padding:26px 22px 22px; border-radius:var(--r-card);
+      border:1px solid var(--line-forte); box-shadow:var(--sombra-card);
+      background:radial-gradient(120% 75% at 100% 0%, rgba(201,162,39,.2), transparent 62%), linear-gradient(165deg, #0e1a3d, #050a1e 78%); }
+    .ig-ponte-ey { font-size:.6rem; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:var(--gold); }
+    .ig-ponte-t { font-family:'Cormorant Garamond', serif; font-size:clamp(1.7rem, 2.3vw, 2.1rem); font-weight:700; line-height:1.04; color:var(--cream); text-wrap:balance; }
+    .ig-ponte-t em { font-style:italic; color:var(--gold); }
+    .ig-ponte-p { font-size:.88rem; line-height:1.6; color:var(--texto-2); text-wrap:pretty; }
+    .ig-ponte-q { margin:0; padding-left:14px; border-left:2px solid var(--gold); font-family:'Cormorant Garamond', serif; font-style:italic;
+      font-size:clamp(1.25rem, 1.8vw, 1.45rem); line-height:1.4; color:#efe6cc; text-wrap:balance; }
+    .ig-ponte-cta { align-self:flex-start; margin-top:4px; }
+    .ig-ponte .btn-claro { padding:13px 20px; font-size:.66rem; border-radius:999px; }
+    .ig-ponte .btn-t { padding:12px 18px; }
+    .ig-ponte-mogi { order:-1; }
+    /* filtro: quem entra sobe em cascata */
+    @keyframes igEntra { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:none; } } /* sem scale: o encaixe do trilho mede a caixa transformada */
+    .ig-mural .ig-entra { animation:igEntra .5s var(--ease-out) both; animation-delay:calc(var(--k, 0) * 55ms); }
+    html.sem-mov .ig-mural .ig-entra { animation:none; }
+    @media (max-width:1100px) { .ig-capas.ig-mural { grid-auto-columns:calc((100% - 2 * var(--gap)) / 2.45); } }
+    @media (max-width:760px) {
+      .ig-capas.ig-mural { grid-auto-columns:76%; margin-inline:-24px; padding-inline:24px; scroll-padding-inline:24px; }
+      .ig-filtros { flex-wrap:nowrap; overflow-x:auto; scrollbar-width:none; margin-inline:-24px; padding:2px 24px 4px; scroll-padding-inline:24px;
+        -webkit-mask-image:linear-gradient(90deg, #000 calc(100% - 36px), transparent); mask-image:linear-gradient(90deg, #000 calc(100% - 36px), transparent); }
+      .ig-filtros::-webkit-scrollbar { display:none; }
+      .ig-filtros.no-fim { -webkit-mask-image:none; mask-image:none; }
+      .ig-filtro { min-height:44px; }
+      .ig-setas { display:none; }
+    }
+    @media (prefers-reduced-motion: reduce) { .ig-mural .ig-entra { animation:none !important; } .ig-filtro, .ig-seta { transition:none !important; } }
+    .enq-reel { color:var(--gold-pale); font-weight:600; text-decoration:none; border-bottom:1px solid rgba(201,162,39,.45); white-space:nowrap; }
+    .enq-reel:hover { color:#fff6d8; border-color:var(--gold); }
+    #igVitrine, #igMural { scroll-margin-top:104px; }
+    @media (max-width:700px) { #igVitrine, #igMural { scroll-margin-top:84px; } }
+    /* ---------- FAQ: lateral fixa com a chamada + perguntas em três grupos ---------- */
+    .faq-grade { display:grid; grid-template-columns:minmax(0, .9fr) minmax(0, 1.5fr); gap:clamp(40px, 6vw, 96px); align-items:start; }
+    .faq-lado { position:sticky; top:120px; }
+    .faq-intro { margin-top:22px; max-width:40ch; font-size:1rem; line-height:1.75; color:var(--texto-2);
+      text-shadow:0 0 2px rgba(2,5,16,.55), 0 1px 12px rgba(2,5,16,.85); }
+    .faqsec .faq-mao { margin-top:30px; display:flex; flex-direction:column; align-items:flex-start; gap:12px; }
+    .faqsec .faq-mao .btn-claro { border-radius:999px; }
+    .faqsec .faq-mao span { font-size:.8rem; color:var(--gray); line-height:1.6; max-width:34ch; }
+    .faqsec .faq { margin-top:0; max-width:none; border-top:none; }
+    .faq-grupo { display:flex; align-items:center; gap:12px; margin:44px 0 6px; font:700 .62rem/1 'DM Sans', sans-serif; letter-spacing:.24em;
+      text-transform:uppercase; color:var(--gold); padding-bottom:16px; border-bottom:1px solid rgba(201,162,39,.32); }
+    .faq-grupo:first-child { margin-top:6px; }
+    .faq-grupo span { display:inline-grid; place-items:center; min-width:22px; height:22px; padding:0 6px; border-radius:999px;
+      background:rgba(201,162,39,.12); color:var(--gold-pale); letter-spacing:0; font-size:.66rem; }
+    @media (max-width:900px) {
+      .faq-grade { grid-template-columns:1fr; gap:34px; }
+      .faq-lado { position:static; }
+    }
+    @media (max-width:420px) { .faqsec .faq-mao .btn-claro { width:100%; } }
+    /* ---------- CTA final: uma porta para cada loja + catálogo ---------- */
+    .cta-lojas { display:flex; flex-wrap:wrap; justify-content:center; gap:14px; }
+    .cta-loja { display:inline-flex !important; align-items:center; gap:14px; padding:14px 30px 14px 24px !important; text-align:left !important; border-radius:999px; }
+    .cta-loja svg { width:22px; height:22px; fill:currentColor; flex:0 0 auto; }
+    .cta-loja span { display:flex; flex-direction:column; gap:4px; line-height:1.1; }
+    .cta-loja small { font-size:.56rem; letter-spacing:.2em; opacity:.72; font-weight:700; }
+    .cta .cta-cat { display:inline-flex; margin-top:22px; }
+    @media (max-width:520px) { .cta-lojas { flex-direction:column; align-items:stretch; } .cta-loja { justify-content:center; } }
+    .faqsec .faq-mao .btn-claro, .faqsec .faq-mao .btn-claro:hover { color:var(--navy); text-decoration:none; }
+    /* ---------- âncoras no celular: o sobretítulo não some atrás da barra fixa (nav de 71 px) ---------- */
+    @media (max-width:900px) { main section[id] { scroll-margin-top:28px; } }
+    .ig-capa-fim { font-size:.62rem; }
+    /* ---------- legibilidade mínima no celular: selos do catálogo não descem de ~10 px ---------- */
+    @media (max-width:700px) {
+      .pcard-selo { font-size:.62rem !important; padding:5px 10px !important; }
+      .pcard-eco { font-size:.62rem; letter-spacing:.04em; }
+    }
   </style>
 </head>
 <body>
@@ -3554,7 +3805,7 @@
   <div class="hero-glow"></div>
   <p class="ey"><span></span>iPhones lacrados e seminovos · Acessórios · Relógios Garmin</p>
   <h1>Sua Próxima<br/><em>Conquista</em><br/>Começa <span class="ol">Aqui</span></h1>
-  <p class="hero-sub">iPhones originais com nota fiscal, 1 ano de garantia e entrega para todo o Brasil. Qualidade Apple com a segurança que você merece.</p>
+  <p class="hero-sub">iPhones originais, lacrados e seminovos, com nota fiscal e 1 ano de garantia. Duas lojas — Taubaté e, agora, Mogi das Cruzes — e entrega para todo o Brasil.</p>
   <div class="badges">
     <span class="badge">1 Ano de Garantia</span>
     <span class="badge">Nota Fiscal</span>
@@ -3576,7 +3827,7 @@
   </div>
   <div class="actions">
     <a href="https://wa.me/5512997463135" target="_blank" rel="noopener" class="btn-claro"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.5 14.4c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.46-2.4-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.91-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.87 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.7.63.71.22 1.36.19 1.87.11.57-.08 1.76-.72 2-1.41.25-.7.25-1.29.18-1.41-.08-.13-.28-.2-.58-.35zM12 2C6.5 2 2 6.48 2 12c0 1.77.46 3.44 1.27 4.89L2 22l5.23-1.26A9.95 9.95 0 0 0 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm0 18.19a8.17 8.17 0 0 1-4.16-1.14l-.3-.18-3.1.75.77-3-.19-.3A8.15 8.15 0 0 1 3.84 12c0-4.5 3.67-8.17 8.16-8.17S20.16 7.5 20.16 12 16.5 20.19 12 20.19z"/></svg>Chamar no WhatsApp</a>
-    <a href="#produtos" class="btn-t">Ver modelos</a>
+    <a href="#produtos" class="btn-t">Ver o catálogo ao vivo</a>
   </div>
 </section>
 <script>
@@ -3638,11 +3889,11 @@
 <div class="mq">
   <button type="button" class="mov-btn mq-pausa" data-movimento aria-pressed="false"><span class="mov-ic" aria-hidden="true"></span><span class="mov-txt">Pausar animações</span></button>
   <div class="mq-t">
-    <span class="mq-i">iPhone 16 Pro Max</span><span class="mq-d" aria-hidden="true">&#9670;</span><span class="mq-i">iPhone 16 Pro</span><span class="mq-d" aria-hidden="true">&#9670;</span><span class="mq-i">iPhone 16</span><span class="mq-d" aria-hidden="true">&#9670;</span>
+    <span class="mq-i">iPhones lacrados</span><span class="mq-d" aria-hidden="true">&#9670;</span><span class="mq-i">Seminovos revisados</span><span class="mq-d" aria-hidden="true">&#9670;</span><span class="mq-i">Seu iPhone na troca</span><span class="mq-d" aria-hidden="true">&#9670;</span>
     <span class="mq-i">1 Ano de Garantia</span><span class="mq-d" aria-hidden="true">&#9670;</span><span class="mq-i">Nota Fiscal</span><span class="mq-d" aria-hidden="true">&#9670;</span><span class="mq-i">Entrega Brasil</span><span class="mq-d" aria-hidden="true">&#9670;</span>
     <span class="mq-i">18x no Cartão</span><span class="mq-d" aria-hidden="true">&#9670;</span><span class="mq-i">Taubaté — SP</span><span class="mq-d" aria-hidden="true">&#9670;</span><span class="mq-i">Nova loja em Mogi das Cruzes</span><span class="mq-d" aria-hidden="true">&#9670;</span><span class="mq-i">4,8 no Google</span><span class="mq-d" aria-hidden="true">&#9670;</span><span class="mq-i">Relógios Garmin</span><span class="mq-d" aria-hidden="true">&#9670;</span><span class="mq-i">Acessórios</span><span class="mq-d" aria-hidden="true">&#9670;</span>
     <span class="mq-r" aria-hidden="true">
-      <span class="mq-i">iPhone 16 Pro Max</span><span class="mq-d">&#9670;</span><span class="mq-i">iPhone 16 Pro</span><span class="mq-d">&#9670;</span><span class="mq-i">iPhone 16</span><span class="mq-d">&#9670;</span>
+      <span class="mq-i">iPhones lacrados</span><span class="mq-d">&#9670;</span><span class="mq-i">Seminovos revisados</span><span class="mq-d">&#9670;</span><span class="mq-i">Seu iPhone na troca</span><span class="mq-d">&#9670;</span>
       <span class="mq-i">1 Ano de Garantia</span><span class="mq-d">&#9670;</span><span class="mq-i">Nota Fiscal</span><span class="mq-d">&#9670;</span><span class="mq-i">Entrega Brasil</span><span class="mq-d">&#9670;</span>
       <span class="mq-i">18x no Cartão</span><span class="mq-d">&#9670;</span><span class="mq-i">Taubaté — SP</span><span class="mq-d">&#9670;</span><span class="mq-i">Nova loja em Mogi das Cruzes</span><span class="mq-d">&#9670;</span><span class="mq-i">4,8 no Google</span><span class="mq-d">&#9670;</span><span class="mq-i">Relógios Garmin</span><span class="mq-d">&#9670;</span><span class="mq-i">Acessórios</span><span class="mq-d">&#9670;</span>
     </span>
@@ -3690,7 +3941,7 @@
       <div class="sc-call sc-r sc-b2"><span class="sc-line"></span><span class="sc-txt">Entrega para todo o Brasil<small>envio rastreado e reforçado</small></span></div>
     </div>
     <div class="show-cta" id="showCta">
-      <a href="#produtos" class="btn-g">Ver modelos disponíveis</a>
+      <a href="#produtos" class="btn-g">Ver o que tem na vitrine</a>
       <a href="https://wa.me/5512997463135?text=Ol%C3%A1!%20Quero%20garantir%20o%20meu%20iPhone." target="_blank" rel="noopener" class="btn-claro"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.5 14.4c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.46-2.4-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.45-.52.15-.18.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.91-2.2-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.87 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.3 1.26.49 1.7.63.71.22 1.36.19 1.87.11.57-.08 1.76-.72 2-1.41.25-.7.25-1.29.18-1.41-.08-.13-.28-.2-.58-.35zM12 2C6.5 2 2 6.48 2 12c0 1.77.46 3.44 1.27 4.89L2 22l5.23-1.26A9.95 9.95 0 0 0 12 22c5.52 0 10-4.48 10-10S17.52 2 12 2zm0 18.19a8.17 8.17 0 0 1-4.16-1.14l-.3-.18-3.1.75.77-3-.19-.3A8.15 8.15 0 0 1 3.84 12c0-4.5 3.67-8.17 8.16-8.17S20.16 7.5 20.16 12 16.5 20.19 12 20.19z"/></svg>Chamar no WhatsApp</a>
     </div>
     <div class="show-prog" aria-hidden="true"><i id="showProgFill"></i></div>
@@ -3723,7 +3974,7 @@
       <span class="est-sub" id="estSub" aria-live="polite">consultando a vitrine…</span>
     </div>
     <div class="est-chart" id="estChart"></div>
-    <p class="est-vazio" id="estVazio" hidden>Estoque renovando — <a target="_blank" rel="noopener" href="https://wa.me/5512997463135?text=Ol%C3%A1!%20Queria%20saber%20quais%20iPhones%20est%C3%A3o%20chegando.">chame no WhatsApp</a> e reserve o próximo antes de todo mundo.</p>
+    <p class="est-vazio" id="estVazio" hidden>A vitrine do site está sendo atualizada. <a target="_blank" rel="noopener" href="https://wa.me/5512997463135?text=Ol%C3%A1!%20Queria%20saber%20quais%20iPhones%20est%C3%A3o%20chegando.">Chame no WhatsApp</a> e pergunte pelo modelo que você procura.</p>
     <p class="est-nota" id="estNota" hidden>Aparelhos publicados por categoria · clique numa barra para abrir a aba</p>
   </div>
 
@@ -3731,7 +3982,7 @@
     <button class="cat-tab black-club-tab" role="tab" aria-selected="false" id="tabbtn-blackclub" aria-controls="tab-blackclub" data-slug="blackclub" onclick="switchTab('blackclub',this)"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>Black Club</button>
   </div>
 
-  <div id="catPaineis" aria-live="polite" aria-busy="true"><div class="cat-panel active" id="tab-carregando"><p class="cat-carregando">Carregando catálogo…</p><div class="skel-grid" aria-hidden="true"><div class="skel"></div><div class="skel"></div><div class="skel"></div><div class="skel"></div></div></div></div>
+  <div id="catPaineis" aria-live="polite" aria-busy="true"><div class="cat-panel active" id="tab-carregando"><p class="cat-carregando">Buscando os aparelhos da vitrine…</p><div class="skel-grid" aria-hidden="true"><div class="skel"></div><div class="skel"></div><div class="skel"></div><div class="skel"></div></div></div></div>
 
 
 
@@ -3754,7 +4005,7 @@
         <div class="bc-badge-top rv">EXCLUSIVO PARA MEMBROS</div>
         <div class="bc-lightning"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
         <h3 class="bc-title rv">BLACK<br/><span>CLUB</span></h3>
-        <p class="bc-subtitle rv">Compre, indique e concorra a prêmios incríveis.<br/>O grande sorteio é no Natal.</p>
+        <p class="bc-subtitle rv">Cada compra ou indicação que fecha vira um número da sorte.<br/>O grande sorteio é no Natal.</p>
 
         <div class="bc-prize-box rv">
           <div class="bc-prize-left">
@@ -3844,7 +4095,7 @@
       </div>
 
       <div class="bc-cta-wrap rv">
-        <p>Faça parte agora e garanta seus números da sorte!</p>
+        <p>A entrada no clube é pelo grupo do WhatsApp.</p>
         <a href="https://wa.me/5512997463135?text=Ol%C3%A1!%20Quero%20entrar%20no%20Black%20Club%20da%20Eletronic!" target="_blank" rel="noopener" class="bc-cta-btn">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413z"/><path d="M12 2C6.477 2 2 6.477 2 12c0 1.771.461 3.437 1.268 4.886L2 22l5.234-1.258A9.953 9.953 0 0012 22c5.523 0 10-4.477 10-10S17.523 2 12 2zm0 18.186a8.168 8.168 0 01-4.162-1.136l-.299-.177-3.105.747.776-2.994-.196-.309A8.152 8.152 0 013.837 12c0-4.507 3.666-8.173 8.163-8.173S20.163 7.493 20.163 12c0 4.508-3.659 8.186-8.163 8.186z"/></svg>
           Quero entrar no Black Club
@@ -3859,7 +4110,7 @@
   <div class="cat-wabtn rv">
     <a href="https://wa.me/5512997463135?text=Ol%C3%A1!%20Quero%20consultar%20disponibilidade%20de%20modelos%20e%20cores" target="_blank" rel="noopener" class="cat-wa-link">
       <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12.004 2C6.477 2 2 6.477 2 12.004c0 1.771.461 3.437 1.268 4.886L2 22l5.234-1.258A9.953 9.953 0 0012.004 22C17.531 22 22 17.527 22 12c0-5.523-4.477-10-9.996-10zm0 18.186a8.168 8.168 0 01-4.162-1.136l-.299-.177-3.105.747.776-2.994-.196-.309A8.152 8.152 0 013.837 12c0-4.507 3.666-8.173 8.167-8.173S20.17 7.493 20.17 12c0 4.508-3.659 8.186-8.166 8.186z"/></svg>
-      Consulte disponibilidade de modelos e cores
+      Não achou o seu? Pergunte por modelo e cor
     </a>
   </div>
 
@@ -3962,8 +4213,8 @@
 <section class="sec" id="qualescolher" aria-labelledby="dueloTitulo">
   <p class="eyebrow rv"><span></span>Qual é o seu?</p>
   <h2 class="heading rv" id="dueloTitulo">Lacrado ou <em>seminovo?</em></h2>
-  <p class="duelo-intro rv">Não existe resposta errada — existe o iPhone certo para o seu momento.
-    E os dois saem daqui com a mesma segurança.</p>
+  <p class="duelo-intro rv">Os dois saem daqui com nota fiscal e 1 ano de garantia.
+    O que muda é o lacre e o preço.</p>
   <div class="duelo rv">
     <article class="duelo-card">
       <h3 class="duelo-nome">Lacrado</h3>
@@ -4012,8 +4263,8 @@
 <!-- QUALITY -->
 <div class="quality rv" role="region" aria-labelledby="qualTitulo">
   <div>
-    <h2 id="qualTitulo">Qualidade que você <em>sente</em> desde o primeiro contato.</h2>
-    <div class="about-team-wrap rv"><picture><source type="image/avif" srcset="images/equipe-360.avif 360w, images/equipe-560.avif 560w" sizes="(max-width:700px) calc(100vw - 32px), 560px"/><source type="image/webp" srcset="images/equipe-360.webp 360w, images/equipe-560.webp 560w" sizes="(max-width:700px) calc(100vw - 32px), 560px"/><img class="about-team-img" src="images/background-4.jpg" alt="Equipe Eletronic" width="560" height="700" loading="lazy" decoding="async"/></picture></div>
+    <h2 id="qualTitulo">Atendimento de <em>gente</em>, do primeiro oi à garantia.</h2>
+    <div class="about-team-wrap rv"><picture><source type="image/avif" srcset="images/equipe-360.avif 360w, images/equipe-560.avif 560w" sizes="(max-width:700px) calc(100vw - 32px), 560px"/><source type="image/webp" srcset="images/equipe-360.webp 360w, images/equipe-560.webp 560w" sizes="(max-width:700px) calc(100vw - 32px), 560px"/><img class="about-team-img" src="images/background-4.jpg" alt="Quatro pessoas da equipe Eletronic sorrindo em frente ao letreiro da loja, com a frase “Nossa equipe está esperando por você!”" width="560" height="700" loading="lazy" decoding="async"/></picture></div>
   </div>
   <div>
     <div class="g-rat">
@@ -4034,7 +4285,7 @@
       transferidos, película aplicada e um contato salvo para o que precisar depois.</p>
     <p>É assim, cliente por cliente, que a Eletronic chegou às 4,8 estrelas no Google.
       O próximo iPhone da vitrine pode ser o seu.</p>
-    <a href="https://wa.me/5512997463135" target="_blank" rel="noopener" class="btn-dn">Falar com Especialista</a>
+    <a href="https://wa.me/5512997463135" target="_blank" rel="noopener" class="btn-dn">Falar com quem entende de iPhone</a>
   </div>
 </div>
 
@@ -4093,22 +4344,22 @@
     <div class="gc rv">
       <div class="gc-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
       <h3 class="gc-title">1 Ano de Garantia</h3>
-      <p class="gc-desc">Todos os produtos com garantia completa de 12 meses. Compre com absoluta tranquilidade e respaldo total.</p>
+      <p class="gc-desc">Lacrado ou seminovo, 12 meses de garantia da loja. Precisou, você chama no WhatsApp e fala direto com a gente.</p>
     </div>
     <div class="gc rv" style="transition-delay:.1s">
       <div class="gc-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
       <h3 class="gc-title">Nota Fiscal</h3>
-      <p class="gc-desc">Operação 100% formal com nota fiscal em todos os pedidos. Transparência e segurança jurídica garantidas.</p>
+      <p class="gc-desc">Nota fiscal emitida na hora, em todos os aparelhos. Nada de compra sem papel.</p>
     </div>
     <div class="gc rv" style="transition-delay:.2s">
       <div class="gc-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg></div>
       <h3 class="gc-title">Até 18x no Cartão</h3>
-      <p class="gc-desc">Parcelamento facilitado para você conquistar o iPhone ideal sem comprometer seu orçamento.</p>
+      <p class="gc-desc">Mande o modelo no WhatsApp e a gente simula as parcelas, sem compromisso.</p>
     </div>
     <div class="gc rv" style="transition-delay:.3s">
       <div class="gc-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
       <h3 class="gc-title">Entrega Todo Brasil</h3>
-      <p class="gc-desc">Enviamos para qualquer cidade do Brasil com rastreamento completo e embalagem reforçada.</p>
+      <p class="gc-desc">Envio rastreado e com embalagem reforçada. Perto de Taubaté ou de Mogi, dá para agendar motoboy aqui no site.</p>
     </div>
   </div>
 </section>
@@ -4127,7 +4378,7 @@
     <span class="stat-l">Estrelas Google</span>
   </div>
   <div class="stat rv" style="transition-delay:.08s"><span class="stat-n" data-odo="5" data-suffix="+">5+</span><span class="stat-l">Anos Realizando Sonhos</span></div>
-  <div class="stat rv" style="transition-delay:.16s"><span class="stat-n" data-odo="8400" data-prefix="+">+8.400</span><span class="stat-l">Seguidores</span></div>
+  <div class="stat rv" style="transition-delay:.16s"><span class="stat-n" data-odo="8400" data-prefix="+">+8.400</span><span class="stat-l">Seguidores no Instagram</span></div>
   <div class="stat rv" style="transition-delay:.24s"><span class="stat-n" data-count="18" data-suffix="x">18x</span><span class="stat-l">Parcelamento</span></div>
   <div class="stat rv" style="transition-delay:.32s"><span class="stat-n">1 ano</span><span class="stat-l">de Garantia</span></div>
   <div class="stat rv" style="transition-delay:.4s"><span class="stat-n">Brasil</span><span class="stat-l">Entrega Nacional</span></div>
@@ -4144,7 +4395,7 @@
       <p class="tp-lbl">Nota real dos nossos clientes no Google — atendimento direto, aparelho conferido na sua frente e garantia que vale.</p>
       <span class="tp-sub">Avaliações públicas e verificáveis</span>
     </div>
-    <a class="tp-btn" href="https://www.google.com/maps/search/?api=1&amp;query=Eletronic+R.+Dr.+Souza+Alves+384+Taubat%C3%A9" target="_blank" rel="noopener">Ler avaliações no Google</a>
+    <a class="tp-btn" href="https://www.google.com/maps/search/?api=1&amp;query=Eletronic+R.+Dr.+Souza+Alves+384+Taubat%C3%A9" target="_blank" rel="noopener">Ler as avaliações no Google</a>
   </div>
 </section>
 
@@ -4160,7 +4411,7 @@
     </div>
     <div class="troca-acao rv">
       <a href="https://wa.me/5512997463135?text=Ol%C3%A1!%20Quero%20avaliar%20meu%20iPhone%20como%20entrada%20para%20um%20novo." target="_blank" rel="noopener" class="btn-g">Avaliar meu iPhone agora</a>
-      <span class="troca-hint">Leva menos de 5 minutos pelo WhatsApp</span>
+      <span class="troca-hint">A avaliação sai pelo WhatsApp, em minutos</span>
     </div>
   </div>
 </section>
@@ -4172,8 +4423,8 @@
   <h2 class="heading rv" id="entregaTitulo">Fechou a compra? <em>A gente leva.</em></h2>
   <div class="ent-grid">
     <div class="ent-copy">
-      <p class="ent-sub rv">Agende a entrega aqui mesmo, sem sair do site. É só preencher o
-        agendamento — a loja recebe o pedido na hora e fala com você para combinar o horário.</p>
+      <p class="ent-sub rv">Agende a entrega aqui mesmo, sem sair do site, e escolha a loja que vai levar: Taubaté e região do Vale ou
+        Mogi das Cruzes e Alto Tietê. A loja recebe o pedido na hora e fala com você para combinar o horário.</p>
       <ol class="ent-passos rv">
         <li>
           <span class="ent-ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
@@ -4399,37 +4650,166 @@
   </div>
 </section>
 
-<!-- INSTAGRAM — A LOJA NA VIDA REAL -->
+<!-- INSTAGRAM — "Na vitrine do Instagram": os dois perfis + mural por tema (capas reais em AVIF/WebP, sem embed).
+     Conteúdo dos posts: scratchpad ig-conteudo.json (LOTE 3). Cada cartão abre o post original (data-ig-keep). -->
 <section class="sec igsec" id="instagram" aria-labelledby="igTitulo">
-  <p class="eyebrow rv"><span></span>Instagram</p>
-  <h2 class="heading rv" id="igTitulo">As lojas na <em>vida real</em></h2>
-  <div class="ig-unabas rv" role="tablist" aria-label="Instagram de cada unidade">
-    <button type="button" role="tab" class="ig-unaba" id="igAbaTau" aria-selected="true" aria-controls="igPainelTau" data-ig-aba="taubate">
-      <span class="ig-unaba-cid">Taubaté</span><span class="ig-unaba-at">@eletronic.oficial</span>
-    </button>
-    <button type="button" role="tab" class="ig-unaba" id="igAbaMogi" aria-selected="false" aria-controls="igPainelMogi" data-ig-aba="mogi" tabindex="-1">
-      <span class="ig-unaba-cid">Mogi das Cruzes <i class="ig-unaba-novo">Nova</i></span><span class="ig-unaba-at">@eletronic.oficial.mogi</span>
-    </button>
-  </div>
-  <div class="ig-painel" id="igPainelTau" role="tabpanel" aria-labelledby="igAbaTau">
-  <div class="ig-head rv">
-    <div class="ig-id">
-      <span class="ig-handle">@eletronic.oficial
-        <svg class="ig-verif" viewBox="0 0 24 24" role="img" aria-label="Perfil verificado"><path fill="#3897f0" d="M12 1.5l2.45 1.9 3.05-.4 1.17 2.87 2.87 1.17-.4 3.05L23 12l-1.86 2.45.4 3.05-2.87 1.17-1.17 2.87-3.05-.4L12 22.5l-2.45-1.86-3.05.4-1.17-2.87-2.87-1.17.4-3.05L1 12l1.86-2.45-.4-3.05 2.87-1.17L6.5 2.46l3.05.4z"/><path fill="#fff" d="M10.6 15.7l-3.1-3.1 1.27-1.27 1.83 1.83 4.63-4.63 1.27 1.28z"/></svg>
-      </span>
-      <span class="ig-stats"><b>8.477 seguidores</b> · <b>257 posts</b> · 5+ anos realizando sonhos com segurança</span>
+  <p class="eyebrow rv"><span></span>Instagram · Taubaté e Mogi das Cruzes</p>
+  <h2 class="heading rv" id="igTitulo">Na vitrine do <em>Instagram</em></h2>
+  <p class="ig-intro rv">O que sai nos dois perfis: aparelho chegando, troca de iPhone, cliente levando o seu e o dia a dia da equipe. Escolha um tema — cada post abre no Instagram.</p>
+
+  <div class="ig-perfis rv">
+    <div class="ig-perfil" data-unidade="taubate">
+      <span class="ig-perfil-av" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></span>
+      <div class="ig-id">
+        <span class="ig-perfil-cid">Taubaté · matriz<i class="ig-perfil-sua" hidden>sua loja</i></span>
+        <span class="ig-handle">@eletronic.oficial <svg class="ig-verif" viewBox="0 0 24 24" role="img" aria-label="Perfil verificado"><path fill="#3897f0" d="M12 1.5l2.45 1.9 3.05-.4 1.17 2.87 2.87 1.17-.4 3.05L23 12l-1.86 2.45.4 3.05-2.87 1.17-1.17 2.87-3.05-.4L12 22.5l-2.45-1.86-3.05.4-1.17-2.87-2.87-1.17.4-3.05L1 12l1.86-2.45-.4-3.05 2.87-1.17L6.5 2.46l3.05.4z"/><path fill="#fff" d="M10.6 15.7l-3.1-3.1 1.27-1.27 1.83 1.83 4.63-4.63 1.27 1.28z"/></svg></span>
+        <span class="ig-stats"><b>8.477 seguidores</b> · <b>257 posts</b></span>
+      </div>
+      <a class="ig-follow" data-un="taubate" href="https://www.instagram.com/eletronic.oficial" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="1.1" fill="#b0356d" stroke="none"/></svg>Seguir<span class="sr-only"> @eletronic.oficial no Instagram</span></a>
     </div>
-    <a class="ig-follow" data-un="taubate" href="https://www.instagram.com/eletronic.oficial" target="_blank" rel="noopener">
-      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="1.1" fill="#b0356d" stroke="none"/></svg>
-      Seguir no Instagram
-    </a>
+    <div class="ig-perfil ig-perfil-mogi" data-unidade="mogi">
+      <span class="ig-perfil-av" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></span>
+      <div class="ig-id">
+        <span class="ig-perfil-cid">Mogi das Cruzes · nova unidade<i class="ig-perfil-sua" hidden>sua loja</i></span>
+        <span class="ig-handle">@eletronic.oficial.mogi</span>
+        <span class="ig-stats"><b>543 seguidores</b> · <b>42 posts</b></span>
+      </div>
+      <a class="ig-follow" data-un="mogi" href="https://www.instagram.com/eletronic.oficial.mogi" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="1.1" fill="#b0356d" stroke="none"/></svg>Seguir<span class="sr-only"> @eletronic.oficial.mogi no Instagram</span></a>
+    </div>
   </div>
+
+  <div class="ig-vitrine rv" id="igVitrine">
+    <div class="ig-vitrine-topo">
+      <div class="ig-filtros" role="tablist" aria-label="Temas das publicações">
+      <button type="button" role="tab" class="ig-filtro" id="igF-tudo" data-filtro="tudo" aria-controls="igMural" aria-selected="true">Tudo<span class="ig-filtro-n"><span class="sr-only">, </span>11<span class="sr-only"> publicações</span></span></button>
+      <button type="button" role="tab" class="ig-filtro" id="igF-lancamentos" data-filtro="lancamentos" aria-controls="igMural" aria-selected="false" tabindex="-1">Lançamentos<span class="ig-filtro-n"><span class="sr-only">, </span>1<span class="sr-only"> publicação</span></span></button>
+      <button type="button" role="tab" class="ig-filtro" id="igF-troca" data-filtro="troca" aria-controls="igMural" aria-selected="false" tabindex="-1">Troca e upgrade<span class="ig-filtro-n"><span class="sr-only">, </span>2<span class="sr-only"> publicações</span></span></button>
+      <button type="button" role="tab" class="ig-filtro" id="igF-clientes" data-filtro="clientes" aria-controls="igMural" aria-selected="false" tabindex="-1">Clientes<span class="ig-filtro-n"><span class="sr-only">, </span>2<span class="sr-only"> publicações</span></span></button>
+      <button type="button" role="tab" class="ig-filtro" id="igF-bastidores" data-filtro="bastidores" aria-controls="igMural" aria-selected="false" tabindex="-1">Bastidores<span class="ig-filtro-n"><span class="sr-only">, </span>2<span class="sr-only"> publicações</span></span></button>
+      <button type="button" role="tab" class="ig-filtro" id="igF-ofertas" data-filtro="ofertas" aria-controls="igMural" aria-selected="false" tabindex="-1">Ofertas<span class="ig-filtro-n"><span class="sr-only">, </span>1<span class="sr-only"> publicação</span></span></button>
+      <button type="button" role="tab" class="ig-filtro" id="igF-mogi" data-filtro="mogi" aria-controls="igMural" aria-selected="false" tabindex="-1"><i class="ig-filtro-pin" aria-hidden="true"></i>Mogi das Cruzes<span class="ig-filtro-n"><span class="sr-only">, </span>3<span class="sr-only"> publicações</span></span></button>
+      </div>
+      <div class="ig-vitrine-linha">
+        <p class="ig-mural-st" id="igMuralSt" aria-live="polite">11 publicações das duas lojas, das mais novas para as mais antigas</p>
+        <div class="ig-setas">
+          <button type="button" class="ig-seta" data-dir="-1" aria-controls="igMural" aria-label="Publicações anteriores" disabled><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg></button>
+          <button type="button" class="ig-seta" data-dir="1" aria-controls="igMural" aria-label="Próximas publicações"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
+        </div>
+      </div>
+    </div>
+    <div class="ig-capas ig-mural" id="igMural" role="tabpanel" aria-labelledby="igF-tudo">
+      <a class="ig-capa ig-post" data-ig-keep data-tema="troca" href="https://www.instagram.com/eletronic.oficial/p/DePOpPeg5Hk/" target="_blank" rel="noopener" style="--i:0">
+        <span class="ig-capa-foto"><picture><source type="image/avif" srcset="images/ig/tau-1-320.avif 320w, images/ig/tau-1-640.avif 640w" sizes="(max-width:760px) 76vw, (max-width:1100px) 34vw, 300px"><img src="images/ig/tau-1.webp" srcset="images/ig/tau-1-320.webp 320w, images/ig/tau-1-640.webp 640w" sizes="(max-width:760px) 76vw, (max-width:1100px) 34vw, 300px" alt="Arte comparando iPhone 16 Pro Max e 17 Pro Max: vale a pena fazer o upgrade?" width="640" height="640" loading="lazy" decoding="async"></picture></span>
+        <span class="ig-capa-tipo">Post</span>
+        <span class="ig-capa-txt"><b><time datetime="2026-10-08">8 de outubro</time> · Troca e upgrade</b>Compensa o upgrade do iPhone 16 Pro Max para o 17 Pro Max? A resposta do post: sim.</span>
+        <span class="ig-capa-ir"><span class="ig-capa-perfil">@eletronic.oficial</span><span aria-hidden="true">Abrir →</span><span class="sr-only"> (abre no Instagram em nova aba)</span></span>
+      </a>
+      <a class="ig-capa ig-post" data-ig-keep data-tema="bastidores" href="https://www.instagram.com/eletronic.oficial/reel/DeMoc-WBOiZ/" target="_blank" rel="noopener" style="--i:1">
+        <span class="ig-capa-foto"><picture><source type="image/avif" srcset="images/ig/tau-2-240.avif 240w, images/ig/tau-2-360.avif 360w" sizes="(max-width:760px) 76vw, (max-width:1100px) 34vw, 300px"><img src="images/ig/tau-2.webp" srcset="images/ig/tau-2-240.webp 240w, images/ig/tau-2-360.webp 360w" sizes="(max-width:760px) 76vw, (max-width:1100px) 34vw, 300px" alt="Duas atendentes dentro da loja Eletronic de Taubaté, com a vitrine de acessórios ao fundo" width="360" height="640" loading="lazy" decoding="async"></picture></span>
+        <span class="ig-capa-tipo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg>Reel</span>
+        <span class="ig-capa-txt"><b><time datetime="2026-10-06">6 de outubro</time> · Bastidores</b>Entramos na trend: “com o que vocês trabalham?” — gravado dentro da loja de Taubaté.</span>
+        <span class="ig-capa-ir"><span class="ig-capa-perfil">@eletronic.oficial</span><span aria-hidden="true">Abrir →</span><span class="sr-only"> (abre no Instagram em nova aba)</span></span>
+      </a>
+      <a class="ig-capa ig-post ig-post-mogi" data-ig-keep data-tema="mogi" href="https://www.instagram.com/eletronic.oficial.mogi/reel/DeHgkpbB0_U/" target="_blank" rel="noopener" style="--i:2">
+        <span class="ig-capa-foto"><picture><source type="image/avif" srcset="images/ig/mogi-3-240.avif 240w, images/ig/mogi-3-360.avif 360w" sizes="(max-width:760px) 76vw, (max-width:1100px) 34vw, 300px"><img src="images/ig/mogi-3.webp" srcset="images/ig/mogi-3-240.webp 240w, images/ig/mogi-3-360.webp 360w" sizes="(max-width:760px) 76vw, (max-width:1100px) 34vw, 300px" alt="Reel da Eletronic Mogi mostrando o caminho até a nova loja" width="360" height="640" loading="lazy" decoding="async"></picture></span>
+        <span class="ig-capa-tipo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg>Reel</span>
+        <span class="ig-capa-txt"><b><time datetime="2026-10-05">5 de outubro</time> · Mogi das Cruzes</b>Vem com a gente conhecer o caminho até a nova Eletronic em Mogi das Cruzes. Esse é só o começo…</span>
+        <span class="ig-capa-ir"><span class="ig-capa-perfil">@eletronic.oficial.mogi</span><span aria-hidden="true">Abrir →</span><span class="sr-only"> (abre no Instagram em nova aba)</span></span>
+      </a>
+      <a class="ig-capa ig-post" data-ig-keep data-tema="lancamentos" href="https://www.instagram.com/eletronic.oficial/reel/Dd_wdYphaKC/" target="_blank" rel="noopener" style="--i:3">
+        <span class="ig-capa-foto"><picture><source type="image/avif" srcset="images/ig/tau-3-240.avif 240w, images/ig/tau-3-360.avif 360w" sizes="(max-width:760px) 76vw, (max-width:1100px) 34vw, 300px"><img src="images/ig/tau-3.webp" srcset="images/ig/tau-3-240.webp 240w, images/ig/tau-3-360.webp 360w" sizes="(max-width:760px) 76vw, (max-width:1100px) 34vw, 300px" alt="Unboxing do iPhone 18 Pro Max azul nas mãos de um vendedor" width="360" height="640" loading="lazy" decoding="async"></picture></span>
+        <span class="ig-capa-tipo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg>Reel</span>
+        <span class="ig-capa-txt"><b><time datetime="2026-10-02">2 de outubro</time> · Lançamentos</b>O barulhinho de brinquedo novo: unboxing do iPhone 18 Pro Max azul. Dá o play e aumenta o som.</span>
+        <span class="ig-capa-ir"><span class="ig-capa-perfil">@eletronic.oficial</span><span aria-hidden="true">Abrir →</span><span class="sr-only"> (abre no Instagram em nova aba)</span></span>
+      </a>
+      <a class="ig-capa ig-post" data-ig-keep data-tema="troca" href="https://www.instagram.com/eletronic.oficial/p/Dd9M9SKFUvr/" target="_blank" rel="noopener" style="--i:4">
+        <span class="ig-capa-foto"><picture><source type="image/avif" srcset="images/ig/tau-4-320.avif 320w, images/ig/tau-4-640.avif 640w" sizes="(max-width:760px) 76vw, (max-width:1100px) 34vw, 300px"><img src="images/ig/tau-4.webp" srcset="images/ig/tau-4-320.webp 320w, images/ig/tau-4-640.webp 640w" sizes="(max-width:760px) 76vw, (max-width:1100px) 34vw, 300px" alt="Arte sobre trocar um iPhone 13 Pro por um modelo mais atual" width="640" height="640" loading="lazy" decoding="async"></picture></span>
+        <span class="ig-capa-tipo">Post</span>
+        <span class="ig-capa-txt"><b><time datetime="2026-10-01">1º de outubro</time> · Troca e upgrade</b>Seu iPhone atual ainda pode virar um upgrade: o 13 Pro entra na troca por um modelo mais novo.</span>
+        <span class="ig-capa-ir"><span class="ig-capa-perfil">@eletronic.oficial</span><span aria-hidden="true">Abrir →</span><span class="sr-only"> (abre no Instagram em nova aba)</span></span>
+      </a>
+      <a class="ig-capa ig-post ig-post-mogi" data-ig-keep data-tema="mogi" href="https://www.instagram.com/eletronic.oficial.mogi/p/Dd81MBhA8c3/" target="_blank" rel="noopener" style="--i:5">
+        <span class="ig-capa-foto"><picture><source type="image/avif" srcset="images/ig/mogi-1-320.avif 320w, images/ig/mogi-1-640.avif 640w" sizes="(max-width:760px) 76vw, (max-width:1100px) 34vw, 300px"><img src="images/ig/mogi-1.webp" srcset="images/ig/mogi-1-320.webp 320w, images/ig/mogi-1-640.webp 640w" sizes="(max-width:760px) 76vw, (max-width:1100px) 34vw, 300px" alt="Arte +5 anos realizando sonhos — agora em Mogi das Cruzes" width="640" height="640" loading="lazy" decoding="async"></picture></span>
+        <span class="ig-capa-tipo">Post</span>
+        <span class="ig-capa-txt"><b><time datetime="2026-10-01">1º de outubro</time> · Mogi das Cruzes</b>Há 5 anos cuidando do que te conecta ao mundo. E agora a Eletronic está chegando em Mogi das Cruzes.</span>
+        <span class="ig-capa-ir"><span class="ig-capa-perfil">@eletronic.oficial.mogi</span><span aria-hidden="true">Abrir →</span><span class="sr-only"> (abre no Instagram em nova aba)</span></span>
+      </a>
+      <a class="ig-capa ig-post" data-ig-keep data-tema="clientes" href="https://www.instagram.com/eletronic.oficial/reel/Dd4rO67h3dk/" target="_blank" rel="noopener" style="--i:6">
+        <span class="ig-capa-foto"><picture><source type="image/avif" srcset="images/ig/tau-5-240.avif 240w, images/ig/tau-5-360.avif 360w" sizes="(max-width:760px) 76vw, (max-width:1100px) 34vw, 300px"><img src="images/ig/tau-5.webp" srcset="images/ig/tau-5-240.webp 240w, images/ig/tau-5-360.webp 360w" sizes="(max-width:760px) 76vw, (max-width:1100px) 34vw, 300px" alt="Atendente no escritório da loja ao celular, em vídeo de humor sobre o cliente que promete fechar na quarta" width="361" height="640" loading="lazy" decoding="async"></picture></span>
+        <span class="ig-capa-tipo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg>Reel</span>
+        <span class="ig-capa-txt"><b><time datetime="2026-09-29">29 de setembro</time> · Clientes</b>O cliente: “Pode preparar que quarta eu fecho!” O cliente na quarta: 😂</span>
+        <span class="ig-capa-ir"><span class="ig-capa-perfil">@eletronic.oficial</span><span aria-hidden="true">Abrir →</span><span class="sr-only"> (abre no Instagram em nova aba)</span></span>
+      </a>
+      <a class="ig-capa ig-post" data-ig-keep data-tema="clientes" href="https://www.instagram.com/eletronic.oficial/reel/Dd4DzJGh1Kp/" target="_blank" rel="noopener" style="--i:7">
+        <span class="ig-capa-foto"><picture><source type="image/avif" srcset="images/ig/tau-6-240.avif 240w, images/ig/tau-6-360.avif 360w" sizes="(max-width:760px) 76vw, (max-width:1100px) 34vw, 300px"><img src="images/ig/tau-6.webp" srcset="images/ig/tau-6-240.webp 240w, images/ig/tau-6-360.webp 360w" sizes="(max-width:760px) 76vw, (max-width:1100px) 34vw, 300px" alt="iPhone lilás sendo entregue a uma cliente com a frase “Trabalhei muito e tô comprando com o meu esforço”" width="360" height="640" loading="lazy" decoding="async"></picture></span>
+        <span class="ig-capa-tipo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg>Reel</span>
+        <span class="ig-capa-txt"><b><time datetime="2026-09-28">28 de setembro</time> · Clientes</b>“Trabalhei muito e tô comprando com o meu esforço.” Cada compra tem uma história.</span>
+        <span class="ig-capa-ir"><span class="ig-capa-perfil">@eletronic.oficial</span><span aria-hidden="true">Abrir →</span><span class="sr-only"> (abre no Instagram em nova aba)</span></span>
+      </a>
+      <a class="ig-capa ig-post" data-ig-keep data-tema="ofertas" href="https://www.instagram.com/eletronic.oficial/reel/Dd1n2bcA_bF/" target="_blank" rel="noopener" style="--i:8">
+        <span class="ig-capa-foto"><picture><source type="image/avif" srcset="images/ig/tau-7-240.avif 240w, images/ig/tau-7-360.avif 360w" sizes="(max-width:760px) 76vw, (max-width:1100px) 34vw, 300px"><img src="images/ig/tau-7.webp" srcset="images/ig/tau-7-240.webp 240w, images/ig/tau-7-360.webp 360w" sizes="(max-width:760px) 76vw, (max-width:1100px) 34vw, 300px" alt="Vendedor sorrindo com dois iPhones na mão na loja, anunciando a oferta de fim de mês" width="360" height="640" loading="lazy" decoding="async"></picture></span>
+        <span class="ig-capa-tipo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg>Reel</span>
+        <span class="ig-capa-fim">Oferta de setembro · encerrada</span>
+        <span class="ig-capa-txt"><b><time datetime="2026-09-28">28 de setembro</time> · Ofertas</b>Seminovos selecionados com nota fiscal, 1 ano de garantia, o seu iPhone na troca e entrega com segurança.</span>
+        <span class="ig-capa-ir"><span class="ig-capa-perfil">@eletronic.oficial</span><span aria-hidden="true">Abrir →</span><span class="sr-only"> (abre no Instagram em nova aba)</span></span>
+      </a>
+      <a class="ig-capa ig-post ig-post-mogi" data-ig-keep data-tema="mogi" href="https://www.instagram.com/eletronic.oficial.mogi/reel/Dd2SWK-gNrC/" target="_blank" rel="noopener" style="--i:9">
+        <span class="ig-capa-foto"><picture><source type="image/avif" srcset="images/ig/mogi-2-240.avif 240w, images/ig/mogi-2-360.avif 360w" sizes="(max-width:760px) 76vw, (max-width:1100px) 34vw, 300px"><img src="images/ig/mogi-2.webp" srcset="images/ig/mogi-2-240.webp 240w, images/ig/mogi-2-360.webp 360w" sizes="(max-width:760px) 76vw, (max-width:1100px) 34vw, 300px" alt="Reel Chegamos Mogi das Cruzes — especializada em produtos Apple" width="360" height="640" loading="lazy" decoding="async"></picture></span>
+        <span class="ig-capa-tipo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg>Reel</span>
+        <span class="ig-capa-txt"><b><time datetime="2026-09-28">28 de setembro</time> · Mogi das Cruzes</b>Mogi das Cruzes, chegamos! A Eletronic agora também é daqui.</span>
+        <span class="ig-capa-ir"><span class="ig-capa-perfil">@eletronic.oficial.mogi</span><span aria-hidden="true">Abrir →</span><span class="sr-only"> (abre no Instagram em nova aba)</span></span>
+      </a>
+      <a class="ig-capa ig-post" data-ig-keep data-tema="bastidores" href="https://www.instagram.com/eletronic.oficial/reel/Ddy6w_OgQOE/" target="_blank" rel="noopener" style="--i:10">
+        <span class="ig-capa-foto"><picture><source type="image/avif" srcset="images/ig/tau-8-240.avif 240w, images/ig/tau-8-360.avif 360w" sizes="(max-width:760px) 76vw, (max-width:1100px) 34vw, 300px"><img src="images/ig/tau-8.webp" srcset="images/ig/tau-8-240.webp 240w, images/ig/tau-8-360.webp 360w" sizes="(max-width:760px) 76vw, (max-width:1100px) 34vw, 300px" alt="Atendente na porta da sala da loja com a legenda “Amo meu trabalho”" width="360" height="640" loading="lazy" decoding="async"></picture></span>
+        <span class="ig-capa-tipo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg>Reel</span>
+        <span class="ig-capa-txt"><b><time datetime="2026-09-27">27 de setembro</time> · Bastidores</b>Quando o chefe segue, o conteúdo muda. 😂</span>
+        <span class="ig-capa-ir"><span class="ig-capa-perfil">@eletronic.oficial</span><span aria-hidden="true">Abrir →</span><span class="sr-only"> (abre no Instagram em nova aba)</span></span>
+      </a>
+      <div class="ig-ponte ig-ponte-mogi" data-so="mogi" hidden>
+        <p class="ig-ponte-ey">@eletronic.oficial.mogi · 1º de outubro</p>
+        <blockquote class="ig-ponte-q">“Uma nova unidade, trazendo a confiança, a qualidade e a experiência que você já conhece.”</blockquote>
+        <p class="ig-ponte-p">A loja de Mogi está sendo preparada. Endereço e horário, só pelo WhatsApp da unidade.</p>
+        <a class="btn-claro ig-ponte-cta" data-un="mogi" href="https://wa.me/5511994122171?text=Ol%C3%A1!%20Vi%20o%20Instagram%20da%20unidade%20de%20Mogi%20e%20quero%20saber%20mais." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-wa"/></svg>Falar com a loja de Mogi</a>
+      </div>
+      <div class="ig-ponte" data-so="lancamentos" hidden>
+        <p class="ig-ponte-ey">Do Instagram para a vitrine</p>
+        <p class="ig-ponte-t">O que tem na loja <em>agora</em></p>
+        <p class="ig-ponte-p">Post mostra o lançamento. O catálogo ao vivo mostra o que está disponível hoje, com fotos e preço.</p>
+        <a class="btn-t ig-ponte-cta" href="#produtos">Ver o catálogo ao vivo</a>
+      </div>
+      <div class="ig-ponte" data-so="troca" hidden>
+        <p class="ig-ponte-ey">Seu usado na conta</p>
+        <p class="ig-ponte-t">Quanto vale <em>o seu?</em></p>
+        <p class="ig-ponte-p">Mande o modelo e o estado do seu iPhone no WhatsApp. A avaliação vira desconto direto no próximo aparelho.</p>
+        <a class="btn-claro ig-ponte-cta" href="https://wa.me/5512997463135?text=Ol%C3%A1!%20Vi%20no%20Instagram%20e%20quero%20avaliar%20meu%20iPhone%20na%20troca." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-wa"/></svg>Avaliar meu iPhone</a>
+      </div>
+      <div class="ig-ponte" data-so="clientes" hidden>
+        <p class="ig-ponte-ey">Quem comprou conta</p>
+        <p class="ig-ponte-t">4,8 estrelas <em>no Google</em></p>
+        <p class="ig-ponte-p">As histórias do Instagram também estão nas avaliações públicas da loja.</p>
+        <a class="btn-t ig-ponte-cta" href="#avaliacoes">Ver a nota no Google</a>
+      </div>
+      <div class="ig-ponte" data-so="bastidores" hidden>
+        <p class="ig-ponte-ey">Gente de verdade</p>
+        <p class="ig-ponte-t">Quem <em>atende</em> você</p>
+        <p class="ig-ponte-p">A equipe dos vídeos se apresenta com as próprias palavras.</p>
+        <a class="btn-t ig-ponte-cta" href="#equipe">Conhecer a equipe</a>
+      </div>
+      <div class="ig-ponte" data-so="ofertas" hidden>
+        <p class="ig-ponte-ey">Promoção tem prazo</p>
+        <p class="ig-ponte-t">As condições <em>de hoje</em></p>
+        <p class="ig-ponte-p">A oferta desse post era de setembro e já terminou. Preço, parcelas e o valor do seu usado hoje, você confirma no WhatsApp.</p>
+        <a class="btn-claro ig-ponte-cta" href="https://wa.me/5512997463135?text=Ol%C3%A1!%20Quero%20saber%20as%20condi%C3%A7%C3%B5es%20de%20hoje." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-wa"/></svg>Perguntar as condições</a>
+      </div>
+    </div>
+  </div>
+
   <!-- ENQUETE do reel "Dobrável ou Pro Max?" — escolha guardada só no navegador do visitante -->
   <div class="enq rv" id="enquete">
     <div>
       <p class="enq-ey">Enquete do reel · @eletronic.oficial</p>
       <p class="enq-q">Dobrável ou <em>Pro Max?</em></p>
-      <p class="enq-sub">A Apple pode estar prestes a colocar essa escolha na nossa frente. Se o preço fosse parecido, qual você escolheria?</p>
+      <p class="enq-sub">A Apple pode estar prestes a colocar essa escolha na nossa frente. Se o preço fosse parecido, qual você escolheria? <a class="enq-reel" data-ig-keep href="https://www.instagram.com/eletronic.oficial/reel/Dc3aPUaxb6f/" target="_blank" rel="noopener">Ver o reel</a></p>
     </div>
     <div class="enq-acts">
       <div class="enq-btns" role="group" aria-label="Sua escolha">
@@ -4439,147 +4819,83 @@
       <p class="enq-res" id="enqRes" aria-live="polite">Escolha o seu — a resposta fica só no seu navegador.</p>
     </div>
   </div>
-  <div class="ig-grid rv" id="igGrid">
-    <div class="ig-item" data-ig="https://www.instagram.com/eletronic.oficial/reel/Dc3aPUaxb6f/">
-      <a class="ig-ph" data-ig-keep href="https://www.instagram.com/eletronic.oficial/reel/Dc3aPUaxb6f/" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="1.1"/></svg>
-        <span>@eletronic.oficial</span>
-        <span class="ig-ph-cta">Ver no Instagram</span>
-      </a>
-      <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/eletronic.oficial/reel/Dc3aPUaxb6f/" data-instgrm-version="14"><a data-ig-keep href="https://www.instagram.com/eletronic.oficial/reel/Dc3aPUaxb6f/" target="_blank" rel="noopener">Ver esta publicação no Instagram</a></blockquote>
-    </div>
-    <div class="ig-item" data-ig="https://www.instagram.com/eletronic.oficial/p/Dc038HSFX8w/">
-      <a class="ig-ph" data-ig-keep href="https://www.instagram.com/eletronic.oficial/p/Dc038HSFX8w/" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="1.1"/></svg>
-        <span>@eletronic.oficial</span>
-        <span class="ig-ph-cta">Ver no Instagram</span>
-      </a>
-      <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/eletronic.oficial/p/Dc038HSFX8w/" data-instgrm-version="14"><a data-ig-keep href="https://www.instagram.com/eletronic.oficial/p/Dc038HSFX8w/" target="_blank" rel="noopener">Ver esta publicação no Instagram</a></blockquote>
-    </div>
-    <div class="ig-item" data-ig="https://www.instagram.com/eletronic.oficial/reel/Dc0xWn3Allv/">
-      <a class="ig-ph" data-ig-keep href="https://www.instagram.com/eletronic.oficial/reel/Dc0xWn3Allv/" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="1.1"/></svg>
-        <span>@eletronic.oficial</span>
-        <span class="ig-ph-cta">Ver no Instagram</span>
-      </a>
-      <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/eletronic.oficial/reel/Dc0xWn3Allv/" data-instgrm-version="14"><a data-ig-keep href="https://www.instagram.com/eletronic.oficial/reel/Dc0xWn3Allv/" target="_blank" rel="noopener">Ver esta publicação no Instagram</a></blockquote>
-    </div>
-    <div class="ig-item" data-ig="https://www.instagram.com/eletronic.oficial/p/DbqGB1VFeHP/">
-      <a class="ig-ph" data-ig-keep href="https://www.instagram.com/eletronic.oficial/p/DbqGB1VFeHP/" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="1.1"/></svg>
-        <span>@eletronic.oficial</span>
-        <span class="ig-ph-cta">Ver no Instagram</span>
-      </a>
-      <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/eletronic.oficial/p/DbqGB1VFeHP/" data-instgrm-version="14"><a data-ig-keep href="https://www.instagram.com/eletronic.oficial/p/DbqGB1VFeHP/" target="_blank" rel="noopener">Ver esta publicação no Instagram</a></blockquote>
-    </div>
-    <div class="ig-item" data-ig="https://www.instagram.com/eletronic.oficial/reel/DcyVWkjgLnM/">
-      <a class="ig-ph" data-ig-keep href="https://www.instagram.com/eletronic.oficial/reel/DcyVWkjgLnM/" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="1.1"/></svg>
-        <span>@eletronic.oficial</span>
-        <span class="ig-ph-cta">Ver no Instagram</span>
-      </a>
-      <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/eletronic.oficial/reel/DcyVWkjgLnM/" data-instgrm-version="14"><a data-ig-keep href="https://www.instagram.com/eletronic.oficial/reel/DcyVWkjgLnM/" target="_blank" rel="noopener">Ver esta publicação no Instagram</a></blockquote>
-    </div>
-    <div class="ig-item" data-ig="https://www.instagram.com/eletronic.oficial/p/DcylgPAgFyR/">
-      <a class="ig-ph" data-ig-keep href="https://www.instagram.com/eletronic.oficial/p/DcylgPAgFyR/" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="1.1"/></svg>
-        <span>@eletronic.oficial</span>
-        <span class="ig-ph-cta">Ver no Instagram</span>
-      </a>
-      <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/eletronic.oficial/p/DcylgPAgFyR/" data-instgrm-version="14"><a data-ig-keep href="https://www.instagram.com/eletronic.oficial/p/DcylgPAgFyR/" target="_blank" rel="noopener">Ver esta publicação no Instagram</a></blockquote>
-    </div>
-  </div>
-  </div>
-  <div class="ig-painel" id="igPainelMogi" role="tabpanel" aria-labelledby="igAbaMogi" hidden>
-    <div class="ig-head">
-      <div class="ig-id">
-        <span class="ig-handle">@eletronic.oficial.mogi</span>
-        <span class="ig-stats"><b>543 seguidores</b> · <b>42 posts</b> · a nova unidade da Eletronic no Alto Tietê</span>
-      </div>
-      <a class="ig-follow" data-un="mogi" href="https://www.instagram.com/eletronic.oficial.mogi" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="2.5" width="19" height="19" rx="5.5"/><circle cx="12" cy="12" r="4.2"/><circle cx="17.6" cy="6.4" r="1.1" fill="#b0356d" stroke="none"/></svg>
-        Seguir a unidade de Mogi
-      </a>
-    </div>
-    <blockquote class="ig-chegada">
-      <p>"Há 5 anos cuidando do que te conecta ao mundo. E agora, a Eletronic está chegando em Mogi das Cruzes — uma nova unidade, trazendo a confiança, a qualidade e a experiência que você já conhece."</p>
-      <cite>@eletronic.oficial.mogi · 1º de outubro</cite>
-    </blockquote>
-    <div class="ig-capas rv" id="igGridMogi">
-      <a class="ig-capa" data-ig-keep href="https://www.instagram.com/eletronic.oficial.mogi/reel/DeHgkpbB0_U/" target="_blank" rel="noopener" style="transition-delay:0.00s">
-        <span class="ig-capa-foto"><picture><source type="image/avif" srcset="images/ig/mogi-3-240.avif 240w, images/ig/mogi-3-360.avif 360w" sizes="(max-width:760px) 76vw, 400px"><img src="images/ig/mogi-3.webp" srcset="images/ig/mogi-3-240.webp 240w, images/ig/mogi-3.webp 360w" sizes="(max-width:760px) 76vw, 400px" alt="Reel da Eletronic Mogi mostrando o caminho até a nova loja em Mogi das Cruzes" width="360" height="640" loading="lazy" decoding="async"></picture></span>
-        <span class="ig-capa-tipo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg>Reel</span>
-        <span class="ig-capa-txt"><b>5 de outubro</b>Vem com a gente conhecer o caminho até a nova Eletronic em Mogi das Cruzes! Esse é só o começo…</span>
-        <span class="ig-capa-ir">Ver no Instagram →</span>
-      </a>
-      <a class="ig-capa" data-ig-keep href="https://www.instagram.com/eletronic.oficial.mogi/p/Dd81MBhA8c3/" target="_blank" rel="noopener" style="transition-delay:0.08s">
-        <span class="ig-capa-foto"><picture><source type="image/avif" srcset="images/ig/mogi-1-320.avif 320w, images/ig/mogi-1-640.avif 640w" sizes="(max-width:760px) 76vw, 400px"><img src="images/ig/mogi-1.webp" srcset="images/ig/mogi-1-320.webp 320w, images/ig/mogi-1.webp 640w" sizes="(max-width:760px) 76vw, 400px" alt="Arte “+5 anos realizando sonhos — agora em Mogi das Cruzes”" width="640" height="640" loading="lazy" decoding="async"></picture></span>
-        <span class="ig-capa-tipo">Post</span>
-        <span class="ig-capa-txt"><b>1º de outubro</b>Há 5 anos cuidando do que te conecta ao mundo. E agora, a Eletronic está chegando em Mogi das Cruzes!</span>
-        <span class="ig-capa-ir">Ver no Instagram →</span>
-      </a>
-      <a class="ig-capa" data-ig-keep href="https://www.instagram.com/eletronic.oficial.mogi/reel/Dd2SWK-gNrC/" target="_blank" rel="noopener" style="transition-delay:0.16s">
-        <span class="ig-capa-foto"><picture><source type="image/avif" srcset="images/ig/mogi-2-240.avif 240w, images/ig/mogi-2-360.avif 360w" sizes="(max-width:760px) 76vw, 400px"><img src="images/ig/mogi-2.webp" srcset="images/ig/mogi-2-240.webp 240w, images/ig/mogi-2.webp 360w" sizes="(max-width:760px) 76vw, 400px" alt="Reel “Chegamos Mogi das Cruzes — especializada em produtos Apple”" width="360" height="640" loading="lazy" decoding="async"></picture></span>
-        <span class="ig-capa-tipo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg>Reel</span>
-        <span class="ig-capa-txt"><b>28 de setembro</b>Mogi das Cruzes, chegamos! A Eletronic agora também é daqui.</span>
-        <span class="ig-capa-ir">Ver no Instagram →</span>
-      </a>
-    </div>
-    <div class="ig-mogi-cta">
-      <a class="btn-claro" data-un="mogi" href="https://wa.me/5511994122171?text=Ol%C3%A1!%20Vi%20o%20Instagram%20da%20unidade%20de%20Mogi%20e%20quero%20saber%20mais." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-wa"/></svg>Falar com a loja de Mogi</a>
-    </div>
-  </div>
-  <p class="ig-nota rv">Além dos iPhones, no perfil e na loja você também encontra <b>acessórios e relógios Garmin</b> — valores sob consulta no WhatsApp.</p>
+  <p class="ig-nota rv">Além dos iPhones, nos perfis e nas lojas você encontra <b>acessórios e relógios Garmin</b> — valores sob consulta no WhatsApp.</p>
 </section>
 
-<!-- FAQ -->
-<section class="sec" id="duvidas" aria-labelledby="faqTitulo">
-  <p class="eyebrow rv"><span></span>Dúvidas Frequentes</p>
-  <h2 class="heading rv" id="faqTitulo">O que todo mundo <em>pergunta</em></h2>
-  <div class="faq rv">
-    <details class="faq-item">
-      <summary>Os iPhones da Eletronic são originais?<span class="faq-mais" aria-hidden="true">+</span></summary>
-      <div class="faq-a"><p>Sim. Trabalhamos somente com aparelhos 100% originais Apple, com nota fiscal
-        em todos os pedidos. Você confere o aparelho funcionando antes de fechar a compra.</p></div>
-    </details>
-    <details class="faq-item">
-      <summary>Como funciona a garantia de 1 ano?<span class="faq-mais" aria-hidden="true">+</span></summary>
-      <div class="faq-a"><p>Todo aparelho — lacrado ou seminovo — sai com 12 meses de garantia da loja.
-        Precisou de qualquer coisa, é só chamar no WhatsApp: você fala direto com a gente,
-        sem central de atendimento.</p></div>
-    </details>
-    <details class="faq-item">
-      <summary>Seminovo é confiável?<span class="faq-mais" aria-hidden="true">+</span></summary>
-      <div class="faq-a"><p>Aqui, é. Cada seminovo passa por revisão completa, tem a saúde da bateria
-        informada e sai com a mesma nota fiscal e o mesmo 1 ano de garantia do lacrado.
-        A diferença fica só no preço.</p></div>
-    </details>
-    <details class="faq-item">
-      <summary>Meu iPhone atual vale como entrada?<span class="faq-mais" aria-hidden="true">+</span></summary>
-      <div class="faq-a"><p>Vale. Avaliamos o seu usado na hora e o valor vira desconto direto no próximo
-        aparelho. <a href="https://wa.me/5512997463135?text=Ol%C3%A1!%20Quero%20avaliar%20meu%20iPhone%20como%20entrada." target="_blank" rel="noopener">Mande o modelo e o estado dele no WhatsApp</a> e receba a avaliação em minutos.</p></div>
-    </details>
-    <details class="faq-item">
-      <summary>Posso parcelar? Em quantas vezes?<span class="faq-mais" aria-hidden="true">+</span></summary>
-      <div class="faq-a"><p>Sim, em até 18x no cartão. Chame no WhatsApp com o modelo que você quer
-        e a gente simula o parcelamento exato, sem compromisso.</p></div>
-    </details>
-    <details class="faq-item">
-      <summary>Vocês entregam na minha cidade?<span class="faq-mais" aria-hidden="true">+</span></summary>
-      <div class="faq-a"><p>Entregamos para todo o Brasil, com envio rastreado e embalagem reforçada.
-        Em Taubaté e região, você também pode retirar na loja: R. Dr. Souza Alves, 384 — Centro. Em Mogi das Cruzes
-        e no Alto Tietê, fale com a <a href="#contato">nova unidade de Mogi</a>.
-        Prefere receber por motoboy? <a href="#entrega">Agende a entrega aqui no site</a> e escolha a loja — você paga só quando o aparelho chegar.</p></div>
-    </details>
-    <details class="faq-item">
-      <summary>Onde ficam as lojas da Eletronic?<span class="faq-mais" aria-hidden="true">+</span></summary>
-      <div class="faq-a"><p>Temos duas: a matriz em <b>Taubaté</b> (R. Dr. Souza Alves, 384 — Centro, WhatsApp
-        <a data-un="taubate" href="https://wa.me/5512997463135" target="_blank" rel="noopener">(12) 99746-3135</a>) e a nova unidade em
-        <b>Mogi das Cruzes</b> (WhatsApp <a data-un="mogi" href="https://wa.me/5511994122171" target="_blank" rel="noopener">(11) 99412-2171</a>).
-        As duas trabalham com a mesma garantia, nota fiscal e atendimento. <a href="#contato">Veja as duas lojas</a>.</p></div>
-    </details>
+<!-- FAQ — perguntas e JSON-LD FAQPage gerados da mesma fonte (scratchpad l3/gera-faq.js) -->
+<section class="sec faqsec" id="duvidas" aria-labelledby="faqTitulo">
+  <div class="faq-grade">
+    <div class="faq-lado">
+      <p class="eyebrow rv"><span></span>Dúvidas frequentes</p>
+      <h2 class="heading rv" id="faqTitulo">O que todo mundo <em>pergunta</em></h2>
+      <p class="faq-intro rv">Garantia, as duas lojas, entrega por motoboy e o seu pedido. Não achou a sua dúvida? Pergunte direto para quem vende.</p>
+      <div class="faq-mao rv">
+        <a class="btn-claro" href="https://wa.me/5512997463135?text=Ol%C3%A1%21%20Tenho%20uma%20d%C3%BAvida." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-wa"/></svg>Perguntar no WhatsApp</a>
+        <span>Taubaté ou Mogi: você escolhe a loja antes de abrir a conversa.</span>
+      </div>
+    </div>
+    <div class="faq rv">
+      <h3 class="faq-grupo">Compra e garantia<span>6</span></h3>
+      <details class="faq-item">
+        <summary>Os iPhones da Eletronic são originais?<span class="faq-mais" aria-hidden="true">+</span></summary>
+        <div class="faq-a"><p>Sim. Só trabalhamos com aparelhos originais Apple, com nota fiscal em todos os pedidos. Você confere o aparelho funcionando antes de fechar a compra.</p></div>
+      </details>
+      <details class="faq-item">
+        <summary>Como funciona a garantia de 1 ano?<span class="faq-mais" aria-hidden="true">+</span></summary>
+        <div class="faq-a"><p>Todo aparelho, lacrado ou seminovo, sai com 12 meses de garantia da loja, em Taubaté ou em Mogi das Cruzes. Precisou de alguma coisa, é só chamar no WhatsApp: você fala direto com a gente, sem central de atendimento.</p></div>
+      </details>
+      <details class="faq-item">
+        <summary>Seminovo é confiável?<span class="faq-mais" aria-hidden="true">+</span></summary>
+        <div class="faq-a"><p>Aqui, é. Cada seminovo passa por revisão completa, tem a saúde da bateria informada antes da compra e sai com a mesma nota fiscal e o mesmo 1 ano de garantia do lacrado. A diferença fica no preço.</p></div>
+      </details>
+      <details class="faq-item">
+        <summary>O que vem junto com o iPhone?<span class="faq-mais" aria-hidden="true">+</span></summary>
+        <div class="faq-a"><p>Nota fiscal, 1 ano de garantia da loja e os brindes: capa, película e kit carregador com selo Anatel. Na compra, a gente também transfere seus dados, fotos, contatos e apps, para o aparelho novo. Você sai com tudo funcionando.</p></div>
+      </details>
+      <details class="faq-item">
+        <summary>Posso parcelar? Em quantas vezes?<span class="faq-mais" aria-hidden="true">+</span></summary>
+        <div class="faq-a"><p>Sim, em até 18x no cartão. Chame no WhatsApp com o modelo que você quer e a gente simula as parcelas, sem compromisso.</p></div>
+      </details>
+      <details class="faq-item">
+        <summary>Meu iPhone atual vale como entrada?<span class="faq-mais" aria-hidden="true">+</span></summary>
+        <div class="faq-a"><p>Vale. <a href="https://wa.me/5512997463135?text=Ol%C3%A1%21%20Quero%20avaliar%20meu%20iPhone%20como%20entrada." target="_blank" rel="noopener">Mande o modelo e o estado dele no WhatsApp</a> e receba a avaliação em minutos: o valor vira desconto direto no próximo aparelho. Na entrega por motoboy, “aparelho na troca” também aparece como forma de pagamento.</p></div>
+      </details>
+      <h3 class="faq-grupo">As duas lojas<span>3</span></h3>
+      <details class="faq-item">
+        <summary>Onde ficam as lojas da Eletronic?<span class="faq-mais" aria-hidden="true">+</span></summary>
+        <div class="faq-a"><p>São duas: a matriz em <b>Taubaté</b> (R. Dr. Souza Alves, 384 — Centro, WhatsApp <a data-un="taubate" href="https://wa.me/5512997463135" target="_blank" rel="noopener">(12) 99746-3135</a>) e a nova unidade em <b>Mogi das Cruzes</b> (WhatsApp <a data-un="mogi" href="https://wa.me/5511994122171" target="_blank" rel="noopener">(11) 99412-2171</a>). Garantia, nota fiscal e atendimento são os mesmos nas duas. <a href="#contato">Veja as duas lojas</a>.</p></div>
+      </details>
+      <details class="faq-item">
+        <summary>A loja de Mogi das Cruzes já está aberta?<span class="faq-mais" aria-hidden="true">+</span></summary>
+        <div class="faq-a"><p>A unidade de Mogi já atende pelo WhatsApp <a data-un="mogi" href="https://wa.me/5511994122171" target="_blank" rel="noopener">(11) 99412-2171</a>, e o espaço da loja está sendo preparado — o perfil <a data-un="mogi" data-ig-keep href="https://www.instagram.com/eletronic.oficial.mogi" target="_blank" rel="noopener">@eletronic.oficial.mogi</a> mostra os bastidores. Antes de ir, confirme endereço e horário com a unidade.</p></div>
+      </details>
+      <details class="faq-item">
+        <summary>Como escolho com qual loja falar no WhatsApp?<span class="faq-mais" aria-hidden="true">+</span></summary>
+        <div class="faq-a"><p>Na primeira vez que você toca num botão de WhatsApp do site, aparece a pergunta “Com qual loja você quer falar?”. Marcando “Lembrar minha escolha”, os próximos botões já chamam a loja escolhida. Para trocar, toque em “2 lojas” (ou no nome da sua loja) no topo da página.</p></div>
+      </details>
+      <h3 class="faq-grupo">Entrega e pedidos<span>5</span></h3>
+      <details class="faq-item">
+        <summary>Vocês entregam na minha cidade?<span class="faq-mais" aria-hidden="true">+</span></summary>
+        <div class="faq-a"><p>Entregamos para todo o Brasil, com envio rastreado e embalagem reforçada. Em Taubaté você também pode retirar na loja (R. Dr. Souza Alves, 384 — Centro). Perto de Taubaté ou de Mogi das Cruzes, dá para <a href="#entrega">agendar a entrega por motoboy aqui no site</a>.</p></div>
+      </details>
+      <details class="faq-item">
+        <summary>Como funciona a entrega por motoboy?<span class="faq-mais" aria-hidden="true">+</span></summary>
+        <div class="faq-a"><p>Você agenda aqui no site em quatro etapas: seus dados, endereço com o dia e a janela de horário (manhã, tarde ou noite), a forma de pagamento e a revisão. Também escolhe qual loja vai entregar: Taubaté e região do Vale, ou Mogi das Cruzes e Alto Tietê. A loja recebe o pedido na hora e chama você para confirmar o horário. O pagamento é feito só na entrega.</p></div>
+      </details>
+      <details class="faq-item">
+        <summary>Como acompanho o meu pedido?<span class="faq-mais" aria-hidden="true">+</span></summary>
+        <div class="faq-a"><p>Na área de entrega, toque em <a href="#acompanhar">Acompanhar</a> e informe o número do pedido (ele aparece na confirmação, por exemplo #0002) e o telefone usado no agendamento. Você vê a situação e pode falar com a loja dali mesmo.</p></div>
+      </details>
+      <details class="faq-item">
+        <summary>O agendamento aparece como pausado. E agora?<span class="faq-mais" aria-hidden="true">+</span></summary>
+        <div class="faq-a"><p>De vez em quando a loja pausa os agendamentos pelo site. Nesse caso, chame no WhatsApp que a entrega é combinada por lá. Quem já agendou continua acompanhando o pedido normalmente.</p></div>
+      </details>
+      <details class="faq-item">
+        <summary>Que dados eu informo no agendamento? É seguro?<span class="faq-mais" aria-hidden="true">+</span></summary>
+        <div class="faq-a"><p>Nome, telefone, CPF e endereço. O CPF nunca fica salvo no seu aparelho, e o formulário não pede número de cartão, senha nem dados bancários: o pagamento acontece só no ato da entrega. Preencher não cobra nada.</p></div>
+      </details>
+    </div>
   </div>
-  <p class="faq-mao rv">Ficou com outra dúvida? <a href="https://wa.me/5512997463135?text=Ol%C3%A1!%20Tenho%20uma%20d%C3%BAvida." target="_blank" rel="noopener">Chama no WhatsApp</a> — a gente responde rapidinho.</p>
 </section>
 
 <!-- CONTATO — DUAS UNIDADES. Links com data-un são da loja específica: o seletor de unidade
@@ -4592,7 +4908,7 @@
 <section class="contact un-sec" id="contato" aria-labelledby="contatoTitulo">
   <p class="eyebrow rv"><span></span>Nossas lojas</p>
   <h2 class="heading rv" id="contatoTitulo">Duas lojas, <em>a mesma</em> Eletronic</h2>
-  <p class="un-intro rv">Mesma garantia, mesma nota fiscal, o mesmo atendimento olho no olho. Escolha a loja mais perto de você — ou chame qualquer uma no WhatsApp.</p>
+  <p class="un-intro rv">Mesma garantia, mesma nota fiscal, o mesmo atendimento. Escolha a loja mais perto de você e chame no WhatsApp — em Mogi, confirme endereço e horário com a unidade antes de ir.</p>
 
   <div class="un-grid">
     <article class="un-card rv" data-unidade="taubate" aria-labelledby="unTauNome">
@@ -4665,8 +4981,12 @@
 <!-- CTA -->
 <section class="cta" aria-labelledby="ctaTitulo">
   <h2 class="rv" id="ctaTitulo">Pronto para sua<br/>próxima <em>conquista?</em></h2>
-  <p class="rv" style="transition-delay:.12s">iPhone original, garantia real, nota fiscal e entrega para todo o Brasil. Chame agora.</p>
-  <a href="https://wa.me/5512997463135" target="_blank" rel="noopener" class="btn-g rv" style="transition-delay:.22s">Chamar no WhatsApp</a>
+  <p class="rv" style="transition-delay:.12s">Chame a loja mais perto de você. Em Taubaté ou em Mogi das Cruzes, é a mesma garantia de 1 ano, a mesma nota fiscal e o mesmo atendimento.</p>
+  <div class="cta-lojas rv" style="transition-delay:.22s">
+    <a data-un="taubate" class="btn-g cta-loja" href="https://wa.me/5512997463135?text=Ol%C3%A1!%20Vim%20pelo%20site%20e%20quero%20falar%20com%20a%20loja%20de%20Taubat%C3%A9." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-wa"/></svg><span><small>Matriz</small>WhatsApp Taubaté</span></a>
+    <a data-un="mogi" class="btn-g cta-loja" href="https://wa.me/5511994122171?text=Ol%C3%A1!%20Vim%20pelo%20site%20e%20quero%20falar%20com%20a%20loja%20de%20Mogi%20das%20Cruzes." target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-wa"/></svg><span><small>Nova unidade</small>WhatsApp Mogi das Cruzes</span></a>
+  </div>
+  <a href="#produtos" class="btn-t cta-cat rv" style="transition-delay:.3s">Prefiro ver o catálogo antes</a>
 </section>
 </main>
 
@@ -4702,7 +5022,7 @@
   <div class="ft">
     <div class="fb">
       <a href="#" class="logo"><div class="logo-mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div><span class="logo-name">Eletronic</span></a>
-      <p>Especialista em iPhones lacrados e seminovos, acessórios e relógios Garmin — em Taubaté e agora também em Mogi das Cruzes. Garantia, nota fiscal e entrega nacional. 4,8 estrelas no Google.</p>
+      <p>iPhones lacrados e seminovos, acessórios e relógios Garmin em Taubaté e, agora, em Mogi das Cruzes. Nota fiscal, 1 ano de garantia, até 18x no cartão e entrega para todo o Brasil. 4,8 estrelas no Google.</p>
       <div class="il-par"><a data-un="taubate" href="https://www.instagram.com/eletronic.oficial" target="_blank" rel="noopener" class="il">@eletronic.oficial</a><a data-un="mogi" href="https://www.instagram.com/eletronic.oficial.mogi" target="_blank" rel="noopener" class="il">@eletronic.oficial.mogi</a></div>
     </div>
     <div class="fc">
@@ -4711,18 +5031,22 @@
         <li><a href="#produtos" onclick="irCat('lacrados')">Lacrados</a></li>
         <li><a href="#produtos" onclick="irCat('seminovos')">Seminovos</a></li>
         <li><a href="#produtos" onclick="irCat('blackclub')"><svg class="f-raio" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>Black Club</a></li>
+        <li><a href="#quiz">Qual iPhone combina com você</a></li>
+        <li><a href="#qualescolher">Lacrado ou seminovo?</a></li>
+        <li><a href="#instagram">Na vitrine do Instagram</a></li>
       </ul>
     </div>
     <div class="fc">
       <h3>Informações</h3>
       <ul>
         <li><a href="#garantias">Garantia</a></li>
-        <li><a href="#duvidas">Dúvidas Frequentes</a></li>
-        <li><a href="#troca">Troca como Entrada</a></li>
-        <li><a href="#entrega">Agendar Entrega</a></li>
-        <li><a href="https://wa.me/5512997463135?text=Ol%C3%A1!%20Quero%20saber%20sobre%20as%20formas%20de%20pagamento." target="_blank" rel="noopener">Formas de Pagamento</a></li>
-        <li><a href="https://wa.me/5512997463135?text=Ol%C3%A1!%20Quero%20saber%20sobre%20entrega%20e%20frete." target="_blank" rel="noopener">Entrega e Frete</a></li>
-        <li><a href="https://wa.me/5512997463135?text=Ol%C3%A1!%20Quero%20saber%20sobre%20trocas%20e%20devolu%C3%A7%C3%B5es." target="_blank" rel="noopener">Trocas e Devoluções</a></li>
+        <li><a href="#duvidas">Dúvidas frequentes</a></li>
+        <li><a href="#acompanhar">Acompanhar pedido</a></li>
+        <li><a href="#troca">Seu iPhone na troca</a></li>
+        <li><a href="#entrega">Agendar entrega</a></li>
+        <li><a href="https://wa.me/5512997463135?text=Ol%C3%A1!%20Quero%20saber%20sobre%20as%20formas%20de%20pagamento." target="_blank" rel="noopener">Formas de pagamento</a></li>
+        <li><a href="https://wa.me/5512997463135?text=Ol%C3%A1!%20Quero%20saber%20sobre%20entrega%20e%20frete." target="_blank" rel="noopener">Entrega e frete</a></li>
+        <li><a href="https://wa.me/5512997463135?text=Ol%C3%A1!%20Quero%20saber%20sobre%20trocas%20e%20devolu%C3%A7%C3%B5es." target="_blank" rel="noopener">Trocas e devoluções</a></li>
       </ul>
     </div>
     <div class="fc fc-un">
@@ -4738,7 +5062,7 @@
       <ul>
         <li><a data-un="mogi" href="https://wa.me/5511994122171" target="_blank" rel="noopener"><svg class="f-ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-wa"/></svg>(11) 99412-2171</a></li>
         <li><a data-un="mogi" href="https://www.instagram.com/eletronic.oficial.mogi" target="_blank" rel="noopener"><svg class="f-ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-ig"/></svg>@eletronic.oficial.mogi</a></li>
-        <li><a href="#contato"><svg class="f-ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-pin"/></svg>Mogi das Cruzes, SP</a></li>
+        <li><a href="#contato"><svg class="f-ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-pin"/></svg>Mogi das Cruzes, SP<br/>endereço pelo WhatsApp</a></li>
       </ul>
     </div>
   </div>
@@ -7124,7 +7448,7 @@ window.elcChart = (function () {
   var sheet = document.getElementById('uniSheet');
   var ops = document.getElementById('uniOps');
   var lembrar = document.getElementById('uniLembrar');
-  var origem = null, textoPendente = '', modo = 'falar';
+  var origem = null, textoPendente = '', modo = 'falar', tFecha = 0;
 
   function cartao(u) {
     var x = UN[u], pref = ler() === u;
@@ -7145,6 +7469,7 @@ window.elcChart = (function () {
     ops.innerHTML = cartao('taubate') + cartao('mogi');
     document.getElementById('uniTit').innerHTML = m === 'falar' ? 'Com qual loja você quer <em>falar?</em>' : 'Qual é a <em>sua</em> loja?';
     lembrar.parentNode.hidden = m !== 'falar';
+    clearTimeout(tFecha); /* LOTE 3: fechar e reabrir rápido — o esconder atrasado não pode apagar a folha recém-aberta */
     sheet.hidden = false;
     document.documentElement.classList.add('uni-aberta');
     requestAnimationFrame(function () { sheet.classList.add('on'); });
@@ -7155,7 +7480,8 @@ window.elcChart = (function () {
     if (sheet.hidden) return;
     sheet.classList.remove('on');
     document.documentElement.classList.remove('uni-aberta');
-    setTimeout(function () { sheet.hidden = true; }, 220);
+    clearTimeout(tFecha);
+    tFecha = setTimeout(function () { sheet.hidden = true; }, 220);
     if (origem && origem.focus) { try { origem.focus({ preventScroll: true }); } catch (e) { origem.focus(); } }
   }
   function escolher(u, avisar) {
@@ -7204,7 +7530,7 @@ window.elcChart = (function () {
     abrir('falar', texto, a);
   }, true);
 
-  /* ---------- abas acessíveis (mapa do contato e Instagram) ---------- */
+  /* ---------- abas acessíveis (mapa do contato) ---------- */
   function ligaAbas(abas, aoTrocar) {
     abas = Array.prototype.slice.call(abas);
     function ativa(aba, focar) {
@@ -7225,7 +7551,7 @@ window.elcChart = (function () {
         ativa(abas[(n + abas.length) % abas.length], true);
       });
     });
-    return function (u) { var a = abas.filter(function (x) { return x.dataset.mapa === u || x.dataset.igAba === u; })[0]; if (a) ativa(a, false); };
+    return function (u) { var a = abas.filter(function (x) { return x.dataset.mapa === u; })[0]; if (a) ativa(a, false); };
   }
 
   var frame = document.getElementById('unMapaFrame'), endMapa = document.getElementById('unMapaEnd'), painelMapa = document.getElementById('unMapa');
@@ -7241,18 +7567,6 @@ window.elcChart = (function () {
     document.querySelectorAll('.un-card').forEach(function (c) { c.classList.toggle('un-card-foco', c.dataset.unidade === u); });
   }) : null;
 
-  var abasIg = document.querySelectorAll('.ig-unaba');
-  var igPara = abasIg.length ? ligaAbas(abasIg, function (aba) {
-    var u = aba.dataset.igAba;
-    ['igPainelTau', 'igPainelMogi'].forEach(function (id) {
-      var p = document.getElementById(id);
-      if (!p) return;
-      var mostra = (id === 'igPainelMogi') === (u === 'mogi');
-      p.hidden = !mostra;
-      if (mostra && window.elIgAtivar) window.elIgAtivar(p);
-    });
-  }) : null;
-
   /* clicar num cartão de unidade destaca a loja no mapa */
   document.querySelectorAll('.un-card').forEach(function (c) {
     c.addEventListener('click', function (e) {
@@ -7261,11 +7575,10 @@ window.elcChart = (function () {
     });
   });
 
-  /* a loja preferida já abre o mapa e o Instagram dela */
+  /* a loja preferida já abre o mapa dela (no Instagram, o perfil dela ganha o selo "sua loja") */
   function aplicaPreferida(u) {
     if (!u) return;
     if (mapaPara) mapaPara(u);
-    if (igPara) igPara(u);
   }
   document.addEventListener('el:unidade', function (e) { aplicaPreferida(e.detail); });
   pintaPilula();
@@ -7322,7 +7635,7 @@ window.elcChart = (function () {
       'Nosso catálogo ao vivo está fora do ar neste momento.<br>' +
       '<a target="_blank" rel="noopener" href="https://wa.me/' + CFG.WA_PADRAO +
       '?text=' + encodeURIComponent('Olá! Queria ver os iPhones disponíveis.') +
-      '">Chame no WhatsApp</a> que a gente manda a vitrine completa em segundos.</div></div>';
+      '">Chame no WhatsApp</a> que a gente manda o que tem na loja hoje.</div></div>';
     return;
   }
   var sbe = window.supabase.createClient(CFG.URL, CFG.KEY, { auth: { persistSession: false } });
@@ -7544,7 +7857,7 @@ window.elcChart = (function () {
     var desc = [f.arm, f.cor].filter(Boolean).join(' · ');
     var pedido = 'Olá! Procuro um iPhone ' + [f.arm, f.cor].filter(Boolean).join(' ') + ' (' + c.nome + '). Tem ou vai chegar?';
     return '<div class="cat-semres"><h3>Nada com esse filtro agora</h3>' +
-      '<p>Nenhum aparelho <b>' + esc(desc) + '</b> em ' + esc(c.nome) + ' neste momento. Chega novidade toda semana — peça o seu e a gente avisa.</p>' +
+      '<p>Nenhum aparelho <b>' + esc(desc) + '</b> em ' + esc(c.nome) + ' neste momento. Peça o seu no WhatsApp e a gente avisa quando chegar.</p>' +
       '<div class="cat-semres-acts"><button type="button" class="cat-limpar">Limpar filtros</button>' +
       '<a class="cmap-btn" target="_blank" rel="noopener" href="' + linkWA(estado.wa, pedido) + '">Pedir esse no WhatsApp</a></div></div>';
   }
@@ -7552,9 +7865,9 @@ window.elcChart = (function () {
     var doCat = estado.prods.filter(function (p) { return p.categoria_id === c.id; });
     if (!doCat.length) {
       return '<div class="cat-vazia">Estamos renovando o estoque de <strong>' + esc(c.nome) + '</strong>.<br>' +
-        'Chega novidade toda semana — <a target="_blank" rel="noopener" href="' +
+        '<a target="_blank" rel="noopener" href="' +
         linkWA(estado.wa, 'Olá! Queria saber as novidades de ' + c.nome + ' da Eletronic.') +
-        '">chame no WhatsApp</a> e reserve o seu antes de todo mundo.</div>';
+        '">Chame no WhatsApp</a> e pergunte o que está chegando.</div>';
     }
     var f = filtroDe(c.slug);
     var arms = valoresDe(doCat, 'armazenamento'), cores = valoresDe(doCat, 'cor');
@@ -7669,25 +7982,26 @@ window.elcChart = (function () {
     try {
       var catPor = {};
       cats.forEach(function (c) { catPor[c.id] = c; });
-      var base = location.origin + location.pathname;
+      var local = location.hostname === 'localhost' || location.hostname.indexOf('127.') === 0;
+      var base = local ? location.origin + location.pathname : 'https://eletronic-taubate.netlify.app/'; /* produção: URLs no endereço canônico */
       var itens = prods.map(function (p, i) {
         var c = catPor[p.categoria_id] || {}, fotos = fotosDe(p), sit = situacao(p);
         var prod = { '@type': 'Product', name: nomeCompleto(p), sku: String(p.id), brand: { '@type': 'Brand', name: 'Apple' }, url: base + '#produto=' + encodeURIComponent(p.id) };
         if (fotos[0]) prod.image = new URL(fotos[0], location.href).href;
         if (p.descricao) prod.description = String(p.descricao).slice(0, 500);
         if (p.cor) prod.color = String(p.cor);
-        if (p.preco != null) {
+        if (p.preco != null && Number(p.preco) > 0) {
           prod.offers = { '@type': 'Offer', price: Number(p.preco).toFixed(2), priceCurrency: 'BRL', url: prod.url,
             availability: 'https://schema.org/' + (sit === 'esgotado' ? 'OutOfStock' : sit === 'ultima' ? 'LimitedAvailability' : 'InStock'),
             itemCondition: 'https://schema.org/' + (c.slug === 'seminovos' ? 'UsedCondition' : 'NewCondition'),
-            seller: { '@type': 'Organization', name: 'Eletronic' } };
+            seller: { '@type': 'Organization', '@id': 'https://eletronic-taubate.netlify.app/#marca', name: 'Eletronic' } };
         }
         return { '@type': 'ListItem', position: i + 1, item: prod };
       });
       var el = document.getElementById('ldProdutos');
       if (!itens.length) { if (el) el.remove(); return; }
       if (!el) { el = document.createElement('script'); el.type = 'application/ld+json'; el.id = 'ldProdutos'; document.head.appendChild(el); }
-      el.textContent = JSON.stringify({ '@context': 'https://schema.org', '@type': 'ItemList', name: 'iPhones disponíveis na Eletronic', itemListElement: itens });
+      el.textContent = JSON.stringify({ '@context': 'https://schema.org', '@type': 'ItemList', name: 'iPhones disponíveis na Eletronic', numberOfItems: itens.length, itemListElement: itens });
     } catch (e) { /* SEO nunca derruba a vitrine */ }
   }
 
@@ -8204,10 +8518,10 @@ window.elcChart = (function () {
           'Nosso catálogo ao vivo está fora do ar neste momento.<br>' +
           '<a target="_blank" rel="noopener" href="https://wa.me/' + CFG.WA_PADRAO +
           '?text=' + encodeURIComponent('Olá! Queria ver os iPhones disponíveis.') +
-          '">Chame no WhatsApp</a> que a gente manda a vitrine completa em segundos. ' +
+          '">Chame no WhatsApp</a> que a gente manda o que tem na loja hoje. ' +
           '<button type="button" class="cat-limpar" id="catTentar">Tentar de novo</button></div></div>';
         var bt = document.getElementById('catTentar');
-        if (bt) bt.addEventListener('click', function () { paineis.innerHTML = '<div class="cat-panel active"><p class="cat-carregando">Carregando catálogo…</p></div>'; carregar(); });
+        if (bt) bt.addEventListener('click', function () { paineis.setAttribute('aria-busy', 'true'); paineis.innerHTML = '<div class="cat-panel active"><p class="cat-carregando">Buscando os aparelhos da vitrine…</p></div>'; carregar(); });
       }
     });
   }
@@ -8688,7 +9002,7 @@ window.elcChart = (function () {
     mira(document.querySelector('.duelo'), '.duelo-card');      /* Lacrado × Seminovo */
     mira(document.getElementById('benef'), '.benef-card');      /* faixa do que acompanha toda compra */
     mira(document.querySelector('.un-grid'), '.un-card');       /* LOTE 2: as duas lojas */
-    mira(document.getElementById('igGridMogi'), '.ig-capa');    /* LOTE 2: capas reais de Mogi */
+    mira(document.getElementById('igMural'), '.ig-capa');       /* LOTE 3: mural do Instagram (capas reais das duas lojas) */
     /* LOTE 2 — tilt sutil com luz seguindo o mouse (cartões das lojas e capas do Instagram de Mogi) */
     var inclina = function (raiz, sel, graus, ergue) {
       if (!raiz || REDUZ) return;
@@ -8718,7 +9032,7 @@ window.elcChart = (function () {
       });
     };
     inclina(document.querySelector('.un-grid'), '.un-card', 3, -3);
-    inclina(document.getElementById('igGridMogi'), '.ig-capa', 6, -4);
+    inclina(document.getElementById('igMural'), '.ig-capa', 6, -4);
 
     /* spotlight + tilt 3D no catálogo (delegado — sobrevive ao re-render) */
     (function () {
@@ -9827,8 +10141,15 @@ window.elcChart = (function () {
       if (Math.abs(a - pS) < .0006) pS = a;
       pinta(pS);
       swap.tick(pS, ts || performance.now());
+      /* LOTE 3: parado e sem CardSwap girando, o laço dorme (era 60 quadros/s com a página parada);
+         rolagem, resize ou "retomar animações" acordam de novo */
+      if (pS === a && !swap.active) return;
       raf = requestAnimationFrame(passo);
     }
+    function acorda() { if (rodando && !raf) raf = requestAnimationFrame(passo); }
+    window.addEventListener('scroll', acorda, { passive: true });
+    window.addEventListener('resize', acorda);
+    document.addEventListener('el:movimento', acorda);
     function liga() {
       var quer = visivel && !document.hidden;
       if (quer === rodando) return;
@@ -9867,74 +10188,6 @@ window.elcChart = (function () {
     window.addEventListener('scroll', pede, { passive: true });
     window.addEventListener('resize', pede);
   })();
-
-  /* ============ INSTAGRAM — embeds oficiais LAZY + fallback, um painel por unidade ============
-     O embed.js só é injetado (uma vez) quando a seção chega a 600px do viewport. Cada post
-     conta suas tentativas SÓ enquanto está visível: o painel de Mogi fica escondido na aba e
-     seus blockquotes nascem "adiados" (sem a classe do Instagram) até a aba abrir — um iframe
-     montado dentro de display:none nasce com altura 0 e cairia no fallback por engano. */
-  (function () {
-    var secao = document.getElementById('instagram');
-    if (!secao || !secao.querySelector('.ig-grid')) return;
-    var pediu = false, carregado = false, vigia = 0;
-    var tentativas = new WeakMap();
-
-    function checa(desistir) {
-      var pendentes = 0;
-      secao.querySelectorAll('.ig-grid .ig-item').forEach(function (it) {
-        if (it.classList.contains('ig-ok') || it.classList.contains('ig-fallback')) return;
-        if (it.offsetParent === null || it.querySelector('blockquote.ig-adiado')) return;
-        var n = (tentativas.get(it) || 0) + 1;
-        tentativas.set(it, n);
-        var frame = it.querySelector('iframe');
-        if (frame && frame.offsetHeight > 150) { it.classList.add('ig-ok'); return; }
-        /* 6s sem nem um iframe -> card "Ver no Instagram"; 15s raso -> idem */
-        if (desistir || (!frame && n >= 12) || n >= 30) it.classList.add('ig-fallback');
-        else pendentes++;
-      });
-      return pendentes;
-    }
-    function vigiar() {
-      clearInterval(vigia);
-      vigia = setInterval(function () { if (!checa(false)) clearInterval(vigia); }, 500);
-    }
-    function processar() {
-      try { if (window.instgrm && window.instgrm.Embeds) window.instgrm.Embeds.process(); } catch (e) { /* fallback cobre */ }
-    }
-    function injeta() {
-      if (pediu) return;
-      pediu = true;
-      var s = document.createElement('script');
-      s.async = true;
-      s.src = 'https://www.instagram.com/embed.js';
-      s.onload = function () { carregado = true; processar(); };
-      s.onerror = function () { checa(true); };
-      document.body.appendChild(s);
-      vigiar();
-    }
-    /* chamado pela aba quando um painel aparece */
-    window.elIgAtivar = function (painel) {
-      painel.querySelectorAll('blockquote.ig-adiado').forEach(function (b) {
-        b.classList.remove('ig-adiado');
-        b.classList.add('instagram-media');
-      });
-      if (!pediu) return; /* injeta() processa tudo quando a seção chegar perto */
-      if (carregado) processar();
-      vigiar();
-    };
-    /* a aba da loja preferida pode ter aberto antes deste script existir */
-    secao.querySelectorAll('.ig-painel').forEach(function (p) { if (!p.hidden) window.elIgAtivar(p); });
-
-    if ('IntersectionObserver' in window) {
-      var io = new IntersectionObserver(function (es) {
-        if (!es[0].isIntersecting) return;
-        io.disconnect();
-        injeta();
-      }, { rootMargin: '600px 0px' });
-      io.observe(secao);
-    } else injeta();
-  })();
-
 
   /* ============ ENQUETE — "Dobrável ou Pro Max?" (escolha só no localStorage; sem número inventado) ============ */
   (function () {
@@ -10956,30 +11209,150 @@ window.elcChart = (function () {
     fr.addEventListener('load', function () { clearTimeout(tm); cm.classList.remove('trocando'); });
   }
 
-  /* ---------- Instagram no celular: 3 publicações primeiro (6 embeds = ~3.000 px de rolagem) + "ver mais" ---------- */
-  var grade = document.getElementById('igGrid');
-  if (grade && matchMedia('(max-width:700px)').matches) {
-    var itens = grade.querySelectorAll('.ig-item');
-    if (itens.length > 3) {
-      grade.classList.add('ig-recolhido');
-      var mais = document.createElement('button');
-      mais.type = 'button';
-      mais.className = 'ig-mais';
-      mais.setAttribute('aria-controls', 'igGrid');
-      mais.setAttribute('aria-expanded', 'false');
-      mais.innerHTML = '<span>Ver mais ' + (itens.length - 3) + ' publicações</span><i aria-hidden="true"></i>';
-      grade.parentNode.insertBefore(mais, grade.nextSibling);
-      mais.addEventListener('click', function () {
-        grade.classList.remove('ig-recolhido');
-        mais.setAttribute('aria-expanded', 'true');
-        var painel = grade.closest('.ig-painel');
-        if (painel && window.elIgAtivar) window.elIgAtivar(painel);
-        var alvo = itens[3].querySelector('a');
-        mais.remove();
-        if (alvo) { try { alvo.focus({ preventScroll: true }); } catch (e) { alvo.focus(); } }
-      });
-    }
+})();
+</script>
+
+<script>
+'use strict';
+/* ============ LOTE 3 — "Na vitrine do Instagram": abas por tema (roving tabindex + setas do teclado),
+   contagem falada, cascata ao filtrar, trilho com encaixe e setas que respeitam o começo e o fim ============ */
+(function () {
+  var vitrine = document.getElementById('igVitrine');
+  var mural = document.getElementById('igMural');
+  var lista = vitrine && vitrine.querySelector('.ig-filtros');
+  if (!mural || !lista) return;
+  var abas = Array.prototype.slice.call(lista.querySelectorAll('.ig-filtro'));
+  var posts = Array.prototype.slice.call(mural.querySelectorAll('.ig-post'));
+  var pontes = Array.prototype.slice.call(mural.querySelectorAll('.ig-ponte'));
+  var st = document.getElementById('igMuralSt');
+  var setas = Array.prototype.slice.call(vitrine.querySelectorAll('.ig-seta'));
+  var REDUZ = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var NOME = {};
+  abas.forEach(function (a) {
+    NOME[a.dataset.filtro] = Array.prototype.filter.call(a.childNodes, function (n) { return n.nodeType === 3; })
+      .map(function (n) { return n.textContent; }).join('').trim();
+  });
+  var atual = 'tudo';
+
+  function frase(f, n) {
+    var qt = '<b>' + n + (n === 1 ? ' publicação' : ' publicações') + '</b>';
+    if (f === 'tudo') return qt + ' das duas lojas, das mais novas para as mais antigas';
+    if (f === 'mogi') return qt + ' do perfil da nova unidade de Mogi das Cruzes';
+    return qt + ' em ' + NOME[f];
   }
+  function suave() { return REDUZ || window.elSemMov ? 'auto' : 'smooth'; }
+
+  function aplica(f, focar) {
+    var aba = abas.filter(function (a) { return a.dataset.filtro === f; })[0];
+    if (!aba) return;
+    abas.forEach(function (a) {
+      var sel = a === aba;
+      a.setAttribute('aria-selected', sel ? 'true' : 'false');
+      a.tabIndex = sel ? 0 : -1;
+    });
+    mural.setAttribute('aria-labelledby', aba.id);
+    var n = 0, visiveis = [];
+    pontes.forEach(function (p) { p.classList.remove('ig-entra'); p.hidden = p.dataset.so !== f; });
+    posts.forEach(function (p) {
+      var mostra = f === 'tudo' || p.dataset.tema === f;
+      p.classList.remove('ig-entra');
+      p.hidden = !mostra;
+      if (mostra) { n++; visiveis.push(p); }
+    });
+    /* ordem visual: a ponte de Mogi abre a fileira (order:-1); as outras fecham */
+    pontes.forEach(function (p) { if (!p.hidden) { if (p.classList.contains('ig-ponte-mogi')) visiveis.unshift(p); else visiveis.push(p); } });
+    if (f !== atual && !REDUZ && !window.elSemMov) {
+      void mural.offsetWidth; /* reinicia a animação mesmo trocando de aba muito rápido */
+      visiveis.forEach(function (el, k) { el.style.setProperty('--k', Math.min(k, 6)); el.classList.add('ig-entra'); });
+    }
+    atual = f;
+    mural.scrollLeft = 0;
+    if (st) st.innerHTML = frase(f, n);
+    if (focar) aba.focus();
+    /* no celular a fileira de temas rola de lado: traz a aba escolhida para dentro da tela sem mexer na página */
+    if (lista.scrollWidth > lista.clientWidth + 2) {
+      var alvo = aba.offsetLeft - (lista.clientWidth - aba.offsetWidth) / 2;
+      lista.scrollTo({ left: Math.max(0, alvo), behavior: suave() });
+    }
+    pede();
+  }
+  mural.addEventListener('animationend', function (e) { if (e.target.classList) e.target.classList.remove('ig-entra'); });
+
+  lista.addEventListener('click', function (e) {
+    var a = e.target.closest ? e.target.closest('.ig-filtro') : null;
+    if (a) aplica(a.dataset.filtro, false);
+  });
+  lista.addEventListener('keydown', function (e) {
+    var i = abas.indexOf(document.activeElement);
+    if (i < 0) return;
+    var k = e.key, n = k === 'ArrowRight' ? i + 1 : k === 'ArrowLeft' ? i - 1 : k === 'Home' ? 0 : k === 'End' ? abas.length - 1 : null;
+    if (n === null) return;
+    e.preventDefault();
+    aplica(abas[(n + abas.length) % abas.length].dataset.filtro, true);
+  });
+
+  /* ---------- trilho: setas, máscara do fim e estado ---------- */
+  function largura() {
+    var c = mural.querySelector('.ig-post:not([hidden]), .ig-ponte:not([hidden])');
+    var gap = parseFloat(getComputedStyle(mural).columnGap) || 16;
+    return c ? c.getBoundingClientRect().width + gap : mural.clientWidth * .8;
+  }
+  var raf = 0;
+  function pinta() {
+    raf = 0;
+    var max = mural.scrollWidth - mural.clientWidth;
+    var noInicio = mural.scrollLeft <= 2, noFim = mural.scrollLeft >= max - 2;
+    mural.classList.toggle('no-fim', noFim);
+    setas.forEach(function (b) {
+      var off = b.dataset.dir === '-1' ? noInicio : noFim;
+      if (off && document.activeElement === b) { var outra = setas.filter(function (x) { return x !== b; })[0]; if (outra && !(b.dataset.dir === '-1' ? noFim : noInicio)) outra.focus(); }
+      b.disabled = off;
+    });
+    lista.classList.toggle('no-fim', lista.scrollLeft >= lista.scrollWidth - lista.clientWidth - 2);
+  }
+  function pede() { if (!raf) raf = requestAnimationFrame(pinta); }
+  mural.addEventListener('scroll', pede, { passive: true });
+  lista.addEventListener('scroll', pede, { passive: true });
+  window.addEventListener('resize', pede);
+  setas.forEach(function (b) {
+    b.addEventListener('click', function () {
+      var passo = largura(), cabem = Math.max(1, Math.floor((mural.clientWidth + 4) / passo));
+      mural.scrollBy({ left: Number(b.dataset.dir) * cabem * passo, behavior: suave() });
+    });
+  });
+  /* imagens preguiçosas mudam a largura do trilho quando chegam */
+  mural.addEventListener('load', pede, true);
+  pede();
+
+  /* ---------- a loja preferida ganha o selo "sua loja" no perfil ---------- */
+  function marcaPref(u) {
+    document.querySelectorAll('.ig-perfil').forEach(function (p) {
+      var s = p.dataset.unidade === u;
+      p.classList.toggle('ig-perfil-pref', s);
+      var t = p.querySelector('.ig-perfil-sua');
+      if (t) t.hidden = !s;
+    });
+  }
+  try { marcaPref(localStorage.getItem('el_unidade')); } catch (e) { /* modo privado */ }
+  document.addEventListener('el:unidade', function (e) { marcaPref(e.detail); });
+
+  window.elIgFiltrar = function (f) { aplica(f, false); }; /* testes e links internos */
+})();
+</script>
+
+<script>
+'use strict';
+/* ============ LOTE 3 — detalhes gerais ============ */
+(function () {
+  /* "Acompanhar pedido" (rodapé, FAQ, 404): com a hash já em #acompanhar o hashchange não dispara de novo,
+     então o clique repete o caminho do link "Já agendou?" (abre a aba Acompanhar e rola até o iPhone) */
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest ? e.target.closest('a[href="#acompanhar"]') : null;
+    var ja = document.getElementById('entJaLink');
+    if (!a || a === ja || !ja || e.defaultPrevented) return;
+    e.preventDefault();
+    ja.click();
+  });
 })();
 </script>
 

@@ -1,8 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://eletronic-taubate.netlify.app/</loc>
+    <lastmod>2026-10-09</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
+    <image:image><image:loc>https://eletronic-taubate.netlify.app/images/og.jpg</image:loc></image:image>
+    <image:image><image:loc>https://eletronic-taubate.netlify.app/images/equipe-560.webp</image:loc></image:image>
+    <image:image><image:loc>https://eletronic-taubate.netlify.app/images/ig/tau-1.webp</image:loc></image:image>
+    <image:image><image:loc>https://eletronic-taubate.netlify.app/images/ig/tau-2.webp</image:loc></image:image>
+    <image:image><image:loc>https://eletronic-taubate.netlify.app/images/ig/tau-3.webp</image:loc></image:image>
+    <image:image><image:loc>https://eletronic-taubate.netlify.app/images/ig/tau-4.webp</image:loc></image:image>
+    <image:image><image:loc>https://eletronic-taubate.netlify.app/images/ig/tau-5.webp</image:loc></image:image>
+    <image:image><image:loc>https://eletronic-taubate.netlify.app/images/ig/tau-6.webp</image:loc></image:image>
+    <image:image><image:loc>https://eletronic-taubate.netlify.app/images/ig/tau-7.webp</image:loc></image:image>
+    <image:image><image:loc>https://eletronic-taubate.netlify.app/images/ig/tau-8.webp</image:loc></image:image>
+    <image:image><image:loc>https://eletronic-taubate.netlify.app/images/ig/mogi-1.webp</image:loc></image:image>
+    <image:image><image:loc>https://eletronic-taubate.netlify.app/images/ig/mogi-2.webp</image:loc></image:image>
+    <image:image><image:loc>https://eletronic-taubate.netlify.app/images/ig/mogi-3.webp</image:loc></image:image>
   </url>
 </urlset>
