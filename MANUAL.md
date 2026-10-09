@@ -98,10 +98,31 @@ Só aprove gente de confiança.
 
 Botão **Configurações**:
 
-- **WhatsApp da loja** — todos os botões do site passam a chamar esse número
-  (formato: só números, com 55 e DDD — ex.: `5512997463135`).
-- **Instagram** — atualiza os links do site.
+- **WhatsApp da loja** — o número da **matriz (Taubaté)**. Os botões do site que são de Taubaté
+  passam a chamar esse número (formato: só números, com 55 e DDD — ex.: `5512997463135`).
+- **Instagram** — o perfil da matriz (`eletronic.oficial`).
+- O WhatsApp e o Instagram da **unidade de Mogi das Cruzes** (`5511994122171` e `eletronic.oficial.mogi`)
+  ficam guardados no sistema; se mudarem, peça ao suporte para trocar.
 - **Trocar minha senha** — cada um troca a própria senha por aqui.
+
+---
+
+## As duas lojas: Taubaté e Mogi das Cruzes
+
+O site mostra as duas unidades lado a lado na seção **"Duas lojas, a mesma Eletronic"** (menu
+**Contato**), cada uma com WhatsApp, Instagram e mapa.
+
+- **Taubaté (matriz):** R. Dr. Souza Alves, 384 — Centro · (12) 99746-3135 · @eletronic.oficial
+- **Mogi das Cruzes (nova):** (11) 99412-2171 · @eletronic.oficial.mogi
+  *O endereço de Mogi ainda não aparece no site — o cartão diz "confirme o endereço e o horário
+  pelo WhatsApp da unidade". Quando a loja abrir, mande a rua e o número para colocarmos no site e
+  no mapa.*
+
+**Como o cliente escolhe a loja:** ao tocar em qualquer botão de WhatsApp do site, aparece
+"Com qual loja você quer falar?". Ele escolhe e o site lembra a escolha naquele celular — os
+próximos botões já chamam a loja dele. Dá para trocar pela pílula **Loja** no topo do site.
+
+**Instagram:** a seção Instagram tem uma aba para cada loja.
 
 ---
 
@@ -109,7 +130,8 @@ Botão **Configurações**:
 
 No site, a seção **"Fechou a compra? A gente leva."** (link **Entrega** no menu) tem o
 agendamento por motoboy: o cliente informa nome, telefone, CPF, endereço, dia, janela de
-horário (manhã, tarde, noite ou um horário específico), o produto e como vai pagar na entrega.
+horário (manhã, tarde, noite ou um horário específico), o produto, como vai pagar na entrega e
+**qual loja vai entregar** (Taubaté ou Mogi das Cruzes — o site sugere sozinho pelo CEP).
 
 Assim que ele toca em **Enviar pedido**, o pedido aparece **na hora** na aba **Pedidos** do
 painel — com um aviso sonoro e um número vermelho na aba mostrando quantos estão esperando.
@@ -130,6 +152,10 @@ painel — com um aviso sonoro e um número vermelho na aba mostrando quantos es
 - **Copiar para o motoboy** — copia endereço, horário, cliente, produto e pagamento num
   texto pronto; é só colar no WhatsApp do motoboy.
 - **Apagar** — remove o pedido de vez (pede confirmação).
+
+Cada pedido mostra um selo com a **loja que entrega** (Taubaté ou Mogi). No filtro **Todas as lojas**
+você escolhe ver só os pedidos de uma loja — o painel lembra a escolha naquele aparelho, então a
+equipe de Mogi pode deixar o celular dela sempre em "Mogi das Cruzes".
 
 Use a busca para achar um pedido pelo nome, telefone, endereço ou número.
 O botão **Som de aviso** liga ou desliga o apito de pedido novo.

@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
   <title>Eletronic — iPhones Originais em Taubaté e Mogi das Cruzes · Seminovos e Lacrados</title>
   <meta name="description" content="iPhones originais com nota fiscal e 1 ano de garantia em Taubaté e Mogi das Cruzes (SP). Lacrados e seminovos, acessórios e relógios Garmin. Até 18x no cartão, entrega por motoboy e para todo o Brasil."/>
   <meta property="og:title" content="Eletronic — iPhones originais em Taubaté e Mogi das Cruzes"/>
@@ -103,6 +103,10 @@
         "acceptedAnswer": { "@type": "Answer", "text": "Entregamos para todo o Brasil, com envio rastreado e embalagem reforçada. Em Taubaté e região, você também pode retirar na loja: R. Dr. Souza Alves, 384 — Centro. Prefere receber por motoboy? Agende a entrega pelo site — você paga só quando o aparelho chegar." } }
     ]
   }
+  </script>
+  <script>
+  /* LOTE 2 — "pausar animações" lembrado: aplicado antes do primeiro paint (sem piscar movimento) */
+  (function(){try{if(localStorage.getItem('el_movimento')==='pausado'){window.elSemMov=true;document.documentElement.classList.add('sem-mov');}}catch(e){}})();
   </script>
   <style>
     :root {
@@ -3144,6 +3148,301 @@
       .ig-capa { scroll-snap-align:start; }
     }
     @media (prefers-reduced-motion: reduce) { .ig-capa, .ig-capa-foto img { transition:none !important; } }
+
+    /* ============================================================
+       LOTE 2 — RITMO, CONSISTÊNCIA, INTERAÇÃO, DESEMPENHO, A11Y E MOBILE
+       (camada final: refina as passadas anteriores sem trocar identidade,
+        fundo ouro líquido nem os iPhones DOM)
+       ============================================================ */
+    :root {
+      --r-sm:12px; --r-card:18px; --r-frame:20px;
+      --line:rgba(201,162,39,.2); --line-forte:rgba(201,162,39,.55);
+      --ease-out:cubic-bezier(.22,.9,.3,1);
+      --sombra-card:0 18px 40px -26px rgba(0,0,0,.85);
+      --sombra-card-hover:0 26px 54px -28px rgba(0,0,0,.92), 0 10px 28px -16px rgba(201,162,39,.38);
+      --texto-2:#c6d1e6;
+    }
+
+    /* ---------- 0. FONTE RESERVA COM AS MÉTRICAS DA DM SANS ----------
+       enquanto a DM Sans baixa, o texto usa Arial com a MESMA altura de linha (ascent/descent da DM Sans):
+       a troca de fonte não empurra o título do hero nem a nav (layout shift zerado no desktop) */
+    @font-face { font-family:'DM Sans Reserva'; src:local('Arial'), local('Helvetica Neue'), local('Helvetica'), local('Roboto');
+      ascent-override:99.2%; descent-override:31%; line-gap-override:0%; size-adjust:100%; }
+    body { font-family:'DM Sans','DM Sans Reserva',sans-serif; }
+    /* o título do hero só aparece com a fonte definitiva (o efeito palavra a palavra continua igual) */
+    .hero h1.split { opacity:0; }
+    body.ready .hero h1.split { opacity:1; }
+
+    /* ---------- 1. TIPOGRAFIA: algarismos alinhados, títulos equilibrados, parágrafos sem viúvas ---------- */
+    /* Cormorant usa algarismos old-style por padrão ("1 ano" parecia "I ano", "18x" virava "ı8x") */
+    body { font-variant-numeric:lining-nums; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; text-rendering:optimizeLegibility; }
+    .heading, .hero h1, .cta h2, .troca-titulo, .quality h2, .quiz-q, .quiz-res-t, .show-title, .uni-tit, .ficha-nome,
+    .ent-etapa-tit, .duelo-nome, .bc-title, .faq-item summary, .gtl-txt strong, .un-cidade, .enq-q, .cat-semres h3,
+    .ig-chegada p, .gc-title, .benef-card strong, .como-step h3, .ent-pausa h3, .ent-ok h3, .pcard-nome { text-wrap:balance; }
+    p, li, dd, .faq-a, .bc-subtitle, .ent-dica, .ig-capa-txt { text-wrap:pretty; }
+    /* títulos de seção: escala fluida contínua no celular (antes caía em degraus de 2rem → 1,7 → 1,5) */
+    @media (max-width:700px) {
+      .heading { font-size:clamp(2.1rem, 1.3rem + 3.6vw, 2.75rem) !important; line-height:1.04; }
+      .hero h1 { font-size:clamp(2.75rem, 1.6rem + 6vw, 3.6rem) !important; line-height:.96 !important; letter-spacing:-.015em; }
+      .troca-titulo { font-size:clamp(2.1rem, 1.3rem + 3.6vw, 2.75rem); }
+      .cta h2 { font-size:clamp(2.6rem, 1.4rem + 6vw, 3.6rem); }
+      .quality h2 { font-size:clamp(2rem, 1.3rem + 3.4vw, 2.6rem); }
+    }
+    @media (max-width:420px) {
+      .ey { letter-spacing:.17em; gap:10px; }
+      .ey span { width:22px; }
+      .eyebrow { letter-spacing:.2em; }
+    }
+    /* parágrafos de abertura: mesma medida, mesma cor e o mesmo respiro depois do título */
+    .cat-sub, .duelo-intro, .quiz-intro, .un-intro { margin-top:20px; max-width:58ch; color:var(--texto-2); font-size:1rem; line-height:1.78; }
+    .cat-sub b { color:var(--gold-pale); }
+    /* números de nota/preço em Cormorant ficam na linha de base dos rótulos */
+    .un-nota span[style*="2.2rem"] { font-variant-numeric:lining-nums; }
+
+    /* ---------- 2. RITMO VERTICAL: um só compasso entre seções ---------- */
+    @media (min-width:901px) {
+      .sec, .gua, .contact { padding-top:clamp(104px, 8.4vw, 128px); padding-bottom:clamp(104px, 8.4vw, 128px); }
+      .sec.troca { padding-top:84px; padding-bottom:84px; }
+    }
+    @media (max-width:900px) and (min-width:701px) {
+      .sec { padding-top:84px !important; padding-bottom:84px !important; }
+      .gua, .contact { padding-top:84px !important; padding-bottom:76px !important; }
+    }
+    @media (max-width:700px) {
+      .sec, section.sec { padding-top:64px !important; padding-bottom:64px !important; }
+      .sec.troca { padding-top:52px !important; padding-bottom:52px !important; }
+      .gua, .contact { padding-top:64px !important; padding-bottom:56px !important; }
+      .eyebrow { margin-bottom:14px; }
+    }
+
+    /* ---------- 3. CONSISTÊNCIA: raios, fios e sombras de UM sistema ---------- */
+    .pcard, .gc, .un-card, .ig-capa, .ig-unaba, .uni-op, .ig-item, .benef-card, .bc-step, .skel, .quiz-opt { border-radius:var(--r-card); }
+    .g-grid.sstack .gc { border-radius:var(--r-card); }
+    .pcard, .un-card, .ig-capa, .ig-unaba, .uni-op, .benef-card, .duelo-card, .quiz-opt, .estoque, .ig-head, .enq, .tprova { border-color:var(--line); }
+    .pcard:hover, .un-card:hover, .ig-capa:hover, .ig-unaba:hover, .uni-op:hover, .benef-card:hover, .duelo-card:hover, .quiz-opt:hover { border-color:var(--line-forte); }
+    .un-card, .ig-capa, .uni-op { box-shadow:var(--sombra-card); }
+    .ig-capa:hover, .un-card:hover { box-shadow:var(--sombra-card-hover); }
+    .ig-unaba { transition:border-color .25s, background .25s, color .25s, box-shadow .35s var(--ease-out); }
+    /* o cartão da loja alinha as ações no pé (os dois cartões têm a mesma altura na grade) */
+    .un-card { display:flex; flex-direction:column; }
+    .un-card .un-acoes { margin-top:auto; padding-top:28px; }
+    .un-card .un-chegou { margin-bottom:0; }
+    /* mapa: proporção editorial (antes 4:3 → 930 px de altura no desktop) e troca de aba com fade */
+    .un-mapa .cmap { aspect-ratio:auto; height:clamp(300px, 38vw, 500px); }
+    .cmap iframe { transition:opacity .4s var(--ease-out); }
+    .cmap.trocando iframe { opacity:.25; }
+    @media (max-width:700px) { .un-mapa .cmap { height:300px; } }
+    /* Black Club: fundo leve (AVIF/WebP), mesmo visual a 8% */
+    .bc-bg-img { background-image:url('images/background.jpg');
+      background-image:image-set(url('images/bc-fundo-900.avif') type('image/avif'), url('images/bc-fundo-900.webp') type('image/webp'), url('images/background.jpg') type('image/jpeg')); }
+    /* títulos que desceram um nível (hierarquia) mantêm o desenho */
+    .fc h3 { font-size:.65rem; font-weight:600; letter-spacing:.22em; text-transform:uppercase; color:var(--gold); margin-bottom:20px; }
+    .fc-un h3 small { display:block; margin-top:4px; font-size:.56rem; letter-spacing:.2em; color:var(--gray); font-weight:600; }
+    .cat-semres h3 { font-family:'Cormorant Garamond',serif; font-size:1.7rem; font-weight:600; color:var(--cream); }
+    h2.show-eyebrow { font-family:'DM Sans',sans-serif; line-height:1.2; }
+
+    /* ---------- 4. FOCO VISÍVEL ÚNICO (teclado) ---------- */
+    :where(a, button, summary, input, select, textarea, [tabindex], [role="tab"], [role="radio"]):focus-visible { outline:2px solid var(--gold-pale); outline-offset:3px; }
+    .ig-capa:focus-visible, .uni-op:focus-visible { outline:2px solid var(--gold-pale); outline-offset:4px; }
+    .faq-item summary:focus-visible { border-radius:10px; outline-offset:2px; }
+    .quality :focus-visible { outline-color:var(--navy); }
+    main:focus, [tabindex="-1"]:focus:not(:focus-visible) { outline:none; }
+    .ig-capa:focus-visible { transform:translateY(-4px); }
+
+    /* ---------- 5. CURSOR POR TIPO DE ALVO ---------- */
+    #cur2 { display:flex; align-items:center; justify-content:center; }
+    .cur-lbl { font:700 .56rem/1 'DM Sans',sans-serif; letter-spacing:.18em; padding-left:.18em; text-transform:uppercase; white-space:nowrap;
+      color:#0a0f24; opacity:0; transform:scale(.6); transition:opacity .2s, transform .35s var(--ease-out); }
+    body.curlbl #cur2 { width:74px; height:74px; background:rgba(240,216,150,.94); border-color:transparent;
+      box-shadow:0 12px 30px -10px rgba(201,162,39,.7); }
+    body.curlbl .cur-lbl { opacity:1; transform:none; }
+    body.curlbl #cur { opacity:0; }
+    body.cur-wa:not(.curlbl) #cur2 { border-color:rgba(37,211,102,.7); background:rgba(37,211,102,.08); }
+
+    /* ---------- 6. TILT + LUZ: cartões das lojas e capas de Mogi ---------- */
+    .un-card::after { content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none; opacity:0; transition:opacity .4s;
+      background:radial-gradient(420px circle at var(--mx,50%) var(--my,50%), rgba(240,216,150,.10), transparent 62%); }
+    .un-card:hover::after { opacity:1; }
+    .un-card.inclinando, .ig-capa.inclinando { transition:border-color .3s, box-shadow .35s, transform .16s ease-out; will-change:transform; }
+    .ig-capa-foto::after { content:''; position:absolute; inset:0; pointer-events:none; opacity:0; transition:opacity .4s; mix-blend-mode:screen;
+      background:radial-gradient(300px circle at var(--mx,50%) var(--my,50%), rgba(255,228,160,.22), transparent 60%); }
+    .ig-capa:hover .ig-capa-foto::after { opacity:1; }
+    @media (pointer:fine) and (prefers-reduced-motion:no-preference) {
+      .ig-capa.inclinando .ig-capa-foto img { transform:scale(1.08) translate(calc(var(--px,0) * -12px), calc(var(--py,0) * -12px)); transition:transform .25s ease-out; }
+    }
+    .ig-capa-foto picture { display:contents; }
+    /* legenda legível mesmo quando a arte do post tem texto embaixo */
+    .ig-capa::after { background:linear-gradient(180deg, rgba(4,9,28,0) 30%, rgba(4,9,28,.8) 60%, rgba(4,9,28,.97) 82%); }
+
+    /* ---------- 7. ESTOQUE AGORA: trilho por categoria (o zero se lê como barra vazia, não como "faltou o gráfico") ---------- */
+    .elc-trilho { fill:rgba(247,243,232,.045); stroke:rgba(201,162,39,.16); stroke-width:1; vector-effect:non-scaling-stroke; }
+    .elc-bars-js .elc-bar { transform:none !important; transition:none !important; }
+    /* se o gradiente referenciado falhar (Safari antigo), a barra cai num dourado sólido em vez de sumir */
+    .elc-bar:not(.elc-bar-s2):not(.elc-bar-ok) { fill:url(#elc-bar) #d9b54a; }
+    .est-chart .elc-vlab { font-size:1.15rem; }
+
+    /* ---------- 8. MOVIMENTO: botão "pausar animações" (WCAG 2.2.2) + pausa fora da tela ---------- */
+    .mov-btn { display:inline-flex; align-items:center; gap:9px; border:1px solid rgba(201,162,39,.35); background:rgba(4,9,28,.82);
+      color:var(--gold-pale); border-radius:999px; padding:7px 14px 7px 11px; font:600 .6rem/1 'DM Sans',sans-serif; letter-spacing:.16em;
+      text-transform:uppercase; white-space:nowrap; transition:background .25s, border-color .25s, color .25s; }
+    .mov-btn:hover { border-color:var(--gold); color:#fff6d8; }
+    .mov-ic { position:relative; width:9px; height:10px; flex:0 0 auto; }
+    .mov-ic::before, .mov-ic::after { content:''; position:absolute; top:0; bottom:0; width:3px; border-radius:1px; background:currentColor; }
+    .mov-ic::before { left:0; } .mov-ic::after { right:0; }
+    .mov-btn[aria-pressed="true"] { background:var(--gold-grad); color:#0a0f24; border-color:transparent; }
+    .mov-btn[aria-pressed="true"] .mov-ic::before { width:0; height:0; top:0; left:1px; border-radius:0; background:none;
+      border-left:8px solid currentColor; border-top:5px solid transparent; border-bottom:5px solid transparent; }
+    .mov-btn[aria-pressed="true"] .mov-ic::after { display:none; }
+    .mq-pausa { position:absolute; right:14px; top:50%; transform:translateY(-50%); z-index:3; background:rgb(6,12,32); box-shadow:16px 0 0 14px rgb(5,11,30); }
+    .mq-pausa::before { content:''; position:absolute; right:calc(100% + 1px); top:-14px; bottom:-14px; width:56px; pointer-events:none;
+      background:linear-gradient(90deg, rgba(5,11,30,0), rgb(5,11,30) 85%); }
+    .mq-pausa[aria-pressed="true"]::before { right:100%; }
+    .fbot { align-items:center; gap:14px 24px; flex-wrap:wrap; }
+    @media (max-width:700px) {
+      .mq-pausa { right:8px; width:44px; height:44px; padding:0; justify-content:center; gap:0; }
+      .mq-pausa .mov-txt { position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; }
+      .fbot { flex-direction:column; align-items:flex-start; }
+    }
+    @media (prefers-reduced-motion: reduce) { .mov-btn { display:none !important; } }
+    html.sem-mov .mq-t, html.sem-mov .hero h1 em, html.sem-mov .badge::before, html.sem-mov .badge::after, html.sem-mov .selo-giro svg,
+    html.sem-mov .est-dot, html.sem-mov .gtl-step.is-on .gtl-dot::before, html.sem-mov .un-tag-nova i, html.sem-mov .btn-wa::after,
+    html.sem-mov .wa-float::before, html.sem-mov #produtos > .heading em, html.sem-mov .bc-lightning, html.sem-mov .pcard-estq i,
+    html.sem-mov .ficha-tag.ultima i, html.sem-mov .ent-trk-linha li.atual i, html.sem-mov .skel::after, html.sem-mov .ig-ph::after,
+    .hero.fora h1 em, .hero.fora .badge::before, .hero.fora .badge::after, #produtos > .heading.fora em, .gua.fora .selo-giro svg,
+    .bc-wrapper.fora .bc-lightning { animation-play-state:paused !important; }
+
+    /* ---------- 9. DESEMPENHO ---------- */
+    /* nav e dock opacos o bastante: o blur por cima do canvas animado era recalculado a cada quadro */
+    nav.sc { -webkit-backdrop-filter:none !important; backdrop-filter:none !important; background:rgba(4,9,28,.95) !important; }
+    @media (pointer:coarse) {
+      .dock-panel { -webkit-backdrop-filter:none; backdrop-filter:none; background:rgba(6,12,32,.95); }
+      .bc-prize-box { -webkit-backdrop-filter:none; backdrop-filter:none; background:rgba(0,0,0,.78); }
+    }
+    /* camadas de composição só onde se mexe (o odômetro criava ~50 camadas permanentes) */
+    .odo-n, .bc-prize-box, .glass-back, .glass-front, .dock-item, .quiz-card { will-change:auto; }
+    .fm-track { will-change:auto; } .fm.is-on .fm-track { will-change:transform; }
+    /* content-visibility foi medido e DESCARTADO: com alturas estimadas, a rolagem rápida no celular gerava
+       layout shift (CLS 0,27 no contato) e a rolagem suave do "Receber em casa" errava o destino. */
+
+    /* ---------- 10. ALVOS DE TOQUE ≥ 44 px ---------- */
+    @media (pointer:coarse), (max-width:700px) {
+      .skip, nav .logo, .fb .logo, .btn-t, .cmap-btn, .enq-btn, .il, .ig-chip, .duelo-cta, .tp-btn, .pcard-wa, .quiz-nav button, .quiz-refazer,
+      .un-mapa-aba, .ent-tentar, .cat-tab, .cat-ord button, .cat-chip, .cat-limpar, .ent-modo button, .ent-forma, .ficha-nav button,
+      .uni-lembrar, .mov-btn, .equipe-src, .fcred a { min-height:44px; }
+      .nav-uni { min-height:44px; min-width:44px; justify-content:center; }
+      .ent-prog-btn { min-height:44px; justify-content:center; }
+      .equipe-src { padding:6px 0; }
+      .fcred a { display:inline-flex; }
+      .fc li a, .ci-val a { display:inline-flex; align-items:center; min-height:44px; padding-top:0 !important; padding-bottom:0 !important; }
+      .fc-un li a { align-items:center; }
+      .fc-un li a .f-ic { margin-top:0; }
+      .ent-cep-link, .ent-link, .ent-lembrado button { display:inline-flex; align-items:center; min-height:44px; }
+      .ent-escolhido button, .ent-copiar, .bcs-btns button { width:44px; height:44px; }
+      .ent-rev-cab button { min-height:36px; padding:0 14px; }
+      .fg-seta, .ficha-fechar { width:44px; height:44px; }
+    }
+
+    /* ---------- 11. MOBILE ---------- */
+    /* safe-areas (viewport-fit=cover): nada some atrás do notch nem da barra de início */
+    body { padding-left:env(safe-area-inset-left, 0px); padding-right:env(safe-area-inset-right, 0px); }
+    nav { left:env(safe-area-inset-left, 0px) !important; right:env(safe-area-inset-right, 0px) !important; }
+    @media (max-width:700px) {
+      nav { padding-top:calc(14px + env(safe-area-inset-top, 0px)) !important; }
+      .wa-float { right:calc(16px + env(safe-area-inset-right, 0px)); bottom:calc(16px + env(safe-area-inset-bottom, 0px)); }
+      .el-toast { bottom:calc(104px + env(safe-area-inset-bottom, 0px)); }
+      body.has-dock { padding-bottom:calc(86px + env(safe-area-inset-bottom, 0px)); }
+      .mmenu { padding:env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px); }
+    }
+    /* digitando: dock e float saem da frente do campo e do teclado */
+    body.digitando .dock { transform:translateY(calc(100% + 24px)); }
+    body.digitando .wa-float { opacity:0 !important; pointer-events:none !important; visibility:hidden !important; }
+    /* números: a odometria "5+" deixava o rótulo grudar na mesma linha */
+    .stat-n.odo { display:flex; justify-content:center; }
+    @media (max-width:700px) {
+      .stats { gap:0 !important; }
+      .stat { padding:30px 10px 28px !important; display:flex; flex-direction:column; align-items:center; justify-content:center;
+        border-right:1px solid rgba(201,162,39,.1); border-bottom:1px solid rgba(201,162,39,.1); }
+      .stat:nth-child(2n) { border-right:none; }
+      .stat:nth-last-child(-n+2) { border-bottom:none; }
+      .stat-l { letter-spacing:.14em !important; line-height:1.55; }
+      .stat-anel { padding-top:24px !important; padding-bottom:22px !important; }
+      /* rodapé em duas colunas: menos rolagem, mesma leitura */
+      .ft { grid-template-columns:1fr 1fr !important; gap:34px 18px !important; }
+      .ft .fb { grid-column:1 / -1; }
+      .fc li a { overflow-wrap:anywhere; }
+      .fc h3 { margin-bottom:10px; }
+      /* contato: o endereço respira no cartão estreito */
+      .un-dados > div { grid-template-columns:88px minmax(0, 1fr); gap:10px; }
+    }
+    @media (max-width:380px) { .ft { grid-template-columns:1fr !important; } }
+    @media (prefers-reduced-motion: reduce) {
+      .cmap iframe, .un-card::after, .ig-capa-foto::after, .cur-lbl { transition:none !important; }
+      .ig-unaba:hover, .ig-capa:focus-visible { transform:none !important; }
+    }
+    .about-team-wrap picture { display:block; }
+    /* ---------- 12. DETALHES DE DIREÇÃO DE ARTE ---------- */
+    ::selection { background:rgba(201,162,39,.38); color:#fff8e6; }
+    html { scrollbar-color:rgba(201,162,39,.5) #04091c; }
+    a, button, summary, label { -webkit-tap-highlight-color:transparent; }
+    /* âncoras internas não somem atrás da nav fixa (ex.: barra do estoque → abas do catálogo) */
+    #catTabs, #bcSorte, #enquete, #estoqueAgora, #quizWrap, .ent-fone, #igGridMogi, .un-mapa { scroll-margin-top:104px; }
+    @media (max-width:700px) { #catTabs, #bcSorte, #enquete, #estoqueAgora, #quizWrap, .ent-fone, #igGridMogi, .un-mapa { scroll-margin-top:84px; } }
+    /* cartão da loja: fio dourado separando dados e ações (mesma linguagem do <dl>) */
+    .un-card .un-acoes { border-top:1px solid rgba(201,162,39,.12); margin-top:auto; padding-top:24px; }
+    .un-card .un-selo, .un-card .un-chegou { margin-bottom:24px; }
+    /* aba do Instagram: a ativa sobe um fio e ganha brilho na borda inferior */
+    .ig-unaba[aria-selected="true"] { box-shadow:inset 0 -2px 0 var(--gold), 0 18px 34px -24px rgba(201,162,39,.6); }
+    @media (pointer:fine) { .ig-unaba:hover { transform:translateY(-2px); } .ig-unaba { transition:border-color .25s, background .25s, color .25s, box-shadow .35s var(--ease-out), transform .3s var(--ease-out); } }
+    /* toque: cartões respondem ao dedo (press físico, como os botões) */
+    @media (pointer:coarse) {
+      .pcard:active, .un-card:active, .ig-capa:active, .uni-op:active, .benef-card:active { transform:scale(.985); transition:transform .12s; }
+    }
+    /* capas de Mogi no celular: a fileira desliza com borda esmaecida e respiro no fim */
+    @media (max-width:760px) {
+      .ig-capas { scroll-padding-inline:16px; -webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent); mask-image:linear-gradient(90deg,#000 calc(100% - 28px),transparent); }
+    }
+    /* FAQ: abre e fecha com altura animada onde o navegador sabe animar até "auto" (os demais abrem na hora) */
+    @supports (interpolate-size:allow-keywords) {
+      .faq { interpolate-size:allow-keywords; }
+      .faq-item::details-content { block-size:0; overflow:clip; transition:block-size .42s var(--ease-out), content-visibility .42s allow-discrete; }
+      .faq-item[open]::details-content { block-size:auto; }
+      .faq-item[open] .faq-a { animation:none; }
+    }
+    @media (prefers-reduced-motion: reduce) { .faq-item::details-content { transition:none !important; } }
+
+    /* ---------- 13. CONTRASTE MEDIDO NOS PIXELS (o ouro líquido passa por trás do texto) ---------- */
+    /* cinza de apoio um tom acima: #8899bb → #97a7c7 (4,1:1 → 4,9:1 no pior trecho medido do mar) */
+    :root { --gray:#97a7c7; }
+    /* halo escuro quase invisível: só aparece quando um filamento dourado cruza texto miúdo */
+    .eyebrow, .hero-sub, .hero .rs, .cat-sub, .quiz-intro, .duelo-intro, .duelo-comum, .como-step p, .gtl-txt p, .gtl-when, .faq-a, .faq-mao,
+    .ig-nota, .troca-sub, .troca-hint, .un-intro, .ent-sub, .ent-passos p, .ent-nota, .ent-ja, .tp-lbl, .tp-sub, .stat-l, .equipe-src,
+    .ig-stats, .est-sub, .est-nota, .cat-desc, .fb p, .fbot, .fc li a, .un-uf, .gc-desc {
+      text-shadow:0 0 2px rgba(2,5,16,.55), 0 1px 12px rgba(2,5,16,.85); }
+    /* cartões com texto ganham base navy (eram vidro claro a 3–5%: o mar aparecia por trás das letras) */
+    .benef-card { background:linear-gradient(160deg, rgba(255,255,255,.05), rgba(255,255,255,.015)), linear-gradient(160deg, rgba(10,19,48,.82), rgba(4,9,26,.9)); }
+    .duelo-card { background:linear-gradient(160deg, rgba(255,255,255,.04), rgba(255,255,255,.01)), linear-gradient(160deg, rgba(10,19,48,.8), rgba(4,9,26,.88)); }
+    .ig-head, .estoque, .tprova { background:linear-gradient(160deg, rgba(255,255,255,.035), rgba(255,255,255,.01)), rgba(6,12,32,.78); }
+    .enq { background:linear-gradient(120deg, rgba(201,162,39,.09), rgba(255,255,255,.02)), rgba(6,12,32,.8); }
+    .troca-hint { color:var(--texto-2); }
+    .benef-card small, .duelo-lista li { color:#a9b7d3; }
+    .cat-tab-n { color:#aab6cf; }
+    .como-num { -webkit-text-stroke-color:rgba(201,162,39,.75); }
+    .equipe-src { color:var(--gold-pale); }
+    .quiz-step { color:var(--gold-pale); text-shadow:0 0 2px rgba(2,5,16,.55), 0 1px 12px rgba(2,5,16,.85); }
+    .troca .eyebrow { color:var(--gold-light); }
+    .faq-mao { color:var(--texto-2); }
+    .faq-a a, .faq-mao a { color:var(--gold-pale); }
+    .cat-tab.active .cat-tab-n { color:rgba(10,15,36,.86); }
+    /* Instagram no celular: 3 primeiro, o resto sob demanda */
+    @media (max-width:700px) {
+      .ig-grid.ig-recolhido .ig-item:nth-child(n+4) { display:none; }
+      .ig-item { min-height:340px; }
+    }
+    .ig-mais { display:flex; align-items:center; justify-content:center; gap:12px; width:100%; min-height:48px; margin-top:14px;
+      border:1px dashed rgba(201,162,39,.45); border-radius:var(--r-card); background:rgba(201,162,39,.04); color:var(--gold-pale);
+      font:600 .7rem/1 'DM Sans',sans-serif; letter-spacing:.16em; text-transform:uppercase; }
+    .ig-mais i { width:8px; height:8px; border-right:1.5px solid currentColor; border-bottom:1.5px solid currentColor; transform:rotate(45deg) translateY(-2px); }
+    .ig-mais:active { transform:scale(.985); }
   </style>
 </head>
 <body>
@@ -3190,15 +3489,15 @@
 })();
 </script>
 
-<div id="cur"></div>
-<div id="cur2"></div>
+<div id="cur" aria-hidden="true"></div>
+<div id="cur2" aria-hidden="true"><span class="cur-lbl" id="curLbl"></span></div>
 <div id="scrollProg" aria-hidden="true"></div>
 
 <a class="skip" href="#conteudo">Pular para o conteúdo</a>
 
 <!-- NAV -->
-<nav id="nav">
-  <a href="#" class="logo">
+<nav id="nav" aria-label="Principal">
+  <a href="#" class="logo" aria-label="Eletronic — voltar ao início">
     <div class="logo-mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
     <span class="logo-name">Eletronic</span>
   </a>
@@ -3220,7 +3519,7 @@
 </nav>
 
 <!-- MENU MOBILE -->
-<div class="mmenu" id="mmenu" hidden>
+<div class="mmenu" id="mmenu" role="dialog" aria-modal="true" aria-label="Menu" hidden>
   <button class="mmenu-close" id="mmenuClose" aria-label="Fechar menu">&times;</button>
   <a href="#produtos">Produtos</a>
   <a href="#produtos" onclick="irCat('blackclub')">Black Club</a>
@@ -3249,7 +3548,7 @@
   </div>
 </div>
 
-<main id="conteudo">
+<main id="conteudo" tabindex="-1">
 <!-- HERO -->
 <section class="hero">
   <div class="hero-glow"></div>
@@ -3264,6 +3563,7 @@
     <span class="badge">Taubaté · Mogi das Cruzes</span>
   </div>
   <div class="hero-rating">
+    <span class="hero-anel" aria-hidden="true"></span>
     <div class="stars" role="img" aria-label="4,8 de 5 estrelas">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
@@ -3279,9 +3579,64 @@
     <a href="#produtos" class="btn-t">Ver modelos</a>
   </div>
 </section>
+<script>
+/* HERO H1 — revelação palavra a palavra (LOTE 2: roda aqui, logo após o título, e não no fim da página:
+   o split acontece antes do primeiro paint e o LCP não espera os scripts pesados) */
+(function () {
+  try {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var h = document.querySelector('.hero h1');
+    if (!h || h.classList.contains('split')) return;
+    var frag = document.createDocumentFragment(), idx = 0;
+    function envolve(no) {
+      var s = document.createElement('span');
+      s.className = 'w';
+      s.style.transitionDelay = (idx * 60) + 'ms';
+      idx++;
+      s.appendChild(no);
+      return s;
+    }
+    Array.prototype.slice.call(h.childNodes).forEach(function (n) {
+      if (n.nodeType === 3) {
+        n.textContent.split(/(\s+)/).forEach(function (parte) {
+          if (!parte) return;
+          if (/^\s+$/.test(parte)) { frag.appendChild(document.createTextNode(' ')); return; }
+          frag.appendChild(envolve(document.createTextNode(parte)));
+        });
+      } else if (n.nodeName === 'BR') frag.appendChild(n.cloneNode(false));
+      else frag.appendChild(envolve(n.cloneNode(true)));
+    });
+    /* o leitor de tela lê a frase inteira, não palavra por palavra */
+    var frase = '';
+    Array.prototype.forEach.call(h.childNodes, function (n) { frase += n.nodeName === 'BR' ? ' ' : n.textContent; });
+    h.setAttribute('aria-label', frase.replace(/\s+/g, ' ').trim());
+    h.innerHTML = '';
+    h.appendChild(frag);
+    Array.prototype.forEach.call(h.children, function (c) { if (c.tagName !== 'BR') c.setAttribute('aria-hidden', 'true'); });
+    h.classList.add('split');
+    var atraso = document.documentElement.classList.contains('comintro') ? 1150 : 0;
+    /* as palavras sobem já na Cormorant definitiva (sem piscar a fonte reserva nem deslocar o título):
+       espera a fonte do título, com teto de 900 ms para conexão lenta */
+    var fontes = Promise.resolve();
+    try {
+      if (document.fonts && document.fonts.load) fontes = Promise.race([
+        Promise.all([document.fonts.load('700 1em "Cormorant Garamond"'), document.fonts.load('italic 700 1em "Cormorant Garamond"')]),
+        new Promise(function (ok) { setTimeout(ok, 900); })
+      ]);
+    } catch (e) { /* segue sem esperar */ }
+    var t0 = Date.now();
+    fontes.then(null, function () {}).then(function () {
+      setTimeout(function () {
+        requestAnimationFrame(function () { requestAnimationFrame(function () { document.body.classList.add('ready'); }); });
+      }, Math.max(0, atraso - (Date.now() - t0)));
+    });
+  } catch (e) { /* título continua legível sem o efeito */ }
+})();
+</script>
 
 <!-- MARQUEE -->
 <div class="mq">
+  <button type="button" class="mov-btn mq-pausa" data-movimento aria-pressed="false"><span class="mov-ic" aria-hidden="true"></span><span class="mov-txt">Pausar animações</span></button>
   <div class="mq-t">
     <span class="mq-i">iPhone 16 Pro Max</span><span class="mq-d" aria-hidden="true">&#9670;</span><span class="mq-i">iPhone 16 Pro</span><span class="mq-d" aria-hidden="true">&#9670;</span><span class="mq-i">iPhone 16</span><span class="mq-d" aria-hidden="true">&#9670;</span>
     <span class="mq-i">1 Ano de Garantia</span><span class="mq-d" aria-hidden="true">&#9670;</span><span class="mq-i">Nota Fiscal</span><span class="mq-d" aria-hidden="true">&#9670;</span><span class="mq-i">Entrega Brasil</span><span class="mq-d" aria-hidden="true">&#9670;</span>
@@ -3297,7 +3652,7 @@
 <!-- SHOWCASE — iPhone 2D guiado pelo scroll (palco sticky de 300vh) -->
 <section class="show" id="showcase" aria-label="A experiência Eletronic — iPhone original do lacre à sua mão">
   <div class="show-sticky">
-    <p class="show-eyebrow"><span></span>A experiência Eletronic</p>
+    <h2 class="show-eyebrow"><span></span>A experiência Eletronic</h2>
     <div class="show-titles">
       <h3 class="show-title st-0">Original. <em>Lacrado.</em> Seu.</h3>
       <h3 class="show-title st-1">Tudo <em>no papel</em> — e no seu nome.</h3>
@@ -3343,9 +3698,9 @@
 </section>
 
 <!-- CATALOG -->
-<section class="sec" id="produtos">
+<section class="sec" id="produtos" aria-labelledby="produtosTitulo">
   <p class="eyebrow rv"><span></span>Catálogo ao vivo · Lacrados &amp; Seminovos</p>
-  <h2 class="heading rv">Nossos <em>Modelos</em></h2>
+  <h2 class="heading rv" id="produtosTitulo">Nossos <em>Modelos</em></h2>
   <p class="cat-sub rv">Vitrine atualizada em tempo real pela loja: <b>lacrados</b>, <b>seminovos revisados</b> e o <b>Black Club</b> — todos com nota fiscal e 1 ano de garantia.</p>
 
   <!-- o que acompanha toda compra — faixa de 6 cards -->
@@ -3391,14 +3746,14 @@
       <canvas id="bc-canvas" aria-hidden="true"></canvas>
 
       <!-- Overlay com background image misturado -->
-      <div class="bc-bg-overlay" style="background-image:url('images/background.jpg')"></div>
+      <div class="bc-bg-overlay bc-bg-img"></div>
 
       <!-- Conteúdo sobre o canvas -->
       <div class="bc-content">
 
         <div class="bc-badge-top rv">EXCLUSIVO PARA MEMBROS</div>
         <div class="bc-lightning"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
-        <h2 class="bc-title rv">BLACK<br/><span>CLUB</span></h2>
+        <h3 class="bc-title rv">BLACK<br/><span>CLUB</span></h3>
         <p class="bc-subtitle rv">Compre, indique e concorra a prêmios incríveis.<br/>O grande sorteio é no Natal.</p>
 
         <div class="bc-prize-box rv">
@@ -3419,7 +3774,7 @@
     <div class="bc-body">
 
       <div class="bc-section rv">
-        <h3 class="bc-section-title">Como participar</h3>
+        <h4 class="bc-section-title">Como participar</h4>
         <div class="bc-steps">
           <div class="bc-step">
             <div class="bc-step-num">01</div>
@@ -3443,7 +3798,7 @@
       </div>
 
       <div class="bc-section rv">
-        <h3 class="bc-section-title">Sorteios do ano</h3>
+        <h4 class="bc-section-title">Sorteios do ano</h4>
         <div class="bc-card-natal">
           <div class="bc-card-natal-left">
             <span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 21h8M12 17v4"/><path d="M17 4H7v5a5 5 0 0 0 10 0V4z"/><path d="M7 6H4v1a4 4 0 0 0 4 4M17 6h3v1a4 4 0 0 1-4 4"/></svg></span>
@@ -3465,7 +3820,7 @@
       </div>
 
       <div class="bc-section rv" id="bcSorte">
-        <h3 class="bc-section-title">Seus números da sorte</h3>
+        <h4 class="bc-section-title">Seus números da sorte</h4>
         <p class="bcs-intro">Regra do clube: <strong>cada compra ou indicação que fechar gera 1 número da sorte</strong>. Conte os seus e veja os bilhetes aparecerem.</p>
         <div class="bcs-grid">
           <div class="bcs-ctl">
@@ -3604,9 +3959,9 @@
 </section>
 
 <!-- LACRADO × SEMINOVO -->
-<section class="sec" id="qualescolher">
+<section class="sec" id="qualescolher" aria-labelledby="dueloTitulo">
   <p class="eyebrow rv"><span></span>Qual é o seu?</p>
-  <h2 class="heading rv">Lacrado ou <em>seminovo?</em></h2>
+  <h2 class="heading rv" id="dueloTitulo">Lacrado ou <em>seminovo?</em></h2>
   <p class="duelo-intro rv">Não existe resposta errada — existe o iPhone certo para o seu momento.
     E os dois saem daqui com a mesma segurança.</p>
   <div class="duelo rv">
@@ -3638,27 +3993,27 @@
 </section>
 
 <!-- COMO FUNCIONA -->
-<section class="sec como" id="comofunciona">
+<section class="sec como" id="comofunciona" aria-labelledby="comoTitulo">
   <p class="eyebrow rv"><span></span>Como Funciona</p>
-  <h2 class="heading rv">Do <em>olá</em> ao iPhone no bolso</h2>
+  <h2 class="heading rv" id="comoTitulo">Do <em>olá</em> ao iPhone no bolso</h2>
   <div class="como-wrap">
     <svg class="como-line" viewBox="0 0 1000 60" preserveAspectRatio="none" aria-hidden="true">
       <path id="comoPath" pathLength="1000" d="M0 30 C 90 6, 160 54, 250 30 S 410 6, 500 30 S 660 54, 750 30 S 910 6, 1000 30"/>
     </svg>
     <ol class="como-grid">
-      <li class="como-step rv"><span class="como-num">01</span><h3>Escolha ou consulte</h3><p>Escolha no catálogo ao vivo ou chame no WhatsApp para ver a vitrine do dia — a gente te ajuda a achar o modelo certo.</p></li>
-      <li class="como-step rv" style="transition-delay:.08s"><span class="como-num">02</span><h3>Confirme com Nota Fiscal</h3><p>Aparelho conferido na sua frente e nota fiscal emitida na hora. Operação 100% formal, sem letra miúda.</p></li>
-      <li class="como-step rv" style="transition-delay:.16s"><span class="como-num">03</span><h3>Transferência na hora</h3><p>Seus dados, fotos e contatos migram para o novo iPhone no ato da compra. Você sai com tudo funcionando.</p></li>
-      <li class="como-step rv" style="transition-delay:.24s"><span class="como-num">04</span><h3>Saia com 1 ano de garantia</h3><p>Garantia de 12 meses da loja e um contato salvo para o que precisar depois. Suporte de verdade.</p></li>
+      <li class="como-step rv"><span class="como-num" aria-hidden="true">01</span><h3>Escolha ou consulte</h3><p>Escolha no catálogo ao vivo ou chame no WhatsApp para ver a vitrine do dia — a gente te ajuda a achar o modelo certo.</p></li>
+      <li class="como-step rv" style="transition-delay:.08s"><span class="como-num" aria-hidden="true">02</span><h3>Confirme com Nota Fiscal</h3><p>Aparelho conferido na sua frente e nota fiscal emitida na hora. Operação 100% formal, sem letra miúda.</p></li>
+      <li class="como-step rv" style="transition-delay:.16s"><span class="como-num" aria-hidden="true">03</span><h3>Transferência na hora</h3><p>Seus dados, fotos e contatos migram para o novo iPhone no ato da compra. Você sai com tudo funcionando.</p></li>
+      <li class="como-step rv" style="transition-delay:.24s"><span class="como-num" aria-hidden="true">04</span><h3>Saia com 1 ano de garantia</h3><p>Garantia de 12 meses da loja e um contato salvo para o que precisar depois. Suporte de verdade.</p></li>
     </ol>
   </div>
 </section>
 
 <!-- QUALITY -->
-<div class="quality rv">
+<div class="quality rv" role="region" aria-labelledby="qualTitulo">
   <div>
-    <h2>Qualidade que você <em>sente</em> desde o primeiro contato.</h2>
-    <div class="about-team-wrap rv"><img class="about-team-img" src="images/background-4.jpg" alt="Equipe Eletronic" width="560" height="700" loading="lazy" decoding="async"/></div>
+    <h2 id="qualTitulo">Qualidade que você <em>sente</em> desde o primeiro contato.</h2>
+    <div class="about-team-wrap rv"><picture><source type="image/avif" srcset="images/equipe-360.avif 360w, images/equipe-560.avif 560w" sizes="(max-width:700px) calc(100vw - 32px), 560px"/><source type="image/webp" srcset="images/equipe-360.webp 360w, images/equipe-560.webp 560w" sizes="(max-width:700px) calc(100vw - 32px), 560px"/><img class="about-team-img" src="images/background-4.jpg" alt="Equipe Eletronic" width="560" height="700" loading="lazy" decoding="async"/></picture></div>
   </div>
   <div>
     <div class="g-rat">
@@ -3691,7 +4046,7 @@
     <blockquote>Mais do que uma equipe, somos uma família. Todos os dias colocamos dedicação, compromisso e paixão em cada atendimento, porque acreditamos que vender um produto é importante, mas <em>cuidar de quem confia em nós é ainda mais</em>. Por trás de cada mensagem respondida, de cada iPhone entregue e de cada suporte prestado, existem pessoas reais... Obrigado por fazer parte da nossa história.</blockquote>
     <figcaption><a class="equipe-src" data-ig-keep href="https://www.instagram.com/eletronic.oficial/p/DbqGB1VFeHP/" target="_blank" rel="noopener">@eletronic.oficial · 5 de agosto</a></figcaption>
   </figure>
-  <div class="equipe-pills rv" aria-label="Destaques do perfil">
+  <div class="equipe-pills rv" role="group" aria-label="Destaques do perfil">
     <a class="ig-chip" href="https://www.instagram.com/eletronic.oficial" target="_blank" rel="noopener"><i aria-hidden="true"></i>Seguro</a>
     <a class="ig-chip" href="https://www.instagram.com/eletronic.oficial" target="_blank" rel="noopener"><i aria-hidden="true"></i>Indicações</a>
     <a class="ig-chip" href="https://www.instagram.com/eletronic.oficial" target="_blank" rel="noopener"><i aria-hidden="true"></i>Entregas</a>
@@ -3702,7 +4057,7 @@
 </section>
 
 <!-- GUARANTEES -->
-<section class="gua" id="garantias">
+<section class="gua" id="garantias" aria-labelledby="guaTitulo">
   <canvas class="gua-fx" id="guaFx" aria-hidden="true"></canvas>
   <div class="selo-giro" aria-hidden="true">
     <svg viewBox="0 0 100 100">
@@ -3714,7 +4069,7 @@
     </svg>
   </div>
   <p class="eyebrow rv"><span></span>Diferenciais</p>
-  <h2 class="heading rv">Compra <em>segura</em> do início ao fim</h2>
+  <h2 class="heading rv" id="guaTitulo">Compra <em>segura</em> do início ao fim</h2>
   <!-- LINHA DO TEMPO DA GARANTIA — só marcos factuais; desenha ao rolar, marcos acendem em cascata -->
   <div class="gtl rv" id="gtl">
     <svg class="gtl-svg" viewBox="0 0 1000 8" preserveAspectRatio="none" aria-hidden="true">
@@ -3779,9 +4134,9 @@
 </div>
 
 <!-- TESTIMONIALS -->
-<section class="sec">
+<section class="sec" id="avaliacoes" aria-labelledby="avalTitulo">
   <p class="eyebrow rv"><span></span>Avaliações Google</p>
-  <h2 class="heading rv">Clientes que já <em>conquistaram</em> o seu</h2>
+  <h2 class="heading rv" id="avalTitulo">Clientes que já <em>conquistaram</em> o seu</h2>
   <div class="tprova rv">
     <span class="tp-num">4,8</span>
     <div class="tp-info">
@@ -4045,9 +4400,9 @@
 </section>
 
 <!-- INSTAGRAM — A LOJA NA VIDA REAL -->
-<section class="sec igsec" id="instagram">
+<section class="sec igsec" id="instagram" aria-labelledby="igTitulo">
   <p class="eyebrow rv"><span></span>Instagram</p>
-  <h2 class="heading rv">As lojas na <em>vida real</em></h2>
+  <h2 class="heading rv" id="igTitulo">As lojas na <em>vida real</em></h2>
   <div class="ig-unabas rv" role="tablist" aria-label="Instagram de cada unidade">
     <button type="button" role="tab" class="ig-unaba" id="igAbaTau" aria-selected="true" aria-controls="igPainelTau" data-ig-aba="taubate">
       <span class="ig-unaba-cid">Taubaté</span><span class="ig-unaba-at">@eletronic.oficial</span>
@@ -4152,19 +4507,19 @@
     </blockquote>
     <div class="ig-capas rv" id="igGridMogi">
       <a class="ig-capa" data-ig-keep href="https://www.instagram.com/eletronic.oficial.mogi/reel/DeHgkpbB0_U/" target="_blank" rel="noopener" style="transition-delay:0.00s">
-        <span class="ig-capa-foto"><img src="images/ig/mogi-3.webp" alt="Reel da Eletronic Mogi mostrando o caminho até a nova loja em Mogi das Cruzes" width="360" height="640" loading="lazy" decoding="async"></span>
+        <span class="ig-capa-foto"><picture><source type="image/avif" srcset="images/ig/mogi-3-240.avif 240w, images/ig/mogi-3-360.avif 360w" sizes="(max-width:760px) 76vw, 400px"><img src="images/ig/mogi-3.webp" srcset="images/ig/mogi-3-240.webp 240w, images/ig/mogi-3.webp 360w" sizes="(max-width:760px) 76vw, 400px" alt="Reel da Eletronic Mogi mostrando o caminho até a nova loja em Mogi das Cruzes" width="360" height="640" loading="lazy" decoding="async"></picture></span>
         <span class="ig-capa-tipo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg>Reel</span>
         <span class="ig-capa-txt"><b>5 de outubro</b>Vem com a gente conhecer o caminho até a nova Eletronic em Mogi das Cruzes! Esse é só o começo…</span>
         <span class="ig-capa-ir">Ver no Instagram →</span>
       </a>
       <a class="ig-capa" data-ig-keep href="https://www.instagram.com/eletronic.oficial.mogi/p/Dd81MBhA8c3/" target="_blank" rel="noopener" style="transition-delay:0.08s">
-        <span class="ig-capa-foto"><img src="images/ig/mogi-1.webp" alt="Arte "+5 anos realizando sonhos — agora em Mogi das Cruzes"" width="640" height="640" loading="lazy" decoding="async"></span>
+        <span class="ig-capa-foto"><picture><source type="image/avif" srcset="images/ig/mogi-1-320.avif 320w, images/ig/mogi-1-640.avif 640w" sizes="(max-width:760px) 76vw, 400px"><img src="images/ig/mogi-1.webp" srcset="images/ig/mogi-1-320.webp 320w, images/ig/mogi-1.webp 640w" sizes="(max-width:760px) 76vw, 400px" alt="Arte “+5 anos realizando sonhos — agora em Mogi das Cruzes”" width="640" height="640" loading="lazy" decoding="async"></picture></span>
         <span class="ig-capa-tipo">Post</span>
         <span class="ig-capa-txt"><b>1º de outubro</b>Há 5 anos cuidando do que te conecta ao mundo. E agora, a Eletronic está chegando em Mogi das Cruzes!</span>
         <span class="ig-capa-ir">Ver no Instagram →</span>
       </a>
       <a class="ig-capa" data-ig-keep href="https://www.instagram.com/eletronic.oficial.mogi/reel/Dd2SWK-gNrC/" target="_blank" rel="noopener" style="transition-delay:0.16s">
-        <span class="ig-capa-foto"><img src="images/ig/mogi-2.webp" alt="Reel "Chegamos Mogi das Cruzes — especializada em produtos Apple"" width="360" height="640" loading="lazy" decoding="async"></span>
+        <span class="ig-capa-foto"><picture><source type="image/avif" srcset="images/ig/mogi-2-240.avif 240w, images/ig/mogi-2-360.avif 360w" sizes="(max-width:760px) 76vw, 400px"><img src="images/ig/mogi-2.webp" srcset="images/ig/mogi-2-240.webp 240w, images/ig/mogi-2.webp 360w" sizes="(max-width:760px) 76vw, 400px" alt="Reel “Chegamos Mogi das Cruzes — especializada em produtos Apple”" width="360" height="640" loading="lazy" decoding="async"></picture></span>
         <span class="ig-capa-tipo"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg>Reel</span>
         <span class="ig-capa-txt"><b>28 de setembro</b>Mogi das Cruzes, chegamos! A Eletronic agora também é daqui.</span>
         <span class="ig-capa-ir">Ver no Instagram →</span>
@@ -4178,9 +4533,9 @@
 </section>
 
 <!-- FAQ -->
-<section class="sec" id="duvidas">
+<section class="sec" id="duvidas" aria-labelledby="faqTitulo">
   <p class="eyebrow rv"><span></span>Dúvidas Frequentes</p>
-  <h2 class="heading rv">O que todo mundo <em>pergunta</em></h2>
+  <h2 class="heading rv" id="faqTitulo">O que todo mundo <em>pergunta</em></h2>
   <div class="faq rv">
     <details class="faq-item">
       <summary>Os iPhones da Eletronic são originais?<span class="faq-mais" aria-hidden="true">+</span></summary>
@@ -4308,8 +4663,8 @@
 </section>
 
 <!-- CTA -->
-<section class="cta">
-  <h2 class="rv">Pronto para sua<br/>próxima <em>conquista?</em></h2>
+<section class="cta" aria-labelledby="ctaTitulo">
+  <h2 class="rv" id="ctaTitulo">Pronto para sua<br/>próxima <em>conquista?</em></h2>
   <p class="rv" style="transition-delay:.12s">iPhone original, garantia real, nota fiscal e entrega para todo o Brasil. Chame agora.</p>
   <a href="https://wa.me/5512997463135" target="_blank" rel="noopener" class="btn-g rv" style="transition-delay:.22s">Chamar no WhatsApp</a>
 </section>
@@ -4343,6 +4698,7 @@
 
 <!-- FOOTER -->
 <footer>
+  <h2 class="sr-only">Eletronic — catálogo, informações e as duas lojas</h2>
   <div class="ft">
     <div class="fb">
       <a href="#" class="logo"><div class="logo-mark"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div><span class="logo-name">Eletronic</span></a>
@@ -4350,7 +4706,7 @@
       <div class="il-par"><a data-un="taubate" href="https://www.instagram.com/eletronic.oficial" target="_blank" rel="noopener" class="il">@eletronic.oficial</a><a data-un="mogi" href="https://www.instagram.com/eletronic.oficial.mogi" target="_blank" rel="noopener" class="il">@eletronic.oficial.mogi</a></div>
     </div>
     <div class="fc">
-      <h4>Catálogo</h4>
+      <h3>Catálogo</h3>
       <ul>
         <li><a href="#produtos" onclick="irCat('lacrados')">Lacrados</a></li>
         <li><a href="#produtos" onclick="irCat('seminovos')">Seminovos</a></li>
@@ -4358,7 +4714,7 @@
       </ul>
     </div>
     <div class="fc">
-      <h4>Informações</h4>
+      <h3>Informações</h3>
       <ul>
         <li><a href="#garantias">Garantia</a></li>
         <li><a href="#duvidas">Dúvidas Frequentes</a></li>
@@ -4370,7 +4726,7 @@
       </ul>
     </div>
     <div class="fc fc-un">
-      <h4>Taubaté <small>Matriz</small></h4>
+      <h3>Taubaté <small>Matriz</small></h3>
       <ul>
         <li><a data-un="taubate" href="https://wa.me/5512997463135" target="_blank" rel="noopener"><svg class="f-ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-wa"/></svg>(12) 99746-3135</a></li>
         <li><a data-un="taubate" href="https://www.instagram.com/eletronic.oficial" target="_blank" rel="noopener"><svg class="f-ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-ig"/></svg>@eletronic.oficial</a></li>
@@ -4378,7 +4734,7 @@
       </ul>
     </div>
     <div class="fc fc-un">
-      <h4>Mogi das Cruzes <small>Nova unidade</small></h4>
+      <h3>Mogi das Cruzes <small>Nova unidade</small></h3>
       <ul>
         <li><a data-un="mogi" href="https://wa.me/5511994122171" target="_blank" rel="noopener"><svg class="f-ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-wa"/></svg>(11) 99412-2171</a></li>
         <li><a data-un="mogi" href="https://www.instagram.com/eletronic.oficial.mogi" target="_blank" rel="noopener"><svg class="f-ic" viewBox="0 0 24 24" aria-hidden="true"><use href="#ico-ig"/></svg>@eletronic.oficial.mogi</a></li>
@@ -4390,6 +4746,7 @@
   <div class="fbot">
     <span>© 2026 Eletronic. Todos os direitos reservados.</span>
     <span>Taubaté · Mogi das Cruzes — SP &nbsp;|&nbsp; 4,8 no Google</span>
+    <button type="button" class="mov-btn mov-rodape" data-movimento aria-pressed="false"><span class="mov-ic" aria-hidden="true"></span><span class="mov-txt">Pausar animações</span></button>
   </div>
   <p class="fcred"><a href="https://nexus-taubate.netlify.app" target="_blank" rel="noopener" aria-label="Feito por Nexus IA — site da Nexus, abre em nova aba"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>Feito por Nexus IA</a></p>
 </footer>
@@ -4401,7 +4758,17 @@
   window.abaVisivel = function (slug) { return slug === 'blackclub' || window.ABAS_VISIVEIS.indexOf(slug) >= 0; };
 
   // Indicador dourado deslizante da pill segmentada (recriado a cada re-render do Supabase)
+  let indPend = null, indRaf = 0;
   function posIndicador(btn, snap) {
+    if (!btn) return;
+    indPend = { btn: btn, snap: !!(snap || (indPend && indPend.snap)) };
+    if (!indRaf) indRaf = requestAnimationFrame(function () {
+      indRaf = 0;
+      const p = indPend; indPend = null;
+      if (p && p.btn.isConnected) posIndicadorAgora(p.btn, p.snap);
+    });
+  }
+  function posIndicadorAgora(btn, snap) {
     const wrap = btn && btn.parentElement;
     if (!wrap || wrap.id !== 'catTabs') return;
     let ind = wrap.querySelector('.cat-ind');
@@ -4521,8 +4888,20 @@
       veu.addEventListener('mouseenter',()=>{ document.body.classList.add('curoff'); veu.style.pointerEvents='none'; });
       m.appendChild(veu);
     });
+    /* LOTE 2 — o anel do cursor fala o que o clique faz: Ver (aparelho), Abrir (post/gráfico),
+       Arraste (galeria), Próximo (vitrine), Mapa (cartão da loja). Só nesses alvos — no resto, o anel de sempre. */
+    const curLbl=document.getElementById('curLbl'); let curLblAtual='';
+    const ROTULOS=[['.fg-trilho','Arraste'],['.pcard','Ver'],['.ig-capa','Abrir'],['.elc-clicavel','Abrir'],['#ivit .iph','Próximo'],['.un-card','Mapa']];
+    function curRotulo(t){
+      if(!t.closest||t.closest('a[href*="wa.me"],.un-acoes,.un-dados a,.pcard-wa,button:not(.fg-trilho button)'))return '';
+      for(const [s,l] of ROTULOS){ if(t.closest(s)) return l; }
+      return '';
+    }
     document.addEventListener('mouseover',e=>{
       const t=e.target;
+      const lbl=curRotulo(t);
+      if(lbl!==curLblAtual){ curLblAtual=lbl; if(curLbl&&lbl) curLbl.textContent=lbl; document.body.classList.toggle('curlbl',!!lbl); }
+      document.body.classList.toggle('cur-wa',!!(t.closest&&t.closest('a[href*="wa.me"]')));
       document.body.classList.toggle('hov',!!(t.closest&&t.closest('a,button,summary,.pcard,.cat-tab,.iph,.elc-clicavel,.ent-chip,.ent-dia,.ent-check,.fg-trilho')));
       const noMapa=!!(t.closest&&t.closest('.cmap'));
       // nos campos de texto do agendamento/acompanhar vale o cursor de digitação do sistema
@@ -4540,7 +4919,12 @@
 
   // Nav scroll
   const nav=document.getElementById('nav');
-  if(nav) window.addEventListener('scroll',()=>nav.classList.toggle('sc',scrollY>40));
+  if(nav){
+    let navRaf=0, navSc=null;
+    const navPinta=()=>{ navRaf=0; const s=scrollY>40; if(s!==navSc){ navSc=s; nav.classList.toggle('sc',s); } };
+    window.addEventListener('scroll',()=>{ if(!navRaf) navRaf=requestAnimationFrame(navPinta); },{passive:true});
+    navPinta();
+  }
 
   // Scrollspy — a âncora da seção atual acende na nav
   (function(){
@@ -4567,7 +4951,7 @@
   })();
 
   // Reveal on scroll
-  const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on');}),{threshold:.1});
+  const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');obs.unobserve(e.target);}}),{threshold:.1,rootMargin:'0px 0px -6% 0px'});
   document.querySelectorAll('.rv').forEach(el=>obs.observe(el));
 
 </script>
@@ -5147,7 +5531,12 @@ window.elcChart = (function () {
     s.xt = [];
     s.vt = [];
     s.foco = mk("rect", { class: "elc-focus" }, s.svg);
-    s.gb = mk("g", { class: "elc-bars-g" }, s.svg);
+    s.trilhos = [];
+    if (opts.trilho) {
+      s.gtr = mk("g", { class: "elc-trilhos" }, s.svg);
+      for (var tq = 0; tq < opts.series[0].values.length; tq++) s.trilhos.push(mk("rect", { class: "elc-trilho", rx: "3" }, s.gtr));
+    }
+    s.gb = mk("g", { class: "elc-bars-g" + (opts.trilho ? " elc-bars-js" : "") }, s.svg);
     s.rects = [];
     for (var k = 0; k < s.series.length; k++) {
       s.rects.push([]);
@@ -5156,6 +5545,23 @@ window.elcChart = (function () {
         r.style.setProperty("--d", String(j * 45 + k * 30));
         s.rects[k].push(r);
       }
+    }
+    /* LOTE 2 — com trilho, a barra cresce por atributo (height/y) num tween do relógio central:
+       funciona em qualquer navegador (o scaleY em <rect> dependia de transform-box no SVG) */
+    if (opts.trilho && !reducedMotion && !s.desenhado) {
+      s.mostrados = s.series.map(function (sr) { return sr.values.map(function () { return 0; }); });
+      s.aoDesenhar = function () {
+        var alvo = [], de = [];
+        for (var q = 0; q < s.series.length; q++) { alvo = alvo.concat(s.series[q].values); de = de.concat(s.mostrados[q]); }
+        var n0 = s.series[0].values.length;
+        if (s.stop) s.stop();
+        s.stop = tween(de, alvo, s.opts.dur || 900, function (cur) {
+          for (var q2 = 0; q2 < s.series.length; q2++) s.mostrados[q2] = cur.slice(q2 * n0, (q2 + 1) * n0);
+          s.render();
+        });
+      };
+      /* rede de segurança: se o observador nunca disparar (aba em segundo plano etc.), desenha assim mesmo */
+      setTimeout(function () { if (!s.desenhado && s.wrap.isConnected && s.wrap.getClientRects().length) s.reveal(); }, 6000);
     }
     s.render();
     s.atualizarTabela();
@@ -5181,6 +5587,11 @@ window.elcChart = (function () {
         var h = (v / max) * ph;
         var x = s.padL + j * gw + (gw - (bw * ns + gap * (ns - 1))) / 2 + k * (bw + gap);
         var r = s.rects[k][j];
+        if (k === 0 && s.trilhos[j]) {
+          var tr = s.trilhos[j];
+          tr.setAttribute("x", x.toFixed(1)); tr.setAttribute("width", (bw * ns + gap * (ns - 1)).toFixed(1));
+          tr.setAttribute("y", s.padT.toFixed(1)); tr.setAttribute("height", Math.max(1, ph).toFixed(1));
+        }
         r.setAttribute("x", x.toFixed(1));
         r.setAttribute("width", bw.toFixed(1));
         r.setAttribute("y", (s.padT + ph - h).toFixed(1));
@@ -5902,10 +6313,14 @@ window.elcChart = (function () {
   (function () {
     var rating = document.querySelector('.hero-rating');
     if (!rating) return;
-    var h = document.createElement('span');
-    h.className = 'hero-anel';
-    h.setAttribute('aria-hidden', 'true');
-    rating.insertBefore(h, rating.firstChild);
+    /* LOTE 2: o lugar do anel já vem no HTML (34 px reservados) — inserir depois empurrava a linha da nota no celular */
+    var h = rating.querySelector('.hero-anel');
+    if (!h) {
+      h = document.createElement('span');
+      h.className = 'hero-anel';
+      h.setAttribute('aria-hidden', 'true');
+      rating.insertBefore(h, rating.firstChild);
+    }
     window.elcInst.anelHero = anelNota(h, { thick: 0.22, hover: false, decor: true });
   })();
 
@@ -6357,7 +6772,7 @@ window.elcChart = (function () {
           host: host,
           series: [{ name: 'Aparelhos', values: vals }],
           labels: labels,
-          axes: false, xLabels: true, valueLabels: true, barFrac: 0.56, labelMin: 60,
+          axes: false, xLabels: true, valueLabels: true, barFrac: 0.56, labelMin: 60, trilho: true, dur: 1000,
           label: 'Estoque agora: aparelhos publicados por categoria',
           table: true, xName: 'Categoria', yName: 'Aparelhos',
           tip: function (j, series, lab) {
@@ -6589,7 +7004,7 @@ window.elcChart = (function () {
         chart = C.bars({
           host: '#quizChart', series: [{ name: 'Seu perfil', values: [0, 0, 0, 0] }],
           labels: ['Câmera', 'Desempenho', 'Bateria', 'Tela'],
-          axes: false, xLabels: true, valueLabels: true, barFrac: 0.5, labelMin: 50, ymax: 5, immediate: true, format: fmt,
+          axes: false, xLabels: true, valueLabels: true, barFrac: 0.5, labelMin: 50, ymax: 5, immediate: true, format: fmt, trilho: true,
           label: 'Seu perfil: câmera, desempenho, bateria e tela de 1 a 5, a partir das suas respostas',
           table: true, xName: 'Dimensão', yName: 'Nota',
           note: 'seu perfil · de 1 a 5, só a partir das suas respostas',
@@ -7128,7 +7543,7 @@ window.elcChart = (function () {
   function semResHTML(c, f) {
     var desc = [f.arm, f.cor].filter(Boolean).join(' · ');
     var pedido = 'Olá! Procuro um iPhone ' + [f.arm, f.cor].filter(Boolean).join(' ') + ' (' + c.nome + '). Tem ou vai chegar?';
-    return '<div class="cat-semres"><h4>Nada com esse filtro agora</h4>' +
+    return '<div class="cat-semres"><h3>Nada com esse filtro agora</h3>' +
       '<p>Nenhum aparelho <b>' + esc(desc) + '</b> em ' + esc(c.nome) + ' neste momento. Chega novidade toda semana — peça o seu e a gente avisa.</p>' +
       '<div class="cat-semres-acts"><button type="button" class="cat-limpar">Limpar filtros</button>' +
       '<a class="cmap-btn" target="_blank" rel="noopener" href="' + linkWA(estado.wa, pedido) + '">Pedir esse no WhatsApp</a></div></div>';
@@ -7291,20 +7706,25 @@ window.elcChart = (function () {
       if (cfgAtual.mogi_whatsapp) un.mogi.wa = String(cfgAtual.mogi_whatsapp).replace(/\D/g, '') || un.mogi.wa;
       if (cfgAtual.mogi_instagram) un.mogi.ig = String(cfgAtual.mogi_instagram).replace(/^@/, '').trim() || un.mogi.ig;
     }
+    /* LOTE 2 — troca SÓ o nó de texto: textContent apagava os ícones (WhatsApp/Instagram) do rodapé */
+    function trocaNoTexto(a, re, novo) {
+      var w = document.createTreeWalker(a, NodeFilter.SHOW_TEXT), n;
+      while ((n = w.nextNode())) if (re.test(n.nodeValue)) { n.nodeValue = n.nodeValue.replace(re, novo); return; }
+    }
     document.querySelectorAll('a[href*="wa.me/"]').forEach(function (a) {
       if (a.classList.contains('pcard-wa')) return;
       var dono = a.getAttribute('data-un') === 'mogi' && un ? un.mogi : null;
       var numero = dono ? dono.wa : wa;
       var m = a.href.split('?text=');
       a.href = 'https://wa.me/' + numero + (m[1] ? '?text=' + m[1] : '');
-      if (/\(\d{2}\)\s?\d{4,5}-\d{4}/.test(a.textContent)) a.textContent = dono && window.elTelBonito ? window.elTelBonito(numero) : telaBonito;
+      if (/\(\d{2}\)\s?\d{4,5}-\d{4}/.test(a.textContent)) trocaNoTexto(a, /\(\d{2}\)\s?\d{4,5}-\d{4}/, dono && window.elTelBonito ? window.elTelBonito(numero) : telaBonito);
     });
     document.querySelectorAll('a[href*="instagram.com"]').forEach(function (a) {
       /* links de POSTS especificos (embeds/fallbacks da secao Instagram) nao viram o perfil */
       if (a.hasAttribute('data-ig-keep')) return;
       var perfil = a.getAttribute('data-un') === 'mogi' && un ? un.mogi.ig : ig;
       a.href = 'https://www.instagram.com/' + perfil;
-      if (/@/.test(a.textContent)) a.textContent = a.textContent.replace(/@[\w.]+/, '@' + perfil);
+      if (/@/.test(a.textContent)) trocaNoTexto(a, /@[\w.]+/, '@' + perfil);
     });
   }
 
@@ -8103,7 +8523,7 @@ window.elcChart = (function () {
       raf = requestAnimationFrame(passo);
     }
     function liga() {
-      var quer = visivel && !document.hidden && W > 0;
+      var quer = visivel && !document.hidden && W > 0 && !window.elSemMov;
       if (quer === rodando) return;
       rodando = quer;
       if (rodando && !raf) { ultimoT = 0; gracas = 90; raf = requestAnimationFrame(passo); }
@@ -8119,6 +8539,7 @@ window.elcChart = (function () {
       liga();
     }, { threshold: 0 }).observe(wrap);
     document.addEventListener('visibilitychange', liga);
+    document.addEventListener('el:movimento', liga);
     if ('ResizeObserver' in window) new ResizeObserver(function () { if (medir()) { quadro(t); liga(); } }).observe(wrap);
     if (FINO) {
       wrap.addEventListener('mousemove', function (e) {
@@ -8215,7 +8636,7 @@ window.elcChart = (function () {
   (function () {
     if (REDUZ) return;
     var h = document.querySelector('.hero h1');
-    if (!h) return;
+    if (!h || h.classList.contains('split')) return;
     var frag = document.createDocumentFragment(), idx = 0;
     function envolve(no) {
       var s = document.createElement('span');
@@ -8266,6 +8687,38 @@ window.elcChart = (function () {
     mira(document.getElementById('tab-blackclub'), '.bc-step'); /* SpotlightCard nos passos */
     mira(document.querySelector('.duelo'), '.duelo-card');      /* Lacrado × Seminovo */
     mira(document.getElementById('benef'), '.benef-card');      /* faixa do que acompanha toda compra */
+    mira(document.querySelector('.un-grid'), '.un-card');       /* LOTE 2: as duas lojas */
+    mira(document.getElementById('igGridMogi'), '.ig-capa');    /* LOTE 2: capas reais de Mogi */
+    /* LOTE 2 — tilt sutil com luz seguindo o mouse (cartões das lojas e capas do Instagram de Mogi) */
+    var inclina = function (raiz, sel, graus, ergue) {
+      if (!raiz || REDUZ) return;
+      var atual = null, rafT = 0, ev = null;
+      function pinta() {
+        rafT = 0;
+        if (!ev || !atual) return;
+        var r = atual.getBoundingClientRect();
+        var px = (ev.clientX - r.left) / r.width - .5, py = (ev.clientY - r.top) / r.height - .5;
+        atual.style.transform = 'perspective(1100px) rotateX(' + (py * -graus).toFixed(2) + 'deg) rotateY(' + (px * graus).toFixed(2) + 'deg) translateY(' + ergue + 'px)';
+        atual.style.setProperty('--px', px.toFixed(3));
+        atual.style.setProperty('--py', py.toFixed(3));
+      }
+      raiz.addEventListener('mousemove', function (e) {
+        var c = e.target.closest ? e.target.closest(sel) : null;
+        if (!c || !raiz.contains(c)) return;
+        if (c !== atual) { if (atual) solta(atual); atual = c; c.classList.add('inclinando'); }
+        ev = e;
+        if (!rafT) rafT = requestAnimationFrame(pinta);
+      });
+      function solta(c) { c.classList.remove('inclinando'); c.style.transform = ''; c.style.removeProperty('--px'); c.style.removeProperty('--py'); }
+      raiz.addEventListener('mouseleave', function () { if (atual) solta(atual); atual = null; });
+      raiz.addEventListener('mouseout', function (e) {
+        var c = e.target.closest ? e.target.closest(sel) : null;
+        if (!c || (e.relatedTarget && c.contains(e.relatedTarget))) return;
+        solta(c); if (c === atual) atual = null;
+      });
+    };
+    inclina(document.querySelector('.un-grid'), '.un-card', 3, -3);
+    inclina(document.getElementById('igGridMogi'), '.ig-capa', 6, -4);
 
     /* spotlight + tilt 3D no catálogo (delegado — sobrevive ao re-render) */
     (function () {
@@ -8376,13 +8829,14 @@ window.elcChart = (function () {
       raf = requestAnimationFrame(passo);
     }
     function liga() {
-      var quer = visivel && !document.hidden;
+      var quer = visivel && !document.hidden && !window.elSemMov;
       if (quer === rodando) return;
       rodando = quer;
       if (rodando && !raf) raf = requestAnimationFrame(passo);
     }
     new IntersectionObserver(function (es) { visivel = es[0].isIntersecting; liga(); }, { threshold: 0 }).observe(sec);
     document.addEventListener('visibilitychange', liga);
+    document.addEventListener('el:movimento', liga);
     if ('ResizeObserver' in window) new ResizeObserver(medir).observe(sec);
     medir();
     liga();
@@ -8484,7 +8938,7 @@ window.elcChart = (function () {
     var N0_BASE = PEQUENO ? 22 : (COARSE ? 34 : 44);   /* cristas de fundo (lentas, escuras) */
     var N1_BASE = PEQUENO ? 92 : (COARSE ? 130 : 164); /* corpo ambar (+2,5%: um pouco mais denso; o encorpado vem da camada de tras) */
     var N2_BASE = PEQUENO ? 30 : (COARSE ? 43 : 54);   /* filamentos claros (+4%) */
-    var PASSO0 = PEQUENO ? 11 : 9;
+    var PASSO0 = PEQUENO ? 14 : 12; /* LOTE 2: segmentos de 12px (eram 9) — o quadro estático é idêntico a olho nu, 25% menos pontos */
     var N_FAISCAS = PEQUENO ? 24 : 46;
 
     var W = 0, H = 0, dpr = 1;
@@ -8568,11 +9022,37 @@ window.elcChart = (function () {
       return Math.sin(x * vk1 + vq1) * vA1 + Math.sin(x * vk2 + vq2) * vA2 + Math.sin(x * vk3 + vq3) * vA3;
     }
 
+    /* LOTE 2 — tabelas por coluna: tudo o que só depende de x (vagas, fases u/v/w, senos de w) é
+       calculado UMA vez por passada; dentro do laço de linhas sobram 2 senos por ponto (eram 9).
+       sin(v + a) e sin(B + c) saem por soma de arcos — o desenho é o MESMO, só mais barato. */
+    var tbN = 0, tbT = -1, tbP = 0, tbW = 0, tbX = null, tbSw = null, tbU = null, tbSv = null, tbCv = null, tbV16 = null, tbS3 = null, tbC3 = null;
+    function prepararColunas(t) {
+      if (t === tbT && passoX === tbP && W === tbW) return; /* passadas 1 e 2 do mesmo quadro reaproveitam */
+      tbT = t; tbP = passoX; tbW = W;
+      var n = Math.floor((W + 48) / passoX) + 1;
+      if (!tbX || tbX.length < n) {
+        tbX = new Float32Array(n); tbSw = new Float32Array(n); tbU = new Float32Array(n); tbSv = new Float32Array(n);
+        tbCv = new Float32Array(n); tbV16 = new Float32Array(n); tbS3 = new Float32Array(n); tbC3 = new Float32Array(n);
+      }
+      tbN = n;
+      for (var j = 0; j < n; j++) {
+        var x = -24 + j * passoX;
+        var u = x * 0.0036 + t * 0.34, v = x * 0.0074 - t * 0.47, w = x * 0.0014 + t * 0.12;
+        tbX[j] = x;
+        tbSw[j] = Math.sin(x * vk1 + vq1) * vA1 + Math.sin(x * vk2 + vq2) * vA2 + Math.sin(x * vk3 + vq3) * vA3;
+        tbU[j] = u;
+        tbSv[j] = Math.sin(v); tbCv[j] = Math.cos(v);
+        tbV16[j] = v * 1.6 - Math.sin(w * 2.3 + t * 0.26) * 1.5;
+        var w3 = w * 3.4 + t * 0.6;
+        tbS3[j] = Math.sin(w3); tbC3[j] = Math.cos(w3);
+      }
+    }
     function desenharPasse(t, n, baseAlpha, lw, corFn, fase, interativo, cx) {
       cx = cx || octx;
       cx.lineWidth = lw;
       var cellInv = TCELLS / W;
       var nOndas = ondas.length;
+      prepararColunas(t);
       for (var i = 0; i < n; i++) {
         var k = n === 1 ? 1 : i / (n - 1);          /* 0 = fundo, 1 = topo da faixa */
         var yBase = H + 14 - spanAtual * Math.pow(k, 1.18) + Math.sin(t * 0.4 + k * 6.0) * 6;
@@ -8581,12 +9061,18 @@ window.elcChart = (function () {
         var a = baseAlpha * (0.45 + 0.55 * (1 - k)) * flick;
         if (a < 0.004) continue;
         var heave = 10 + 24 * k;                    /* subida/descida da vaga */
+        var kk = k + fase;
+        var ca = Math.cos(kk * 5.5), sa = Math.sin(kk * 5.5), cb = Math.cos(kk * 7.0), sb = Math.sin(kk * 7.0);
+        var c11 = kk * 11.0, c19 = kk * 19.0;
         cx.strokeStyle = corFn(k, a);
         cx.beginPath();
-        for (var x = -24; x <= W + 24; x += passoX) {
-          var swn = Math.sin(x * vk1 + vq1) * vA1 + Math.sin(x * vk2 + vq2) * vA2 + Math.sin(x * vk3 + vq3) * vA3;
+        for (var j = 0; j < tbN; j++) {
+          var x = tbX[j];
+          var swn = tbSw[j];
           var ampL = amp * (1 + 0.35 * swn);
-          var foldV = fold(x, k + fase, t);
+          var foldV = Math.sin(tbU[j] + c11 + (tbSv[j] * ca + tbCv[j] * sa) * 2.1) * 0.55
+                    + Math.sin(tbV16[j] + c19) * 0.34
+                    + (tbS3[j] * cb + tbC3[j] * sb) * 0.42;
           var y = yBase + swn * heave + foldV * ampL;
           if (interativo) {
             /* vento do mouse: rastro 1D com falloff vertical gaussiano */
@@ -8614,7 +9100,7 @@ window.elcChart = (function () {
               y += Math.exp(dd * dd * SPLASH_S2) * Math.sin(dd * SPLASH_K) * SPLASH_AMP * od.fade;
             }
           }
-          if (x === -24) cx.moveTo(x, y); else cx.lineTo(x, y);
+          if (j === 0) cx.moveTo(x, y); else cx.lineTo(x, y);
         }
         cx.stroke();
       }
@@ -8674,7 +9160,7 @@ window.elcChart = (function () {
         if (!estatico) {
           var swS = vagaEm(s.x * W);
           var spray = swS > 0.3 ? (swS - 0.3) * 1.6 : 0;
-          s.p += s.s * (1 + spray * 1.5) / 60;
+          s.p += s.s * (1 + spray * 1.5) * FR / 60;
           if (s.p > 1) { s.p = 0; s.x = Math.random(); }
           aF = Math.sin(Math.PI * s.p) * (0.28 + 0.22 * Math.sin(t * 3 + s.tw)) * (1 + spray);
         } else {
@@ -8742,13 +9228,19 @@ window.elcChart = (function () {
       ctx.drawImage(off, 0, 0, off.width, off.height, 0, 0, W, H);
     }
 
+    /* LOTE 2: no celular (sem mouse para reagir) o mar respira a 30 qps — o movimento é lento e a
+       diferença não se vê, mas a bateria agradece. O governor compara contra o quadro-alvo. */
+    var QUADRO_MIN = COARSE ? 31 : 15.5, FR = COARSE ? 2 : 1; /* telas de 120/144 Hz não desenham o mar 2x mais */
+    var menuEl = document.getElementById('mmenu'), fichaEl = document.getElementById('ficha'), uniEl = document.getElementById('uniSheet');
+    function coberto() { return (menuEl && !menuEl.hidden) || (fichaEl && !fichaEl.hidden) || (uniEl && !uniEl.hidden); }
     function passo(now) {
       raf = 0;
       if (!rodando) return;
-      var dt = lastT ? now - lastT : 16.7;
-      if (dt > 100) dt = 16.7;
+      if ((QUADRO_MIN && lastT && now - lastT < QUADRO_MIN) || coberto()) { raf = requestAnimationFrame(passo); if (!lastT) lastT = now; return; }
+      var dt = lastT ? now - lastT : 16.7 * FR;
+      if (dt > 100 * FR) dt = 16.7 * FR;
       lastT = now;
-      emaDt += (dt - emaDt) * 0.08;
+      emaDt += (dt / FR - emaDt) * 0.08;
       /* governor: filamentos → escala do offscreen → passo. COM RECUPERACAO:
          um engasgo transitorio (carga da intro, fetch do catalogo, volta de aba)
          nao pode afinar o mar para sempre — 3s de frames bons desfazem 1 degrau
@@ -8799,11 +9291,13 @@ window.elcChart = (function () {
       raf = requestAnimationFrame(passo);
     }
     function liga() {
-      var quer = !document.hidden;
+      var quer = !document.hidden && !window.elSemMov;
       if (quer === rodando) return;
       rodando = quer;
       lastT = 0;
       if (rodando && !raf) raf = requestAnimationFrame(passo);
+      /* parado por "pausar animações": fica o mar congelado num instante bonito (como no reduced-motion) */
+      if (!rodando && window.elSemMov && W) quadro(performance.now(), true);
     }
 
     medir();
@@ -8862,6 +9356,7 @@ window.elcChart = (function () {
     }
 
     document.addEventListener('visibilitychange', liga);
+    document.addEventListener('el:movimento', liga);
     liga();
   })();
 
@@ -9006,7 +9501,7 @@ window.elcChart = (function () {
     /* motor: um interval leve so quando a secao esta visivel e a aba ativa */
     var visVit = false, rodaVit = false, intervalo = 0, ultimo = 0;
     function tocaVit() {
-      var quer = visVit && !document.hidden;
+      var quer = visVit && !document.hidden && !window.elSemMov;
       if (quer === rodaVit) return;
       rodaVit = quer;
       if (rodaVit) {
@@ -9020,9 +9515,11 @@ window.elcChart = (function () {
     }
     new IntersectionObserver(function (es) { visVit = es[0].isIntersecting; tocaVit(); }, { threshold: .12 }).observe(vit);
     document.addEventListener('visibilitychange', tocaVit);
+    document.addEventListener('el:movimento', tocaVit);
 
     /* a hora real atualiza por minuto nos aparelhos ligados */
     setInterval(function () {
+      if (!rodaVit) return;
       for (var k = 0; k < fones.length; k++) if (fones[k].estado !== 'off') fones[k].hEl.textContent = horaAgora();
     }, 20000);
 
@@ -9076,17 +9573,10 @@ window.elcChart = (function () {
   })();
 
   /* ============ CTAs DOURADOS — atração magnética leve ============ */
-  if (FINO && !REDUZ) {
-    document.querySelectorAll('.btn-g, .btn-dn, .bc-cta-btn').forEach(function (btn) {
-      btn.addEventListener('mousemove', function (e) {
-        var r = btn.getBoundingClientRect();
-        var dx = (e.clientX - r.left) / r.width - .5;
-        var dy = (e.clientY - r.top) / r.height - .5;
-        btn.style.transform = 'translate(' + (dx * 10).toFixed(1) + 'px,' + (dy * 8 - 2).toFixed(1) + 'px)';
-      });
-      btn.addEventListener('mouseleave', function () { btn.style.transform = ''; });
-    });
-  }
+  /* LOTE 2 — atração magnética: um único motor ([data-magnet], no fim da página) para os CTAs principais */
+  document.querySelectorAll('.btn-g, .btn-dn, .bc-cta-btn, .btn-claro:not(.pcard-wa), .nav-btn, .ig-follow, .cat-wa-link, .tp-btn, .duelo-cta, .un-wa').forEach(function (btn) {
+    if (!btn.closest('.ficha, .uni-sheet, .ent-tela')) btn.setAttribute('data-magnet', '');
+  });
 
   /* ============ BLACK CLUB — tilt 3D no card do prêmio ============ */
   if (FINO && !REDUZ) {
@@ -9299,7 +9789,7 @@ window.elcChart = (function () {
         active: false,
         tick: function (p, ts) {
           /* liga só com a fila já formada (p >= .9: minis e CTA em repouso) e desliga com histerese */
-          var quer = ativo ? p >= 0.86 : p >= 0.9;
+          var quer = (ativo ? p >= 0.86 : p >= 0.9) && !window.elSemMov;
           if (quer !== ativo) {
             ativo = quer;
             sec.classList.toggle('is-swap', ativo);
@@ -10353,16 +10843,23 @@ window.elcChart = (function () {
 
   /* ---------- botões magnéticos (mouse) ---------- */
   if (FINO && !REDUZ) {
-    var mag = null;
+    var mag = null, magEv = null, magRaf = 0;
+    function magPinta() {
+      magRaf = 0;
+      if (!mag || !magEv) return;
+      var r = mag.getBoundingClientRect();
+      var dx = (magEv.clientX - r.left) / r.width - 0.5, dy = (magEv.clientY - r.top) / r.height - 0.5;
+      mag.style.transform = 'translate(' + (dx * 9).toFixed(1) + 'px,' + (dy * 6 - 1.5).toFixed(1) + 'px)';
+    }
     document.addEventListener('mousemove', function (e) {
       var b = e.target.closest ? e.target.closest('[data-magnet]') : null;
-      if (mag && mag !== b) { mag.style.transform = ''; mag = null; }
+      if (mag && mag !== b) { mag.classList.remove('imantado'); mag.style.transform = ''; mag = null; }
       if (!b || b.getAttribute('aria-disabled') === 'true') return;
-      mag = b;
-      var r = b.getBoundingClientRect();
-      var dx = (e.clientX - r.left) / r.width - 0.5, dy = (e.clientY - r.top) / r.height - 0.5;
-      b.style.transform = 'translate(' + (dx * 8).toFixed(1) + 'px,' + (dy * 6 - 1.5).toFixed(1) + 'px)';
+      if (mag !== b) b.classList.add('imantado');
+      mag = b; magEv = e;
+      if (!magRaf) magRaf = requestAnimationFrame(magPinta);
     }, { passive: true });
+    document.documentElement.addEventListener('mouseleave', function () { if (mag) { mag.classList.remove('imantado'); mag.style.transform = ''; mag = null; } });
   }
 
   /* ---------- início ---------- */
@@ -10391,6 +10888,97 @@ window.elcChart = (function () {
   if (!pelaHashNoLoad()) {
     var ultSalvo = lerJSON(sessionStorage, ULT);
     if (ultSalvo && ultSalvo.numero) ultimo = ultSalvo;
+  }
+})();
+</script>
+<script>
+'use strict';
+/* ============ LOTE 2 — movimento sob controle, digitação no celular, menu e mapa ============ */
+(function () {
+  var html = document.documentElement;
+  var REDUZ = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---------- "Pausar animações" (letreiro + rodapé): para letreiro, brilhos, mar dourado, vitrine e CardSwap ---------- */
+  var botoes = document.querySelectorAll('[data-movimento]');
+  function pintaBotoes() {
+    for (var i = 0; i < botoes.length; i++) botoes[i].setAttribute('aria-pressed', window.elSemMov ? 'true' : 'false');
+  }
+  function definir(pausar) {
+    window.elSemMov = !!pausar;
+    html.classList.toggle('sem-mov', window.elSemMov);
+    try { if (pausar) localStorage.setItem('el_movimento', 'pausado'); else localStorage.removeItem('el_movimento'); } catch (e) { /* modo privado */ }
+    pintaBotoes();
+    document.dispatchEvent(new CustomEvent('el:movimento', { detail: window.elSemMov }));
+    if (window.elToast) window.elToast(pausar ? 'Animações pausadas. Toque de novo para retomar.' : 'Animações retomadas.', 2600);
+  }
+  for (var b = 0; b < botoes.length; b++) botoes[b].addEventListener('click', function () { definir(!window.elSemMov); });
+  pintaBotoes();
+  if (window.elSemMov) document.dispatchEvent(new CustomEvent('el:movimento', { detail: true }));
+
+  /* ---------- animações em loop dormem fora da tela (hero, título do catálogo, selo, raio do Black Club) ---------- */
+  if ('IntersectionObserver' in window && !REDUZ) {
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { e.target.classList.toggle('fora', !e.isIntersecting); });
+    });
+    ['.hero', '#produtos > .heading', '.gua', '.bc-wrapper'].forEach(function (s) { var el = document.querySelector(s); if (el) io.observe(el); });
+  }
+
+  /* ---------- celular: com o teclado aberto, dock e float saem da frente do campo ---------- */
+  var CAMPO = 'input:not([type=checkbox]):not([type=radio]):not([type=button]):not([type=submit]), textarea, select';
+  document.addEventListener('focusin', function (e) {
+    if (e.target.matches && e.target.matches(CAMPO)) document.body.classList.add('digitando');
+  });
+  document.addEventListener('focusout', function () {
+    setTimeout(function () {
+      var a = document.activeElement;
+      if (!(a && a.matches && a.matches(CAMPO))) document.body.classList.remove('digitando');
+    }, 60);
+  });
+
+  /* ---------- menu do celular: foco preso no diálogo enquanto ele está aberto ---------- */
+  var mm = document.getElementById('mmenu');
+  if (mm) mm.addEventListener('keydown', function (e) {
+    if (e.key !== 'Tab') return;
+    var f = Array.prototype.filter.call(mm.querySelectorAll('a[href], button'), function (x) { return x.offsetParent !== null; });
+    if (!f.length) return;
+    var a = f[0], z = f[f.length - 1];
+    if (e.shiftKey && document.activeElement === a) { e.preventDefault(); z.focus(); }
+    else if (!e.shiftKey && document.activeElement === z) { e.preventDefault(); a.focus(); }
+  });
+
+  /* ---------- mapa das lojas: a troca de aba esmaece até o novo mapa carregar ---------- */
+  var fr = document.getElementById('unMapaFrame'), cm = document.getElementById('unMapa'), tm = 0;
+  if (fr && cm && 'MutationObserver' in window) {
+    new MutationObserver(function () {
+      cm.classList.add('trocando');
+      clearTimeout(tm); tm = setTimeout(function () { cm.classList.remove('trocando'); }, 2500);
+    }).observe(fr, { attributes: true, attributeFilter: ['src'] });
+    fr.addEventListener('load', function () { clearTimeout(tm); cm.classList.remove('trocando'); });
+  }
+
+  /* ---------- Instagram no celular: 3 publicações primeiro (6 embeds = ~3.000 px de rolagem) + "ver mais" ---------- */
+  var grade = document.getElementById('igGrid');
+  if (grade && matchMedia('(max-width:700px)').matches) {
+    var itens = grade.querySelectorAll('.ig-item');
+    if (itens.length > 3) {
+      grade.classList.add('ig-recolhido');
+      var mais = document.createElement('button');
+      mais.type = 'button';
+      mais.className = 'ig-mais';
+      mais.setAttribute('aria-controls', 'igGrid');
+      mais.setAttribute('aria-expanded', 'false');
+      mais.innerHTML = '<span>Ver mais ' + (itens.length - 3) + ' publicações</span><i aria-hidden="true"></i>';
+      grade.parentNode.insertBefore(mais, grade.nextSibling);
+      mais.addEventListener('click', function () {
+        grade.classList.remove('ig-recolhido');
+        mais.setAttribute('aria-expanded', 'true');
+        var painel = grade.closest('.ig-painel');
+        if (painel && window.elIgAtivar) window.elIgAtivar(painel);
+        var alvo = itens[3].querySelector('a');
+        mais.remove();
+        if (alvo) { try { alvo.focus({ preventScroll: true }); } catch (e) { alvo.focus(); } }
+      });
+    }
   }
 })();
 </script>
